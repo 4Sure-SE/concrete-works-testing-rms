@@ -1,20 +1,182 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model MaterialTests {
+  id           Int       @id @default(autoincrement())
+  materialId   Int       @map("material_id")
+  testId       Int       @map("test_id")
+  testsPerUnit Decimal   @map("tests_per_unit") @db.Decimal(10, 4)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  materials    Materials @relation(fields: [materialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tests        Tests     @relation(fields: [testId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-    @@index([name])
+  @@unique([materialId, testId])
+  @@map("material_tests")
+}
+
+model Materials {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique @db.VarChar(100)
+  description       String?             @db.VarChar(500)
+  unitId            Int                 @map("unit_id")
+  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  materialTests     MaterialTests[]
+  units             Units               @relation(fields: [unitId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projectMaterials  ProjectMaterials[]
+  workItemMaterials WorkItemMaterials[]
+
+  @@map("materials")
+}
+
+model ProjectMaterialTests {
+  id                Int              @id @default(autoincrement())
+  testId            Int              @map("test_id")
+  projectMaterialId Int              @map("project_material_id")
+  onFile            Int              @default(0) @map("on_file")
+  balance           Int
+  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectMaterials  ProjectMaterials @relation(fields: [projectMaterialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tests             Tests            @relation(fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("project_material_tests")
+}
+
+model ProjectMaterials {
+  id                   Int                    @id @default(autoincrement())
+  projectWorkItemId    Int                    @map("project_work_item_id")
+  materialId           Int                    @map("material_id")
+  quantity             Decimal                @db.Decimal(10, 2)
+  createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectMaterialTests ProjectMaterialTests[]
+  materials            Materials              @relation(fields: [materialId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projectWorkItems     ProjectWorkItems       @relation(fields: [projectWorkItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("project_materials")
+}
+
+model ProjectWorkItemTests {
+  id                Int              @id @default(autoincrement())
+  testId            Int              @map("test_id")
+  projectWorkItemId Int              @map("project_work_item_id")
+  onFile            Int              @default(0) @map("on_file")
+  balance           Int
+  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectWorkItems  ProjectWorkItems @relation(fields: [projectWorkItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tests             Tests            @relation(fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("project_work_item_tests")
+}
+
+model ProjectWorkItems {
+  id                   Int                    @id @default(autoincrement())
+  projectId            Int                    @map("project_id")
+  workItemId           Int                    @map("work_item_id")
+  quantity             Decimal                @db.Decimal(10, 2)
+  createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectMaterials     ProjectMaterials[]
+  projectWorkItemTests ProjectWorkItemTests[]
+  projects             Projects               @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  workItems            WorkItems              @relation(fields: [workItemId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("project_work_items")
+}
+
+model Projects {
+  id               Int                @id @default(autoincrement())
+  contractId       String             @map("contract_id") @db.VarChar(100)
+  contractName     String             @map("contract_name") @db.VarChar(500)
+  contractor       String             @db.VarChar(100)
+  limits           String?            @db.VarChar(500)
+  location         String?            @db.VarChar(100)
+  dateStarted      DateTime           @map("date_started") @db.Date
+  createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectWorkItems ProjectWorkItems[]
+
+  @@map("projects")
+}
+
+model Tests {
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique @db.VarChar(100)
+  baseDuration         Int                    @map("base_duration")
+  createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  materialTests        MaterialTests[]
+  projectMaterialTests ProjectMaterialTests[]
+  projectWorkItemTests ProjectWorkItemTests[]
+  workItemTests        WorkItemTests[]
+
+  @@map("tests")
+}
+
+model Units {
+  id           Int         @id @default(autoincrement())
+  name         String      @unique @db.VarChar(50)
+  abbreviation String      @unique @db.VarChar(10)
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  materials    Materials[]
+  workItems    WorkItems[]
+
+  @@map("units")
+}
+
+model WorkItemMaterials {
+  id              Int       @id @default(autoincrement())
+  workItemId      Int       @map("work_item_id")
+  materialId      Int       @map("material_id")
+  quantityPerUnit Decimal   @map("quantity_per_unit") @db.Decimal(10, 4)
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  materials       Materials @relation(fields: [materialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  workItems       WorkItems @relation(fields: [workItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([workItemId, materialId])
+  @@map("work_item_materials")
+}
+
+model WorkItemTests {
+  id           Int       @id @default(autoincrement())
+  workItemId   Int       @map("work_item_id")
+  testId       Int       @map("test_id")
+  testsPerUnit Decimal   @map("tests_per_unit") @db.Decimal(10, 4)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  tests        Tests     @relation(fields: [testId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  workItems    WorkItems @relation(fields: [workItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([workItemId, testId])
+  @@map("work_item_tests")
+}
+
+model WorkItems {
+  id                Int                 @id @default(autoincrement())
+  itemNo            String              @unique @map("item_no") @db.VarChar(20)
+  description       String?             @db.VarChar(500)
+  unitId            Int                 @map("unit_id")
+  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectWorkItems  ProjectWorkItems[]
+  workItemMaterials WorkItemMaterials[]
+  workItemTests     WorkItemTests[]
+  units             Units               @relation(fields: [unitId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("work_items")
+}
+
+enum TestStatus {
+  NOT_STARTED @map("not_started")
+  ONGOING     @map("ongoing")
+  COMPLETED   @map("completed")
+
+  @@map("test_status")
+}
+
+enum TestType {
+  WORK_ITEM @map("work_item")
+  MATERIAL  @map("material")
+
+  @@map("test_type")
 }

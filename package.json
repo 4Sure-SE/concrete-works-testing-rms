@@ -56,7 +56,7 @@
             "eslint",
             "prettier --write"
         ],
-        "!(*.css|*.js|*.jsx|*.ts|*.tsx)": [
+        "*.css": [
             "prettier --write"
         ]
     },
