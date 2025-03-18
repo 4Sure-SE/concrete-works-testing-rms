@@ -1,0 +1,4 @@
+{
+    // use workspace version of typescript
+    "typescript.tsdk": "node_modules\\typescript\\lib"
+}
