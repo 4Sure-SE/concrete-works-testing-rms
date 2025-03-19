@@ -10,6 +10,10 @@ jobs:
             matrix:
                 node-version: [18.x, 20.x, 22.x]
 
+        env:
+            DATABASE_URL: ${{ secrets.DATABASE_URL }}
+            DIRECT_URL: ${{ secrets.DIRECT_URL }}
+
         steps:
             - uses: actions/checkout@v4
             - name: Use Node.js ${{ matrix.node-version }}
