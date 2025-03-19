@@ -60,5 +60,8 @@
             "prettier --write"
         ]
     },
-    "packageManager": "npm@11.1.0"
+    "packageManager": "npm@11.1.0",
+    "prisma": {
+        "schema": "src/server/db/schema.prisma"
+    }
 }
