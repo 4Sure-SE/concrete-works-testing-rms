@@ -5,7 +5,7 @@
 
 ### Related Issue
 
-- [] 🔗 Part of: [ISSUE_NUMBER]
+- [] 🔗 Part of: [ISSUE_ID]
 
 ### Type of Change
 
