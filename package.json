@@ -58,6 +58,9 @@
         ],
         "*.css": [
             "prettier --write"
+        ],
+        "*.{json,md}": [
+            "prettier --write"
         ]
     },
     "packageManager": "npm@11.1.0",
