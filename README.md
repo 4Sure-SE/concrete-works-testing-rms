@@ -2,9 +2,9 @@
 
 ### Table of Contents
 
-- [Installation](#🔧-installation)
-- [Environment Variables](#🔑-environment-variables)
-- [Running the App](#🚀-running-the-app)
+- [Installation](#-installation)
+- [Environment Variables](#-environment-variables)
+- [Running the App](#-running-the-app)
 
 ### 🔧 Installation
 
