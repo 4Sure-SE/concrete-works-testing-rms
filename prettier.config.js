@@ -7,7 +7,6 @@ const prettierConfig = {
     bracketSpacing: true,
     singleAttributePerLine: true,
     bracketSameLine: false,
-    jsxBracketSameLine: false,
     printWidth: 80,
     quoteProps: "as-needed",
     semi: true,
