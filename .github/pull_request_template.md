@@ -1,11 +1,11 @@
 ### What does this pull request do?
 
-- [x] List all changes that were achieved
+- [x] List all changes that were achieved.
 - [ ] List any planned changes that were not achieved
 
 ### Related Issue
 
-- [] 🔗 Part of: [ISSUE_ID]
+- [ ] 🔗 Part of [ISSUE_ID]
 
 ### Type of Change
 
