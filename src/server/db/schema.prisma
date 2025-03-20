@@ -9,9 +9,9 @@ datasource db {
 }
 
 model MaterialTests {
-  id           Int       @id @default(autoincrement())
-  materialId   Int       @map("material_id")
-  testId       Int       @map("test_id")
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  materialId   String    @map("material_id") @db.Uuid
+  testId       String    @map("test_id") @db.Uuid
   testsPerUnit Decimal   @map("tests_per_unit") @db.Decimal(10, 4)
   createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   materials    Materials @relation(fields: [materialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -22,10 +22,10 @@ model MaterialTests {
 }
 
 model Materials {
-  id                Int                 @id @default(autoincrement())
-  name              String              @unique @db.VarChar(100)
+  id                String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name              String              @db.VarChar(225)
   description       String?             @db.VarChar(500)
-  unitId            Int                 @map("unit_id")
+  unitId            String              @map("unit_id") @db.Uuid
   createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
   materialTests     MaterialTests[]
   units             Units               @relation(fields: [unitId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -36,9 +36,9 @@ model Materials {
 }
 
 model ProjectMaterialTests {
-  id                Int              @id @default(autoincrement())
-  testId            Int              @map("test_id")
-  projectMaterialId Int              @map("project_material_id")
+  id                String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  testId            String           @map("test_id") @db.Uuid
+  projectMaterialId String           @map("project_material_id") @db.Uuid
   onFile            Int              @default(0) @map("on_file")
   balance           Int
   createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -49,9 +49,9 @@ model ProjectMaterialTests {
 }
 
 model ProjectMaterials {
-  id                   Int                    @id @default(autoincrement())
-  projectWorkItemId    Int                    @map("project_work_item_id")
-  materialId           Int                    @map("material_id")
+  id                   String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  projectWorkItemId    String                 @map("project_work_item_id") @db.Uuid
+  materialId           String                 @map("material_id") @db.Uuid
   quantity             Decimal                @db.Decimal(10, 2)
   createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
   projectMaterialTests ProjectMaterialTests[]
@@ -62,9 +62,9 @@ model ProjectMaterials {
 }
 
 model ProjectWorkItemTests {
-  id                Int              @id @default(autoincrement())
-  testId            Int              @map("test_id")
-  projectWorkItemId Int              @map("project_work_item_id")
+  id                String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  testId            String           @map("test_id") @db.Uuid
+  projectWorkItemId String           @map("project_work_item_id") @db.Uuid
   onFile            Int              @default(0) @map("on_file")
   balance           Int
   createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -75,9 +75,9 @@ model ProjectWorkItemTests {
 }
 
 model ProjectWorkItems {
-  id                   Int                    @id @default(autoincrement())
-  projectId            Int                    @map("project_id")
-  workItemId           Int                    @map("work_item_id")
+  id                   String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  projectId            String                 @map("project_id") @db.Uuid
+  workItemId           String                 @map("work_item_id") @db.Uuid
   quantity             Decimal                @db.Decimal(10, 2)
   createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
   projectMaterials     ProjectMaterials[]
@@ -89,12 +89,12 @@ model ProjectWorkItems {
 }
 
 model Projects {
-  id               Int                @id @default(autoincrement())
-  contractId       String             @map("contract_id") @db.VarChar(100)
+  id               String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  contractId       String             @map("contract_id") @db.VarChar(225)
   contractName     String             @map("contract_name") @db.VarChar(500)
-  contractor       String             @db.VarChar(100)
+  contractor       String             @db.VarChar(225)
   limits           String?            @db.VarChar(500)
-  location         String?            @db.VarChar(100)
+  location         String?            @db.VarChar(225)
   dateStarted      DateTime           @map("date_started") @db.Date
   createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
   projectWorkItems ProjectWorkItems[]
@@ -103,9 +103,8 @@ model Projects {
 }
 
 model Tests {
-  id                   Int                    @id @default(autoincrement())
-  name                 String                 @unique @db.VarChar(100)
-  baseDuration         Int                    @map("base_duration")
+  id                   String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name                 String                 @unique @db.VarChar(225)
   createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
   materialTests        MaterialTests[]
   projectMaterialTests ProjectMaterialTests[]
@@ -116,9 +115,9 @@ model Tests {
 }
 
 model Units {
-  id           Int         @id @default(autoincrement())
+  id           String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name         String      @unique @db.VarChar(50)
-  abbreviation String      @unique @db.VarChar(10)
+  abbreviation String      @unique @db.VarChar(50)
   createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
   materials    Materials[]
   workItems    WorkItems[]
@@ -127,10 +126,10 @@ model Units {
 }
 
 model WorkItemMaterials {
-  id              Int       @id @default(autoincrement())
-  workItemId      Int       @map("work_item_id")
-  materialId      Int       @map("material_id")
-  quantityPerUnit Decimal   @map("quantity_per_unit") @db.Decimal(10, 4)
+  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  workItemId      String    @map("work_item_id") @db.Uuid
+  materialId      String    @map("material_id") @db.Uuid
+  quantityPerUnit Decimal   @map("quantity_per_unit") @db.Decimal(10, 6)
   createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   materials       Materials @relation(fields: [materialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   workItems       WorkItems @relation(fields: [workItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -140,9 +139,9 @@ model WorkItemMaterials {
 }
 
 model WorkItemTests {
-  id           Int       @id @default(autoincrement())
-  workItemId   Int       @map("work_item_id")
-  testId       Int       @map("test_id")
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  workItemId   String    @map("work_item_id") @db.Uuid
+  testId       String    @map("test_id") @db.Uuid
   testsPerUnit Decimal   @map("tests_per_unit") @db.Decimal(10, 4)
   createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   tests        Tests     @relation(fields: [testId], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -153,10 +152,10 @@ model WorkItemTests {
 }
 
 model WorkItems {
-  id                Int                 @id @default(autoincrement())
+  id                String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   itemNo            String              @unique @map("item_no") @db.VarChar(20)
   description       String?             @db.VarChar(500)
-  unitId            Int                 @map("unit_id")
+  unitId            String              @map("unit_id") @db.Uuid
   createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
   projectWorkItems  ProjectWorkItems[]
   workItemMaterials WorkItemMaterials[]
