@@ -1,9 +1,9 @@
-name: lint-build
+name: lint-test-build
 
 on: [push, pull_request]
 
 jobs:
-    lint-build:
+    lint-test-build:
         runs-on: ubuntu-latest
 
         strategy:
@@ -30,6 +30,9 @@ jobs:
 
             - name: Check format
               run: npm run format:check
+
+            - name: Test project
+              run: npm run test
 
             - name: Build project
               run: npm run build
