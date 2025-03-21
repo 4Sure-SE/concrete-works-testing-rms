@@ -24,11 +24,18 @@ export default async function ProjectDetailsPage({
                 <div>@</div>
             </div>
 
-            <div className="p-8">
-                <h2 className="font-bold">Manila Bridge</h2>
-                <h5 className="text-gray-500">Project Description</h5>
-                <h5 className="text-gray-500">Contractor: Contractor Name</h5>
-                <p>{id}</p>
+            <div className="grid w-full grid-cols-2 gap-x-4 p-8">
+                <div className="flex w-full flex-col p-4">
+                    <h5 className="text-black">Contract ID: {id}</h5>
+                    <h5 className="mt-4 text-black">
+                        Contract Name: Highways Construction
+                    </h5>
+                    <h5 className="mt-4 text-black">Contractor Name: </h5>
+                </div>
+                <div className="flex w-full flex-col p-4">
+                    <h5 className="text-black">Limits:</h5>
+                    <h5 className="mt-4 text-black">Location:</h5>
+                </div>
             </div>
 
             <div className="flex flex-row px-8">
