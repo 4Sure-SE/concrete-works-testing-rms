@@ -1,3 +1,13 @@
+import { fakeMaterialsData } from "./fake-data";
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableHead,
+    TableRow,
+    TableCell,
+} from "@/components/ui/table";
+
 export default async function ProjectDetailsPage({
     params,
 }: {
@@ -36,37 +46,49 @@ export default async function ProjectDetailsPage({
             </div>
 
             <div className="overflow-y-auto p-8">
-                <table className="w-full min-w-[600px] border-collapse border border-gray-300">
-                    <thead>
-                        <tr className="bg-gray-100">
-                            <th className="border border-gray-300 px-4 py-2">
+                <Table className="border border-gray-200">
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="text-center">
                                 Item No.
-                            </th>
-                            <th className="border border-gray-300 px-4 py-2">
+                            </TableHead>
+                            <TableHead className="text-center">
                                 Description/Materials
-                            </th>
-                            <th className="border border-gray-300 px-4 py-2">
+                            </TableHead>
+                            <TableHead className="text-center">
                                 Quantity
-                            </th>
-                            <th className="border border-gray-300 px-4 py-2">
-                                Unit
-                            </th>
-                            <th className="border border-gray-300 px-4 py-2">
+                            </TableHead>
+                            <TableHead className="text-center">Unit</TableHead>
+                            <TableHead className="text-center">
                                 Tests Required
-                            </th>
-                            <th className="border border-gray-300 px-4 py-2">
+                            </TableHead>
+                            <TableHead className="text-center">
                                 No. of Test On File
-                            </th>
-                            <th className="border border-gray-300 px-4 py-2">
+                            </TableHead>
+                            <TableHead className="text-center">
                                 Balance
-                            </th>
-                            <th className="border border-gray-300 px-4 py-2">
+                            </TableHead>
+                            <TableHead className="text-center">
                                 Status
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                            </TableHead>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody className="text-center">
+                        {fakeMaterialsData.map((item) => (
+                            <TableRow key={item.itemId}>
+                                <TableCell>{item.itemNo}</TableCell>
+                                <TableCell>{item.description}</TableCell>
+                                <TableCell>{item.quantity}</TableCell>
+                                <TableCell>{item.unit}</TableCell>
+                                <TableCell>{item.testsRequired}</TableCell>
+                                <TableCell>{item.testsOnFile}</TableCell>
+                                <TableCell>{item.balance}</TableCell>
+                                <TableCell>{item.status}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </div>
         </div>
     );
