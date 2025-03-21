@@ -7,7 +7,7 @@
 
 Link all issues related to this pull request
 
-- [x] 🔗 Part of ISSUE_ID
+- [x] 🔗 Part of [ISSUE_ID](INSERT_ISSUE_LINK_HERE)
 
 ### Type of Change
 
