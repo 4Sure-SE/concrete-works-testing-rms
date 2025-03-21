@@ -1,12 +1,13 @@
-## Concrete Works Testing Records Management System
+# Concrete Works Testing RMS
 
-### Table of Contents
+## Getting Started
 
 - [Installation](#-installation)
 - [Environment Variables](#-environment-variables)
 - [Running the App](#-running-the-app)
+- [Contributing Guidelines](.github/CONTRIBUTING.md)
 
-### 🔧 Installation
+## 🔧 Installation
 
 1. Clone the repository
 
@@ -25,7 +26,7 @@
     npm i
     ```
 
-### 🔑 Environment Variables
+## 🔑 Environment Variables
 
 1. Copy the `.env.example` file:
 
@@ -35,7 +36,7 @@
 
 2. Update the `.env` file with the provided values
 
-### 🚀 Running the App
+## 🚀 Running the App
 
 1. Start the development server
 
