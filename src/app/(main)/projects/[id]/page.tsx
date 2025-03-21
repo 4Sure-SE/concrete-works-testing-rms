@@ -1,4 +1,5 @@
 import { fakeMaterialsData } from "./fake-data";
+import { Button } from "@/components/ui/button";
 import {
     Table,
     TableHeader,
@@ -39,17 +40,29 @@ export default async function ProjectDetailsPage({
             </div>
 
             <div className="flex flex-row px-8">
-                <button className="mr-5 h-[42px] w-[142px] rounded-md border border-gray-200 bg-white text-xs text-gray-800">
+                <Button
+                    variant="outline"
+                    size="default"
+                    className="mr-5 w-[142px]"
+                >
                     Share Link
-                </button>
+                </Button>
 
-                <button className="mr-5 h-[42px] w-[169px] rounded-md border border-gray-200 bg-white text-xs text-gray-800">
+                <Button
+                    variant="outline"
+                    size="default"
+                    className="mr-5 w-[142px]"
+                >
                     Export Report
-                </button>
+                </Button>
 
-                <button className="mr-5 h-[42px] w-[169px] rounded-md border border-gray-200 bg-blue-700 text-xs text-white hover:bg-blue-600">
+                <Button
+                    variant="default"
+                    size="default"
+                    className="mr-5 w-[169px] bg-blue-700 text-white hover:bg-blue-600"
+                >
                     + Add Item of Work
-                </button>
+                </Button>
             </div>
 
             <div className="overflow-y-auto p-8">
