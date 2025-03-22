@@ -18,25 +18,33 @@ export default async function ProjectDetailsPage({
     const { id } = await params;
     return (
         <div>
-            <div className="flex justify-between bg-white p-8 shadow-md">
-                <div>#</div>
-                <h3 className="font-semibold text-blue-700">
-                    Concrete Works RMS
-                </h3>
+            <div className="flex justify-between bg-white px-8 py-5 shadow-sm">
+                <div className="flex items-center justify-center">
+                    #
+                    <h3 className="ml-4 font-semibold text-blue-700">
+                        Concrete Works Testing RMS
+                    </h3>
+                </div>
                 <div>@</div>
             </div>
 
             <div className="grid w-full grid-cols-2 gap-x-4 p-8">
-                <div className="flex w-full flex-col p-4">
-                    <h5 className="text-black">Contract ID: {id}</h5>
-                    <h5 className="mt-4 text-black">
+                <div className="flex w-full flex-col">
+                    <h5 className="font-medium text-gray-700">
+                        Contract ID: {id}
+                    </h5>
+                    <h5 className="mt-4 font-medium text-gray-700">
                         Contract Name: Highways Construction
                     </h5>
-                    <h5 className="mt-4 text-black">Contractor Name: </h5>
+                    <h5 className="mt-4 font-medium text-gray-700">
+                        Contractor Name:{" "}
+                    </h5>
                 </div>
-                <div className="flex w-full flex-col p-4">
-                    <h5 className="text-black">Limits:</h5>
-                    <h5 className="mt-4 text-black">Location:</h5>
+                <div className="flex w-full flex-col">
+                    <h5 className="font-medium text-gray-700">Limits:</h5>
+                    <h5 className="mt-4 font-medium text-gray-700">
+                        Location:
+                    </h5>
                 </div>
             </div>
 
@@ -44,7 +52,7 @@ export default async function ProjectDetailsPage({
                 <Button
                     variant="outline"
                     size="default"
-                    className="mr-5 w-[142px]"
+                    className="mr-5 w-[142px] text-gray-700"
                 >
                     Share Link
                 </Button>
@@ -52,7 +60,7 @@ export default async function ProjectDetailsPage({
                 <Button
                     variant="outline"
                     size="default"
-                    className="mr-5 w-[142px]"
+                    className="mr-5 w-[142px] text-gray-700"
                 >
                     Export Report
                 </Button>
@@ -60,7 +68,7 @@ export default async function ProjectDetailsPage({
                 <Button
                     variant="default"
                     size="default"
-                    className="mr-5 w-[169px] bg-blue-700 text-white hover:bg-blue-600"
+                    className="mr-5 w-[169px] bg-blue-700 text-white hover:bg-blue-800"
                 >
                     + Add Item of Work
                 </Button>
@@ -68,7 +76,7 @@ export default async function ProjectDetailsPage({
 
             <div className="overflow-y-auto p-8">
                 <Table className="border border-gray-200">
-                    <TableHeader>
+                    <TableHeader className="bg-gray-50">
                         <TableRow>
                             <TableHead className="text-center">
                                 Item No.
@@ -104,15 +112,17 @@ export default async function ProjectDetailsPage({
                                 <TableCell>{item.unit}</TableCell>
                                 <TableCell>{item.testsRequired}</TableCell>
                                 <TableCell>
-                                    <button className="rounded-sm bg-red-500 p-1 px-2.5 text-white hover:bg-red-400">
-                                        −
-                                    </button>
-                                    <div className="mx-3 inline-block rounded-sm border border-gray-200 bg-white px-3.5 py-1">
-                                        {item.testsOnFile}
+                                    <div className="flex items-center justify-center gap-2 sm:gap-3">
+                                        <button className="rounded-sm bg-red-500 px-2 py-1 text-white hover:bg-red-600">
+                                            −
+                                        </button>
+                                        <div className="mx-1 inline-block rounded-sm border border-gray-200 bg-white px-3.5 py-1">
+                                            {item.testsOnFile}
+                                        </div>
+                                        <button className="rounded-sm bg-green-500 px-2.5 py-1 text-white hover:bg-green-600">
+                                            +
+                                        </button>
                                     </div>
-                                    <button className="rounded-sm bg-green-500 p-1 px-2.5 text-white hover:bg-green-400">
-                                        +
-                                    </button>
                                 </TableCell>
                                 <TableCell>{item.balance}</TableCell>
                                 <TableCell>
