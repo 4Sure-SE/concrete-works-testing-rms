@@ -2,6 +2,8 @@
 
 const prettierConfig = {
     plugins: ["prettier-plugin-tailwindcss"],
+    tailwindStylesheet: "src/styles/globals.css",
+    tailwindFunctions: ["cva"],
     jsxSingleQuote: false,
     arrowParens: "always",
     bracketSpacing: true,
