@@ -1,5 +1,6 @@
 import { fakeMaterialsData } from "./fake-data";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
     Table,
     TableHeader,
@@ -116,17 +117,26 @@ export default async function ProjectDetailsPage({
                                 <TableCell>{item.balance}</TableCell>
                                 <TableCell>
                                     {item.balance === 0 ? (
-                                        <div className="inline-block items-center justify-center rounded-xl bg-green-50 px-5 py-1 text-green-700">
+                                        <Badge
+                                            variant="default"
+                                            className="bg-green-50 px-5 py-1 text-green-700"
+                                        >
                                             COMPLETE
-                                        </div>
+                                        </Badge>
                                     ) : item.testsOnFile === 0 ? (
-                                        <div className="inline-block items-center justify-center rounded-xl bg-red-200 px-2.5 py-1 text-red-600">
+                                        <Badge
+                                            variant="default"
+                                            className="bg-red-200 px-2.5 py-1 text-red-600"
+                                        >
                                             NOT STARTED
-                                        </div>
+                                        </Badge>
                                     ) : (
-                                        <div className="inline-block items-center justify-center rounded-xl bg-yellow-100 px-6 py-1 text-amber-600">
+                                        <Badge
+                                            variant="default"
+                                            className="bg-yellow-100 px-6 py-1 text-amber-600"
+                                        >
                                             ONGOING
-                                        </div>
+                                        </Badge>
                                     )}
                                 </TableCell>
                             </TableRow>
