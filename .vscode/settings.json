@@ -1,6 +1,18 @@
 {
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "always",
+        "source.sortImports": "always",
+        "source.removeUnusedImports": "always"
+    },
+
+    // run pretier on save
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
     // use workspace version of typescript
     "typescript.tsdk": "node_modules\\typescript\\lib",
     // to specify tailwind v4 config location for intellisense
-    "tailwindCSS.experimental.configFile": "src/styles/globals.css"
+    "tailwindCSS.experimental.configFile": "src/styles/globals.css",
+    "[prisma]": {
+        "editor.defaultFormatter": "Prisma.prisma"
+    }
 }

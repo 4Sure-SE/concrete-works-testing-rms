@@ -1,0 +1,9 @@
+{
+    // install these extensions
+    "recommendations": [
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "Prisma.prisma",
+        "dbaeumer.vscode-eslint"
+    ]
+}
