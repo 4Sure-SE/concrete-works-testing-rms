@@ -102,7 +102,17 @@ export default async function ProjectDetailsPage({
                                 <TableCell>{item.quantity}</TableCell>
                                 <TableCell>{item.unit}</TableCell>
                                 <TableCell>{item.testsRequired}</TableCell>
-                                <TableCell>{item.testsOnFile}</TableCell>
+                                <TableCell>
+                                    <button className="rounded-sm bg-red-500 p-1 px-2.5 text-white hover:bg-red-400">
+                                        −
+                                    </button>
+                                    <div className="mx-3 inline-block rounded-sm border border-gray-200 bg-white px-3.5 py-1">
+                                        {item.testsOnFile}
+                                    </div>
+                                    <button className="rounded-sm bg-green-500 p-1 px-2.5 text-white hover:bg-green-400">
+                                        +
+                                    </button>
+                                </TableCell>
                                 <TableCell>{item.balance}</TableCell>
                                 <TableCell>
                                     {item.balance === 0 ? (
