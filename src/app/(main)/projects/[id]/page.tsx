@@ -104,7 +104,21 @@ export default async function ProjectDetailsPage({
                                 <TableCell>{item.testsRequired}</TableCell>
                                 <TableCell>{item.testsOnFile}</TableCell>
                                 <TableCell>{item.balance}</TableCell>
-                                <TableCell>{item.status}</TableCell>
+                                <TableCell>
+                                    {item.balance === 0 ? (
+                                        <div className="inline-block items-center justify-center rounded-xl bg-green-50 px-5 py-1 text-green-700">
+                                            COMPLETE
+                                        </div>
+                                    ) : item.testsOnFile === 0 ? (
+                                        <div className="inline-block items-center justify-center rounded-xl bg-red-200 px-2.5 py-1 text-red-600">
+                                            NOT STARTED
+                                        </div>
+                                    ) : (
+                                        <div className="inline-block items-center justify-center rounded-xl bg-yellow-100 px-6 py-1 text-amber-600">
+                                            ONGOING
+                                        </div>
+                                    )}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

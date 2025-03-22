@@ -6,9 +6,8 @@ export const fakeMaterialsData = [
         quantity: 100,
         unit: "cu.m",
         testsRequired: 5,
-        testsOnFile: 3,
+        testsOnFile: 0,
         balance: 2,
-        status: "Pending",
     },
     {
         itemId: 2,
@@ -19,7 +18,6 @@ export const fakeMaterialsData = [
         testsRequired: 4,
         testsOnFile: 4,
         balance: 0,
-        status: "Completed",
     },
     {
         itemId: 3,
@@ -30,7 +28,6 @@ export const fakeMaterialsData = [
         testsRequired: 3,
         testsOnFile: 2,
         balance: 1,
-        status: "Ongoing",
     },
     {
         itemId: 4,
@@ -41,7 +38,6 @@ export const fakeMaterialsData = [
         testsRequired: 6,
         testsOnFile: 4,
         balance: 2,
-        status: "Ongoing",
     },
     {
         itemId: 5,
@@ -52,7 +48,6 @@ export const fakeMaterialsData = [
         testsRequired: 5,
         testsOnFile: 3,
         balance: 2,
-        status: "Pending",
     },
     {
         itemId: 6,
@@ -61,9 +56,8 @@ export const fakeMaterialsData = [
         quantity: 100,
         unit: "pcs",
         testsRequired: 4,
-        testsOnFile: 4,
-        balance: 0,
-        status: "Completed",
+        testsOnFile: 0,
+        balance: 4,
     },
     {
         itemId: 7,
@@ -74,7 +68,6 @@ export const fakeMaterialsData = [
         testsRequired: 3,
         testsOnFile: 3,
         balance: 0,
-        status: "Completed",
     },
     {
         itemId: 8,
@@ -85,7 +78,6 @@ export const fakeMaterialsData = [
         testsRequired: 4,
         testsOnFile: 2,
         balance: 2,
-        status: "Ongoing",
     },
     {
         itemId: 9,
@@ -96,7 +88,6 @@ export const fakeMaterialsData = [
         testsRequired: 5,
         testsOnFile: 4,
         balance: 1,
-        status: "Pending",
     },
     {
         itemId: 10,
@@ -107,7 +98,6 @@ export const fakeMaterialsData = [
         testsRequired: 3,
         testsOnFile: 3,
         balance: 0,
-        status: "Completed",
     },
     {
         itemId: 11,
@@ -118,7 +108,6 @@ export const fakeMaterialsData = [
         testsRequired: 2,
         testsOnFile: 1,
         balance: 1,
-        status: "Pending",
     },
     {
         itemId: 12,
@@ -129,7 +118,6 @@ export const fakeMaterialsData = [
         testsRequired: 3,
         testsOnFile: 3,
         balance: 0,
-        status: "Completed",
     },
     {
         itemId: 13,
@@ -140,6 +128,5 @@ export const fakeMaterialsData = [
         testsRequired: 4,
         testsOnFile: 2,
         balance: 2,
-        status: "Ongoing",
     },
 ];
