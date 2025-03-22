@@ -1,4 +1,6 @@
 {
     // use workspace version of typescript
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    // to specify tailwind v4 config location for intellisense
+    "tailwindCSS.experimental.configFile": "src/styles/globals.css"
 }
