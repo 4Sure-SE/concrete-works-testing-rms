@@ -12,6 +12,7 @@ const prettierConfig = {
     semi: true,
     singleQuote: false,
     tabWidth: 4,
+    endOfLine: "auto",
 };
 
 export default prettierConfig;
