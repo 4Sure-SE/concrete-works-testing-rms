@@ -36,5 +36,6 @@ const config = {
             },
         ],
     },
+    ignorePatterns: ["vitest.config.mts"],
 };
 module.exports = config;
