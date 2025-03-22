@@ -1,11 +1,13 @@
 ### What does this pull request do?
 
-- [x] List all changes that were achieved.
+- [x] List all changes that were achieved
 - [ ] List any planned changes that were not achieved
 
-### Related Issue
+### Related Issues
 
-- [ ] 🔗 Part of [ISSUE_ID]
+Link all issues related to this pull request
+
+- [x] 🔗 Part of [ISSUE_ID](INSERT_ISSUE_LINK_HERE)
 
 ### Type of Change
 
