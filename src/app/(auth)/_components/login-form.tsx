@@ -5,10 +5,10 @@ import Link from "next/link";
 
 export default function LoginForm() {
     return (
-        <section className="flex min-h-screen bg-zinc-50 px-4 py-16 dark:bg-transparent md:py-32">
+        <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
             <form
                 action=""
-                className="m-auto h-fit w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border bg-card p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]"
+                className="bg-card m-auto h-fit w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]"
             >
                 <div className="p-8 pb-6">
                     <div>
@@ -16,7 +16,7 @@ export default function LoginForm() {
                             href="/"
                             aria-label="go home"
                         ></Link>
-                        <h1 className="mb-1 mt-4 text-xl font-semibold">
+                        <h1 className="mt-4 mb-1 text-xl font-semibold">
                             Sign In to RMS
                         </h1>
                         <p className="text-sm">
@@ -74,8 +74,8 @@ export default function LoginForm() {
                     </div>
                 </div>
 
-                <div className="rounded-(--radius) border bg-muted p-3">
-                    <p className="text-center text-sm text-accent-foreground">
+                <div className="bg-muted rounded-(--radius) border p-3">
+                    <p className="text-accent-foreground text-center text-sm">
                         Don&apos;t have an account ?
                         <Button
                             asChild
