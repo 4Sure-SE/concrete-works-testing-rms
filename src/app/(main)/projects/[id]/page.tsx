@@ -107,12 +107,70 @@ export default async function ProjectDetailsPage({
                         {fakeMaterialsData.map((item) => (
                             <TableRow key={item.itemId}>
                                 <TableCell>{item.itemNo}</TableCell>
-                                <TableCell>{item.description}</TableCell>
-                                <TableCell>{item.quantity}</TableCell>
-                                <TableCell>{item.unit}</TableCell>
-                                <TableCell>{item.testsRequired}</TableCell>
                                 <TableCell>
-                                    <div className="flex items-center justify-center gap-2 sm:gap-3">
+                                    <div className="py-3.5">
+                                        {item.description}
+                                    </div>
+
+                                    <ul>
+                                        {item.materials.map((material) => (
+                                            <li
+                                                key={material.id}
+                                                className="py-3.5"
+                                            >
+                                                {material.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="py-3.5">
+                                        {item.quantity}
+                                    </div>
+
+                                    <ul>
+                                        {item.materials.map((material) => (
+                                            <li
+                                                key={material.id}
+                                                className="py-3.5"
+                                            >
+                                                {material.quantity}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="py-3.5">{item.unit}</div>
+
+                                    <ul>
+                                        {item.materials.map((material) => (
+                                            <li
+                                                key={material.id}
+                                                className="py-3.5"
+                                            >
+                                                {material.unit}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="py-3">
+                                        {item.testsRequired}
+                                    </div>
+
+                                    <ul>
+                                        {item.materials.map((material) => (
+                                            <li
+                                                key={material.id}
+                                                className="py-3.5"
+                                            >
+                                                {material.testRequired}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex items-center justify-center gap-2 py-2 sm:gap-3">
                                         <button className="rounded-sm bg-red-500 px-2 py-1 text-white hover:bg-red-600">
                                             −
                                         </button>
@@ -123,31 +181,96 @@ export default async function ProjectDetailsPage({
                                             +
                                         </button>
                                     </div>
+                                    <ul>
+                                        {item.materials.map((material) => (
+                                            <li key={material.id}>
+                                                <div className="flex items-center justify-center gap-2 py-2 sm:gap-3">
+                                                    <button className="rounded-sm bg-red-500 px-2 py-1 text-white hover:bg-red-600">
+                                                        −
+                                                    </button>
+                                                    <div className="mx-1 inline-block rounded-sm border border-gray-200 bg-white px-3.5 py-1">
+                                                        {material.testsOnFile}
+                                                    </div>
+                                                    <button className="rounded-sm bg-green-500 px-2.5 py-1 text-white hover:bg-green-600">
+                                                        +
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </TableCell>
-                                <TableCell>{item.balance}</TableCell>
                                 <TableCell>
-                                    {item.balance === 0 ? (
-                                        <Badge
-                                            variant="default"
-                                            className="bg-green-50 px-5 py-1 text-green-700"
-                                        >
-                                            COMPLETE
-                                        </Badge>
-                                    ) : item.testsOnFile === 0 ? (
-                                        <Badge
-                                            variant="default"
-                                            className="bg-red-200 px-2.5 py-1 text-red-600"
-                                        >
-                                            NOT STARTED
-                                        </Badge>
-                                    ) : (
-                                        <Badge
-                                            variant="default"
-                                            className="bg-yellow-100 px-6 py-1 text-amber-600"
-                                        >
-                                            ONGOING
-                                        </Badge>
-                                    )}
+                                    <div className="py-3.5">{item.balance}</div>
+
+                                    <ul>
+                                        {item.materials.map((material) => (
+                                            <li
+                                                key={material.id}
+                                                className="py-3.5"
+                                            >
+                                                {material.balance}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="">
+                                        {item.balance === 0 ? (
+                                            <Badge
+                                                variant="default"
+                                                className="bg-green-50 px-5 py-1 text-green-700"
+                                            >
+                                                COMPLETE
+                                            </Badge>
+                                        ) : item.testsOnFile === 0 ? (
+                                            <Badge
+                                                variant="default"
+                                                className="bg-red-200 px-2.5 py-1 text-red-600"
+                                            >
+                                                NOT STARTED
+                                            </Badge>
+                                        ) : (
+                                            <Badge
+                                                variant="default"
+                                                className="bg-yellow-100 px-6 py-1 text-amber-600"
+                                            >
+                                                ONGOING
+                                            </Badge>
+                                        )}
+                                    </div>
+
+                                    <ul>
+                                        {item.materials.map((material) => (
+                                            <li
+                                                key={material.id}
+                                                className="mt-5.5"
+                                            >
+                                                {material.balance === 0 ? (
+                                                    <Badge
+                                                        variant="default"
+                                                        className="bg-green-50 px-5 py-1 text-green-700"
+                                                    >
+                                                        COMPLETE
+                                                    </Badge>
+                                                ) : material.testsOnFile ===
+                                                  0 ? (
+                                                    <Badge
+                                                        variant="default"
+                                                        className="bg-red-200 px-2.5 py-1 text-red-600"
+                                                    >
+                                                        NOT STARTED
+                                                    </Badge>
+                                                ) : (
+                                                    <Badge
+                                                        variant="default"
+                                                        className="bg-yellow-100 px-6 py-1 text-amber-600"
+                                                    >
+                                                        ONGOING
+                                                    </Badge>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </TableCell>
                             </TableRow>
                         ))}
