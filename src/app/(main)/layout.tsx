@@ -1,10 +1,9 @@
 import "@/styles/globals.css";
 
-import Header from "@/components/custom/header";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
-import { AppSidebar } from "./_components/app-sidebar";
+import { AppSidebar, HeaderWithSidebarState } from "./_components/";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -25,15 +24,15 @@ export default function MainLayout({
             <body>
                 <SidebarProvider>
                     <AppSidebar />
-                    <div className="w-full">
-                        <Header
+                    <SidebarInset>
+                        <HeaderWithSidebarState
                             withSidebarTrigger
                             title="Concrete Works Testing RMS"
                         />
                         <main className="flex-1 overflow-auto p-4">
                             {children}
                         </main>
-                    </div>
+                    </SidebarInset>
                 </SidebarProvider>
             </body>
         </html>
