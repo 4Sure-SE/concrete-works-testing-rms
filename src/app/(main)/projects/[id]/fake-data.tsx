@@ -117,7 +117,7 @@ export const fakeMaterialsData = [
                 testRequired: "Fineness Test",
                 unit: "bags",
                 testsOnFile: 0,
-                balance: 0,
+                balance: 1,
                 quantity: 25,
             },
             {
@@ -134,7 +134,7 @@ export const fakeMaterialsData = [
                 name: "Gypsum",
                 testRequired: "Moisture Content Test",
                 unit: "bags",
-                testsOnFile: 0,
+                testsOnFile: 3,
                 balance: 0,
                 quantity: 15,
             },
