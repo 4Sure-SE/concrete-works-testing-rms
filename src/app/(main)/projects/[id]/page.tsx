@@ -10,16 +10,6 @@ export default async function ProjectDetailsPage({
     const { id } = await params;
     return (
         <div>
-            <div className="flex justify-between bg-white px-8 py-5 shadow-sm">
-                <div className="flex items-center justify-center">
-                    #
-                    <h3 className="ml-4 font-semibold text-blue-700">
-                        Concrete Works Testing RMS
-                    </h3>
-                </div>
-                <div>@</div>
-            </div>
-
             <div className="grid w-full grid-cols-2 gap-x-4 p-8">
                 <div className="flex w-full flex-col">
                     <h5 className="font-medium text-gray-700">
