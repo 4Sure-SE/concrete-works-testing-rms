@@ -7,6 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { Minus, Plus } from "lucide-react";
 import type projectDetails from "./project-details-interface";
 
 export default function ProjectDetailsTable({
@@ -17,14 +18,14 @@ export default function ProjectDetailsTable({
     const TestCounter = ({ value }: { value: number }) => {
         return (
             <div className="flex items-center justify-center gap-2 py-2 sm:gap-3">
-                <button className="rounded-sm bg-red-500 px-2 py-1 text-white hover:bg-red-600">
-                    −
+                <button className="rounded-sm bg-red-500 px-0.5 py-0.5 text-white hover:bg-red-600">
+                    <Minus />
                 </button>
                 <div className="mx-1 inline-block rounded-sm border border-gray-200 bg-white px-3.5 py-1">
                     {value}
                 </div>
-                <button className="rounded-sm bg-green-500 px-2.5 py-1 text-white hover:bg-green-600">
-                    +
+                <button className="rounded-sm bg-green-500 px-0.5 py-0.5 text-white hover:bg-green-600">
+                    <Plus />
                 </button>
             </div>
         );

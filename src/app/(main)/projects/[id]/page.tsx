@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { FileText, Plus, Share2 } from "lucide-react";
 import { fakeMaterialsData } from "./fake-data";
 import ProjectDetailsTable from "./prject-details-table";
 
@@ -38,6 +39,7 @@ export default async function ProjectDetailsPage({
                     size="default"
                     className="mr-5 w-[142px] text-gray-700"
                 >
+                    <Share2 />
                     Share Link
                 </Button>
 
@@ -46,6 +48,7 @@ export default async function ProjectDetailsPage({
                     size="default"
                     className="mr-5 w-[142px] text-gray-700"
                 >
+                    <FileText />
                     Export Report
                 </Button>
 
@@ -54,7 +57,8 @@ export default async function ProjectDetailsPage({
                     size="default"
                     className="mr-5 w-[169px] bg-blue-700 text-white hover:bg-blue-800"
                 >
-                    + Add Item of Work
+                    <Plus />
+                    Add Item of Work
                 </Button>
             </div>
 
