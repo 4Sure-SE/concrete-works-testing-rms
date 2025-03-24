@@ -8,12 +8,12 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Minus, Plus } from "lucide-react";
-import type projectDetails from "./project-details-interface";
+import type ProjectDetails from "./interface";
 
 export default function ProjectDetailsTable({
     projectDetails,
 }: {
-    projectDetails: projectDetails[];
+    projectDetails: ProjectDetails[];
 }) {
     const TestCounter = ({ value }: { value: number }) => {
         return (

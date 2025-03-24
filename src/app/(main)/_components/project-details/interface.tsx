@@ -8,7 +8,7 @@ interface Material {
     quantity: number;
 }
 
-export default interface projectDetails {
+export default interface ProjectDetails {
     itemId: number;
     itemNo: string;
     description: string;
