@@ -33,32 +33,32 @@ export default async function ProjectDetailsPage({
                 </div>
             </div>
 
-            <div className="flex flex-row px-8">
+            <div className="flex flex-wrap justify-center gap-4 px-8 sm:justify-start">
                 <Button
                     variant="outline"
                     size="default"
-                    className="mr-5 w-[142px] text-gray-700"
+                    className="flex w-[110px] items-center gap-1 px-2 py-1 text-xs text-gray-700 sm:w-[142px] sm:gap-2 sm:text-sm md:text-sm"
                 >
-                    <Share2 />
-                    Share Link
+                    <Share2 className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
+                    <span className="xs:inline">Share</span>
                 </Button>
 
                 <Button
                     variant="outline"
                     size="default"
-                    className="mr-5 w-[142px] text-gray-700"
+                    className="flex w-[110px] items-center gap-1 px-2 py-1 text-xs text-gray-700 sm:w-[142px] sm:gap-2 sm:text-sm md:text-sm"
                 >
-                    <FileText />
+                    <FileText className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
                     Export Report
                 </Button>
 
                 <Button
                     variant="default"
                     size="default"
-                    className="mr-5 w-[169px] bg-blue-700 text-white hover:bg-blue-800"
+                    className="flex w-[137px] items-center gap-1 bg-blue-700 px-2 py-1 text-xs text-white hover:bg-blue-800 sm:w-[169px] sm:gap-2 sm:text-sm md:text-sm"
                 >
-                    <Plus />
-                    Add Item of Work
+                    <Plus className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
+                    <span className="xs:inline">Add Item of Work</span>
                 </Button>
             </div>
 

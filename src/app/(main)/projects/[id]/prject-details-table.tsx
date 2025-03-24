@@ -133,20 +133,21 @@ export default function ProjectDetailsTable({
                                 </ul>
                             </TableCell>
                             <TableCell>
-                                <ul>
-                                    <li className="py-3.5">
+                                <ul className="scale-90 text-xs sm:scale-90 sm:text-xs md:scale-90 md:text-xs lg:scale-100 lg:text-sm">
+                                    <li className="py-2 sm:py-3.5">
                                         {item.testsRequired}
                                     </li>
                                     {item.materials.map((material) => (
                                         <li
                                             key={material.id}
-                                            className="py-3.5"
+                                            className="py-2 sm:py-3.5"
                                         >
                                             {material.testRequired}
                                         </li>
                                     ))}
                                 </ul>
                             </TableCell>
+
                             <TableCell>
                                 <ul>
                                     <TestCounter
