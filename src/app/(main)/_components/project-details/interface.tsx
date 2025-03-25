@@ -1,21 +1,33 @@
+interface Test {
+    testId: number;
+    testRequired: string;
+    testsOnFile: number;
+    balance: number;
+    unit: string;
+}
+
 interface Material {
     id: number;
     name: string;
-    testRequired: string;
-    unit: string;
-    testsOnFile: number;
-    balance: number;
+    materialTest: Test[];
     quantity: number;
 }
 
-export default interface ProjectDetails {
+interface ProjectDetails {
     itemId: number;
     itemNo: string;
     description: string;
     materials: Material[];
     quantity: number;
-    unit: string;
-    testsRequired: string;
-    testsOnFile: number;
-    balance: number;
+    itemTest: Test[];
+}
+
+export default interface Project {
+    id: string;
+    contractId: string;
+    contractName: string;
+    contractorName: string;
+    limits: string;
+    location: string;
+    projectDetails: ProjectDetails[];
 }

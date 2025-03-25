@@ -8,12 +8,13 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Minus, Plus } from "lucide-react";
-import type ProjectDetails from "./interface";
+import React from "react";
+import type Project from "./interface";
 
 export default function ProjectDetailsTable({
-    projectDetails,
+    projects,
 }: {
-    projectDetails: ProjectDetails[];
+    projects: Project[];
 }) {
     const TestCounter = ({ value }: { value: number }) => {
         return (
@@ -88,116 +89,204 @@ export default function ProjectDetailsTable({
                 </TableHeader>
 
                 <TableBody className="text-center">
-                    {projectDetails.map((item) => (
-                        <TableRow key={item.itemId}>
-                            <TableCell>{item.itemNo}</TableCell>
-                            <TableCell>
-                                <ul>
-                                    <li className="py-3.5">
-                                        {item.description}
-                                    </li>
-                                    {item.materials.map((material) => (
-                                        <li
-                                            key={material.id}
-                                            className="py-3.5"
-                                        >
-                                            {material.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </TableCell>
-                            <TableCell>
-                                <ul>
-                                    <li className="py-3.5">{item.quantity}</li>
-                                    {item.materials.map((material) => (
-                                        <li
-                                            key={material.id}
-                                            className="py-3.5"
-                                        >
-                                            {material.quantity}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </TableCell>
-                            <TableCell>
-                                <ul>
-                                    <li className="py-3.5">{item.unit}</li>
-                                    {item.materials.map((material) => (
-                                        <li
-                                            key={material.id}
-                                            className="py-3.5"
-                                        >
-                                            {material.unit}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </TableCell>
-                            <TableCell>
-                                <ul className="scale-90 text-xs sm:scale-90 sm:text-xs md:scale-90 md:text-xs lg:scale-100 lg:text-sm">
-                                    <li className="py-2 sm:py-3.5">
-                                        {item.testsRequired}
-                                    </li>
-                                    {item.materials.map((material) => (
-                                        <li
-                                            key={material.id}
-                                            className="py-2 sm:py-3.5"
-                                        >
-                                            {material.testRequired}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </TableCell>
-
-                            <TableCell>
-                                <ul>
-                                    <TestCounter
-                                        value={item.testsOnFile}
-                                    ></TestCounter>
-                                    {item.materials.map((material) => (
-                                        <li key={material.id}>
-                                            <TestCounter
-                                                value={material.testsOnFile}
-                                            ></TestCounter>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </TableCell>
-                            <TableCell>
-                                <div className="py-3.5">{item.balance}</div>
-
-                                <ul>
-                                    {item.materials.map((material) => (
-                                        <li
-                                            key={material.id}
-                                            className="py-3.5"
-                                        >
-                                            {material.balance}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </TableCell>
-                            <TableCell>
-                                <ul>
-                                    <TestStatus
-                                        testsOnFile={item.testsOnFile}
-                                        balance={item.balance}
-                                    ></TestStatus>
-                                    {item.materials.map((material) => (
-                                        <li
-                                            key={material.id}
-                                            className="mt-5.5"
-                                        >
-                                            <TestStatus
-                                                testsOnFile={
-                                                    material.testsOnFile
-                                                }
-                                                balance={material.balance}
-                                            ></TestStatus>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </TableCell>
-                        </TableRow>
+                    {projects.map((project) => (
+                        <React.Fragment key={project.id}>
+                            {project.projectDetails.map((projectDetail) => (
+                                <TableRow key={projectDetail.itemId}>
+                                    <TableCell>
+                                        {projectDetail.itemNo}
+                                    </TableCell>
+                                    <TableCell>
+                                        <ul>
+                                            <li className="py-3.5 align-top">
+                                                {projectDetail.description}
+                                            </li>
+                                            {projectDetail.materials.map(
+                                                (material) => (
+                                                    <li
+                                                        key={material.id}
+                                                        className="py-3.5"
+                                                    >
+                                                        {material.name}
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell>
+                                        <ul>
+                                            <li className="py-3.5">
+                                                {projectDetail.quantity}
+                                            </li>
+                                            {projectDetail.materials.map(
+                                                (material) => (
+                                                    <li
+                                                        key={material.id}
+                                                        className="py-3.5"
+                                                    >
+                                                        {material.quantity}
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell>
+                                        <ul>
+                                            {projectDetail.itemTest.map(
+                                                (test) => (
+                                                    <li
+                                                        className="py-3.5"
+                                                        key={test.testId}
+                                                    >
+                                                        {test.unit}
+                                                    </li>
+                                                ),
+                                            )}
+                                            {projectDetail.materials.flatMap(
+                                                (material) =>
+                                                    material.materialTest.map(
+                                                        (test) => (
+                                                            <li
+                                                                key={
+                                                                    test.testId
+                                                                }
+                                                                className="py-3.5"
+                                                            >
+                                                                {test.unit}
+                                                            </li>
+                                                        ),
+                                                    ),
+                                            )}
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell>
+                                        <ul className="scale-90 text-xs sm:scale-90 sm:text-xs md:scale-90 md:text-xs lg:scale-100 lg:text-sm">
+                                            {projectDetail.itemTest.map(
+                                                (test) => (
+                                                    <li
+                                                        className="py-2 sm:py-3.5"
+                                                        key={test.testId}
+                                                    >
+                                                        {test.testRequired}
+                                                    </li>
+                                                ),
+                                            )}
+                                            {projectDetail.materials.flatMap(
+                                                (material) =>
+                                                    material.materialTest.map(
+                                                        (test) => (
+                                                            <li
+                                                                key={
+                                                                    test.testId
+                                                                }
+                                                                className="py-2 sm:py-3.5"
+                                                            >
+                                                                {
+                                                                    test.testRequired
+                                                                }
+                                                            </li>
+                                                        ),
+                                                    ),
+                                            )}
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell>
+                                        <ul>
+                                            {projectDetail.itemTest.map(
+                                                (test) => (
+                                                    <TestCounter
+                                                        key={test.testId}
+                                                        value={test.testsOnFile}
+                                                    />
+                                                ),
+                                            )}
+                                            {projectDetail.materials.flatMap(
+                                                (material) =>
+                                                    material.materialTest.map(
+                                                        (test) => (
+                                                            <li
+                                                                key={
+                                                                    test.testId
+                                                                }
+                                                            >
+                                                                <TestCounter
+                                                                    value={
+                                                                        test.testsOnFile
+                                                                    }
+                                                                />
+                                                            </li>
+                                                        ),
+                                                    ),
+                                            )}
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell>
+                                        {projectDetail.itemTest.map((test) => (
+                                            <div
+                                                className="py-3.5"
+                                                key={test.testId}
+                                            >
+                                                {test.balance}
+                                            </div>
+                                        ))}
+                                        <ul>
+                                            {projectDetail.materials.flatMap(
+                                                (material) =>
+                                                    material.materialTest.map(
+                                                        (test) => (
+                                                            <li
+                                                                key={
+                                                                    test.testId
+                                                                }
+                                                                className="py-3.5"
+                                                            >
+                                                                {test.balance}
+                                                            </li>
+                                                        ),
+                                                    ),
+                                            )}
+                                        </ul>
+                                    </TableCell>
+                                    <TableCell>
+                                        <ul>
+                                            {projectDetail.itemTest.map(
+                                                (test) => (
+                                                    <TestStatus
+                                                        key={test.testId}
+                                                        testsOnFile={
+                                                            test.testsOnFile
+                                                        }
+                                                        balance={test.balance}
+                                                    />
+                                                ),
+                                            )}
+                                            {projectDetail.materials.flatMap(
+                                                (material) =>
+                                                    material.materialTest.map(
+                                                        (test) => (
+                                                            <li
+                                                                key={
+                                                                    test.testId
+                                                                }
+                                                                className="mt-5.5"
+                                                            >
+                                                                <TestStatus
+                                                                    testsOnFile={
+                                                                        test.testsOnFile
+                                                                    }
+                                                                    balance={
+                                                                        test.balance
+                                                                    }
+                                                                />
+                                                            </li>
+                                                        ),
+                                                    ),
+                                            )}
+                                        </ul>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </React.Fragment>
                     ))}
                 </TableBody>
             </Table>
