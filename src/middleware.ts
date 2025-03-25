@@ -1,32 +1,35 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/middleware";
+import { type NextRequest, NextResponse } from "next/server";
 
 const protectedRoutes = ["/projects"];
 const publicRoutes = ["/log-in", "/sign-up"];
 
-export function middleware(request: NextRequest) {
-    // check if the current route is protected or public
+export async function middleware(request: NextRequest) {
+    const { supabase, response } = createClient(request);
+
+    // Check if user is authenticated
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+
     const path = request.nextUrl.pathname;
-    const isOnProtectedRoute = protectedRoutes.includes(path);
+    const isOnProtectedRoute = protectedRoutes.some((route) =>
+        path.startsWith(route),
+    );
     const isOnPublicRoute = publicRoutes.includes(path);
 
-    // TO BE CHANGED
-    const isAuthenticated = false;
-
-    //  if user is on a protected route (e.g. /projects) and
-    //  is not authenticated, redirect them to the login page
-    if (isOnProtectedRoute && !isAuthenticated)
+    if (isOnProtectedRoute && !session) {
         return NextResponse.redirect(new URL("/log-in", request.url));
+    }
 
-    //  if user is on a public route (e.g. /login, /signup) and
-    //  is already authenticated, redirect them to the projects page
-    if (isOnPublicRoute && isAuthenticated && !path.startsWith("/projects"))
+    if (isOnPublicRoute && session) {
         return NextResponse.redirect(new URL("/projects", request.url));
+    }
 
-    return NextResponse.next();
+    return response;
 }
 
-// routes middleware should not run on
+// Routes middleware should not run on
 export const config = {
     matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 };

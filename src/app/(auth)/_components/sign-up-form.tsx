@@ -1,110 +1,89 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+"use client";
+
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { signUp } from "@/server/actions/auth";
 import Link from "next/link";
+import { useActionState } from "react";
+import { AuthForm } from "./auth-form";
 
-export default function SignUpForm() {
-    return (
-        <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
-            <form
-                action=""
-                className="bg-muted m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5 dark:[--color-muted:var(--color-zinc-900)]"
-            >
-                <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-8 pb-6">
-                    <div className="text-left">
+type SignUpResponse = {
+    error?: string | null;
+    success?: boolean;
+    message?: string;
+};
+
+export function SignUpForm() {
+    const [state, action] = useActionState<SignUpResponse, FormData>(
+        (_state: SignUpResponse, formData: FormData) => signUp(formData),
+        { error: null },
+    );
+
+    if (state?.success) {
+        return (
+            <Card className="w-[350px] border-primary/20">
+                <CardHeader className="space-y-1">
+                    <CardTitle className="text-2xl font-semibold tracking-tight text-primary">
+                        Check your email
+                    </CardTitle>
+                    <CardDescription>{state.message}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="text-center text-sm">
                         <Link
-                            href="/"
-                            aria-label="go home"
-                            className="block w-fit"
+                            href="/log-in"
+                            className="text-secondary underline underline-offset-4 hover:text-secondary/80"
                         >
-                            {/* <Logo /> */}
+                            Back to login
                         </Link>
-                        <h1 className="text-title mt-4 mb-1 text-xl font-semibold">
-                            Create an Account
-                        </h1>
-                        <p className="text-sm">
-                            Enter your details to get started
-                        </p>
                     </div>
+                </CardContent>
+            </Card>
+        );
+    }
 
-                    <div className="mt-6 space-y-6">
-                        <div className="space-y-2">
-                            <Label
-                                htmlFor="username"
-                                className="block text-sm"
-                            >
-                                Username
-                            </Label>
-                            <Input
-                                type="text"
-                                required
-                                name="username"
-                                id="username"
-                            />
-                        </div>
+    return (
+        <Card className="w-[350px] border-primary/20">
+            <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-semibold tracking-tight text-primary">
+                    Create an account
+                </CardTitle>
+                <CardDescription>
+                    Enter your email below to create your account
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+                <AuthForm
+                    mode="signup"
+                    error={state?.error}
+                    action={action}
+                />
 
-                        <div className="space-y-2">
-                            <Label
-                                htmlFor="email"
-                                className="block text-sm"
-                            >
-                                Email
-                            </Label>
-                            <Input
-                                type="email"
-                                required
-                                name="email"
-                                id="email"
-                            />
-                        </div>
-
-                        <div className="space-y-0.5">
-                            <div className="flex items-center justify-between">
-                                <Label
-                                    htmlFor="pwd"
-                                    className="text-title text-sm"
-                                >
-                                    Password
-                                </Label>
-                                <Button
-                                    asChild
-                                    variant="link"
-                                    size="sm"
-                                >
-                                    <Link
-                                        href="#"
-                                        className="link intent-info variant-ghost text-sm"
-                                    >
-                                        Forgot your Password ?
-                                    </Link>
-                                </Button>
-                            </div>
-                            <Input
-                                type="password"
-                                required
-                                name="pwd"
-                                id="pwd"
-                                className="input sz-md variant-mixed"
-                            />
-                        </div>
-
-                        <Button className="w-full">Sign Up</Button>
+                <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-muted" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-muted-foreground">
+                            Already registered?
+                        </span>
                     </div>
                 </div>
 
-                <div className="p-3">
-                    <p className="text-accent-foreground text-center text-sm">
-                        Have an account ?
-                        <Button
-                            asChild
-                            variant="link"
-                            className="px-2"
-                        >
-                            <Link href="/log-in">Log In</Link>
-                        </Button>
-                    </p>
+                <div className="text-center text-sm">
+                    <Link
+                        href="/log-in"
+                        className="text-secondary underline underline-offset-4 hover:text-secondary/80"
+                    >
+                        Sign in to your account
+                    </Link>
                 </div>
-            </form>
-        </section>
+            </CardContent>
+        </Card>
     );
 }
