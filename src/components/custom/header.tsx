@@ -1,7 +1,7 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "../ui/separator";
 
-type HeaderProps = {
+export type HeaderProps = {
     withSidebarTrigger?: boolean;
     title: string;
 };
