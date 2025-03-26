@@ -1,4 +1,11 @@
-interface Test {
+interface MaterialTest {
+    testId: number;
+    testRequired: string;
+    testsOnFile: number;
+    balance: number;
+}
+
+interface ItemTest {
     testId: number;
     testRequired: string;
     testsOnFile: number;
@@ -9,8 +16,9 @@ interface Test {
 interface Material {
     id: number;
     name: string;
-    materialTest: Test[];
+    materialTest: MaterialTest[];
     quantity: number;
+    unit: string;
 }
 
 interface ProjectDetails {
@@ -19,7 +27,7 @@ interface ProjectDetails {
     description: string;
     materials: Material[];
     quantity: number;
-    itemTest: Test[];
+    itemTest: ItemTest[];
 }
 
 export default interface Project {

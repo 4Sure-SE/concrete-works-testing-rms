@@ -10,9 +10,12 @@ export default async function ProjectDetailsPage({
     const { id } = await params;
     return (
         <div>
-            <ProjectContractDetails id={id} />
+            <ProjectContractDetails
+                id={id}
+                project={fakeProjectsData}
+            />
             <ProjectDetailsActionButtons />
-            <ProjectDetailsTable projects={fakeProjectsData} />
+            <ProjectDetailsTable project={fakeProjectsData} />
         </div>
     );
 }
