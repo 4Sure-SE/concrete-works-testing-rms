@@ -1,38 +1,47 @@
 "use client";
 
 import { signUp } from "@/server/actions/auth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "sonner";
 import { AuthCard } from "../_components/auth-card";
 import { AuthForm } from "../_components/auth-form";
 import { useAuthAction } from "../_hooks/use-auth-action";
-import { AuthLoadingCard } from "../_components/auth-loading-card";
 
 export default function SignUpForm() {
     const [state, action] = useAuthAction(signUp);
+    const router = useRouter();
 
-    if (state?.success) {
-        return (
-            <AuthLoadingCard
-                title="Check your email"
-                message={
-                    state.message ?? "We've sent you a confirmation email."
-                }
-                backUrl="/log-in"
-                backText="Back to login"
-            />
-        );
-    }
+    useEffect(() => {
+        if (state?.error) {
+            toast.error("Sign up failed", {
+                description: state.error,
+            });
+        }
+
+        if (state?.success && state?.message) {
+            toast.success("Sign up successful", {
+                description: state.message,
+            });
+
+            // Redirect to login after successful signup
+            setTimeout(() => {
+                router.push("/log-in");
+            }, 2000);
+        }
+    }, [state?.error, state?.success, state?.message, router]);
 
     return (
         <AuthCard
             title="Create an account"
-            description="Enter your email below to create your account"
-            alternateText="Already registered?"
-            linkText="Sign in to your account"
+            description="Enter your email to create your account"
+            alternateText="Already have an account?"
+            linkText="Log in"
             linkHref="/log-in"
         >
             <AuthForm
                 mode="signup"
-                error={state?.error ?? null}
+                error={state?.error}
                 action={action}
             />
         </AuthCard>

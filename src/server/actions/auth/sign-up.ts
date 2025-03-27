@@ -7,22 +7,21 @@ export async function signUp(formData: FormData) {
     const password = formData.get("password") as string;
 
     const supabase = await createClient();
-
     const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-            emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/callback`,
-        },
     });
 
     if (error) {
-        return { error: error.message };
+        return {
+            error: error.message,
+            success: false,
+        };
     }
 
     return {
         success: true,
         message:
-            "Check your email for a confirmation link to complete your registration.",
+            "Check your email for confirmation instructions. You will be redirected to login after confirming.",
     };
 }

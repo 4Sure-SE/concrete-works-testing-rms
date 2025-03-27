@@ -51,7 +51,6 @@ export function AuthForm({ mode, error, action }: AuthFormProps) {
                     placeholder="Enter your password"
                 />
             </div>
-            {error && <p className="text-sm text-destructive">{error}</p>}
             <SubmitButton mode={mode} />
         </form>
     );

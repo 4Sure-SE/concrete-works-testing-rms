@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import Header from "@/components/custom/header";
+import { Toaster } from "@/components/ui/sonner";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
 import AuthProvider from "./_contexts/auth-provider";
@@ -26,6 +27,10 @@ export default function AuthLayout({
                             {children}
                         </main>
                     </div>
+                    <Toaster
+                        richColors
+                        closeButton
+                    />
                 </AuthProvider>
             </body>
         </html>

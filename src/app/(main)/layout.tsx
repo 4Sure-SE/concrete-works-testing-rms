@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
 import AuthProvider from "../(auth)/_contexts/auth-provider";
@@ -35,6 +36,10 @@ export default function MainLayout({
                             </SidebarInset>
                         </SidebarProvider>
                     </div>
+                    <Toaster
+                        richColors
+                        closeButton
+                    />
                 </AuthProvider>
             </body>
         </html>

@@ -15,7 +15,10 @@ export async function logIn(formData: FormData) {
     });
 
     if (error) {
-        return { error: error.message };
+        return {
+            error: error.message,
+            success: false,
+        };
     }
 
     redirect("/projects");
