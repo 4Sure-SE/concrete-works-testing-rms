@@ -7,7 +7,7 @@ const fakeProjectsData: Project = {
     contractorName: "ABC Builders",
     limits: "Downtown to West End",
     location: "New York, NY",
-    materialsEngineer: "Genesis S. Bugna",
+    materialsEngineer: "Genesis Bugna",
     projectDetails: [
         {
             itemId: 1,

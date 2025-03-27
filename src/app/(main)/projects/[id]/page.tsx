@@ -14,7 +14,7 @@ export default async function ProjectDetailsPage({
                 id={id}
                 project={fakeProjectsData}
             />
-            <ProjectDetailsActionButtons />
+            <ProjectDetailsActionButtons project={fakeProjectsData} />
             <ProjectDetailsTable project={fakeProjectsData} />
         </div>
     );
