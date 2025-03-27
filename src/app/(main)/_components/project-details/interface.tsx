@@ -37,5 +37,6 @@ export default interface Project {
     contractorName: string;
     limits: string;
     location: string;
+    materialsEngineer: string;
     projectDetails: ProjectDetails[];
 }
