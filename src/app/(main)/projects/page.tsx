@@ -1,194 +1,140 @@
-import {
-    FaSearch,
-    FaCogs,
-    FaChartLine,
-    FaBuilding,
-    FaCube,
-    FaVial,
-    FaUser,
-} from "react-icons/fa";
+import { Plus, Search } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default async function ProjectListPage() {
-    return (
-        <div className="font-inter min-h-screen bg-gray-50">
-            {/* Header */}
-            <header className="mb-6 flex items-center justify-between bg-gray-100 px-6 py-4 shadow-md">
-                {/* Header Title */}
-                <div>
-                    <h1 className="text-xl font-bold">Project Overview</h1>
-                </div>
-                {/* Navigation */}
-                <nav className="flex space-x-12">
-                    <a
-                        href="#"
-                        className="flex items-center space-x-2 text-gray-700 hover:underline"
-                    >
-                        <FaChartLine />
-                        <span>Dashboard</span>
-                    </a>
-                    <a
-                        href="#"
-                        className="flex items-center space-x-2 text-gray-700 hover:underline"
-                    >
-                        <FaBuilding />
-                        <span>Projects</span>
-                    </a>
-                    <a
-                        href="#"
-                        className="flex items-center space-x-2 text-gray-700 hover:underline"
-                    >
-                        <FaCube />
-                        <span>Materials</span>
-                    </a>
-                    <a
-                        href="#"
-                        className="flex items-center space-x-2 text-gray-700 hover:underline"
-                    >
-                        <FaVial />
-                        <span>Tests</span>
-                    </a>
-                </nav>
-                {/* Admin Info */}
-                <div className="flex items-center space-x-4">
-                    <FaUser className="text-gray-700" />
-                    <span className="text-gray-700">Admin</span>
-                    <FaCogs className="text-lg text-gray-700" />
-                </div>
-            </header>
+    const projects = [
+        {
+            id: "CT-2024-001",
+            title: "Highway Bridge Renovation",
+            stats: { total: 48, ongoing: 12, completed: 36 },
+        },
+        {
+            id: "CT-2024-003",
+            title: "Residential Tower Construction",
+            stats: { total: 64, ongoing: 38, completed: 26 },
+        },
+        {
+            id: "CT-2024-002",
+            title: "Commercial Complex Foundation",
+            stats: { total: 36, ongoing: 20, completed: 16 },
+        },
+        {
+            id: "CT-2024-004",
+            title: "Municipal Infrastructure Project",
+            stats: { total: 52, ongoing: 8, completed: 44 },
+        },
+    ];
 
-            {/* Search Section */}
-            <div className="mb-8 flex items-center justify-between px-6">
-                {/* Search Input */}
-                <div className="relative max-w-md flex-1">
-                    <span className="absolute inset-y-0 left-2 flex items-center text-gray-400">
-                        <FaSearch />
-                    </span>
-                    <input
-                        type="text"
-                        placeholder="Search projects..."
-                        className="w-full rounded-lg border border-gray-300 px-4 py-2 pl-8 text-sm font-light"
-                    />
+    return (
+        <div className="container mx-auto p-4">
+            <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+                <h1 className="text-2xl font-bold">PROJECTS</h1>
+                <div className="flex w-full flex-col gap-4 sm:flex-row md:w-auto">
+                    {/* Date Range */}
+                    <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 rounded-md p-2">
+                            <span className="text-sm font-medium text-muted-foreground">
+                                FROM
+                            </span>
+                            <Input
+                                type="date"
+                                className="h-9 w-[140px] text-muted-foreground uppercase"
+                            />
+                            <span className="text-sm font-medium text-muted-foreground">
+                                TO
+                            </span>
+                            <Input
+                                type="date"
+                                className="h-9 w-[140px] text-muted-foreground uppercase"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Search */}
+                    <div className="flex items-center gap-3">
+                        <div className="relative flex-grow">
+                            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
+                            <Input
+                                type="text"
+                                placeholder="Search projects..."
+                                className="pl-10"
+                            />
+                        </div>
+                        {/* New Project */}
+                        <Button>
+                            <Plus className="h-4 w-4" />
+                            <span>New Project</span>
+                        </Button>
+                    </div>
                 </div>
-                {/* New Project Button */}
-                <button className="rounded-lg bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600">
-                    New Project
-                </button>
             </div>
 
-            <div className="flex items-start space-x-6 px-6">
-                {/* Sidebar */}
-                <aside className="w-1/4 space-y-6 border-r border-gray-200 bg-white p-4">
-                    {/* Projects Section */}
-                    <div className="rounded bg-gray-100 p-4 shadow">
-                        <h2 className="mb-4 font-bold text-gray-700">
-                            Projects
-                        </h2>
-                        <ul className="space-y-2">
-                            <li>Highway Bridge A1</li>
-                            <li>Commercial Building B2</li>
-                            <li>Residential Complex C3</li>
-                        </ul>
-                    </div>
+            {/* Projects Grid */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                {projects.map((project) => (
+                    <Card
+                        key={project.id}
+                        className="transition-shadow hover:shadow-md"
+                    >
+                        <CardHeader className="pb-2">
+                            <h3 className="text-lg font-bold">{project.id}</h3>
+                            <p className="text-muted-foreground">
+                                {project.title}
+                            </p>
+                        </CardHeader>
+                        <CardContent>
+                            {/* Stats with Progress Bar */}
+                            <div className="space-y-3">
+                                <div className="flex justify-between text-sm">
+                                    <span>Progress</span>
+                                    <span className="text-sm">
+                                        {Math.round(
+                                            (project.stats.completed /
+                                                project.stats.total) *
+                                                100,
+                                        )}
+                                        %
+                                    </span>
+                                </div>
+                                {/* Custom progress bar */}
+                                <div className="h-2 w-full rounded-full bg-muted">
+                                    <div
+                                        className="h-2 rounded-full bg-primary"
+                                        style={{
+                                            width: `${Math.round((project.stats.completed / project.stats.total) * 100)}%`,
+                                        }}
+                                    ></div>
+                                </div>
 
-                    {/* Filters Section */}
-                    <div className="rounded bg-gray-100 p-4 shadow">
-                        <h2 className="mb-4 font-bold text-gray-700">
-                            Filters
-                        </h2>
-                        <div className="mb-4">
-                            <label className="mb-1 block text-sm text-gray-600">
-                                From
-                            </label>
-                            <input
-                                type="date"
-                                className="w-full rounded border border-gray-300 px-3 py-2 text-sm font-light"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="mb-1 block text-sm text-gray-600">
-                                To
-                            </label>
-                            <input
-                                type="date"
-                                className="w-full rounded border border-gray-300 px-3 py-2 text-sm font-light"
-                            />
-                        </div>
-                    </div>
-                </aside>
-
-                {/* Main Content */}
-                <main className="flex-1">
-                    <section className="rounded-lg bg-white p-6 shadow">
-                        <h2 className="mb-6 text-xl font-bold text-gray-700">
-                            Project Lists
-                        </h2>
-                        {/* Project 1 */}
-                        <div className="mb-6 rounded-lg bg-gray-50 p-4 shadow">
-                            <span className="text-lg font-bold text-gray-800">
-                                Highway Bridge A1
-                            </span>
-                            <div className="mt-2 flex justify-between text-sm text-gray-600">
-                                <p>Progress</p>
-                                <p>75%</p>
+                                <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+                                    <div className="rounded p-2">
+                                        <div className="font-bold">
+                                            {project.stats.total}
+                                        </div>
+                                        <div className="text-sm text-muted-foreground">
+                                            Total
+                                        </div>
+                                    </div>
+                                    <div className="rounded p-2">
+                                        <div className="font-bold text-amber-500">
+                                            {project.stats.ongoing}
+                                        </div>
+                                        <div className="text-sm">Ongoing</div>
+                                    </div>
+                                    <div className="rounded p-2">
+                                        <div className="font-bold text-green-500">
+                                            {project.stats.completed}
+                                        </div>
+                                        <div className="text-sm">Completed</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="mt-2 h-2 w-full rounded bg-gray-200">
-                                <div
-                                    className="h-2 rounded bg-blue-300"
-                                    style={{ width: "75%" }}
-                                ></div>
-                            </div>
-                            <div className="mt-2 flex justify-between text-sm text-gray-600">
-                                <span>Total Tests: 20</span>
-                                <span>Pending: 6</span>
-                                <span>Completed: 14</span>
-                            </div>
-                        </div>
-
-                        {/* Project 2 */}
-                        <div className="mb-6 rounded-lg bg-gray-50 p-4 shadow">
-                            <span className="text-lg font-bold text-gray-800">
-                                Commercial Building B2
-                            </span>
-                            <div className="mt-2 flex justify-between text-sm text-gray-600">
-                                <p>Progress</p>
-                                <p>30%</p>
-                            </div>
-                            <div className="mt-2 h-2 w-full rounded bg-gray-200">
-                                <div
-                                    className="h-2 rounded bg-blue-300"
-                                    style={{ width: "30%" }}
-                                ></div>
-                            </div>
-                            <div className="mt-2 flex justify-between text-sm text-gray-600">
-                                <span>Total Tests: 36</span>
-                                <span>Pending: 24</span>
-                                <span>Completed: 12</span>
-                            </div>
-                        </div>
-
-                        {/* Project 3 */}
-                        <div className="rounded-lg bg-gray-50 p-4 shadow">
-                            <span className="text-lg font-bold text-gray-800">
-                                Residential Complex C3
-                            </span>
-                            <div className="mt-2 flex justify-between text-sm text-gray-600">
-                                <p>Progress</p>
-                                <p>90%</p>
-                            </div>
-                            <div className="mt-2 h-2 w-full rounded bg-gray-200">
-                                <div
-                                    className="h-2 rounded bg-blue-300"
-                                    style={{ width: "90%" }}
-                                ></div>
-                            </div>
-                            <div className="mt-2 flex justify-between text-sm text-gray-600">
-                                <span>Total Tests: 60</span>
-                                <span>Pending: 6</span>
-                                <span>Completed: 54</span>
-                            </div>
-                        </div>
-                    </section>
-                </main>
+                        </CardContent>
+                    </Card>
+                ))}
             </div>
         </div>
     );
