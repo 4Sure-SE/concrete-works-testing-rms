@@ -19,10 +19,15 @@ export default function MainLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="en">
-            <body className={`${inter.className} ${inter.variable}`}>
+        <html
+            lang="en"
+            className="overflow-hidden"
+        >
+            <body
+                className={`${inter.className} ${inter.variable} overflow-hidden`}
+            >
                 <AuthProvider>
-                    <div className="min-h-screen">
+                    <div className="h-screen overflow-hidden">
                         <SidebarProvider>
                             <AppSidebar />
                             <SidebarInset>

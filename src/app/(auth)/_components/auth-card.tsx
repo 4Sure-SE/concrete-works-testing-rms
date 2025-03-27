@@ -1,5 +1,4 @@
 "use client";
-
 import {
     Card,
     CardContent,
@@ -8,6 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { TrafficCone } from "lucide-react";
 import Link from "next/link";
 import { type AuthCardProps } from "./types";
 
@@ -20,12 +20,15 @@ export function AuthCard({
     linkHref,
 }: AuthCardProps) {
     return (
-        <Card className="w-[350px] border-primary/20">
+        <Card className="w-[400px] border-primary/20">
             <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-semibold tracking-tight text-primary">
+                <TrafficCone className="text-orange-500" />
+                <CardTitle className="text-xl font-semibold tracking-tight text-orange-500">
                     {title}
                 </CardTitle>
-                <CardDescription>{description}</CardDescription>
+                <CardDescription className="text-sm text-muted-foreground">
+                    {description}
+                </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">{children}</CardContent>
             {(alternateText ?? linkText) && (

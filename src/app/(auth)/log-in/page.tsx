@@ -16,6 +16,7 @@ export default function LoginForm() {
                 description: state.error,
             });
         }
+  
     }, [state?.error]);
 
     return (
@@ -28,7 +29,6 @@ export default function LoginForm() {
         >
             <AuthForm
                 mode="login"
-                error={state?.error}
                 action={action}
             />
         </AuthCard>

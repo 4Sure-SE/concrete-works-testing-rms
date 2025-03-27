@@ -18,14 +18,17 @@ export default function AuthLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="en">
-            <body className={`${inter.className} ${inter.variable}`}>
+        <html
+            lang="en"
+            className="overflow-hidden"
+        >
+            <body
+                className={`${inter.className} ${inter.variable} overflow-hidden`}
+            >
                 <AuthProvider>
                     <Header title="Concrete Works Testing RMS" />
-                    <div className="flex min-h-screen flex-col items-center justify-center">
-                        <main className="flex min-h-screen w-full max-w-md flex-col items-center justify-center p-4">
-                            {children}
-                        </main>
+                    <div className="flex h-[calc(100vh-4rem)] flex-col items-center justify-center overflow-auto">
+                        <main className="w-full max-w-md p-4">{children}</main>
                     </div>
                     <Toaster
                         richColors

@@ -24,7 +24,6 @@ export default function SignUpForm() {
                 description: state.message,
             });
 
-            // Redirect to login after successful signup
             setTimeout(() => {
                 router.push("/log-in");
             }, 2000);
@@ -33,15 +32,15 @@ export default function SignUpForm() {
 
     return (
         <AuthCard
-            title="Create an account"
-            description="Enter your email to create your account"
-            alternateText="Already have an account?"
-            linkText="Log in"
+            title="Create an Account"
+            description="Enter your details to get started"
+            alternateText="Have an account?"
+            linkText="Sign In"
             linkHref="/log-in"
         >
             <AuthForm
                 mode="signup"
-                error={state?.error}
+           
                 action={action}
             />
         </AuthCard>

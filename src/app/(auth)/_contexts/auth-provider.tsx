@@ -43,9 +43,9 @@ export default function AuthProvider({
             setUser(session?.user ?? null);
             setIsLoading(false);
 
-            if (event === "SIGNED_IN") {
-                toast.success("Successfully logged in");
-            }
+            // if (event === "SIGNED_IN") {
+            //     toast.success("Successfully logged in");
+            // }
 
             if (event === "SIGNED_OUT") {
                 toast.success("Successfully signed out");
