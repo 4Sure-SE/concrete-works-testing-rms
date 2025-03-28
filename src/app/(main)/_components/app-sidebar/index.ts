@@ -1,13 +1,6 @@
 import AppSidebar from "./app-sidebar";
-import HeaderButton from "./header-button";
-import HeaderWithSidebarState from "./header-with-sidebar-state";
 import NavProjects from "./nav-projects";
 import NavProjectsSkeleton from "./nav-projects-skeleton";
+import SidebarHeaderButton from "./sidebar-header-button";
 
-export {
-    AppSidebar,
-    HeaderButton,
-    HeaderWithSidebarState,
-    NavProjects,
-    NavProjectsSkeleton,
-};
+export { AppSidebar, NavProjects, NavProjectsSkeleton, SidebarHeaderButton };

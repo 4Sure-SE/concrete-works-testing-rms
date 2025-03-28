@@ -2,7 +2,7 @@ import { SidebarMenuButton } from "@/components/ui/sidebar";
 import { TrafficCone } from "lucide-react";
 import Link from "next/link";
 
-function HeaderButton() {
+function SidebarHeaderButton() {
     return (
         <SidebarMenuButton
             size="lg"
@@ -23,4 +23,4 @@ function HeaderButton() {
     );
 }
 
-export default HeaderButton;
+export default SidebarHeaderButton;

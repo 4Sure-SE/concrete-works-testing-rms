@@ -1,16 +1,18 @@
+import { AppHeader } from "./app-header";
 import {
     AppSidebar,
-    HeaderButton,
-    HeaderWithSidebarState,
     NavProjects,
     NavProjectsSkeleton,
+    SidebarHeaderButton,
 } from "./app-sidebar";
 
 export {
+    // APP HEADER
+    AppHeader,
+
     // APP SIDEBAR
     AppSidebar,
-    HeaderButton,
-    HeaderWithSidebarState,
     NavProjects,
     NavProjectsSkeleton,
+    SidebarHeaderButton,
 };

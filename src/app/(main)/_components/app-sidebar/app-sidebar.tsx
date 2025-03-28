@@ -13,9 +13,9 @@ import {
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import HeaderButton from "./header-button";
 import NavProjects from "./nav-projects";
 import NavProjectsSkeleton from "./nav-projects-skeleton";
+import SidebarHeaderButton from "./sidebar-header-button";
 
 export function AppSidebar() {
     return (
@@ -23,7 +23,7 @@ export function AppSidebar() {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <HeaderButton />
+                        <SidebarHeaderButton />
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
