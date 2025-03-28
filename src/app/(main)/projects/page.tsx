@@ -1,5 +1,5 @@
-import { PageHeader } from "@/components/project-list/header";
-import { ProjectGrid } from "@/components/project-list/grid";
+import { PageHeader } from "@/app/(main)/_components/project-list/header";
+import { ProjectGrid } from "@/app/(main)/_components/project-list/grid";
 
 export default async function ProjectListPage() {
     const projects = [
