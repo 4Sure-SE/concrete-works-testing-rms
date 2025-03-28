@@ -14,16 +14,18 @@ export default function SignUpForm() {
 
     useEffect(() => {
         if (state?.error) {
-            toast?.error?.("Sign up failed", {
-                description: state.error,
-            });
+            if (toast && typeof toast.error === "function") {
+                toast.error("Sign Up failed", {
+                    description: state.error,
+                });
+            }
         }
-
         if (state?.success && state?.message) {
-            toast?.success?.("Sign up successful", {
-                description: state.message,
-            });
-
+            if (toast && typeof toast.success === "function") {
+                toast.success(state.message, {
+                    description: state.message,
+                });
+            }
             setTimeout(() => {
                 router.push("/log-in");
             }, 2000);

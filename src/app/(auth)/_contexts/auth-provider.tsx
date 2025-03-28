@@ -44,12 +44,16 @@ export default function AuthProvider({
             setIsLoading(false);
 
             if (event === "SIGNED_IN") {
-                toast?.success?.("Successfully logged in");
+                if (toast && typeof toast.success === "function") {
+                    toast.success("Successfully logged in");
+                }
                 router.refresh();
             }
 
             if (event === "SIGNED_OUT") {
-                toast?.success?.("Successfully signed out");
+                if (toast && typeof toast.success === "function") {
+                    toast.success("Successfully signed out");
+                }
                 router.refresh();
             }
         });

@@ -18,7 +18,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
     return (
         <Sonner
-            theme={theme as ToasterProps["theme"]}
+            theme={
+                typeof theme === "string"
+                    ? (theme as ToasterProps["theme"])
+                    : "light"
+            }
             className="toaster group"
             style={
                 {
