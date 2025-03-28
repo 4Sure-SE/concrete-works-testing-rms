@@ -14,13 +14,13 @@ export default function SignUpForm() {
 
     useEffect(() => {
         if (state?.error) {
-            toast.error("Sign up failed", {
+            toast?.error?.("Sign up failed", {
                 description: state.error,
             });
         }
 
         if (state?.success && state?.message) {
-            toast.success("Sign up successful", {
+            toast?.success?.("Sign up successful", {
                 description: state.message,
             });
 
@@ -32,15 +32,14 @@ export default function SignUpForm() {
 
     return (
         <AuthCard
-            title="Create an Account"
-            description="Enter your details to get started"
-            alternateText="Have an account?"
-            linkText="Sign In"
+            title="Create an account"
+            description="Enter your details to create an account"
+            alternateText="Already have an account?"
+            linkText="Log in"
             linkHref="/log-in"
         >
             <AuthForm
                 mode="signup"
-           
                 action={action}
             />
         </AuthCard>

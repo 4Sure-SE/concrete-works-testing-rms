@@ -8,7 +8,6 @@ export async function signUp(formData: FormData) {
     const fullName = formData.get("fullName") as string;
     const confirmPassword = formData.get("confirmPassword") as string;
 
- 
     if (password !== confirmPassword) {
         return {
             error: "Passwords do not match",

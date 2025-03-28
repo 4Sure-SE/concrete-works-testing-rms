@@ -4,6 +4,15 @@ import { useTheme } from "next-themes";
 import type { ToasterProps } from "sonner";
 import { Toaster as Sonner } from "sonner";
 
+type CSSPropertiesWithVars = React.CSSProperties & {
+    "--normal-bg": string;
+    "--normal-text": string;
+    "--normal-border": string;
+    "--success-bg": string;
+    "--success-text": string;
+    "--success-border": string;
+};
+
 const Toaster = ({ ...props }: ToasterProps) => {
     const { theme = "system" } = useTheme();
 
@@ -19,7 +28,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
                     "--success-bg": "var(--secondary)",
                     "--success-text": "var(--secondary-foreground)",
                     "--success-border": "var(--secondary)",
-                } as React.CSSProperties
+                } as CSSPropertiesWithVars
             }
             {...props}
         />

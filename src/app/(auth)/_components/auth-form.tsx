@@ -1,9 +1,9 @@
 "use client";
-import Form from 'next/form'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Lock, Mail, User } from "lucide-react";
+import Form from "next/form";
 import { useFormStatus } from "react-dom";
 interface AuthFormProps {
     mode: "login" | "signup";
@@ -26,7 +26,7 @@ function SubmitButton({ mode }: { mode: AuthFormProps["mode"] }) {
 
 export function AuthForm({ mode, action }: AuthFormProps) {
     return (
-        <Form   
+        <Form
             action={action}
             className="flex flex-col gap-6"
         >

@@ -12,11 +12,10 @@ export default function LoginForm() {
 
     useEffect(() => {
         if (state?.error) {
-            toast.error("Login failed", {
+            toast?.error?.("Login failed", {
                 description: state.error,
             });
         }
-  
     }, [state?.error]);
 
     return (
