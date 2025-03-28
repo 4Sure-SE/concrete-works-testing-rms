@@ -4,7 +4,6 @@ import { createClient } from "@/lib/supabase/client";
 import { type Session, type User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
-import { toast } from "sonner";
 
 type AuthContextType = {
     user: User | null;
@@ -44,16 +43,10 @@ export default function AuthProvider({
             setIsLoading(false);
 
             if (event === "SIGNED_IN") {
-                if (toast && typeof toast.success === "function") {
-                    toast.success("Successfully logged in");
-                }
                 router.refresh();
             }
 
             if (event === "SIGNED_OUT") {
-                if (toast && typeof toast.success === "function") {
-                    toast.success("Successfully signed out");
-                }
                 router.refresh();
             }
         });
