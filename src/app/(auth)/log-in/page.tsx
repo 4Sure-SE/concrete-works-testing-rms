@@ -1,8 +1,8 @@
 "use client";
 
 import { logIn } from "@/server/actions/auth";
-import { AuthCard } from "../_components/auth-card";
-import { AuthForm } from "../_components/auth-form";
+import { AuthForm } from "../_components/forms/auth-form";
+import { AuthCard } from "../_components/layout/auth-card";
 import { useAuthAction } from "../_hooks/use-auth-action";
 
 export default function LoginForm() {
@@ -12,7 +12,7 @@ export default function LoginForm() {
         <AuthCard
             title="Welcome back"
             description="Enter your email to sign in to your account"
-            alternateText="New here?"
+            alternateText="Don't have an account?"
             linkText="Create an account"
             linkHref="/sign-up"
         >

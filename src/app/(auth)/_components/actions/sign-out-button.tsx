@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
-import { useAuth } from "../_hooks/use-auth";
+import { useAuth } from "../../_hooks/use-auth";
 
 export function SignOut() {
     const { signOut } = useAuth();

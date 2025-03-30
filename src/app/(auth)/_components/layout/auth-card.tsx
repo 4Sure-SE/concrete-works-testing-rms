@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { TrafficCone } from "lucide-react";
 import Link from "next/link";
-import { type AuthCardProps } from "./types";
+import { type AuthCardProps } from "../types";
 
 export function AuthCard({
     title,

@@ -2,7 +2,12 @@ import { createClient } from "@/lib/supabase/middleware";
 import { type NextRequest, NextResponse } from "next/server";
 
 const protectedRoutes = ["/projects"];
-const publicRoutes = ["/log-in", "/sign-up"];
+const publicRoutes = [
+    "/log-in",
+    "/sign-up",
+    "/forgot-password",
+    "/reset-password",
+];
 
 export async function middleware(request: NextRequest) {
     const { supabase, response } = createClient(request);
@@ -17,6 +22,13 @@ export async function middleware(request: NextRequest) {
         path.startsWith(route),
     );
     const isOnPublicRoute = publicRoutes.includes(path);
+
+    if (
+        path === "/reset-password" &&
+        request.nextUrl.searchParams.has("code")
+    ) {
+        return response;
+    }
 
     if (isOnProtectedRoute && !session) {
         return NextResponse.redirect(new URL("/log-in", request.url));

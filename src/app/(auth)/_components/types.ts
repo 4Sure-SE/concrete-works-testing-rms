@@ -1,4 +1,8 @@
-export type AuthFormMode = "login" | "signup";
+export type AuthFormMode =
+    | "login"
+    | "signup"
+    | "reset-request"
+    | "reset-password";
 
 export type AuthState = {
     error?: string | null;

@@ -3,8 +3,8 @@
 import { signUp } from "@/server/actions/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { AuthCard } from "../_components/auth-card";
-import { AuthForm } from "../_components/auth-form";
+import { AuthForm } from "../_components/forms/auth-form";
+import { AuthCard } from "../_components/layout/auth-card";
 import { useAuthAction } from "../_hooks/use-auth-action";
 
 export default function SignUpForm() {
