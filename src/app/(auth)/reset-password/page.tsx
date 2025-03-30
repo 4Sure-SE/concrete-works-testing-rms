@@ -1,9 +1,10 @@
 "use client";
 
+import { Suspense } from "react";
 import { ResetPasswordForm, ResetPasswordSuccess } from "../_components/";
 import { useResetPasswordLogic } from "../_hooks/use-reset-password";
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
     const { state, isTokenValid, handlePasswordReset } =
         useResetPasswordLogic();
 
@@ -23,5 +24,21 @@ export default function ResetPasswordPage() {
                 onSubmit={handlePasswordReset}
             />
         </div>
+    );
+}
+
+export default function ResetPasswordPage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="flex min-h-screen items-center justify-center">
+                    <div className="animate-pulse">
+                        Loading reset password...
+                    </div>
+                </div>
+            }
+        >
+            <ResetPasswordContent />
+        </Suspense>
     );
 }
