@@ -9,7 +9,7 @@ const getProjects = async () => {
         return { data: mockProjects, error: null };
     }
 
-    const { data, error } = await tryCatch(db.projects.findMany());
+    const { data, error } = await tryCatch(db.project.findMany());
 
     if (error) return { data: null, error: "Failed to fetch projects" };
 
