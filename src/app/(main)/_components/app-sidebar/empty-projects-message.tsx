@@ -7,7 +7,7 @@ export function EmptyProjectsMessage() {
     const { open: sidebarOpen } = useSidebar();
 
     if (!sidebarOpen) {
-        return <div></div>;
+        return null;
     }
 
     return (

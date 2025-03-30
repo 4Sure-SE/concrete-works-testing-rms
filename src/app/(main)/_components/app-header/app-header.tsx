@@ -21,7 +21,7 @@ export function AppHeader() {
         <Header
             leftControls={headerControls}
             // hide logo if sidebar is open
-            title={sidebarOpen ? "" : " Concrete Works Testing RMS"}
+            title={sidebarOpen ? "" : "Concrete Works Testing RMS"}
         />
     );
 }
