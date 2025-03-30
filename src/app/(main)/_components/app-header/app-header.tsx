@@ -1,16 +1,11 @@
-// components/navigation/app-header.tsx
 "use client";
 
 import Header from "@/components/custom/header";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 
-type AppHeaderProps = {
-    title: string;
-};
-
-export function AppHeader({ title }: AppHeaderProps) {
-    const { open: sideBarOpen } = useSidebar();
+export function AppHeader() {
+    const { open: sidebarOpen } = useSidebar();
 
     const headerControls = (
         <>
@@ -25,8 +20,8 @@ export function AppHeader({ title }: AppHeaderProps) {
     return (
         <Header
             leftControls={headerControls}
-            // hide title if sidebar is open
-            title={sideBarOpen ? "" : title}
+            // hide logo if sidebar is open
+            title={sidebarOpen ? "" : " Concrete Works Testing RMS"}
         />
     );
 }

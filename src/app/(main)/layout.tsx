@@ -3,8 +3,7 @@ import "@/styles/globals.css";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
-import { AppSidebar } from "./_components/";
-import AppHeader from "./_components/app-header/app-header";
+import { AppHeader, AppSidebar } from "./_components/";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -26,7 +25,7 @@ export default function MainLayout({
                 <SidebarProvider>
                     <AppSidebar />
                     <SidebarInset>
-                        <AppHeader title="Concrete Works Testing RMS" />
+                        <AppHeader />
                         <main className="flex-1 overflow-auto p-4">
                             {children}
                         </main>

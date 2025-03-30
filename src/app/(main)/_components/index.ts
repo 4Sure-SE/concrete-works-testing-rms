@@ -1,6 +1,7 @@
 import { AppHeader } from "./app-header";
 import {
     AppSidebar,
+    NavNewProject,
     NavProjects,
     NavProjectsSkeleton,
     SidebarHeaderButton,
@@ -12,6 +13,7 @@ export {
 
     // APP SIDEBAR
     AppSidebar,
+    NavNewProject,
     NavProjects,
     NavProjectsSkeleton,
     SidebarHeaderButton,
