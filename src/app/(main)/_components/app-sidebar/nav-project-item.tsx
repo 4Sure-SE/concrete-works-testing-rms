@@ -22,7 +22,7 @@ function NavProjectItem({ data: project }: NavProjectItemProps) {
     const initials = project.contractId.substring(0, 2);
 
     return (
-        <SidebarMenuItem key={project.contractId}>
+        <SidebarMenuItem>
             <SidebarMenuButton
                 asChild
                 isActive={isActive}
