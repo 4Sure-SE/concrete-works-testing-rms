@@ -3,43 +3,42 @@ import {
     Sidebar,
     SidebarContent,
     SidebarGroup,
-    SidebarGroupAction,
     SidebarGroupContent,
     SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuItem,
-    SidebarRail,
 } from "@/components/ui/sidebar";
-import { Plus } from "lucide-react";
-import Link from "next/link";
 import { Suspense } from "react";
-import HeaderButton from "./header-button";
-import NavProjects from "./nav-projects";
-import NavProjectsSkeleton from "./nav-projects-skeleton";
+import {
+    NavNewProject,
+    NavProjects,
+    NavProjectsSkeleton,
+    SidebarHeaderButton,
+} from ".";
 
 export function AppSidebar() {
     return (
-        <Sidebar>
-            <SidebarHeader>
+        <Sidebar
+            collapsible="icon"
+            variant="inset"
+            className="border-border"
+        >
+            <SidebarHeader className="pb-2">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <HeaderButton />
+                        <SidebarHeaderButton />
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
+
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Projects</SidebarGroupLabel>
-                    <SidebarGroupAction
-                        title="Add Project"
-                        asChild
-                    >
-                        <Link href="/projects/new">
-                            <Plus />
-                        </Link>
-                    </SidebarGroupAction>
+                    <SidebarGroupLabel className="flex items-center">
+                        Projects
+                    </SidebarGroupLabel>
                     <SidebarGroupContent>
+                        <NavNewProject />
                         <Suspense fallback={<NavProjectsSkeleton />}>
                             <NavProjects />
                         </Suspense>
@@ -51,7 +50,6 @@ export function AppSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarRail />
         </Sidebar>
     );
 }

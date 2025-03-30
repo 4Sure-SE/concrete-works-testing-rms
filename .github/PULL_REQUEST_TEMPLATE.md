@@ -19,6 +19,7 @@ Select all that apply:
 - [ ] 🛠️ Refactoring
 - [ ] 🎨 UI/UX Style
 - [ ] ⚙️ Workflow/Config
+- [ ] 🧪 Testing
 
 ### Screenshots (Optional)
 

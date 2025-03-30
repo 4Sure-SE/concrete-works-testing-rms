@@ -57,10 +57,10 @@ Use one of the following categories for your commits:
 
 - Use the format: `category/issue-id-description`.
 - Use lowercase with hyphens (`-`) to separate words.
-- Use `category` from the [commit categories](#categories) (e.g., `feat/feature`, `fix`, etc.).
+- Use `category` from the [commit categories](#categories) (e.g., `feat/dev-123-feature`, `fix`, etc.).
 
 > [!NOTE]
-> A branch can refer to the parent of the issues you are assigned to. For example, the branch `feature/auth` has sub issues log in and sign up, both of which you are assigned to.
+> A branch can refer to the parent of the issues you are assigned to. For example, the branch `feature/dev-22-auth` has sub issues log in and sign up, both of which you are assigned to.
 
 ### Examples
 
@@ -71,7 +71,7 @@ Use one of the following categories for your commits:
 
 To submit a pull request (PR), follow these steps:
 
-1. **Create a new branch** for your changes (see [Branch Naming](#branch-naming))
+1. **Create a new branch** from `main` or `develop` for your changes (see [Branch Naming](#branch-naming))
 
     or
 
@@ -96,11 +96,11 @@ To submit a pull request (PR), follow these steps:
 
 7. **Code Review**:
 
-    - Maintainers will review your pull request. Be prepared to address feedback and make necessary changes.
+    - Assigned reviewers (if any) will review your pull request. Be prepared to address feedback and make necessary changes.
     - Ensure all CI checks (e.g., linting, testing, building) pass. If they fail, fix the issues and update your branch.
 
 8. **Merge**:
-    - Once approved, your pull request will be merged into the main branch.
+    - Once approved, your pull request will be merged into the develop branch.
 
 ---
 
