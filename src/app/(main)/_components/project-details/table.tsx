@@ -21,7 +21,7 @@ export default function ProjectDetailsTable({ project }: { project: Project }) {
                 {/* Project Table */}
                 <Table>
                     <TableHeader>
-                        <TableRow>
+                        <TableRow className="bg-gray-100">
                             <TableHead className="text-center text-gray-700">
                                 Item No
                             </TableHead>
@@ -58,7 +58,7 @@ export default function ProjectDetailsTable({ project }: { project: Project }) {
                                     key={`${project.id}-${detail.itemId}`}
                                 >
                                     {/* Main item row with first item test if available */}
-                                    <TableRow className="bg-muted/20">
+                                    <TableRow className="bg-[#FCFCFD]">
                                         <TableCell className="text-center font-medium text-gray-900">
                                             {detail.itemNo}
                                         </TableCell>
