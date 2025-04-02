@@ -1,7 +1,6 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 
 export async function logIn(formData: FormData) {
     const email = formData.get("email") as string;
@@ -21,5 +20,8 @@ export async function logIn(formData: FormData) {
         };
     }
 
-    redirect("/projects");
+    return {
+        success: true,
+        message: "Successfully logged in",
+    };
 }

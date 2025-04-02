@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { type Session, type User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type AuthContextType = {
     user: User | null;
@@ -58,6 +59,7 @@ export default function AuthProvider({
 
     const signOut = async () => {
         await supabase.auth.signOut();
+        toast.success("You have been signed out");
         router.refresh();
     };
 

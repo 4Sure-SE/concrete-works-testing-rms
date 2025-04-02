@@ -3,12 +3,23 @@
 import { signUp } from "@/server/actions/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import { AuthForm } from "../_components/forms/auth-form";
 import { AuthCard } from "../_components/layout/auth-card";
 import { useAuthAction } from "../_hooks/use-auth-action";
 
 export default function SignUpForm() {
-    const [state, action] = useAuthAction(signUp);
+    const [state, action] = useAuthAction(async (formData) => {
+        const result = await signUp(formData);
+
+        if (result?.error) {
+            toast.error(result.error);
+        } else if (result?.success) {
+            toast.success(result.message ?? "Account created successfully");
+        }
+
+        return result;
+    });
     const router = useRouter();
 
     useEffect(() => {

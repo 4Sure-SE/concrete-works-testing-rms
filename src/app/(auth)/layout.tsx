@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import Header from "@/components/custom/header";
+import { Toaster } from "@/components/ui/sonner";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
 import AuthProvider from "./_contexts/auth-provider";
@@ -29,6 +30,7 @@ export default function AuthLayout({
                     <div className="flex h-[calc(100vh-4rem)] flex-col items-center justify-center overflow-auto">
                         <main className="w-full max-w-md p-4">{children}</main>
                     </div>
+                    <Toaster />
                 </AuthProvider>
             </body>
         </html>
