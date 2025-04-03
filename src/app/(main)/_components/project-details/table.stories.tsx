@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import fakeProjectsData from "./fake-data";
+import fakeProjectsData, { fakeEmptyProjectDetails } from "./fake-data";
 import ProjectDetailsTable from "./table";
 
 const meta = {
@@ -22,8 +22,14 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WithProjectDetails: Story = {
+export const WithItemsOfWork: Story = {
     args: {
         project: fakeProjectsData,
+    },
+};
+
+export const WithoutItemsOfWork: Story = {
+    args: {
+        project: fakeEmptyProjectDetails,
     },
 };

@@ -35,12 +35,15 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                 open={isDetailsOpen}
                 onOpenChange={setIsDetailsOpen}
             >
-                <DialogContent>
+                <DialogContent className="h-125">
                     <DialogHeader className="flex justify-center px-4 py-1">
                         <DialogTitle>Project Details</DialogTitle>
                     </DialogHeader>
-                    <div className="w-full space-y-4 p-4">
-                        <div className="flex w-full items-center gap-2">
+                    <div
+                        className="o w-auto space-y-4 overflow-y-auto px-4 py-4"
+                        style={{ scrollbarWidth: "none" }}
+                    >
+                        <div className="flex w-auto items-center gap-2">
                             <div className="flex-col">
                                 <div className="flex flex-row items-center">
                                     <Building2 className="h-5 w-5" />
@@ -49,12 +52,14 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.contractName}
+                                    {project.contractName === ""
+                                        ? "N/A"
+                                        : project.contractName}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex w-full items-center gap-2">
+                        <div className="flex w-auto items-center gap-2">
                             <div className="flex-col">
                                 <div className="flex flex-row items-center">
                                     <FilePenLine className="h-5 w-5" />
@@ -63,12 +68,14 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.contractId}
+                                    {project.contractId === ""
+                                        ? "N/A"
+                                        : project.contractId}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex w-full items-center gap-2">
+                        <div className="flex w-auto items-center gap-2">
                             <div className="flex-col">
                                 <div className="flex flex-row items-center">
                                     <Factory className="h-5 w-5" />
@@ -77,12 +84,14 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.contractorName}
+                                    {project.contractorName === ""
+                                        ? "N/A"
+                                        : project.contractorName}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex w-full items-center gap-2">
+                        <div className="flex w-auto items-center gap-2">
                             <div className="flex-col">
                                 <div className="flex flex-row items-center">
                                     <MapPinned className="h-5 w-5" />
@@ -91,12 +100,14 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.location}
+                                    {project.location === ""
+                                        ? "N/A"
+                                        : project.location}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex w-full items-center gap-2">
+                        <div className="flex w-auto items-center gap-2">
                             <div className="flex-col">
                                 <div className="flex flex-row items-center">
                                     <TriangleAlert className="h-5 w-5" />
@@ -105,12 +116,14 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.limits}
+                                    {project.limits === ""
+                                        ? "N/A"
+                                        : project.limits}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex w-full items-center gap-2">
+                        <div className="flex w-auto items-center gap-2">
                             <div className="flex-col">
                                 <div className="flex flex-row items-center">
                                     <HardHat className="h-5 w-5" />
@@ -119,7 +132,9 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.materialsEngineer}
+                                    {project.materialsEngineer === ""
+                                        ? "N/A"
+                                        : project.materialsEngineer}
                                 </p>
                             </div>
                         </div>
