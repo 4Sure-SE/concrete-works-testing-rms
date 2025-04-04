@@ -8,6 +8,22 @@ export async function signUp(formData: FormData) {
     const fullName = formData.get("fullName") as string;
 
     const supabase = await createClient();
+
+    const { error: signInError } = await supabase.auth.signInWithOtp({
+        email: email,
+        options: {
+            shouldCreateUser: false,
+        },
+    });
+
+    if (!signInError) {
+        return {
+            error: "This email is already in use. Please try logging in instead or reset your password.",
+            success: false,
+            field: "email",
+        };
+    }
+
     const { error } = await supabase.auth.signUp({
         email,
         password,

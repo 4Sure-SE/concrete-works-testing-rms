@@ -12,6 +12,7 @@ interface FormInputProps {
     required?: boolean;
     Icon: LucideIcon;
     error?: boolean;
+    errorMessage?: string;
 }
 
 export function FormInput({
@@ -24,6 +25,7 @@ export function FormInput({
     required = true,
     Icon,
     error,
+    errorMessage,
 }: FormInputProps) {
     return (
         <div className="grid w-full items-center gap-1.5">
@@ -38,9 +40,20 @@ export function FormInput({
                     value={value}
                     onChange={onChange}
                     placeholder={placeholder}
-                    className={`pl-10 ${error ? "border-red-500" : ""}`}
+                    className={`pl-10 ${error ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                    aria-invalid={error}
+                    aria-errormessage={error ? `${id}-error` : undefined}
                 />
             </div>
+            {error && errorMessage && (
+                <p
+                    id={`${id}-error`}
+                    className="mt-1 text-xs text-red-600"
+                    role="alert"
+                >
+                    {errorMessage}
+                </p>
+            )}
         </div>
     );
 }

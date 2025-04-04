@@ -8,6 +8,6 @@ export function useAuthAction(
 ) {
     return useActionState<AuthState, FormData>(
         (_prevState: AuthState, formData: FormData) => action(formData),
-        { error: null },
+        { error: null, field: undefined },
     );
 }

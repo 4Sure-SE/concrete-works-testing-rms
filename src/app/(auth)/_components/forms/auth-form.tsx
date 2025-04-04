@@ -2,7 +2,7 @@
 import { Lock, Mail, User } from "lucide-react";
 import Form from "next/form";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitButton } from "../actions/submit-button";
 import type { AuthFormMode } from "../types";
 import { FormInput } from "./form-input";
@@ -10,25 +10,60 @@ import PasswordRequirements from "./password-req";
 
 interface AuthFormProps {
     mode: AuthFormMode;
-    action: (formData: FormData) => void | Promise<void>;
+    action: (
+        formData: FormData,
+    ) => void | Promise<void | { error?: string | null; field?: string }>;
+    initialError?: {
+        error?: string | null;
+        field?: string;
+    } | null;
 }
 
-export function AuthForm({ mode, action }: AuthFormProps) {
+export function AuthForm({ mode, action, initialError = null }: AuthFormProps) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        if (
+            initialError &&
+            initialError.field === "email" &&
+            initialError.error
+        ) {
+            setEmailError(initialError.error);
+        }
+    }, [initialError]);
 
     const isValidPassword = password.length >= 8 && /[A-Z]/.test(password);
     const passwordsMatch =
         !["signup", "reset-password"].includes(mode) ||
         password === confirmPassword;
     const isFormValid =
-        mode === "login" ||
-        mode === "reset-request" ||
-        (isValidPassword && passwordsMatch);
+        (mode === "login" ||
+            mode === "reset-request" ||
+            (isValidPassword && passwordsMatch)) &&
+        !emailError;
+    useEffect(() => {
+        setEmailError("");
+    }, [email]);
+
+    const handleSubmit = async (formData: FormData) => {
+        setIsSubmitting(true);
+        try {
+            const result = await action(formData);
+            if (result && "error" in result && result.field === "email") {
+                setEmailError(result.error ?? "");
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <Form
-            action={action}
+            action={handleSubmit}
             className="flex flex-col gap-6"
         >
             {mode === "signup" && (
@@ -48,6 +83,10 @@ export function AuthForm({ mode, action }: AuthFormProps) {
                     type="email"
                     placeholder="Enter your email"
                     Icon={Mail}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    error={!!emailError}
+                    errorMessage={emailError}
                 />
             )}
 
@@ -108,7 +147,7 @@ export function AuthForm({ mode, action }: AuthFormProps) {
                 mode={mode}
                 isDisabled={
                     (mode === "signup" || mode === "reset-password") &&
-                    !isFormValid
+                    (!isFormValid || isSubmitting)
                 }
             />
         </Form>

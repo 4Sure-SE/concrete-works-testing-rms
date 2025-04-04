@@ -8,6 +8,7 @@ export type AuthState = {
     error?: string | null;
     success?: boolean;
     message?: string;
+    field?: string;
 };
 
 export type AuthCardProps = {

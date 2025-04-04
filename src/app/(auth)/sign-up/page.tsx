@@ -12,6 +12,10 @@ export default function SignUpForm() {
     const [state, action] = useAuthAction(async (formData) => {
         const result = await signUp(formData);
 
+        if (result?.error && result?.field === "email") {
+            return result;
+        }
+
         if (result?.error) {
             toast.error(result.error);
         } else if (result?.success) {
@@ -20,15 +24,16 @@ export default function SignUpForm() {
 
         return result;
     });
+
     const router = useRouter();
 
     useEffect(() => {
-        if (state?.success && state?.message) {
+        if (state?.success && state?.message && !state?.field) {
             setTimeout(() => {
                 router.push("/log-in");
             }, 2000);
         }
-    }, [state?.success, state?.message, router]);
+    }, [state, router]);
 
     return (
         <AuthCard
@@ -41,6 +46,11 @@ export default function SignUpForm() {
             <AuthForm
                 mode="signup"
                 action={action}
+                initialError={
+                    state?.field === "email"
+                        ? { error: state.error, field: state.field }
+                        : null
+                }
             />
         </AuthCard>
     );
