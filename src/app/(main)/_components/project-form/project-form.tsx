@@ -61,7 +61,6 @@ export default function ProjectForm({
         resolver: zodResolver(projectFormSchema),
         mode: "onBlur",
         defaultValues: actionState.data!,
-        values: actionState.data!,
     });
 
     return (
