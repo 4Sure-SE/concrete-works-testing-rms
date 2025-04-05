@@ -23,7 +23,7 @@ model Material {
 
 model Project {
   id                String            @id(map: "projects_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  contractId        String            @map("contract_id")
+  contractId        String            @unique @map("contract_id")
   contractName      String            @map("contract_name")
   contractor        String
   limits            String?
@@ -162,19 +162,4 @@ model WorkItemTest {
 
   @@unique([workItemId, testId], map: "work_item_tests_work_item_id_test_id_key")
   @@map("work_item_test")
-}
-
-enum TestStatus {
-  NOT_STARTED @map("not_started")
-  ONGOING     @map("ongoing")
-  COMPLETED   @map("completed")
-
-  @@map("test_status")
-}
-
-enum TestType {
-  WORK_ITEM @map("work_item")
-  MATERIAL  @map("material")
-
-  @@map("test_type")
 }
