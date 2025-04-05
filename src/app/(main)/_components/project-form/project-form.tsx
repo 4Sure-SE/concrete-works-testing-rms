@@ -61,7 +61,6 @@ export default function ProjectForm({
         resolver: zodResolver(projectFormSchema),
         mode: "onBlur",
         defaultValues: actionState.data!,
-        values: actionState.data!,
     });
 
     return (
@@ -112,7 +111,7 @@ export default function ProjectForm({
                             </FormRow>
                         ))}
                     </div>
-                    {/* display generatl server error */}
+                    {/* display general server error */}
                     {actionState.error?.general ? (
                         <span className="font-medium text-destructive">
                             {actionState.error.general}
