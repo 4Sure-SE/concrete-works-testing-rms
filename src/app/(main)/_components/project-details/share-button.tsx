@@ -64,11 +64,15 @@ export default function ShareButton() {
                         <button
                             onClick={handleCopy}
                             className="rounded-md p-2.5 hover:bg-gray-300"
+                            data-testid="copy-button"
                         >
                             {!copied ? (
                                 <Copy className="h-4 w-4" />
                             ) : (
-                                <Check className="h-4 w-4 text-green-500"></Check>
+                                <Check
+                                    data-testid="check-icon"
+                                    className="h-4 w-4 text-green-500"
+                                ></Check>
                             )}
                         </button>
                     </div>
