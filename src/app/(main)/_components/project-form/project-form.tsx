@@ -112,7 +112,7 @@ export default function ProjectForm({
                             </FormRow>
                         ))}
                     </div>
-                    {/* display generatl server error */}
+                    {/* display general server error */}
                     {actionState.error?.general ? (
                         <span className="font-medium text-destructive">
                             {actionState.error.general}
