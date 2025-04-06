@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; 
+
 -- CreateEnum
 CREATE TYPE "test_status" AS ENUM ('not_started', 'ongoing', 'completed');
 
