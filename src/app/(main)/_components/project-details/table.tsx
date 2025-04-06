@@ -15,7 +15,7 @@ import { TestStatus } from "./test-status";
 export default function ProjectDetailsTable({ project }: { project: Project }) {
     return (
         <div className="overflow-y-auto p-8">
-            {project.projectWorkItem.length === 0 ? (
+            {project.projectWorkItem?.length === 0 ? (
                 <div>
                     <div className="h-px w-full bg-gray-200"></div>
                     <div className="flex flex-col items-center justify-center p-30 text-base">
@@ -59,7 +59,7 @@ export default function ProjectDetailsTable({ project }: { project: Project }) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {project.projectWorkItem.map((detail) => {
+                            {project.projectWorkItem?.map((detail) => {
                                 // Determine if we have item tests to display
                                 const hasItemTests = detail.itemTest.length > 0;
 

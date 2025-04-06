@@ -362,12 +362,12 @@ export const fakeEmptyContractDetails = {
 };
 
 export const fakeEmptyProjectDetails = {
-    id: "PRJ-2023-001-45678-ABCDE",
-    contractId: "",
-    contractName: "",
-    contractorName: "",
-    limits: "From KM 10+500 to KM 15+800",
-    location: "Springfield",
-    materialsEngineer: "John Doe",
-    projectDetails: [],
+    id: "P-001",
+    contractId: "C-2023-001",
+    contractName: "City Bridge Construction",
+    contractor: "ABC Builders",
+    limits: "Downtown to West End",
+    location: "New York, NY",
+    materialsEngineer: "Genesis Bugna",
+    ProjectWorkItem: [],
 };

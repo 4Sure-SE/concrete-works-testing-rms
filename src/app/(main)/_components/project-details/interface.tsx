@@ -38,5 +38,5 @@ export default interface Project {
     limits: string;
     location: string;
     materialsEngineer: string;
-    projectWorkItem: ProjectWorkItem[];
+    projectWorkItem?: ProjectWorkItem[];
 }

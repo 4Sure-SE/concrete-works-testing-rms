@@ -84,9 +84,9 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.contractorName === ""
+                                    {project.contractor === ""
                                         ? "N/A"
-                                        : project.contractorName}
+                                        : project.contractor}
                                 </p>
                             </div>
                         </div>
