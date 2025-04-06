@@ -6,15 +6,15 @@ import {
     NavProjectsSkeleton,
     SidebarHeaderButton,
 } from "./app-sidebar";
+import { ProjectForm, ProjectFormField } from "./project-form";
 
 export {
-    // APP HEADER
     AppHeader,
-
-    // APP SIDEBAR
     AppSidebar,
     NavNewProject,
     NavProjects,
     NavProjectsSkeleton,
+    ProjectForm,
+    ProjectFormField,
     SidebarHeaderButton,
 };
