@@ -10,6 +10,7 @@ type AuthContextType = {
     user: User | null;
     session: Session | null;
     isLoading: boolean;
+    fullName: string | null;
     signOut: () => Promise<void>;
 };
 
@@ -17,6 +18,7 @@ export const AuthContext = createContext<AuthContextType>({
     user: null,
     session: null,
     isLoading: true,
+    fullName: null,
     signOut: async () => {
         throw new Error(
             "AuthContext.signOut was called outside of AuthProvider",
@@ -32,6 +34,7 @@ export default function AuthProvider({
     const [user, setUser] = useState<User | null>(null);
     const [session, setSession] = useState<Session | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [fullName, setFullName] = useState<string | null>(null);
     const router = useRouter();
     const supabase = createClient();
 
@@ -41,6 +44,16 @@ export default function AuthProvider({
         } = supabase.auth.onAuthStateChange(async (event, session) => {
             setSession(session);
             setUser(session?.user ?? null);
+
+            if (session?.user) {
+                const userFullName = session.user.user_metadata?.full_name as
+                    | string
+                    | undefined;
+                setFullName(userFullName ?? null);
+            } else {
+                setFullName(null);
+            }
+
             setIsLoading(false);
 
             if (event === "SIGNED_IN") {
@@ -67,6 +80,7 @@ export default function AuthProvider({
         user,
         session,
         isLoading,
+        fullName,
         signOut,
     };
 
