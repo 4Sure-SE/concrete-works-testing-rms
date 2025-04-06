@@ -4,30 +4,29 @@ const fakeProjectsData: Project = {
     id: "P-001",
     contractId: "C-2023-001",
     contractName: "City Bridge Construction",
-    contractorName: "ABC Builders",
+    contractor: "ABC Builders",
     limits: "Downtown to West End",
     location: "New York, NY",
     materialsEngineer: "Genesis Bugna",
-    projectDetails: [
+    projectWorkItem: [
         {
             itemId: 1,
             itemNo: "item 311",
             description: "Concrete Mix - 4000 psi",
             quantity: 100,
+            unit: "cu.m",
             itemTest: [
                 {
                     testId: 1,
                     testRequired: "Slump Test",
                     testsOnFile: 1,
                     balance: 1,
-                    unit: "cu.m",
                 },
                 {
                     testId: 2,
                     testRequired: "Compressive Strength Test",
                     testsOnFile: 0,
                     balance: 2,
-                    unit: "cu.m",
                 },
             ],
             materials: [
@@ -154,20 +153,19 @@ const fakeProjectsData: Project = {
             itemNo: "item 312",
             description: "Rebar - 16mm",
             quantity: 200,
+            unit: "pcs",
             itemTest: [
                 {
                     testId: 7,
                     testRequired: "Tensile Strength Test",
                     testsOnFile: 2,
                     balance: 2,
-                    unit: "pcs",
                 },
                 {
                     testId: 8,
                     testRequired: "Bend Test",
                     testsOnFile: 1,
                     balance: 1,
-                    unit: "pcs",
                 },
             ],
             materials: [
@@ -262,13 +260,13 @@ const fakeProjectsData: Project = {
             itemNo: "item 313",
             description: "Asphalt Pavement - 50mm",
             quantity: 150,
+            unit: "sq.m",
             itemTest: [
                 {
                     testId: 15,
                     testRequired: "Thickness Test",
                     testsOnFile: 1,
                     balance: 1,
-                    unit: "sq.m",
                 },
             ],
             materials: [
@@ -343,232 +341,24 @@ export const fakeLongContractDetails = {
         "CONT-2023-001-98765-ZYXWV-Construction-Highway-Project-Springfield",
     contractName:
         "Springfield Northern Bypass Highway Construction and Associated Infrastructure Development Project with Bridge Works and Drainage Systems",
-    contractorName:
+    contractor:
         "ABC Mega Construction Consortium International Limited in Association with Global Infrastructure Partners and Springfield Civil Works Joint Venture",
     limits: "From KM 10+500 to KM 15+800 along the Eastern Corridor, including all access roads, service lanes, and intersections within the municipal boundaries of Springfield and neighboring districts",
     location:
         "Springfield Metropolitan Area, including North Springfield District, East Springfield Township, and parts of the Springfield Valley Special Economic Zone",
     materialsEngineer:
         "Dr. Johnathan Michael Doe, PhD in Civil Engineering with specialization in Materials Science, Senior Materials Engineer (License #ME-123456789)",
-    projectDetails: [
-        {
-            itemId: 1,
-            itemNo: "ITEM-001",
-            description: "Asphalt Concrete Wearing Course",
-            quantity: 5000,
-            materials: [
-                {
-                    id: 1,
-                    name: "Bitumen",
-                    quantity: 250,
-                    unit: "tons",
-                    materialTest: [
-                        {
-                            testId: 1,
-                            testRequired: "Penetration Test",
-                            testsOnFile: 3,
-                            balance: 2,
-                        },
-                        {
-                            testId: 2,
-                            testRequired: "Softening Point Test",
-                            testsOnFile: 2,
-                            balance: 1,
-                        },
-                    ],
-                },
-                {
-                    id: 2,
-                    name: "Aggregate",
-                    quantity: 4750,
-                    unit: "tons",
-                    materialTest: [
-                        {
-                            testId: 3,
-                            testRequired: "Sieve Analysis",
-                            testsOnFile: 5,
-                            balance: 3,
-                        },
-                    ],
-                },
-            ],
-            itemTest: [
-                {
-                    testId: 4,
-                    testRequired: "Marshall Stability Test",
-                    testsOnFile: 2,
-                    balance: 1,
-                    unit: "samples",
-                },
-                {
-                    testId: 5,
-                    testRequired: "Density Test",
-                    testsOnFile: 5,
-                    balance: 2,
-                    unit: "samples",
-                },
-            ],
-        },
-        {
-            itemId: 2,
-            itemNo: "ITEM-002",
-            description: "Reinforced Concrete Pipe",
-            quantity: 120,
-            materials: [
-                {
-                    id: 3,
-                    name: "Cement",
-                    quantity: 60,
-                    unit: "bags",
-                    materialTest: [
-                        {
-                            testId: 6,
-                            testRequired: "Compressive Strength",
-                            testsOnFile: 2,
-                            balance: 1,
-                        },
-                    ],
-                },
-                {
-                    id: 4,
-                    name: "Steel Reinforcement",
-                    quantity: 8,
-                    unit: "tons",
-                    materialTest: [
-                        {
-                            testId: 7,
-                            testRequired: "Tensile Strength",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                    ],
-                },
-            ],
-            itemTest: [
-                {
-                    testId: 8,
-                    testRequired: "Crushing Strength Test",
-                    testsOnFile: 3,
-                    balance: 1,
-                    unit: "samples",
-                },
-            ],
-        },
-    ],
+    projectWorkItem: [],
 };
 export const fakeEmptyContractDetails = {
     id: "PRJ-2023-001-45678-ABCDE",
     contractId: "",
     contractName: "",
-    contractorName: "",
+    contractor: "",
     limits: "",
     location: "",
     materialsEngineer: "",
-    projectDetails: [
-        {
-            itemId: 1,
-            itemNo: "ITEM-001",
-            description: "Asphalt Concrete Wearing Course",
-            quantity: 5000,
-            materials: [
-                {
-                    id: 1,
-                    name: "Bitumen",
-                    quantity: 250,
-                    unit: "tons",
-                    materialTest: [
-                        {
-                            testId: 1,
-                            testRequired: "Penetration Test",
-                            testsOnFile: 3,
-                            balance: 2,
-                        },
-                        {
-                            testId: 2,
-                            testRequired: "Softening Point Test",
-                            testsOnFile: 2,
-                            balance: 1,
-                        },
-                    ],
-                },
-                {
-                    id: 2,
-                    name: "Aggregate",
-                    quantity: 4750,
-                    unit: "tons",
-                    materialTest: [
-                        {
-                            testId: 3,
-                            testRequired: "Sieve Analysis",
-                            testsOnFile: 5,
-                            balance: 3,
-                        },
-                    ],
-                },
-            ],
-            itemTest: [
-                {
-                    testId: 4,
-                    testRequired: "Marshall Stability Test",
-                    testsOnFile: 2,
-                    balance: 1,
-                    unit: "samples",
-                },
-                {
-                    testId: 5,
-                    testRequired: "Density Test",
-                    testsOnFile: 5,
-                    balance: 2,
-                    unit: "samples",
-                },
-            ],
-        },
-        {
-            itemId: 2,
-            itemNo: "ITEM-002",
-            description: "Reinforced Concrete Pipe",
-            quantity: 120,
-            materials: [
-                {
-                    id: 3,
-                    name: "Cement",
-                    quantity: 60,
-                    unit: "bags",
-                    materialTest: [
-                        {
-                            testId: 6,
-                            testRequired: "Compressive Strength",
-                            testsOnFile: 2,
-                            balance: 1,
-                        },
-                    ],
-                },
-                {
-                    id: 4,
-                    name: "Steel Reinforcement",
-                    quantity: 8,
-                    unit: "tons",
-                    materialTest: [
-                        {
-                            testId: 7,
-                            testRequired: "Tensile Strength",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                    ],
-                },
-            ],
-            itemTest: [
-                {
-                    testId: 8,
-                    testRequired: "Crushing Strength Test",
-                    testsOnFile: 3,
-                    balance: 1,
-                    unit: "samples",
-                },
-            ],
-        },
-    ],
+    projectWorkItem: [],
 };
 
 export const fakeEmptyProjectDetails = {

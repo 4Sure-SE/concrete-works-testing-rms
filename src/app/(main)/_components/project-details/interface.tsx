@@ -10,7 +10,6 @@ interface ItemTest {
     testRequired: string;
     testsOnFile: number;
     balance: number;
-    unit: string;
 }
 
 interface Material {
@@ -21,12 +20,13 @@ interface Material {
     unit: string;
 }
 
-interface ProjectDetails {
+interface ProjectWorkItem {
     itemId: number;
     itemNo: string;
     description: string;
     materials: Material[];
     quantity: number;
+    unit: string;
     itemTest: ItemTest[];
 }
 
@@ -34,9 +34,9 @@ export default interface Project {
     id: string;
     contractId: string;
     contractName: string;
-    contractorName: string;
+    contractor: string;
     limits: string;
     location: string;
     materialsEngineer: string;
-    projectDetails: ProjectDetails[];
+    projectWorkItem: ProjectWorkItem[];
 }

@@ -30,9 +30,7 @@ export default function ProjectContractDetails({
                         Contractor:
                     </span>{" "}
                     <p className="text-gray-7000 flex-1 truncate font-medium text-wrap">
-                        {project.contractorName === ""
-                            ? "N/A"
-                            : project.contractorName}
+                        {project.contractor === "" ? "N/A" : project.contractor}
                     </p>
                 </div>
             </div>
