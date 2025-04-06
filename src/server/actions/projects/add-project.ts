@@ -5,6 +5,7 @@ import {
     projectFormSchema,
 } from "@/lib/definitions/project";
 import { formatDate, tryCatch } from "@/lib/utils";
+import { errorHandler } from "@/lib/utils/error-handler";
 import { db } from "@/server/db/db";
 import { revalidatePath } from "next/cache";
 
@@ -47,12 +48,10 @@ export async function addProject(
     );
 
     // if there's an error in creating the project in the db
-    // set the error message on the "all" field of the error object and return it
+    // set the error message on the "general" field of the error object and return it
     if (error) {
-        return {
-            data: null,
-            error: { general: [error.message] },
-        };
+        const errorMsg = errorHandler(error).message;
+        return { data: null, error: { general: [errorMsg] } };
     }
 
     revalidatePath("/projects");
