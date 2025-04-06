@@ -10,20 +10,20 @@ const fakeProjectsData: Project = {
     materialsEngineer: "Genesis Bugna",
     projectWorkItem: [
         {
-            itemId: 1,
+            itemId: "1",
             itemNo: "item 311",
             description: "Concrete Mix - 4000 psi",
             quantity: 100,
             unit: "cu.m",
             itemTest: [
                 {
-                    testId: 1,
+                    testId: "1",
                     testRequired: "Slump Test",
                     testsOnFile: 1,
                     balance: 1,
                 },
                 {
-                    testId: 2,
+                    testId: "2",
                     testRequired: "Compressive Strength Test",
                     testsOnFile: 0,
                     balance: 2,
@@ -31,30 +31,30 @@ const fakeProjectsData: Project = {
             ],
             materials: [
                 {
-                    id: 101,
+                    id: "101",
                     name: "Concrete",
                     quantity: 50,
                     materialTest: [
                         {
-                            testId: 3,
+                            testId: "3",
                             testRequired: "Density Test",
                             testsOnFile: 1,
                             balance: 1,
                         },
                         {
-                            testId: 4,
+                            testId: "4",
                             testRequired: "Tensile Strength Test",
                             testsOnFile: 0,
                             balance: 2,
                         },
                         {
-                            testId: 18,
+                            testId: "18",
                             testRequired: "Air Content Test",
                             testsOnFile: 1,
                             balance: 0,
                         },
                         {
-                            testId: 19,
+                            testId: "19",
                             testRequired: "Setting Time Test",
                             testsOnFile: 0,
                             balance: 1,
@@ -63,30 +63,30 @@ const fakeProjectsData: Project = {
                     unit: "pcs",
                 },
                 {
-                    id: 102,
+                    id: "102",
                     name: "Cement",
                     quantity: 20,
                     materialTest: [
                         {
-                            testId: 5,
+                            testId: "5",
                             testRequired: "Fineness Test",
                             testsOnFile: 1,
                             balance: 1,
                         },
                         {
-                            testId: 6,
+                            testId: "6",
                             testRequired: "Soundness Test",
                             testsOnFile: 1,
                             balance: 0,
                         },
                         {
-                            testId: 20,
+                            testId: "20",
                             testRequired: "Heat of Hydration Test",
                             testsOnFile: 0,
                             balance: 1,
                         },
                         {
-                            testId: 21,
+                            testId: "21",
                             testRequired: "Chemical Composition Test",
                             testsOnFile: 1,
                             balance: 0,
@@ -95,24 +95,24 @@ const fakeProjectsData: Project = {
                     unit: "cu",
                 },
                 {
-                    id: 103,
+                    id: "103",
                     name: "Gravel",
                     quantity: 30,
                     materialTest: [
                         {
-                            testId: 11,
+                            testId: "11",
                             testRequired: "Gradation Test",
                             testsOnFile: 2,
                             balance: 0,
                         },
                         {
-                            testId: 22,
+                            testId: "22",
                             testRequired: "Abrasion Resistance Test",
                             testsOnFile: 1,
                             balance: 1,
                         },
                         {
-                            testId: 23,
+                            testId: "23",
                             testRequired: "Specific Gravity Test",
                             testsOnFile: 0,
                             balance: 1,
@@ -121,24 +121,24 @@ const fakeProjectsData: Project = {
                     unit: "cu.m",
                 },
                 {
-                    id: 104,
+                    id: "104",
                     name: "Water",
                     quantity: 10,
                     materialTest: [
                         {
-                            testId: 12,
+                            testId: "12",
                             testRequired: "Purity Test",
                             testsOnFile: 1,
                             balance: 1,
                         },
                         {
-                            testId: 24,
+                            testId: "24",
                             testRequired: "pH Level Test",
                             testsOnFile: 1,
                             balance: 0,
                         },
                         {
-                            testId: 25,
+                            testId: "25",
                             testRequired: "Chloride Content Test",
                             testsOnFile: 0,
                             balance: 1,
@@ -149,20 +149,20 @@ const fakeProjectsData: Project = {
             ],
         },
         {
-            itemId: 2,
+            itemId: "2",
             itemNo: "item 312",
             description: "Rebar - 16mm",
             quantity: 200,
             unit: "pcs",
             itemTest: [
                 {
-                    testId: 7,
+                    testId: "7",
                     testRequired: "Tensile Strength Test",
                     testsOnFile: 2,
                     balance: 2,
                 },
                 {
-                    testId: 8,
+                    testId: "8",
                     testRequired: "Bend Test",
                     testsOnFile: 1,
                     balance: 1,
@@ -170,30 +170,30 @@ const fakeProjectsData: Project = {
             ],
             materials: [
                 {
-                    id: 201,
+                    id: "201",
                     name: "Steel",
                     quantity: 100,
                     materialTest: [
                         {
-                            testId: 9,
+                            testId: "9",
                             testRequired: "Hardness Test",
                             testsOnFile: 1,
                             balance: 1,
                         },
                         {
-                            testId: 10,
+                            testId: "10",
                             testRequired: "Impact Test",
                             testsOnFile: 1,
                             balance: 0,
                         },
                         {
-                            testId: 26,
+                            testId: "26",
                             testRequired: "Corrosion Resistance Test",
                             testsOnFile: 0,
                             balance: 1,
                         },
                         {
-                            testId: 27,
+                            testId: "27",
                             testRequired: "Elongation Test",
                             testsOnFile: 1,
                             balance: 0,
@@ -202,24 +202,24 @@ const fakeProjectsData: Project = {
                     unit: "cu",
                 },
                 {
-                    id: 202,
+                    id: "202",
                     name: "Epoxy Coating",
                     quantity: 15,
                     materialTest: [
                         {
-                            testId: 13,
+                            testId: "13",
                             testRequired: "Adhesion Test",
                             testsOnFile: 0,
                             balance: 1,
                         },
                         {
-                            testId: 28,
+                            testId: "28",
                             testRequired: "Thickness Test",
                             testsOnFile: 1,
                             balance: 0,
                         },
                         {
-                            testId: 29,
+                            testId: "29",
                             testRequired: "Curing Test",
                             testsOnFile: 1,
                             balance: 1,
@@ -228,24 +228,24 @@ const fakeProjectsData: Project = {
                     unit: "kg",
                 },
                 {
-                    id: 203,
+                    id: "203",
                     name: "Wire Mesh",
                     quantity: 40,
                     materialTest: [
                         {
-                            testId: 14,
+                            testId: "14",
                             testRequired: "Mesh Size Test",
                             testsOnFile: 1,
                             balance: 0,
                         },
                         {
-                            testId: 30,
+                            testId: "30",
                             testRequired: "Welding Strength Test",
                             testsOnFile: 0,
                             balance: 1,
                         },
                         {
-                            testId: 31,
+                            testId: "31",
                             testRequired: "Coating Integrity Test",
                             testsOnFile: 1,
                             balance: 0,
@@ -256,14 +256,14 @@ const fakeProjectsData: Project = {
             ],
         },
         {
-            itemId: 3,
+            itemId: "3",
             itemNo: "item 313",
             description: "Asphalt Pavement - 50mm",
             quantity: 150,
             unit: "sq.m",
             itemTest: [
                 {
-                    testId: 15,
+                    testId: "15",
                     testRequired: "Thickness Test",
                     testsOnFile: 1,
                     balance: 1,
@@ -271,30 +271,30 @@ const fakeProjectsData: Project = {
             ],
             materials: [
                 {
-                    id: 301,
+                    id: "301",
                     name: "Asphalt",
                     quantity: 80,
                     materialTest: [
                         {
-                            testId: 16,
+                            testId: "16",
                             testRequired: "Viscosity Test",
                             testsOnFile: 1,
                             balance: 0,
                         },
                         {
-                            testId: 32,
+                            testId: "32",
                             testRequired: "Flash Point Test",
                             testsOnFile: 0,
                             balance: 1,
                         },
                         {
-                            testId: 33,
+                            testId: "33",
                             testRequired: "Ductility Test",
                             testsOnFile: 1,
                             balance: 0,
                         },
                         {
-                            testId: 34,
+                            testId: "34",
                             testRequired: "Penetration Test",
                             testsOnFile: 0,
                             balance: 1,
@@ -303,24 +303,24 @@ const fakeProjectsData: Project = {
                     unit: "tons",
                 },
                 {
-                    id: 302,
+                    id: "302",
                     name: "Aggregate",
                     quantity: 60,
                     materialTest: [
                         {
-                            testId: 17,
+                            testId: "17",
                             testRequired: "Sieve Analysis",
                             testsOnFile: 1,
                             balance: 1,
                         },
                         {
-                            testId: 35,
+                            testId: "35",
                             testRequired: "Los Angeles Abrasion Test",
                             testsOnFile: 0,
                             balance: 1,
                         },
                         {
-                            testId: 36,
+                            testId: "36",
                             testRequired: "Flakiness Index Test",
                             testsOnFile: 1,
                             balance: 0,
@@ -332,7 +332,6 @@ const fakeProjectsData: Project = {
         },
     ],
 };
-
 export default fakeProjectsData;
 
 export const fakeLongContractDetails = {

@@ -1,19 +1,19 @@
 interface MaterialTest {
-    testId: number;
+    testId: string;
     testRequired: string;
     testsOnFile: number;
     balance: number;
 }
 
 interface ItemTest {
-    testId: number;
+    testId: string;
     testRequired: string;
     testsOnFile: number;
     balance: number;
 }
 
 interface Material {
-    id: number;
+    id: string;
     name: string;
     materialTest: MaterialTest[];
     quantity: number;
@@ -21,7 +21,7 @@ interface Material {
 }
 
 interface ProjectWorkItem {
-    itemId: number;
+    itemId: string;
     itemNo: string;
     description: string;
     materials: Material[];
