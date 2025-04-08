@@ -16,7 +16,7 @@ import {
     TriangleAlert,
 } from "lucide-react";
 import { useState } from "react";
-import type Project from "./interface";
+import type { Project } from "./interface";
 
 export default function ProjectInfoButton({ project }: { project: Project }) {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -46,15 +46,15 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                         <div className="flex w-auto items-center gap-2">
                             <div className="flex-col">
                                 <div className="flex flex-row items-center">
-                                    <Building2 className="h-5 w-5" />
+                                    <FilePenLine className="h-5 w-5" />
                                     <span className="ml-2 font-bold whitespace-nowrap">
-                                        Contract Name
+                                        Contract Id
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.contractName === ""
+                                    {!project.contractId
                                         ? "N/A"
-                                        : project.contractName}
+                                        : project.contractId}
                                 </p>
                             </div>
                         </div>
@@ -62,15 +62,15 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                         <div className="flex w-auto items-center gap-2">
                             <div className="flex-col">
                                 <div className="flex flex-row items-center">
-                                    <FilePenLine className="h-5 w-5" />
+                                    <Building2 className="h-5 w-5" />
                                     <span className="ml-2 font-bold whitespace-nowrap">
-                                        Contract Id
+                                        Contract Name
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.contractId === ""
+                                    {!project.contractName
                                         ? "N/A"
-                                        : project.contractId}
+                                        : project.contractName}
                                 </p>
                             </div>
                         </div>
@@ -84,7 +84,7 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.contractor === ""
+                                    {!project.contractor
                                         ? "N/A"
                                         : project.contractor}
                                 </p>
@@ -100,9 +100,7 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.location === ""
-                                        ? "N/A"
-                                        : project.location}
+                                    {project.location ?? "N/A"}
                                 </p>
                             </div>
                         </div>
@@ -116,9 +114,7 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.limits === ""
-                                        ? "N/A"
-                                        : project.limits}
+                                    {project.limits ?? "N/A"}
                                 </p>
                             </div>
                         </div>
@@ -132,7 +128,7 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.materialsEngineer === ""
+                                    {!project.materialsEngineer
                                         ? "N/A"
                                         : project.materialsEngineer}
                                 </p>

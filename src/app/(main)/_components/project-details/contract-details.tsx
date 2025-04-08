@@ -1,6 +1,5 @@
-import type Project from "./interface";
+import type { Project } from "./interface";
 export default function ProjectContractDetails({
-    id,
     project,
 }: {
     id: string;
@@ -11,18 +10,18 @@ export default function ProjectContractDetails({
             <div className="flex w-full flex-col">
                 <p className="text-xl font-bold text-gray-950">
                     {project.contractName === ""
-                        ? "Contract Name: N/A"
-                        : project.contractName}
+                        ? "N/A"
+                        : `${project.contractId}`}
                 </p>
                 <div className="mt-4 flex w-auto flex-row gap-2">
                     <span className="font-medium whitespace-nowrap text-gray-800">
-                        Contract ID:
+                        Contract Name:
                     </span>
 
                     <p className="flex-1 truncate font-medium text-wrap text-gray-700">
                         {project.contractId === ""
                             ? "N/A"
-                            : `${id} ${project.contractId}`}
+                            : project.contractName}
                     </p>
                 </div>
                 <div className="mt-4 flex w-auto flex-row gap-2">

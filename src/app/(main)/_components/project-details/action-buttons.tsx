@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import ExportPdfButton from "./export-pdf-button";
-import type Project from "./interface";
+import type { Project } from "./interface";
 import ProjectInfoButton from "./project-info-button";
 import ShareButton from "./share-button";
 

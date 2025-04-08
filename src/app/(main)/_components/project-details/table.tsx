@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table";
 import { ArchiveX } from "lucide-react";
 import { Fragment } from "react";
-import type Project from "./interface";
+import type { Project } from "./interface";
 import { TestCounter } from "./test-counter";
 import { TestStatus } from "./test-status";
 
@@ -69,7 +69,7 @@ export default function ProjectworkItemsTable({
                                     workItem.itemTest.length > 0;
 
                                 return (
-                                    <Fragment key={`${workItem.itemId}`}>
+                                    <Fragment key={`${workItem.id}`}>
                                         {/* Main item row with first item test if available */}
                                         <TableRow className="bg-[#FCFCFD]">
                                             <TableCell className="text-center font-medium text-gray-900">
@@ -79,7 +79,7 @@ export default function ProjectworkItemsTable({
                                                 {workItem.description}
                                             </TableCell>
                                             <TableCell className="text-center">
-                                                {workItem.quantity}
+                                                {workItem.quantity.toString()}
                                             </TableCell>
 
                                             {hasItemTests ? (
@@ -136,7 +136,7 @@ export default function ProjectworkItemsTable({
                                         {workItem.itemTest
                                             .slice(1)
                                             .map((test) => (
-                                                <TableRow key={test.testId}>
+                                                <TableRow key={test.id}>
                                                     <TableCell></TableCell>
                                                     <TableCell></TableCell>
                                                     <TableCell></TableCell>
@@ -182,7 +182,7 @@ export default function ProjectworkItemsTable({
                                                             {material.name}
                                                         </TableCell>
                                                         <TableCell className="text-center">
-                                                            {material.quantity}
+                                                            {material.quantity.toString()}
                                                         </TableCell>
                                                         <TableCell
                                                             colSpan={4}
@@ -200,9 +200,7 @@ export default function ProjectworkItemsTable({
                                                     {material.materialTest.map(
                                                         (test, testIndex) => (
                                                             <TableRow
-                                                                key={
-                                                                    test.testId
-                                                                }
+                                                                key={test.id}
                                                             >
                                                                 <TableCell></TableCell>
                                                                 {testIndex ===
@@ -219,9 +217,7 @@ export default function ProjectworkItemsTable({
                                                                 {testIndex ===
                                                                 0 ? (
                                                                     <TableCell className="text-center">
-                                                                        {
-                                                                            material.quantity
-                                                                        }
+                                                                        {material.quantity.toString()}
                                                                     </TableCell>
                                                                 ) : (
                                                                     <TableCell></TableCell>

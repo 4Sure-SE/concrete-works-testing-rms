@@ -1,12 +1,13 @@
+// Interface definitions
 interface MaterialTest {
-    testId: string;
+    id: string;
     testRequired: string;
     testsOnFile: number;
     balance: number;
 }
 
 interface ItemTest {
-    testId: string;
+    id: string;
     testRequired: string;
     testsOnFile: number;
     balance: number;
@@ -21,22 +22,24 @@ interface Material {
 }
 
 interface ProjectWorkItem {
-    itemId: string;
+    id: string;
     itemNo: string;
-    description: string;
+    description: string | null;
     materials: Material[];
     quantity: number;
     unit: string;
     itemTest: ItemTest[];
 }
 
-export default interface Project {
+interface Project {
     id: string;
     contractId: string;
     contractName: string;
     contractor: string;
-    limits: string;
-    location: string;
+    limits: string | null;
+    location: string | null;
     materialsEngineer: string;
     projectWorkItem?: ProjectWorkItem[];
 }
+
+export type { ItemTest, Material, MaterialTest, Project, ProjectWorkItem };

@@ -1,4 +1,4 @@
-import type Project from "./interface";
+import type { Project } from "./interface";
 
 const fakeProjectsData: Project = {
     id: "P-001",
@@ -10,328 +10,70 @@ const fakeProjectsData: Project = {
     materialsEngineer: "Genesis Bugna",
     projectWorkItem: [
         {
-            itemId: "1",
-            itemNo: "item 311",
+            id: "WI-001",
+            itemNo: "311",
             description: "Concrete Mix - 4000 psi",
-            quantity: 100,
+            quantity: 100.0,
             unit: "cu.m",
             itemTest: [
                 {
-                    testId: "1",
+                    id: "IT-001",
                     testRequired: "Slump Test",
                     testsOnFile: 1,
                     balance: 1,
                 },
-                {
-                    testId: "2",
-                    testRequired: "Compressive Strength Test",
-                    testsOnFile: 0,
-                    balance: 2,
-                },
             ],
             materials: [
                 {
-                    id: "101",
-                    name: "Concrete",
-                    quantity: 50,
+                    id: "MAT-001",
+                    name: "Portland Cement",
+                    quantity: 50.0, // Changed from Decimal to number
+                    unit: "kg",
                     materialTest: [
                         {
-                            testId: "3",
-                            testRequired: "Density Test",
-                            testsOnFile: 1,
-                            balance: 1,
-                        },
-                        {
-                            testId: "4",
-                            testRequired: "Tensile Strength Test",
-                            testsOnFile: 0,
-                            balance: 2,
-                        },
-                        {
-                            testId: "18",
-                            testRequired: "Air Content Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                        {
-                            testId: "19",
-                            testRequired: "Setting Time Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                    ],
-                    unit: "pcs",
-                },
-                {
-                    id: "102",
-                    name: "Cement",
-                    quantity: 20,
-                    materialTest: [
-                        {
-                            testId: "5",
+                            id: "MT-001",
                             testRequired: "Fineness Test",
                             testsOnFile: 1,
-                            balance: 1,
-                        },
-                        {
-                            testId: "6",
-                            testRequired: "Soundness Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                        {
-                            testId: "20",
-                            testRequired: "Heat of Hydration Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                        {
-                            testId: "21",
-                            testRequired: "Chemical Composition Test",
-                            testsOnFile: 1,
                             balance: 0,
                         },
                     ],
-                    unit: "cu",
-                },
-                {
-                    id: "103",
-                    name: "Gravel",
-                    quantity: 30,
-                    materialTest: [
-                        {
-                            testId: "11",
-                            testRequired: "Gradation Test",
-                            testsOnFile: 2,
-                            balance: 0,
-                        },
-                        {
-                            testId: "22",
-                            testRequired: "Abrasion Resistance Test",
-                            testsOnFile: 1,
-                            balance: 1,
-                        },
-                        {
-                            testId: "23",
-                            testRequired: "Specific Gravity Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                    ],
-                    unit: "cu.m",
-                },
-                {
-                    id: "104",
-                    name: "Water",
-                    quantity: 10,
-                    materialTest: [
-                        {
-                            testId: "12",
-                            testRequired: "Purity Test",
-                            testsOnFile: 1,
-                            balance: 1,
-                        },
-                        {
-                            testId: "24",
-                            testRequired: "pH Level Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                        {
-                            testId: "25",
-                            testRequired: "Chloride Content Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                    ],
-                    unit: "liters",
                 },
             ],
         },
         {
-            itemId: "2",
-            itemNo: "item 312",
-            description: "Rebar - 16mm",
-            quantity: 200,
+            id: "WI-002",
+            itemNo: "312",
+            description: "Steel Reinforcement",
+            quantity: 200.0, // Changed from Decimal to number
             unit: "pcs",
             itemTest: [
                 {
-                    testId: "7",
-                    testRequired: "Tensile Strength Test",
+                    id: "IT-002",
+                    testRequired: "Tensile Test",
                     testsOnFile: 2,
-                    balance: 2,
-                },
-                {
-                    testId: "8",
-                    testRequired: "Bend Test",
-                    testsOnFile: 1,
                     balance: 1,
                 },
             ],
             materials: [
                 {
-                    id: "201",
-                    name: "Steel",
-                    quantity: 100,
+                    id: "MAT-002",
+                    name: "Rebar 16mm",
+                    quantity: 100.0, // Changed from Decimal to number
+                    unit: "m",
                     materialTest: [
                         {
-                            testId: "9",
-                            testRequired: "Hardness Test",
-                            testsOnFile: 1,
-                            balance: 1,
-                        },
-                        {
-                            testId: "10",
-                            testRequired: "Impact Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                        {
-                            testId: "26",
-                            testRequired: "Corrosion Resistance Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                        {
-                            testId: "27",
-                            testRequired: "Elongation Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                    ],
-                    unit: "cu",
-                },
-                {
-                    id: "202",
-                    name: "Epoxy Coating",
-                    quantity: 15,
-                    materialTest: [
-                        {
-                            testId: "13",
-                            testRequired: "Adhesion Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                        {
-                            testId: "28",
-                            testRequired: "Thickness Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                        {
-                            testId: "29",
-                            testRequired: "Curing Test",
+                            id: "MT-002",
+                            testRequired: "Bend Test",
                             testsOnFile: 1,
                             balance: 1,
                         },
                     ],
-                    unit: "kg",
-                },
-                {
-                    id: "203",
-                    name: "Wire Mesh",
-                    quantity: 40,
-                    materialTest: [
-                        {
-                            testId: "14",
-                            testRequired: "Mesh Size Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                        {
-                            testId: "30",
-                            testRequired: "Welding Strength Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                        {
-                            testId: "31",
-                            testRequired: "Coating Integrity Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                    ],
-                    unit: "sq.m",
-                },
-            ],
-        },
-        {
-            itemId: "3",
-            itemNo: "item 313",
-            description: "Asphalt Pavement - 50mm",
-            quantity: 150,
-            unit: "sq.m",
-            itemTest: [
-                {
-                    testId: "15",
-                    testRequired: "Thickness Test",
-                    testsOnFile: 1,
-                    balance: 1,
-                },
-            ],
-            materials: [
-                {
-                    id: "301",
-                    name: "Asphalt",
-                    quantity: 80,
-                    materialTest: [
-                        {
-                            testId: "16",
-                            testRequired: "Viscosity Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                        {
-                            testId: "32",
-                            testRequired: "Flash Point Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                        {
-                            testId: "33",
-                            testRequired: "Ductility Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                        {
-                            testId: "34",
-                            testRequired: "Penetration Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                    ],
-                    unit: "tons",
-                },
-                {
-                    id: "302",
-                    name: "Aggregate",
-                    quantity: 60,
-                    materialTest: [
-                        {
-                            testId: "17",
-                            testRequired: "Sieve Analysis",
-                            testsOnFile: 1,
-                            balance: 1,
-                        },
-                        {
-                            testId: "35",
-                            testRequired: "Los Angeles Abrasion Test",
-                            testsOnFile: 0,
-                            balance: 1,
-                        },
-                        {
-                            testId: "36",
-                            testRequired: "Flakiness Index Test",
-                            testsOnFile: 1,
-                            balance: 0,
-                        },
-                    ],
-                    unit: "cu.m",
                 },
             ],
         },
     ],
 };
+
 export default fakeProjectsData;
 
 export const fakeLongContractDetails = {
