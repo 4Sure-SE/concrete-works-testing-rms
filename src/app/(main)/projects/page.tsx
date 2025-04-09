@@ -1,4 +1,4 @@
-import { ProjectsClient } from "@/app/(main)/_components/project-list/client";
+import { ProjectClient } from "@/app/(main)/_components/project-list/client";
 
 // Sample data - in a real app, this would come from a database
 const projects = [
@@ -35,7 +35,7 @@ const projects = [
 export default async function ProjectListPage() {
     return (
         <div className="container mx-auto p-4">
-            <ProjectsClient projects={projects} />
+            <ProjectClient projects={projects} />
         </div>
     );
 }
