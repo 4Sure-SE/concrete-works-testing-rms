@@ -17,6 +17,11 @@ const getProjectDetails = async (projectId: string) => {
                                 workItemTest: {
                                     include: { test: true },
                                 },
+                                workItemMaterial: {
+                                    include: {
+                                        workItemMaterialTest: true,
+                                    },
+                                },
                             },
                         },
                         projectMaterial: {
@@ -59,27 +64,78 @@ const getProjectDetails = async (projectId: string) => {
             quantity: pwi.quantity.toNumber(),
             unit: pwi.workItem.unit.name,
             itemTest:
-                pwi.projectWorkItemTest.map((pjwt) => ({
-                    id: pjwt.id,
-                    testRequired: pjwt.test.name,
-                    testsOnFile: pjwt.onFile ?? 0,
-                    balance: pjwt.onFile,
-                })) ?? [],
+                pwi.projectWorkItemTest.map((pjwit) => {
+                    const matchingWIT = pwi.workItem.workItemTest.find(
+                        (wit) => wit.testId === pjwit.testId,
+                    );
+
+                    const requiredTests =
+                        matchingWIT?.testQuantity?.toNumber() ?? 0;
+                    const testsOnFile = pjwit.onFile ?? 0;
+
+                    return {
+                        id: pjwit.id,
+                        testRequired: pjwit.test.name,
+                        testsOnFile,
+                        requiredTests,
+                        balance: requiredTests - testsOnFile,
+                    };
+                }) ?? [],
 
             materials:
-                pwi.projectMaterial?.map((pm) => ({
-                    id: pm.material.id,
-                    name: pm.material.name,
-                    unit: pm.material.unit?.name ?? "N/A",
-                    quantity: pm.quantity.toNumber(),
-                    materialTest:
-                        pm.projectMaterialTest?.map((pmt) => ({
-                            id: pmt.id,
-                            testRequired: pmt.test?.name ?? "N/A",
-                            testsOnFile: pmt.onFile ?? 0,
-                            balance: 1 - (pmt.onFile ?? 0),
-                        })) ?? [],
-                })) ?? [],
+                pwi.projectMaterial?.map((pm) => {
+                    const matchingWorkItemMaterial =
+                        pwi.workItem.workItemMaterial.find(
+                            (wim) => wim.materialId === pm.material.id,
+                        );
+
+                    return {
+                        id: pm.material.id,
+                        name: pm.material.name,
+                        unit: pm.material.unit?.name ?? "N/A",
+                        quantity: pm.quantity.toNumber(),
+                        materialTest:
+                            pm.projectMaterialTest?.map((pmt) => {
+                                const matchingTest =
+                                    matchingWorkItemMaterial?.workItemMaterialTest.find(
+                                        (wit) => wit.testId === pmt.testId,
+                                    );
+
+                                const unitsPerTest =
+                                    matchingTest?.unitsPerTest?.toNumber() ?? 0;
+                                const testsOnFile = pmt.onFile ?? 0;
+                                const estimatedRequiredTests =
+                                    unitsPerTest === 0
+                                        ? 0
+                                        : pm.quantity.toNumber() / unitsPerTest;
+
+                                const rawBalance =
+                                    estimatedRequiredTests - testsOnFile;
+
+                                const balance =
+                                    rawBalance < 1
+                                        ? Math.ceil(rawBalance)
+                                        : Math.round(rawBalance);
+
+                                // console.log({
+                                //     materialName: pm.material.name,
+                                //     testName: pmt.test?.name,
+                                //     quantity: pm.quantity.toNumber(),
+                                //     unitsPerTest,
+                                //     estimatedRequiredTests,
+                                //     testsOnFile,
+                                //     balance,
+                                // });
+
+                                return {
+                                    id: pmt.id,
+                                    testRequired: pmt.test?.name ?? "N/A",
+                                    testsOnFile,
+                                    balance,
+                                };
+                            }) ?? [],
+                    };
+                }) ?? [],
         })),
     };
 
