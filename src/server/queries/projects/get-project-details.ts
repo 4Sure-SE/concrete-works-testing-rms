@@ -69,7 +69,7 @@ const getProjectDetails = async (projectId: string) => {
                         (wit) => wit.testId === pjwit.testId,
                     );
 
-                    const requiredTests =
+                    const testQuantity =
                         matchingWIT?.testQuantity?.toNumber() ?? 0;
                     const testsOnFile = pjwit.onFile ?? 0;
 
@@ -77,8 +77,9 @@ const getProjectDetails = async (projectId: string) => {
                         id: pjwit.id,
                         testRequired: pjwit.test.name,
                         testsOnFile,
-                        requiredTests,
-                        balance: requiredTests - testsOnFile,
+                        requiredTests: testQuantity,
+                        testQuantity,
+                        balance: testQuantity - testsOnFile,
                     };
                 }) ?? [],
 
@@ -117,21 +118,12 @@ const getProjectDetails = async (projectId: string) => {
                                         ? Math.ceil(rawBalance)
                                         : Math.round(rawBalance);
 
-                                // console.log({
-                                //     materialName: pm.material.name,
-                                //     testName: pmt.test?.name,
-                                //     quantity: pm.quantity.toNumber(),
-                                //     unitsPerTest,
-                                //     estimatedRequiredTests,
-                                //     testsOnFile,
-                                //     balance,
-                                // });
-
                                 return {
                                     id: pmt.id,
                                     testRequired: pmt.test?.name ?? "N/A",
                                     testsOnFile,
                                     balance,
+                                    unitsPerTest,
                                 };
                             }) ?? [],
                     };

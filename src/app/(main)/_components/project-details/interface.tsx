@@ -4,6 +4,7 @@ interface MaterialTest {
     testRequired: string;
     testsOnFile: number;
     balance: number;
+    unitsPerTest: number;
 }
 
 interface ItemTest {
@@ -11,6 +12,7 @@ interface ItemTest {
     testRequired: string;
     testsOnFile: number;
     balance: number;
+    testQuantity: number;
 }
 
 interface Material {

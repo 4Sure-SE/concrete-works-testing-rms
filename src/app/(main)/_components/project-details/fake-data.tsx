@@ -21,13 +21,14 @@ const fakeProjectsData: Project = {
                     testRequired: "Slump Test",
                     testsOnFile: 1,
                     balance: 1,
+                    testQuantity: 5, // Added missing field
                 },
             ],
             materials: [
                 {
                     id: "MAT-001",
                     name: "Portland Cement",
-                    quantity: 50.0, // Changed from Decimal to number
+                    quantity: 50.0,
                     unit: "kg",
                     materialTest: [
                         {
@@ -35,6 +36,7 @@ const fakeProjectsData: Project = {
                             testRequired: "Fineness Test",
                             testsOnFile: 1,
                             balance: 0,
+                            unitsPerTest: 10, // Added missing field
                         },
                     ],
                 },
@@ -44,7 +46,7 @@ const fakeProjectsData: Project = {
             id: "WI-002",
             itemNo: "312",
             description: "Steel Reinforcement",
-            quantity: 200.0, // Changed from Decimal to number
+            quantity: 200.0,
             unit: "pcs",
             itemTest: [
                 {
@@ -52,13 +54,14 @@ const fakeProjectsData: Project = {
                     testRequired: "Tensile Test",
                     testsOnFile: 2,
                     balance: 1,
+                    testQuantity: 3, // Added missing field
                 },
             ],
             materials: [
                 {
                     id: "MAT-002",
                     name: "Rebar 16mm",
-                    quantity: 100.0, // Changed from Decimal to number
+                    quantity: 100.0,
                     unit: "m",
                     materialTest: [
                         {
@@ -66,6 +69,7 @@ const fakeProjectsData: Project = {
                             testRequired: "Bend Test",
                             testsOnFile: 1,
                             balance: 1,
+                            unitsPerTest: 5, // Added missing field
                         },
                     ],
                 },
@@ -73,7 +77,6 @@ const fakeProjectsData: Project = {
         },
     ],
 };
-
 export default fakeProjectsData;
 
 export const fakeLongContractDetails = {

@@ -1,3 +1,4 @@
+"use client";
 import {
     Table,
     TableBody,
@@ -6,8 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { UpdateProjectTest } from "@/lib/utils/update-project-test";
 import { ArchiveX } from "lucide-react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import type { Project } from "./interface";
 import { TestCounter } from "./test-counter";
 import { TestStatus } from "./test-status";
@@ -17,9 +19,19 @@ export default function ProjectworkItemsTable({
 }: {
     project: Project;
 }) {
+    const [updatedProject, setUpdatedProject] = useState(project);
+    const handleTestUpdate = (
+        id: string | undefined,
+        amount: number,
+        type: "material" | "workItem",
+    ) => {
+        setUpdatedProject((prevProject) =>
+            UpdateProjectTest(prevProject, id, amount, type),
+        );
+    };
     return (
         <div className="overflow-y-auto p-8">
-            {project.projectWorkItem?.length === 0 ? (
+            {updatedProject.projectWorkItem?.length === 0 ? (
                 <div>
                     <div className="h-px w-full bg-gray-200"></div>
                     <div className="flex flex-col items-center justify-center p-30 text-base">
@@ -29,7 +41,7 @@ export default function ProjectworkItemsTable({
                 </div>
             ) : (
                 <div
-                    key={project.id}
+                    key={updatedProject.id}
                     className="rounded-md border"
                 >
                     {/* Project Table */}
@@ -63,7 +75,7 @@ export default function ProjectworkItemsTable({
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {project.projectWorkItem?.map((workItem) => {
+                            {updatedProject.projectWorkItem?.map((workItem) => {
                                 // Determine if we have item tests to display
                                 const hasItemTests =
                                     workItem.itemTest.length > 0;
@@ -95,12 +107,21 @@ export default function ProjectworkItemsTable({
                                                     </TableCell>
                                                     <TableCell className="text-center">
                                                         <TestCounter
+                                                            id={
+                                                                workItem
+                                                                    .itemTest?.[0]
+                                                                    ?.id
+                                                            }
                                                             value={
                                                                 workItem
                                                                     .itemTest?.[0]
                                                                     ?.testsOnFile ??
                                                                 0
                                                             }
+                                                            onUpdate={
+                                                                handleTestUpdate
+                                                            }
+                                                            type="workItem"
                                                         ></TestCounter>
                                                     </TableCell>
                                                     <TableCell className="text-center">
@@ -146,8 +167,13 @@ export default function ProjectworkItemsTable({
                                                     </TableCell>
                                                     <TableCell className="text-center">
                                                         <TestCounter
+                                                            id={test.id}
                                                             value={
                                                                 test.testsOnFile
+                                                            }
+                                                            type="material"
+                                                            onUpdate={
+                                                                handleTestUpdate
                                                             }
                                                         ></TestCounter>
                                                     </TableCell>
@@ -239,8 +265,15 @@ export default function ProjectworkItemsTable({
                                                                 </TableCell>
                                                                 <TableCell className="text-center">
                                                                     <TestCounter
+                                                                        id={
+                                                                            test.id
+                                                                        }
                                                                         value={
                                                                             test.testsOnFile
+                                                                        }
+                                                                        type="material"
+                                                                        onUpdate={
+                                                                            handleTestUpdate
                                                                         }
                                                                     ></TestCounter>
                                                                 </TableCell>
