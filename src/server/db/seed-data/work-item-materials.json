@@ -1,0 +1,152 @@
+[
+    {
+        "id": "4ffd9289-494b-4ed1-b6ab-3112ba291442",
+        "workItemId": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "materialId": "a2a28cc4-90e5-4572-9fee-2a55091b0f44",
+        "quantityPerUnit": 2.85
+    },
+    {
+        "id": "43737a78-9be7-444f-97b2-d3935d9b0789",
+        "workItemId": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "materialId": "bacc86d5-30e2-4b50-843d-6a7bba50f3a1",
+        "quantityPerUnit": 0.15
+    },
+    {
+        "id": "9014c2be-8b01-4188-ad20-f5a36f24810f",
+        "workItemId": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "materialId": "24292957-d38a-4a0f-a7b2-1ee8055a3616",
+        "quantityPerUnit": 0.3
+    },
+    {
+        "id": "b9d6cbbd-7195-438b-b07f-6bf023e85d39",
+        "workItemId": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "materialId": "c7c1cbb3-435f-4598-9570-289ac8de582d",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "b2f8e3a1-7c2f-46f2-979d-ec76d23ccf4f",
+        "workItemId": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "materialId": "7ffdd4eb-b186-4b4b-ac3d-3a24ba31dd04",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "a41a6908-ac4d-4a2a-98ec-379a556b132d",
+        "workItemId": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "materialId": "46bf65da-a1e1-44b7-ac3c-032d4d2325a1",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "982c7e0a-7d66-4d23-9465-2e0b0617df54",
+        "workItemId": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "materialId": "de93b723-cde4-449f-8e05-1f79b07254cc",
+        "quantityPerUnit": 0.00188
+    },
+    {
+        "id": "974568a0-21d5-4e62-8cb3-aa02e93e0a10",
+        "workItemId": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "materialId": "074defb3-eb61-4811-b43b-4145084eaaf0",
+        "quantityPerUnit": 0.3
+    },
+    {
+        "id": "62aa7787-4caa-455f-aad7-972e9cd8aa9a",
+        "workItemId": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "materialId": "0af8118f-8f33-47ee-be20-9a8d330d7d34",
+        "quantityPerUnit": 0.02
+    },
+    {
+        "id": "1c0cd9b8-eb89-49fc-8602-fb87193aac96",
+        "workItemId": "c703b5c9-8988-4913-a2f7-16b9b612ba34",
+        "materialId": "a2a28cc4-90e5-4572-9fee-2a55091b0f44",
+        "quantityPerUnit": 9.5
+    },
+    {
+        "id": "646bf340-d776-416d-9b88-f46b0d56aa4a",
+        "workItemId": "c703b5c9-8988-4913-a2f7-16b9b612ba34",
+        "materialId": "bacc86d5-30e2-4b50-843d-6a7bba50f3a1",
+        "quantityPerUnit": 0.5
+    },
+    {
+        "id": "c20b58a3-9016-4827-ad78-f83f4b381961",
+        "workItemId": "c703b5c9-8988-4913-a2f7-16b9b612ba34",
+        "materialId": "24292957-d38a-4a0f-a7b2-1ee8055a3616",
+        "quantityPerUnit": 1
+    },
+    {
+        "id": "008b23b5-7bb6-4cb8-bea0-c9d3095d97f6",
+        "workItemId": "c703b5c9-8988-4913-a2f7-16b9b612ba34",
+        "materialId": "c7c1cbb3-435f-4598-9570-289ac8de582d",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "91ee1e92-0130-4c76-a0a6-0cd143bc9f1e",
+        "workItemId": "c703b5c9-8988-4913-a2f7-16b9b612ba34",
+        "materialId": "0a84fe25-8d43-4091-8528-78ee77f80f3f",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "239dcea9-4940-4394-9149-8129e049027e",
+        "workItemId": "c703b5c9-8988-4913-a2f7-16b9b612ba34",
+        "materialId": "9e29d88a-420b-4c4f-8847-d43ea5b1926d",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "af8d8797-f8fa-454a-9357-ee72668c2ebb",
+        "workItemId": "c703b5c9-8988-4913-a2f7-16b9b612ba34",
+        "materialId": "17e3b3da-e06a-4e32-8103-582abd63c0f7",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "7d72611a-9f86-48d3-8592-1ff0939c4891",
+        "workItemId": "c703b5c9-8988-4913-a2f7-16b9b612ba34",
+        "materialId": "b973f232-a110-45d5-87d9-2548f52c87d1",
+        "quantityPerUnit": 0.042
+    },
+    {
+        "id": "54d21868-9b2b-43d6-b4f0-7a302c214e76",
+        "workItemId": "8c77efe6-9312-43d1-a7f6-1d065fda0acb",
+        "materialId": "a2a28cc4-90e5-4572-9fee-2a55091b0f44",
+        "quantityPerUnit": 9.5
+    },
+    {
+        "id": "cf02206b-06fd-4671-a1f9-32e243d4783b",
+        "workItemId": "8c77efe6-9312-43d1-a7f6-1d065fda0acb",
+        "materialId": "bacc86d5-30e2-4b50-843d-6a7bba50f3a1",
+        "quantityPerUnit": 0.5
+    },
+    {
+        "id": "bd156faa-763e-4b34-8551-a79da343b0c6",
+        "workItemId": "8c77efe6-9312-43d1-a7f6-1d065fda0acb",
+        "materialId": "24292957-d38a-4a0f-a7b2-1ee8055a3616",
+        "quantityPerUnit": 1
+    },
+    {
+        "id": "6c410da3-55ea-4373-93ea-00fa88d66701",
+        "workItemId": "8c77efe6-9312-43d1-a7f6-1d065fda0acb",
+        "materialId": "c7c1cbb3-435f-4598-9570-289ac8de582d",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "e9667ca8-d188-45d5-afe1-da45a3bd991a",
+        "workItemId": "8c77efe6-9312-43d1-a7f6-1d065fda0acb",
+        "materialId": "0a84fe25-8d43-4091-8528-78ee77f80f3f",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "629ce827-da8f-4718-ba11-025ea537e4d9",
+        "workItemId": "8c77efe6-9312-43d1-a7f6-1d065fda0acb",
+        "materialId": "9e29d88a-420b-4c4f-8847-d43ea5b1926d",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "2754b75a-3984-4f9c-afb0-34e748ae7a21",
+        "workItemId": "8c77efe6-9312-43d1-a7f6-1d065fda0acb",
+        "materialId": "17e3b3da-e06a-4e32-8103-582abd63c0f7",
+        "quantityPerUnit": 0.002
+    },
+    {
+        "id": "01782f4a-9bb1-4112-90b3-379dec878a6f",
+        "workItemId": "8c77efe6-9312-43d1-a7f6-1d065fda0acb",
+        "materialId": "b973f232-a110-45d5-87d9-2548f52c87d1",
+        "quantityPerUnit": 0.042
+    }
+]

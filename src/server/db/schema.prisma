@@ -31,6 +31,7 @@ model Project {
   dateStarted       DateTime          @map("date_started") @db.Date
   createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   materialsEngineer String            @map("materials_engineer")
+  contractCost      Decimal           @map("contract_cost")
   projectWorkItem   ProjectWorkItem[]
 
   @@map("project")
@@ -45,7 +46,6 @@ model ProjectMaterial {
   material            Material              @relation(fields: [materialId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "project_materials_material_id_fkey")
   projectWorkItem     ProjectWorkItem       @relation(fields: [projectWorkItemId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "project_materials_project_work_item_id_fkey")
   projectMaterialTest ProjectMaterialTest[]
-
   @@map("project_material")
 }
 

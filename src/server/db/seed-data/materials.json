@@ -1,0 +1,80 @@
+[
+    {
+        "id": "bacc86d5-30e2-4b50-843d-6a7bba50f3a1",
+        "name": "Fine Aggregates",
+        "description": null,
+        "unitId": "8d836ac5-5b7b-415e-8e90-31dab33da3d7"
+    },
+    {
+        "id": "24292957-d38a-4a0f-a7b2-1ee8055a3616",
+        "name": "Course Aggregates",
+        "description": null,
+        "unitId": "8d836ac5-5b7b-415e-8e90-31dab33da3d7"
+    },
+    {
+        "id": "c7c1cbb3-435f-4598-9570-289ac8de582d",
+        "name": "Water",
+        "description": null,
+        "unitId": "d6f72112-23a3-4ade-b813-7eeef9cfd871"
+    },
+    {
+        "id": "7ffdd4eb-b186-4b4b-ac3d-3a24ba31dd04",
+        "name": "Joint Filler",
+        "description": null,
+        "unitId": "7267eaee-f6c1-45fa-97a7-a0ffc706bdd0"
+    },
+    {
+        "id": "46bf65da-a1e1-44b7-ac3c-032d4d2325a1",
+        "name": "Special Curing Agents",
+        "description": null,
+        "unitId": "7267eaee-f6c1-45fa-97a7-a0ffc706bdd0"
+    },
+    {
+        "id": "de93b723-cde4-449f-8e05-1f79b07254cc",
+        "name": "Steel Bars",
+        "description": null,
+        "unitId": "4da2d2ac-4248-4eb7-ae1e-302f189056ef"
+    },
+    {
+        "id": "0af8118f-8f33-47ee-be20-9a8d330d7d34",
+        "name": "Completed Pavement",
+        "description": null,
+        "unitId": "2ef7f6f8-7035-4951-948e-f92c1d726e35"
+    },
+    {
+        "id": "0a84fe25-8d43-4091-8528-78ee77f80f3f",
+        "name": "Chemical Admixture",
+        "description": null,
+        "unitId": "22892baf-45a6-48a5-803c-082aa60e7a40"
+    },
+    {
+        "id": "9e29d88a-420b-4c4f-8847-d43ea5b1926d",
+        "name": "Curing Compound",
+        "description": null,
+        "unitId": "22892baf-45a6-48a5-803c-082aa60e7a40"
+    },
+    {
+        "id": "17e3b3da-e06a-4e32-8103-582abd63c0f7",
+        "name": "Expansion Joint",
+        "description": null,
+        "unitId": "22892baf-45a6-48a5-803c-082aa60e7a40"
+    },
+    {
+        "id": "074defb3-eb61-4811-b43b-4145084eaaf0",
+        "name": "Concrete",
+        "description": null,
+        "unitId": "8d836ac5-5b7b-415e-8e90-31dab33da3d7"
+    },
+    {
+        "id": "a2a28cc4-90e5-4572-9fee-2a55091b0f44",
+        "name": "Cement",
+        "description": null,
+        "unitId": "2353cedd-c338-47e4-a745-1cdd0492f513"
+    },
+    {
+        "id": "b973f232-a110-45d5-87d9-2548f52c87d1",
+        "name": "Concrete",
+        "description": null,
+        "unitId": "f0f43f9f-09e8-4b95-b7d1-b390565a6b4f"
+    }
+]
