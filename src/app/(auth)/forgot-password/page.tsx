@@ -2,7 +2,8 @@
 
 import { requestPasswordReset } from "@/server/actions/auth";
 import { useState } from "react";
-import { AuthCard, AuthForm, SuccessMessage } from "../_components";
+import { SuccessMessage } from "../_components";
+import { ForgotPasswordForm } from "../_components/forms/forgot-password-form";
 import { type AuthState } from "../_components/types";
 
 export default function ForgotPasswordPage() {
@@ -26,25 +27,10 @@ export default function ForgotPasswordPage() {
                     linkHref="/log-in"
                 />
             ) : (
-                <AuthCard
-                    title="Forgot Password"
-                    description="Enter your email to receive a password reset link."
-                    alternateText="Remember your password?"
-                    linkText="Back to Login"
-                    linkHref="/log-in"
-                >
-                    <AuthForm
-                        mode="reset-request"
-                        action={handleResetRequest}
-                    />
-                    {state.error && (
-                        <div className="relative mt-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-                            <span className="block sm:inline">
-                                {state.error}
-                            </span>
-                        </div>
-                    )}
-                </AuthCard>
+                <ForgotPasswordForm
+                    action={handleResetRequest}
+                    state={state}
+                />
             )}
         </div>
     );

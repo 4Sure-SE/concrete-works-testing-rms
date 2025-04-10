@@ -1,7 +1,8 @@
 "use client";
 
 import { Suspense } from "react";
-import { ResetPasswordForm, ResetPasswordSuccess } from "../_components/";
+import { ResetPasswordSuccess } from "../_components";
+import { ResetPasswordForm } from "../_components/forms/reset-password-form";
 import { useResetPasswordLogic } from "../_hooks/use-reset-password";
 
 function ResetPasswordContent() {

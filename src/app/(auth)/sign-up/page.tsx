@@ -4,11 +4,10 @@ import { signUp } from "@/server/actions/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { AuthForm } from "../_components/forms/auth-form";
-import { AuthCard } from "../_components/layout/auth-card";
+import { SignupForm } from "../_components/forms/signup-form";
 import { useAuthAction } from "../_hooks/use-auth-action";
 
-export default function SignUpForm() {
+export default function SignUpPage() {
     const [state, action] = useAuthAction(async (formData) => {
         const result = await signUp(formData);
 
@@ -36,15 +35,8 @@ export default function SignUpForm() {
     }, [state, router]);
 
     return (
-        <AuthCard
-            title="Create an account"
-            description="Enter your details to create an account"
-            alternateText="Already have an account?"
-            linkText="Log in"
-            linkHref="/log-in"
-        >
-            <AuthForm
-                mode="signup"
+        <div className="flex min-h-screen items-center justify-center">
+            <SignupForm
                 action={action}
                 initialError={
                     state?.field === "email"
@@ -52,6 +44,6 @@ export default function SignUpForm() {
                         : null
                 }
             />
-        </AuthCard>
+        </div>
     );
 }
