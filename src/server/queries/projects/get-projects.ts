@@ -16,7 +16,7 @@
 import "server-only";
 
 import { tryCatch } from "@/lib/utils/try-catch";
-import { db } from "@/server/db/db";
+import { db } from "@/server/db";
 
 const getProjects = async () => {
     const { data: rawProjects, error } = await tryCatch(db.project.findMany());
@@ -34,7 +34,7 @@ const getProjects = async () => {
         dateStarted: project.dateStarted,
         createdAt: project.createdAt,
         materialsEngineer: project.materialsEngineer,
-        contract_cost: project.contract_cost.toNumber(), // Convert Decimal to number
+        contract_cost: project.contractCost.toNumber(), // Convert Decimal to number
         // Include any other properties that need to be transformed
     }));
 

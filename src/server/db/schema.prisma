@@ -31,7 +31,7 @@ model Project {
   dateStarted       DateTime          @map("date_started") @db.Date
   createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   materialsEngineer String            @map("materials_engineer")
-  contract_cost     Decimal
+  contractCost      Decimal           @map("contract_cost")
   projectWorkItem   ProjectWorkItem[]
 
   @@map("project")

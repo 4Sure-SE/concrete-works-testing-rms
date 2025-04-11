@@ -6,7 +6,7 @@ import {
 } from "@/lib/definitions/project";
 import { formatDate, tryCatch } from "@/lib/utils";
 import { errorHandler } from "@/lib/utils/error-handler";
-import { db } from "@/server/db/db";
+import { db } from "@/server/db";
 import { revalidatePath } from "next/cache";
 
 export async function addProject(
@@ -43,7 +43,7 @@ export async function addProject(
             data: {
                 ...parsedData,
                 dateStarted: new Date(parsedData.dateStarted), // convert date string to a date object
-                contract_cost: 0,
+                contractCost: 0,
             },
         }),
     );

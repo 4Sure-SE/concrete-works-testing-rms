@@ -1,7 +1,7 @@
 "use server";
 
 import { tryCatch } from "@/lib/utils/try-catch";
-import { db } from "@/server/db/db";
+import { db } from "@/server/db";
 
 const updateProjectMaterialTestOnFile = async (
     id: string | undefined,

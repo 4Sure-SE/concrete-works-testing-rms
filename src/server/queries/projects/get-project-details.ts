@@ -2,7 +2,7 @@ import "server-only";
 
 import type { Project } from "@/app/(main)/_components/project-details/interface";
 import { tryCatch } from "@/lib/utils/try-catch";
-import { db } from "@/server/db/db";
+import { db } from "@/server/db";
 
 const getProjectDetails = async (projectId: string) => {
     const { data: rawProject, error } = await tryCatch(
@@ -57,7 +57,7 @@ const getProjectDetails = async (projectId: string) => {
         limits: rawProject.limits,
         location: rawProject.location,
         materialsEngineer: rawProject.materialsEngineer,
-        contractCost: rawProject.contract_cost.toNumber(),
+        contractCost: rawProject.contractCost.toNumber(),
         projectWorkItem: rawProject.projectWorkItem?.map((pwi) => ({
             id: pwi.workItem.id,
             itemNo: pwi.workItem.itemNo,
