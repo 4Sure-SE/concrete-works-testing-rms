@@ -28,10 +28,12 @@ export function UpdateProjectTest(
                                     : material.quantity / unitsPerTest;
                             const rawBalance =
                                 estimatedRequiredTests - newTestsOnFile;
-                            const balance =
+                            const balance = Math.max(
                                 rawBalance < 1
                                     ? Math.ceil(rawBalance)
-                                    : Math.round(rawBalance);
+                                    : Math.round(rawBalance),
+                                0,
+                            );
 
                             return {
                                 ...materialTest,
@@ -52,7 +54,10 @@ export function UpdateProjectTest(
                         return {
                             ...pjwit,
                             testsOnFile: newTestsOnFile,
-                            balance: requiredTests - newTestsOnFile,
+                            balance: Math.max(
+                                requiredTests - newTestsOnFile,
+                                0,
+                            ),
                         };
                     }
                     return pjwit;
