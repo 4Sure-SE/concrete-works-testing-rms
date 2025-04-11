@@ -8,174 +8,158 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model MaterialTests {
-  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  materialId   String    @map("material_id") @db.Uuid
-  testId       String    @map("test_id") @db.Uuid
-  testsPerUnit Decimal   @map("tests_per_unit") @db.Decimal(10, 4)
-  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  materials    Materials @relation(fields: [materialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  tests        Tests     @relation(fields: [testId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@unique([materialId, testId])
-  @@map("material_tests")
-}
-
-model Materials {
-  id                String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name              String              @db.VarChar(225)
-  description       String?             @db.VarChar(500)
-  unitId            String              @map("unit_id") @db.Uuid
-  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
-  materialTests     MaterialTests[]
-  units             Units               @relation(fields: [unitId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  projectMaterials  ProjectMaterials[]
-  workItemMaterials WorkItemMaterials[]
-
-  @@map("materials")
-}
-
-model ProjectMaterialTests {
-  id                String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  testId            String           @map("test_id") @db.Uuid
-  projectMaterialId String           @map("project_material_id") @db.Uuid
-  onFile            Int              @default(0) @map("on_file")
-  balance           Int
-  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
-  projectMaterials  ProjectMaterials @relation(fields: [projectMaterialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  tests             Tests            @relation(fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@map("project_material_tests")
-}
-
-model ProjectMaterials {
-  id                   String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  projectWorkItemId    String                 @map("project_work_item_id") @db.Uuid
-  materialId           String                 @map("material_id") @db.Uuid
-  quantity             Decimal                @db.Decimal(10, 2)
-  createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
-  projectMaterialTests ProjectMaterialTests[]
-  materials            Materials              @relation(fields: [materialId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  projectWorkItems     ProjectWorkItems       @relation(fields: [projectWorkItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@map("project_materials")
-}
-
-model ProjectWorkItemTests {
-  id                String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  testId            String           @map("test_id") @db.Uuid
-  projectWorkItemId String           @map("project_work_item_id") @db.Uuid
-  onFile            Int              @default(0) @map("on_file")
-  balance           Int
-  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
-  projectWorkItems  ProjectWorkItems @relation(fields: [projectWorkItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  tests             Tests            @relation(fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@map("project_work_item_tests")
-}
-
-model ProjectWorkItems {
-  id                   String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  projectId            String                 @map("project_id") @db.Uuid
-  workItemId           String                 @map("work_item_id") @db.Uuid
-  quantity             Decimal                @db.Decimal(10, 2)
-  createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
-  projectMaterials     ProjectMaterials[]
-  projectWorkItemTests ProjectWorkItemTests[]
-  projects             Projects               @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  workItems            WorkItems              @relation(fields: [workItemId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@map("project_work_items")
-}
-
-model Projects {
-  id               String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  contractId       String             @map("contract_id") @db.VarChar(225)
-  contractName     String             @map("contract_name") @db.VarChar(500)
-  contractor       String             @db.VarChar(225)
-  limits           String?            @db.VarChar(500)
-  location         String?            @db.VarChar(225)
-  dateStarted      DateTime           @map("date_started") @db.Date
+model Material {
+  id               String             @id(map: "materials_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name             String
+  description      String?
+  unitId           String             @map("unit_id") @db.Uuid
   createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
-  projectWorkItems ProjectWorkItems[]
+  unit             Unit               @relation(fields: [unitId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "materials_unit_id_fkey")
+  projectMaterial  ProjectMaterial[]
+  workItemMaterial WorkItemMaterial[]
 
-  @@map("projects")
+  @@map("material")
 }
 
-model Tests {
-  id                   String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name                 String                 @unique @db.VarChar(225)
+model Project {
+  id                String            @id(map: "projects_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  contractId        String            @unique @map("contract_id")
+  contractName      String            @map("contract_name")
+  contractor        String
+  limits            String?
+  location          String?
+  dateStarted       DateTime          @map("date_started") @db.Date
+  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  materialsEngineer String            @map("materials_engineer")
+  projectWorkItem   ProjectWorkItem[]
+
+  @@map("project")
+}
+
+model ProjectMaterial {
+  id                  String                @id(map: "project_materials_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  projectWorkItemId   String                @map("project_work_item_id") @db.Uuid
+  materialId          String                @map("material_id") @db.Uuid
+  quantity            Decimal               @db.Decimal(10, 2)
+  createdAt           DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  material            Material              @relation(fields: [materialId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "project_materials_material_id_fkey")
+  projectWorkItem     ProjectWorkItem       @relation(fields: [projectWorkItemId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "project_materials_project_work_item_id_fkey")
+  projectMaterialTest ProjectMaterialTest[]
+
+  @@map("project_material")
+}
+
+model ProjectMaterialTest {
+  id                String          @id(map: "project_material_tests_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  testId            String          @map("test_id") @db.Uuid
+  projectMaterialId String          @map("project_material_id") @db.Uuid
+  onFile            Int             @default(0) @map("on_file")
+  createdAt         DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectMaterial   ProjectMaterial @relation(fields: [projectMaterialId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "project_material_tests_project_material_id_fkey")
+  test              Test            @relation(fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "project_material_tests_test_id_fkey")
+
+  @@map("project_material_test")
+}
+
+model ProjectWorkItem {
+  id                  String                @id(map: "project_work_items_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  projectId           String                @map("project_id") @db.Uuid
+  workItemId          String                @map("work_item_id") @db.Uuid
+  quantity            Decimal               @db.Decimal(10, 2)
+  createdAt           DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectMaterial     ProjectMaterial[]
+  project             Project               @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "project_work_items_project_id_fkey")
+  workItem            WorkItem              @relation(fields: [workItemId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "project_work_items_work_item_id_fkey")
+  projectWorkItemTest ProjectWorkItemTest[]
+
+  @@map("project_work_item")
+}
+
+model ProjectWorkItemTest {
+  id                String          @id(map: "project_work_item_tests_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  testId            String          @map("test_id") @db.Uuid
+  projectWorkItemId String          @map("project_work_item_id") @db.Uuid
+  onFile            Int             @default(0) @map("on_file")
+  createdAt         DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectWorkItem   ProjectWorkItem @relation(fields: [projectWorkItemId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "project_work_item_tests_project_work_item_id_fkey")
+  test              Test            @relation(fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "project_work_item_tests_test_id_fkey")
+
+  @@map("project_work_item_test")
+}
+
+model Test {
+  id                   String                 @id(map: "tests_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name                 String                 @unique(map: "tests_name_key")
   createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
-  materialTests        MaterialTests[]
-  projectMaterialTests ProjectMaterialTests[]
-  projectWorkItemTests ProjectWorkItemTests[]
-  workItemTests        WorkItemTests[]
+  projectMaterialTest  ProjectMaterialTest[]
+  projectWorkItemTest  ProjectWorkItemTest[]
+  workItemMaterialTest WorkItemMaterialTest[]
+  workItemTest         WorkItemTest[]
 
-  @@map("tests")
+  @@map("test")
 }
 
-model Units {
-  id           String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name         String      @unique @db.VarChar(50)
-  abbreviation String      @unique @db.VarChar(50)
-  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
-  materials    Materials[]
-  workItems    WorkItems[]
+model Unit {
+  id           String     @id(map: "units_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name         String     @unique(map: "units_name_key")
+  abbreviation String     @unique(map: "units_abbreviation_key")
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  material     Material[]
+  workItem     WorkItem[]
 
-  @@map("units")
+  @@map("unit")
 }
 
-model WorkItemMaterials {
-  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  workItemId      String    @map("work_item_id") @db.Uuid
-  materialId      String    @map("material_id") @db.Uuid
-  quantityPerUnit Decimal   @map("quantity_per_unit") @db.Decimal(10, 6)
-  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  materials       Materials @relation(fields: [materialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  workItems       WorkItems @relation(fields: [workItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+model WorkItem {
+  id               String             @id(map: "work_items_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  itemNo           String             @unique(map: "work_items_item_no_key") @map("item_no")
+  description      String?
+  unitId           String             @map("unit_id") @db.Uuid
+  createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectWorkItem  ProjectWorkItem[]
+  unit             Unit               @relation(fields: [unitId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "work_items_unit_id_fkey")
+  workItemMaterial WorkItemMaterial[]
+  workItemTest     WorkItemTest[]
 
-  @@unique([workItemId, materialId])
-  @@map("work_item_materials")
+  @@map("work_item")
 }
 
-model WorkItemTests {
-  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  workItemId   String    @map("work_item_id") @db.Uuid
-  testId       String    @map("test_id") @db.Uuid
-  testsPerUnit Decimal   @map("tests_per_unit") @db.Decimal(10, 4)
-  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  tests        Tests     @relation(fields: [testId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  workItems    WorkItems @relation(fields: [workItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+model WorkItemMaterial {
+  id                   String                 @id(map: "work_item_materials_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  workItemId           String                 @map("work_item_id") @db.Uuid
+  materialId           String                 @map("material_id") @db.Uuid
+  quantityPerUnit      Decimal                @map("quantity_per_unit") @db.Decimal(10, 6)
+  createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  material             Material               @relation(fields: [materialId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "work_item_materials_material_id_fkey")
+  workItem             WorkItem               @relation(fields: [workItemId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "work_item_materials_work_item_id_fkey")
+  workItemMaterialTest WorkItemMaterialTest[]
 
-  @@unique([workItemId, testId])
-  @@map("work_item_tests")
+  @@unique([workItemId, materialId], map: "work_item_materials_work_item_id_material_id_key")
+  @@map("work_item_material")
 }
 
-model WorkItems {
-  id                String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  itemNo            String              @unique @map("item_no") @db.VarChar(20)
-  description       String?             @db.VarChar(500)
-  unitId            String              @map("unit_id") @db.Uuid
-  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
-  projectWorkItems  ProjectWorkItems[]
-  workItemMaterials WorkItemMaterials[]
-  workItemTests     WorkItemTests[]
-  units             Units               @relation(fields: [unitId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+model WorkItemMaterialTest {
+  id                 String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  workItemMaterialId String           @map("work_item_material_id") @db.Uuid
+  testId             String           @map("test_id") @db.Uuid
+  unitsPerTest       Decimal          @map("units_per_test") @db.Decimal(16, 6)
+  createdAt          DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  test               Test             @relation(fields: [testId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  workItemMaterial   WorkItemMaterial @relation(fields: [workItemMaterialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@map("work_items")
+  @@unique([workItemMaterialId, testId])
+  @@map("work_item_material_test")
 }
 
-enum TestStatus {
-  NOT_STARTED @map("not_started")
-  ONGOING     @map("ongoing")
-  COMPLETED   @map("completed")
+model WorkItemTest {
+  id           String   @id(map: "work_item_tests_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  workItemId   String   @map("work_item_id") @db.Uuid
+  testId       String   @map("test_id") @db.Uuid
+  testQuantity Decimal  @map("test_quantity") @db.Decimal
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  test         Test     @relation(fields: [testId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "work_item_tests_test_id_fkey")
+  workItem     WorkItem @relation(fields: [workItemId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "work_item_tests_work_item_id_fkey")
 
-  @@map("test_status")
-}
-
-enum TestType {
-  WORK_ITEM @map("work_item")
-  MATERIAL  @map("material")
-
-  @@map("test_type")
+  @@unique([workItemId, testId], map: "work_item_tests_work_item_id_test_id_key")
+  @@map("work_item_test")
 }

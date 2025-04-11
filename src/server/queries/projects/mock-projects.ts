@@ -1,6 +1,6 @@
-import type { Projects } from "@prisma/client";
+import type { Project } from "@prisma/client";
 
-const mockProjects: Projects[] = [
+const mockProjects: Project[] = [
     {
         id: "1",
         contractId: "CC-001",
@@ -10,6 +10,7 @@ const mockProjects: Projects[] = [
         location: null,
         dateStarted: new Date(),
         createdAt: new Date(),
+        materialsEngineer: "John John",
     },
     {
         id: "2",
@@ -20,6 +21,7 @@ const mockProjects: Projects[] = [
         location: null,
         dateStarted: new Date(),
         createdAt: new Date(),
+        materialsEngineer: "John Mark",
     },
     {
         id: "3",
@@ -30,6 +32,7 @@ const mockProjects: Projects[] = [
         location: null,
         dateStarted: new Date(),
         createdAt: new Date(),
+        materialsEngineer: "John Doe",
     },
     {
         id: "4",
@@ -40,6 +43,7 @@ const mockProjects: Projects[] = [
         location: null,
         dateStarted: new Date(),
         createdAt: new Date(),
+        materialsEngineer: "John Cena",
     },
 ];
 

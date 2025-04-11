@@ -6,19 +6,19 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar";
-import type { Projects } from "@prisma/client";
+import type { Project } from "@prisma/client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 type NavProjectItemProps = {
-    data: Projects;
+    data: Project;
 };
 
 function NavProjectItem({ data: project }: NavProjectItemProps) {
     const pathname = usePathname();
     const { open: sidebarOpen } = useSidebar();
 
-    const isActive = pathname.startsWith(`/projects/${project.id}`);
+    const isActive = pathname === `/projects/${project.contractId}`;
     const initials = project.contractId.substring(0, 2);
 
     return (
@@ -31,7 +31,7 @@ function NavProjectItem({ data: project }: NavProjectItemProps) {
             >
                 {/* navigate to the details page of the project when clicked */}
                 <Link
-                    href={`/projects/${project.id}`}
+                    href={`/projects/${project.contractId}`}
                     className={`flex items-center ${!sidebarOpen ? "justify-center" : ""}`}
                 >
                     <Avatar
