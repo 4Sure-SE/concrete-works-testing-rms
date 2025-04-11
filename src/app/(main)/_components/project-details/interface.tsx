@@ -41,6 +41,7 @@ interface Project {
     limits: string | null;
     location: string | null;
     materialsEngineer: string;
+    contractCost: number;
     projectWorkItem?: ProjectWorkItem[];
 }
 

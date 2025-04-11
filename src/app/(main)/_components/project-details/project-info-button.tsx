@@ -13,6 +13,7 @@ import {
     HardHat,
     Info,
     MapPinned,
+    PhilippinePeso,
     TriangleAlert,
 } from "lucide-react";
 import { useState } from "react";
@@ -87,6 +88,22 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                     {!project.contractor
                                         ? "N/A"
                                         : project.contractor}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex w-auto items-center gap-2">
+                            <div className="flex-col">
+                                <div className="flex flex-row items-center">
+                                    <PhilippinePeso className="h-5 w-5" />
+                                    <span className="ml-2 font-bold whitespace-nowrap">
+                                        Contract Cost
+                                    </span>
+                                </div>
+                                <p className="flex-1 truncate pl-7 text-wrap">
+                                    {!project.contractCost
+                                        ? "N/A"
+                                        : project.contractCost}
                                 </p>
                             </div>
                         </div>

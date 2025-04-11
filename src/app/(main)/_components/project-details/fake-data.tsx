@@ -8,6 +8,7 @@ const fakeProjectsData: Project = {
     limits: "Downtown to West End",
     location: "New York, NY",
     materialsEngineer: "Genesis Bugna",
+    contractCost: 10000,
     projectWorkItem: [
         {
             id: "WI-001",
@@ -92,6 +93,7 @@ export const fakeLongContractDetails = {
         "Springfield Metropolitan Area, including North Springfield District, East Springfield Township, and parts of the Springfield Valley Special Economic Zone",
     materialsEngineer:
         "Dr. Johnathan Michael Doe, PhD in Civil Engineering with specialization in Materials Science, Senior Materials Engineer (License #ME-123456789)",
+    contractCost: 10000,
     projectWorkItem: [],
 };
 export const fakeEmptyContractDetails = {
@@ -102,6 +104,7 @@ export const fakeEmptyContractDetails = {
     limits: "",
     location: "",
     materialsEngineer: "",
+    contractCost: 0,
     projectWorkItem: [],
 };
 
@@ -113,5 +116,6 @@ export const fakeEmptyProjectDetails = {
     limits: "Downtown to West End",
     location: "New York, NY",
     materialsEngineer: "Genesis Bugna",
+    contractCost: 8880,
     ProjectWorkItem: [],
 };

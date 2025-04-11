@@ -43,6 +43,7 @@ export async function addProject(
             data: {
                 ...parsedData,
                 dateStarted: new Date(parsedData.dateStarted), // convert date string to a date object
+                contract_cost: 0,
             },
         }),
     );

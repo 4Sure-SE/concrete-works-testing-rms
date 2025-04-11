@@ -1,4 +1,5 @@
 import type { Project } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
 
 const mockProjects: Project[] = [
     {
@@ -11,6 +12,7 @@ const mockProjects: Project[] = [
         dateStarted: new Date(),
         createdAt: new Date(),
         materialsEngineer: "John John",
+        contract_cost: Decimal(10),
     },
     {
         id: "2",
@@ -22,6 +24,7 @@ const mockProjects: Project[] = [
         dateStarted: new Date(),
         createdAt: new Date(),
         materialsEngineer: "John Mark",
+        contract_cost: Decimal(10),
     },
     {
         id: "3",
@@ -33,6 +36,7 @@ const mockProjects: Project[] = [
         dateStarted: new Date(),
         createdAt: new Date(),
         materialsEngineer: "John Doe",
+        contract_cost: Decimal(10),
     },
     {
         id: "4",
@@ -44,6 +48,7 @@ const mockProjects: Project[] = [
         dateStarted: new Date(),
         createdAt: new Date(),
         materialsEngineer: "John Cena",
+        contract_cost: Decimal(10),
     },
 ];
 

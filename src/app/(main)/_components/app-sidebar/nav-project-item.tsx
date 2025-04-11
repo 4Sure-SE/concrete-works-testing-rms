@@ -6,12 +6,24 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar";
-import type { Project } from "@prisma/client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+type ProjectData = {
+    id: string;
+    createdAt: Date;
+    contractId: string;
+    contractName: string;
+    contractor: string;
+    limits: string | null;
+    location: string | null;
+    dateStarted: Date;
+    materialsEngineer: string;
+    contract_cost: number;
+};
+
 type NavProjectItemProps = {
-    data: Project;
+    data: ProjectData;
 };
 
 function NavProjectItem({ data: project }: NavProjectItemProps) {

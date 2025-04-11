@@ -57,6 +57,7 @@ const getProjectDetails = async (projectId: string) => {
         limits: rawProject.limits,
         location: rawProject.location,
         materialsEngineer: rawProject.materialsEngineer,
+        contractCost: rawProject.contract_cost.toNumber(),
         projectWorkItem: rawProject.projectWorkItem?.map((pwi) => ({
             id: pwi.workItem.id,
             itemNo: pwi.workItem.itemNo,

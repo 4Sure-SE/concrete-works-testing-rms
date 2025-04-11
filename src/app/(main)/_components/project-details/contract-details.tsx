@@ -32,6 +32,16 @@ export default function ProjectContractDetails({
                         {project.contractor === "" ? "N/A" : project.contractor}
                     </p>
                 </div>
+                <div className="mt-4 flex w-auto flex-row gap-2">
+                    <span className="font-medium whitespace-nowrap text-gray-800">
+                        Contract Cost:
+                    </span>{" "}
+                    <p className="text-gray-7000 flex-1 truncate font-medium text-wrap">
+                        {project.contractCost === 0
+                            ? "N/A"
+                            : project.contractCost}
+                    </p>
+                </div>
             </div>
         </div>
     );
