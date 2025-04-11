@@ -39,7 +39,14 @@ export default function ProjectContractDetails({
                     <p className="text-gray-7000 flex-1 truncate font-medium text-wrap">
                         {project.contractCost === 0
                             ? "N/A"
-                            : project.contractCost}
+                            : new Intl.NumberFormat("en-PH", {
+                                  style: "currency",
+                                  currency: "PHP",
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 2,
+                              }).format(
+                                  Number(project.contractCost.toFixed(2)),
+                              )}
                     </p>
                 </div>
             </div>

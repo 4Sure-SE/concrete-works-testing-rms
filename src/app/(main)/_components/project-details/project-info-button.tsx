@@ -36,7 +36,7 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                 open={isDetailsOpen}
                 onOpenChange={setIsDetailsOpen}
             >
-                <DialogContent className="h-125">
+                <DialogContent className="h-140">
                     <DialogHeader className="flex justify-center px-4 py-1">
                         <DialogTitle>Project Details</DialogTitle>
                     </DialogHeader>
@@ -103,7 +103,18 @@ export default function ProjectInfoButton({ project }: { project: Project }) {
                                 <p className="flex-1 truncate pl-7 text-wrap">
                                     {!project.contractCost
                                         ? "N/A"
-                                        : project.contractCost}
+                                        : new Intl.NumberFormat("en-PH", {
+                                              style: "currency",
+                                              currency: "PHP",
+                                              minimumFractionDigits: 0,
+                                              maximumFractionDigits: 2,
+                                          }).format(
+                                              Number(
+                                                  project.contractCost.toFixed(
+                                                      2,
+                                                  ),
+                                              ),
+                                          )}
                                 </p>
                             </div>
                         </div>
