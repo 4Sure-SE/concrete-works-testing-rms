@@ -1,9 +1,9 @@
 import { getProjectDetails } from "@/server/queries";
+import { FolderOpen } from "lucide-react";
 import { validate as uuidValidate } from "uuid";
 import ProjectDetailsActionButtons from "../../_components/project-details/action-buttons";
 import ProjectContractDetails from "../../_components/project-details/contract-details";
 import ProjectDetailsTable from "../../_components/project-details/table";
-
 export default async function ProjectDetailsPage({
     params,
 }: {
@@ -16,12 +16,24 @@ export default async function ProjectDetailsPage({
 
     if (!uuidValidate(id)) {
         return (
-            <div className="text-red-500">Error: Invalid project ID format</div>
+            <div className="flex h-full w-full flex-col items-center justify-center">
+                <FolderOpen className="h-15 w-15"></FolderOpen>
+                <div className="p-4 text-lg font-medium">
+                    Project Details not Found
+                </div>
+            </div>
         );
     }
 
     if (error || !project) {
-        return <div className="text-red-500">Failed to load project data.</div>;
+        return (
+            <div className="flex h-full w-full flex-col items-center justify-center">
+                <FolderOpen className="h-15 w-15"></FolderOpen>
+                <div className="p-4 text-lg font-medium">
+                    Project Details not Found
+                </div>
+            </div>
+        );
     }
     return (
         <div>
