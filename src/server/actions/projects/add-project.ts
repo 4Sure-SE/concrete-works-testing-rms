@@ -6,7 +6,7 @@ import {
 } from "@/lib/definitions/project";
 import { formatDate, tryCatch } from "@/lib/utils";
 import { errorHandler } from "@/lib/utils/error-handler";
-import { db } from "@/server/db";
+import { db } from "@/server/db/";
 import { revalidatePath } from "next/cache";
 
 export async function addProject(
