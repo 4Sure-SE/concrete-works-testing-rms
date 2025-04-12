@@ -1,0 +1,20 @@
+[
+    {
+        "id": "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
+        "itemNo": "Item 311",
+        "description": "Portland Cement Concrete Pavement",
+        "unitId": "3391f2ef-e732-4ca5-ab9e-cb84c81229f1"
+    },
+    {
+        "id": "c703b5c9-8988-4913-a2f7-16b9b612ba34",
+        "itemNo": "Item 405",
+        "description": "Structural Concrete",
+        "unitId": "8d836ac5-5b7b-415e-8e90-31dab33da3d7"
+    },
+    {
+        "id": "8c77efe6-9312-43d1-a7f6-1d065fda0acb",
+        "itemNo": "Item 900",
+        "description": "Reinforced Concrete",
+        "unitId": "8d836ac5-5b7b-415e-8e90-31dab33da3d7"
+    }
+]
