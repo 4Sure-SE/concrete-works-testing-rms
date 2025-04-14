@@ -54,6 +54,7 @@ async function main() {
     });
 
     const { error } = await tryCatch(
+        // use a transaction so that when one fails, the whole operation fails as well
         prisma.$transaction([
             seedUnits,
             seedMaterials,

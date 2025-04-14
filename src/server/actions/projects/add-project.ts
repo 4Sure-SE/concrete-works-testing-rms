@@ -1,18 +1,19 @@
 "use server";
 
-import {
-    type ProjectActionState,
-    projectFormSchema,
-} from "@/lib/definitions/project";
-import { formatDate, tryCatch } from "@/lib/utils";
+import { createProjectSchema } from "@/app/(main)/projects/new/_components/project-form";
+import type {
+    CreateProjectInitialState,
+    CreateProjectReturnState,
+} from "@/lib/types/project/project.types";
+import { tryCatch } from "@/lib/utils";
 import { errorHandler } from "@/lib/utils/error-handler";
-import { db } from "@/server/db/db";
+import { ProjectService } from "@/server/services/project.service";
 import { revalidatePath } from "next/cache";
 
 export async function addProject(
-    _initialState: ProjectActionState,
+    _initialState: CreateProjectInitialState,
     formData: FormData,
-): Promise<ProjectActionState> {
+): Promise<CreateProjectReturnState> {
     // make an object from the received form data
     const formDataObj = Object.fromEntries(formData.entries());
 
@@ -21,30 +22,19 @@ export async function addProject(
         data: parsedData,
         error: parseError,
         success: parseSuccess,
-    } = projectFormSchema.safeParse(formDataObj);
+    } = createProjectSchema.safeParse(formDataObj);
 
     // if it has errors return an object with the error message of each field
     if (!parseSuccess) {
-        // const errors: ProjectActionErrors = {};
-
-        // for (const { path, message } of parseError?.issues || []) {
-        //     errors[path.join(".") as keyof ProjectActionErrors] = message;
-        // }
-
         return {
             data: null,
             error: parseError.flatten().fieldErrors,
         };
     }
 
-    // add the project data to the db
+    // create a new projec with the parsed data
     const { data, error } = await tryCatch(
-        db.project.create({
-            data: {
-                ...parsedData,
-                dateStarted: new Date(parsedData.dateStarted), // convert date string to a date object
-            },
-        }),
+        ProjectService.createNewProject(parsedData),
     );
 
     // if there's an error in creating the project in the db
@@ -54,15 +44,11 @@ export async function addProject(
         return { data: null, error: { general: [errorMsg] } };
     }
 
+    // refetch projects on the /projects route
     revalidatePath("/projects");
 
     return {
-        data: {
-            ...data,
-            dateStarted: formatDate(data.dateStarted) ?? "",
-            location: data.location ?? undefined,
-            limits: data.limits ?? undefined,
-        },
+        data,
         error: null,
     };
 }

@@ -1,11 +1,16 @@
 import { SidebarMenu } from "@/components/ui/sidebar";
-import { getProjects } from "@/server/queries/";
-import { EmptyProjectsMessage } from "./empty-projects-message";
+import { ProjectService } from "@/server/services/project.service";
+import { EmptyProjectListMessage } from "./empty-project-list-message";
 import NavProjectItem from "./nav-project-item";
 
 // server component to fetch projects then pass down project data to client component
-async function NavProjects() {
-    const { data: projects } = await getProjects();
+async function NavProjectList() {
+    // display the last five projects only
+    const projects = await ProjectService.getLastFiveProjectSummaryList();
+
+    if (!projects) {
+        return null;
+    }
 
     return (
         <SidebarMenu>
@@ -17,10 +22,10 @@ async function NavProjects() {
                     />
                 ))
             ) : (
-                <EmptyProjectsMessage />
+                <EmptyProjectListMessage />
             )}
         </SidebarMenu>
     );
 }
 
-export default NavProjects;
+export default NavProjectList;
