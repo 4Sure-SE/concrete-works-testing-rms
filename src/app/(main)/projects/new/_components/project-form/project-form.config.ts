@@ -1,11 +1,18 @@
-import { formatDate } from "@/lib/utils";
-import type { FieldConfig, FormField } from "../form.types";
-import type { ProjectFormData } from "./project.types";
+import type { FieldConfig, FormField } from "@/lib/types/form.types";
+import type { CreateProjectDTO } from "@/lib/types/project";
+
+// grid layout of the form
+export const formLayout = [
+    ["contractId", "contractName"],
+    ["contractor", "location"],
+    ["dateStarted", "materialsEngineer"],
+    ["limits", "contractCost"],
+] as const;
 
 // field details of the project form
 export const projectFormConfig: Record<
-    FormField<ProjectFormData>,
-    FieldConfig<ProjectFormData>
+    FormField<CreateProjectDTO>,
+    FieldConfig<CreateProjectDTO>
 > = {
     contractId: {
         name: "contractId",
@@ -37,7 +44,7 @@ export const projectFormConfig: Record<
         label: "Date Started",
         placeholder: "Select date",
         type: "date",
-        default: formatDate(new Date()) ?? "",
+        default: new Date(),
     },
     materialsEngineer: {
         name: "materialsEngineer",
@@ -53,15 +60,22 @@ export const projectFormConfig: Record<
         default: "",
         isOptional: true,
     },
+    contractCost: {
+        name: "contractCost",
+        label: "Contract Cost",
+        placeholder: "Enter contract cost",
+        type: "number",
+        default: 0,
+    },
 } as const;
 
 // generate an object of default values
-export function getDefaultValues(): ProjectFormData {
+export function getDefaultValues(): CreateProjectDTO {
     return Object.entries(projectFormConfig).reduce(
         (values, [key, config]) => {
-            values[key as FormField<ProjectFormData>] = config.default ?? "";
+            values[key as FormField<CreateProjectDTO>] = config.default ?? "";
             return values;
         },
-        {} as Record<FormField<ProjectFormData>, string>,
-    ) as ProjectFormData;
+        {} as Record<FormField<CreateProjectDTO>, unknown>,
+    ) as CreateProjectDTO;
 }

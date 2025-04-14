@@ -1,12 +1,9 @@
-import {
-    getDefaultValues,
-    type ProjectActionState,
-} from "@/lib/definitions/project";
-import { addProject } from "@/server/actions/projects/";
-import { ProjectForm } from "../../_components/project-form/";
+import type { CreateProjectInitialState } from "@/lib/types/project/project.types";
+import { addProject } from "@/server/actions/projects";
+import { getDefaultValues, ProjectForm } from "./_components/project-form";
 
 export default function NewProjectPage() {
-    const newProjectInitialState: ProjectActionState = {
+    const newProjectInitialState: CreateProjectInitialState = {
         data: getDefaultValues(),
         error: null,
     };

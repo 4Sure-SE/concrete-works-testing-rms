@@ -3,7 +3,7 @@
 import { SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { FolderOpen } from "lucide-react";
 
-export function EmptyProjectsMessage() {
+export function EmptyProjectListMessage() {
     const { open: sidebarOpen } = useSidebar();
 
     if (!sidebarOpen) {

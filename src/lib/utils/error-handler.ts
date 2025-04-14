@@ -1,4 +1,4 @@
-import type { CustomError } from "@/lib/definitions/custom-error";
+import type { CustomError } from "@/lib/types/custom-error";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
@@ -45,7 +45,6 @@ const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
         statusCode: statusCode,
     };
 };
-
 export function errorHandler(error: Error): CustomError {
     console.error("caught error:", error);
 

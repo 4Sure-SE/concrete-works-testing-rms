@@ -3,14 +3,14 @@
 import FormRow from "@/components/custom/form-row";
 import { Button } from "@/components/ui/button";
 import { Form as UIForm } from "@/components/ui/form";
-import { type Callbacks } from "@/lib/definitions/actions.types";
-import {
-    type ProjectActionErrors,
-    type ProjectActionState,
-    projectFormConfig,
-    type ProjectFormData,
-    projectFormSchema,
-} from "@/lib/definitions/project/";
+import { type Callbacks } from "@/lib/types/actions.types";
+import { type CreateProjectDTO } from "@/lib/types/project";
+import type {
+    CreateProjectInitialState,
+    CreateProjectReturnState,
+    ProjectActionErrors,
+    ProjectDTO,
+} from "@/lib/types/project/project.types";
 import { withCallbacks } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
@@ -19,21 +19,15 @@ import { useRouter } from "next/navigation";
 import { useActionState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import ProjectFormField from "./project-form-field";
-
-// grid layout of the form
-const formLayout = [
-    ["contractId", "contractName"],
-    ["contractor", "location"],
-    ["dateStarted", "materialsEngineer"],
-    ["limits"],
-] as const;
+import { formLayout, projectFormConfig } from "./project-form.config";
+import { createProjectSchema } from "./project-form.schema";
 
 interface ProjectFormProps {
     action: (
-        initialState: ProjectActionState,
+        initialState: CreateProjectInitialState,
         formData: FormData,
-    ) => Promise<ProjectActionState>;
-    initialState: ProjectActionState;
+    ) => Promise<CreateProjectReturnState>;
+    initialState: CreateProjectInitialState;
 }
 
 export default function ProjectForm({
@@ -41,24 +35,27 @@ export default function ProjectForm({
     initialState,
 }: ProjectFormProps) {
     // server action callbacks on success or error
-    const callbacks: Callbacks<ProjectFormData, ProjectActionErrors> = {
+    const callbacks: Callbacks<ProjectDTO, ProjectActionErrors> = {
+        // on server action success
         onSuccess: (data) => {
-            router.push(`/projects/${data?.contractId}`);
+            router.push(`/projects/${data?.id}`);
         },
+        // on server action error
         onError: (error) => {
             console.warn(error);
         },
     };
 
     const [actionState, submitAction, isPending] = useActionState<
-        ProjectActionState,
+        CreateProjectInitialState,
         FormData
     >(withCallbacks(action, callbacks), initialState);
+
     const [, startTransition] = useTransition();
     const router = useRouter();
 
-    const form = useForm<ProjectFormData>({
-        resolver: zodResolver(projectFormSchema),
+    const form = useForm<CreateProjectDTO>({
+        resolver: zodResolver(createProjectSchema),
         mode: "onBlur",
         defaultValues: actionState.data!,
     });

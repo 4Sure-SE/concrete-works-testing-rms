@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-// zod validation schema
-export const projectFormSchema = z.object({
+export const createProjectSchema = z.object({
     contractId: z
         .string()
         .trim()
@@ -21,14 +20,12 @@ export const projectFormSchema = z.object({
         .string()
         .trim()
         .max(100, "Location cannot exceed 100 characters")
-        .transform((val) => (val === "" ? null : val)) // transform empty string to null after parsing
-        .optional(),
-    dateStarted: z
-        .string()
-        .min(1, "Date Started is required")
-        .refine((date) => !isNaN(Date.parse(date)), {
-            message: "Please enter a valid date",
-        }),
+        .optional()
+        .nullable(),
+    dateStarted: z.coerce.date({
+        required_error: "Date Started is required",
+        invalid_type_error: "Invalid date format",
+    }),
     materialsEngineer: z
         .string()
         .trim()
@@ -38,6 +35,12 @@ export const projectFormSchema = z.object({
         .string()
         .trim()
         .max(500, "Limits cannot exceed 500 characters")
-        .transform((val) => (val === "" ? null : val))
-        .optional(),
+        .optional()
+        .nullable(),
+    contractCost: z.coerce
+        .number({
+            required_error: "Contract Cost is required",
+            invalid_type_error: "Contract Cost must be a number",
+        })
+        .positive("Contract Cost must be a positive number"),
 });

@@ -1,19 +1,22 @@
+import {
+    ProjectForm,
+    ProjectFormField,
+} from "../projects/new/_components/project-form";
 import { AppHeader } from "./app-header";
 import {
     AppSidebar,
     NavNewProject,
-    NavProjects,
-    NavProjectsSkeleton,
+    NavProjectList,
+    NavProjectListSkeleton,
     SidebarHeaderButton,
 } from "./app-sidebar";
-import { ProjectForm, ProjectFormField } from "./project-form";
 
 export {
     AppHeader,
     AppSidebar,
     NavNewProject,
-    NavProjects,
-    NavProjectsSkeleton,
+    NavProjectList,
+    NavProjectListSkeleton,
     ProjectForm,
     ProjectFormField,
     SidebarHeaderButton,
