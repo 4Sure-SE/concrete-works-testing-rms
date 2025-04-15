@@ -1,6 +1,7 @@
 "use client";
 
 import FormRow from "@/components/custom/form-row";
+import SectionHeader from "@/components/custom/section-header";
 import { Button } from "@/components/ui/button";
 import { Form as UIForm } from "@/components/ui/form";
 import { type Callbacks } from "@/lib/types/actions.types";
@@ -38,7 +39,7 @@ export default function ProjectForm({
     const callbacks: Callbacks<ProjectDTO, ProjectActionErrors> = {
         // on server action success
         onSuccess: (data) => {
-            router.push(`/projects/${data?.id}`);
+            router.push(`/projects/${data?.id}/work-items`);
         },
         // on server action error
         onError: (error) => {
@@ -62,15 +63,10 @@ export default function ProjectForm({
 
     return (
         <div className="mx-auto max-w-7xl py-2 md:py-4">
-            <div className="mb-6">
-                <h1 className="text-lg font-bold md:text-2xl">
-                    Project Information
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                    Provide information about the project
-                </p>
-            </div>
-
+            <SectionHeader
+                title="Project Information"
+                description="Provide information about the project"
+            />
             <UIForm {...form}>
                 <Form
                     action={submitAction}
@@ -83,9 +79,6 @@ export default function ProjectForm({
                         });
                     })}
                     noValidate
-                    // onSubmit={form.handleSubmit((data: ProjectFormData) => {
-                    //     formAction(data);
-                    // })}
                     className="space-y-8"
                 >
                     <div className="space-y-6">
