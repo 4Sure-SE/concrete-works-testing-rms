@@ -1,4 +1,5 @@
 import { SidebarMenu } from "@/components/ui/sidebar";
+import { tryCatch } from "@/lib/utils";
 import { ProjectService } from "@/server/services/project.service";
 import { EmptyProjectListMessage } from "./empty-project-list-message";
 import NavProjectItem from "./nav-project-item";
@@ -6,10 +7,12 @@ import NavProjectItem from "./nav-project-item";
 // server component to fetch projects then pass down project data to client component
 async function NavProjectList() {
     // display the last five projects only
-    const projects = await ProjectService.getLastFiveProjectSummaryList();
+    const { data: projects, error } = await tryCatch(
+        ProjectService.getLastFiveProjectSummaryList(),
+    );
 
-    if (!projects) {
-        return null;
+    if (error) {
+        throw error;
     }
 
     return (
