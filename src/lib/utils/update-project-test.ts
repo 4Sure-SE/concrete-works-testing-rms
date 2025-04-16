@@ -1,13 +1,13 @@
-import type { Project } from "@/app/(main)/_components/project-details/interface";
+import type { Projects } from "@/app/(main)/_components/project-details/interface";
 
 export type TestUpdateType = "material" | "workItem";
 
 export function UpdateProjectTest(
-    prevProject: Project,
+    prevProject: Projects,
     id: string | undefined,
     amount: number,
     type: TestUpdateType,
-): Project {
+): Projects {
     return {
         ...prevProject,
         projectWorkItem: prevProject.projectWorkItem?.map((workItem) => {

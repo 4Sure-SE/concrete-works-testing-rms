@@ -10,14 +10,14 @@ import {
 import { UpdateProjectTest } from "@/lib/utils/update-project-test";
 import { ArchiveX } from "lucide-react";
 import { Fragment, useState } from "react";
-import type { Project } from "./interface";
+import type { Projects } from "./interface";
 import { TestCounter } from "./test-counter";
 import { TestStatus } from "./test-status";
 
 export default function ProjectworkItemsTable({
     project,
 }: {
-    project: Project;
+    project: Projects;
 }) {
     const [updatedProject, setUpdatedProject] = useState(project);
     const handleTestUpdate = (
@@ -33,7 +33,7 @@ export default function ProjectworkItemsTable({
         <div className="overflow-y-auto p-8">
             {updatedProject.projectWorkItem?.length === 0 ? (
                 <div>
-                    <div className="h-px w-full bg-gray-200"></div>
+                    {/* <div className="h-px w-full bg-gray-200"></div> */}
                     <div className="flex flex-col items-center justify-center p-30 text-base">
                         <ArchiveX className="mb-2 h-10 w-10"></ArchiveX>
                         No items of work found

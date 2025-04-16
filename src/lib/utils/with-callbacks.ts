@@ -1,4 +1,4 @@
-import type { Callbacks, Result } from "../definitions/actions.types";
+import type { Callbacks, Result } from "../types/actions.types";
 
 // wrapper for server actions to call functions on success or error
 export const withCallbacks = <Args extends unknown[], T, E>(

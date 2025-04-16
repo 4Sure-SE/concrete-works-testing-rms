@@ -6,31 +6,19 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar";
+import type { ProjectSummaryDTO } from "@/lib/types/project";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type ProjectData = {
-    id: string;
-    createdAt: Date;
-    contractId: string;
-    contractName: string;
-    contractor: string;
-    limits: string | null;
-    location: string | null;
-    dateStarted: Date;
-    materialsEngineer: string;
-    contract_cost: number;
-};
-
 type NavProjectItemProps = {
-    data: ProjectData;
+    data: ProjectSummaryDTO;
 };
 
 function NavProjectItem({ data: project }: NavProjectItemProps) {
     const pathname = usePathname();
     const { open: sidebarOpen } = useSidebar();
 
-    const isActive = pathname === `/projects/${project.contractId}`;
+    const isActive = pathname === `/projects/${project.id}`;
     const initials = project.contractId.substring(0, 2);
 
     return (
@@ -43,7 +31,7 @@ function NavProjectItem({ data: project }: NavProjectItemProps) {
             >
                 {/* navigate to the details page of the project when clicked */}
                 <Link
-                    href={`/projects/${project.contractId}`}
+                    href={`/projects/${project.id}`}
                     className={`flex items-center ${!sidebarOpen ? "justify-center" : ""}`}
                 >
                     <Avatar

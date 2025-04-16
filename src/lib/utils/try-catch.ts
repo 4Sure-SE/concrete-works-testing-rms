@@ -1,4 +1,4 @@
-import { type Result } from "../definitions/actions.types";
+import { type Result } from "../types/actions.types";
 
 export async function tryCatch<T, E = Error>(
     promise: Promise<T>,

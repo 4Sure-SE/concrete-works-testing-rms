@@ -11,8 +11,8 @@ import {
 import { Suspense } from "react";
 import {
     NavNewProject,
-    NavProjects,
-    NavProjectsSkeleton,
+    NavProjectList,
+    NavProjectListSkeleton,
     SidebarHeaderButton,
 } from ".";
 
@@ -38,8 +38,8 @@ export function AppSidebar() {
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <NavNewProject />
-                        <Suspense fallback={<NavProjectsSkeleton />}>
-                            <NavProjects />
+                        <Suspense fallback={<NavProjectListSkeleton />}>
+                            <NavProjectList />
                         </Suspense>
                     </SidebarGroupContent>
                 </SidebarGroup>

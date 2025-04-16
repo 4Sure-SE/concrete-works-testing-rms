@@ -17,9 +17,9 @@ import {
     TriangleAlert,
 } from "lucide-react";
 import { useState } from "react";
-import type { Project } from "./interface";
+import type { Projects } from "./interface";
 
-export default function ProjectInfoButton({ project }: { project: Project }) {
+export default function ProjectInfoButton({ project }: { project: Projects }) {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     return (
         <>

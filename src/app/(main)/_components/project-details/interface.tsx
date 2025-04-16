@@ -33,7 +33,7 @@ interface ProjectWorkItem {
     itemTest: ItemTest[];
 }
 
-interface Project {
+interface Projects {
     id: string;
     contractId: string;
     contractName: string;
@@ -45,4 +45,4 @@ interface Project {
     projectWorkItem?: ProjectWorkItem[];
 }
 
-export type { ItemTest, Material, MaterialTest, Project, ProjectWorkItem };
+export type { ItemTest, Material, MaterialTest, Projects, ProjectWorkItem };

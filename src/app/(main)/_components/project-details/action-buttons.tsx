@@ -3,14 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import ExportPdfButton from "./export-pdf-button";
-import type { Project } from "./interface";
+import type { Projects } from "./interface";
 import ProjectInfoButton from "./project-info-button";
 import ShareButton from "./share-button";
 
 export default function ProjectDetailsActionButtons({
     project,
 }: {
-    project: Project;
+    project: Projects;
 }) {
     return (
         <div className="flex flex-wrap justify-between gap-4 px-8">

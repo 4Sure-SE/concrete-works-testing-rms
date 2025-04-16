@@ -1,6 +1,6 @@
-import type { Project } from "./interface";
+import type { Projects } from "./interface";
 
-const fakeProjectsData: Project = {
+const fakeProjectsData: Projects = {
     id: "P-001",
     contractId: "C-2023-001",
     contractName: "City Bridge Construction",

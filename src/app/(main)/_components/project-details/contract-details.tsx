@@ -1,9 +1,9 @@
-import type { Project } from "./interface";
+import type { Projects } from "./interface";
 export default function ProjectContractDetails({
     project,
 }: {
     id: string;
-    project: Project;
+    project: Projects;
 }) {
     return (
         <div className="grid w-full grid-cols-2 gap-x-4 p-8">
