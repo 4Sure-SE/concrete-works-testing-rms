@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth } from "@/app/(auth)/_hooks/use-auth";
 import type { ReactNode } from "react";
 
 export type HeaderProps = {
@@ -9,19 +8,19 @@ export type HeaderProps = {
 };
 
 function Header({ title, leftControls }: HeaderProps) {
-    const { fullName } = useAuth();
+    // const { fullName } = useAuth();
 
-    const capitalizeFirstLetter = (text: string | null): string | null => {
-        if (!text) return null;
-        return text.charAt(0).toUpperCase() + text.slice(1);
-    };
+    // const capitalizeFirstLetter = (text: string | null): string | null => {
+    //     if (!text) return null;
+    //     return text.charAt(0).toUpperCase() + text.slice(1);
+    // };
 
     // Usample usage
-    const welcomeMessage = fullName ? (
-        <div className="text-sm font-medium">
-            Welcome, {capitalizeFirstLetter(fullName)}
-        </div>
-    ) : null;
+    // const welcomeMessage = fullName ? (
+    //     <div className="text-sm font-medium">
+    //         Welcome, {capitalizeFirstLetter(fullName)}
+    //     </div>
+    // ) : null;
 
     return (
         <header className="flex h-16 items-center gap-4 border-b px-4">
@@ -31,7 +30,7 @@ function Header({ title, leftControls }: HeaderProps) {
                     {title}
                 </h1>
             </div>
-            <div className="flex items-center">{welcomeMessage}</div>
+            {/* <div className="flex items-center">{welcomeMessage}</div> */}
         </header>
     );
 }
