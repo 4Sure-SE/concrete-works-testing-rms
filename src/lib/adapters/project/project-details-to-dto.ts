@@ -1,4 +1,4 @@
-import type { Projects } from "@/app/(main)/_components/project-details/interface";
+import type { Projects } from "@/lib/types/project/project-details.types";
 import type { ProjectDetailsPayload } from "@/server/data-access/project/project.payloads";
 
 export function projectDetailsToDTO(

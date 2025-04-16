@@ -1,4 +1,4 @@
-import type { Projects } from "@/app/(main)/_components/project-details/interface";
+import type { Projects } from "@/lib/types/project/project-details.types";
 
 export type TestUpdateType = "material" | "workItem";
 

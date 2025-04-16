@@ -17,7 +17,7 @@ import {
     getProjectSummaryList,
 } from "@/server/data-access/project";
 
-import type { Projects } from "@/app/(main)/_components/project-details/interface";
+import type { Projects } from "@/lib/types/project/project-details.types";
 
 export const ProjectService = {
     async getProjectById(projectId: string): Promise<ProjectDTO | null> {

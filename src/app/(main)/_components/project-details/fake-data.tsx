@@ -1,4 +1,4 @@
-import type { Projects } from "./interface";
+import type { Projects } from "../../../../lib/types/project/project-details.types";
 
 const fakeProjectsData: Projects = {
     id: "P-001",
