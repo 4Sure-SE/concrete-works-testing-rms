@@ -1,8 +1,9 @@
 "use client";
 
-import { Lock, Mail, User } from "lucide-react";
+import { Loader, Lock, Mail, User } from "lucide-react";
 import Form from "next/form";
 import { useEffect, useState } from "react";
+import { useEmailValidation } from "../../_hooks/use-email-validation";
 import { SubmitButton } from "../actions/submit-button";
 import { AuthCard } from "../layout/auth-card";
 import { FormInput } from "./form-input";
@@ -21,9 +22,15 @@ interface SignupFormProps {
 export function SignupForm({ action, initialError = null }: SignupFormProps) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [emailError, setEmailError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const {
+        email,
+        emailError,
+        isValidating,
+        handleEmailChange,
+        setEmailError,
+    } = useEmailValidation();
 
     useEffect(() => {
         if (
@@ -33,15 +40,15 @@ export function SignupForm({ action, initialError = null }: SignupFormProps) {
         ) {
             setEmailError(initialError.error);
         }
-    }, [initialError]);
-
-    useEffect(() => {
-        setEmailError("");
-    }, [email]);
+    }, [initialError, setEmailError]);
 
     const passwordsMatch = password === confirmPassword;
 
     const handleSubmit = async (formData: FormData) => {
+        if (emailError) {
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             const result = await action(formData);
@@ -66,17 +73,24 @@ export function SignupForm({ action, initialError = null }: SignupFormProps) {
                 Icon={User}
             />
 
-            <FormInput
-                id="email"
-                label="Email"
-                type="email"
-                placeholder="Enter your email"
-                Icon={Mail}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                error={!!emailError}
-                errorMessage={emailError}
-            />
+            <div className="relative">
+                <FormInput
+                    id="email"
+                    label="Email"
+                    type="email"
+                    placeholder="Enter your email"
+                    Icon={Mail}
+                    value={email}
+                    onChange={handleEmailChange}
+                    error={!!emailError}
+                    errorMessage={emailError}
+                />
+                {isValidating && (
+                    <div className="absolute top-7 right-3">
+                        <Loader className="h-4 w-4 animate-spin text-gray-400" />
+                    </div>
+                )}
+            </div>
 
             <div className="relative grid w-full items-center gap-1.5">
                 <FormInput
@@ -113,7 +127,12 @@ export function SignupForm({ action, initialError = null }: SignupFormProps) {
 
             <SubmitButton
                 mode="signup"
-                isDisabled={isSubmitting || !passwordsMatch}
+                isDisabled={
+                    isSubmitting ||
+                    !passwordsMatch ||
+                    !!emailError ||
+                    isValidating
+                }
             />
         </Form>
     );

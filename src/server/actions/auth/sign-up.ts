@@ -1,29 +1,24 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { validateEmail } from "./validate-email";
 
 export async function signUp(formData: FormData) {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const fullName = formData.get("fullName") as string;
 
-    const supabase = await createClient();
-
-    const { error: signInError } = await supabase.auth.signInWithOtp({
-        email: email,
-        options: {
-            shouldCreateUser: false,
-        },
-    });
-
-    if (!signInError) {
+    // Validate email first
+    const emailValidation = await validateEmail(email);
+    if (!emailValidation.isValid) {
         return {
-            error: "This email is already in use. Please try logging in instead or reset your password.",
+            error: emailValidation.error,
             success: false,
             field: "email",
         };
     }
 
+    const supabase = await createClient();
     const { error } = await supabase.auth.signUp({
         email,
         password,
