@@ -2,7 +2,9 @@ import "server-only";
 
 import { db } from "@/server/db";
 import type { Prisma, Project } from "@prisma/client";
+import type { ProjectDetailsPayload } from "./project.payloads";
 import {
+    projectDetails,
     projectSummaryInclude,
     type ProjectSummaryPayload,
 } from "./project.payloads";
@@ -53,4 +55,17 @@ export async function deleteProject(id: string): Promise<Project> {
         where: { id },
     });
     return deletedProject;
+}
+
+export async function getProjectDetailsById(
+    id: string,
+): Promise<ProjectDetailsPayload | null> {
+    if (!id) return null;
+
+    const project = await db.project.findUnique({
+        where: { id },
+        include: projectDetails,
+    });
+
+    return project;
 }
