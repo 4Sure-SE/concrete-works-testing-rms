@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { TestStatus } from "./test-status";
+import { TestStatus } from "../projects/[id]/_components/test-status";
 
 const meta = {
     title: "Main/Components/ProjectDetails/Test-Status",

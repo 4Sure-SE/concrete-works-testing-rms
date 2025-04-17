@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import ProjectContractDetails from "./contract-details";
+import ProjectInfoButton from "../projects/[id]/_components/project-info-button";
 import fakeProjectsData, {
     fakeEmptyContractDetails,
     fakeLongContractDetails,
 } from "./fake-data";
 const meta = {
-    title: "Main/Components/ProjectDetails/Contract Details",
-    component: ProjectContractDetails,
+    title: "Main/Components/ProjectDetails/ProjectInfo",
+    component: ProjectInfoButton,
     parameters: {
         layout: "fullscreen",
     },
@@ -18,29 +18,26 @@ const meta = {
         ),
     ],
     tags: ["autodocs"],
-} satisfies Meta<typeof ProjectContractDetails>;
+} satisfies Meta<typeof ProjectInfoButton>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WithContractDetails: Story = {
+export const WithProjectDetails: Story = {
     args: {
-        id: fakeProjectsData.contractId,
         project: fakeProjectsData,
     },
 };
 
-export const WithLongContractDetails: Story = {
+export const WithLongProjectDetails: Story = {
     args: {
-        id: fakeLongContractDetails.contractId,
         project: fakeLongContractDetails,
     },
 };
 
-export const WithoutContractDetails: Story = {
+export const WithEmptyProjectDetails: Story = {
     args: {
-        id: fakeEmptyContractDetails.contractId,
         project: fakeEmptyContractDetails,
     },
 };

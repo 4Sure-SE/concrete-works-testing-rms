@@ -1,8 +1,4 @@
 "use client";
-import {
-    updateProjectMaterialTestOnFile,
-    updateProjectWorkItemTestOnFile,
-} from "@/server/actions/projects";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -11,38 +7,32 @@ type TestType = "material" | "workItem";
 export const TestCounter = ({
     id,
     value,
-    onUpdate,
     type,
+    onUpdate,
+    onServerUpdate,
 }: {
     id: string | undefined;
     value: number;
-    onUpdate: (id: string | undefined, amount: number, type: TestType) => void;
     type: TestType;
+    onUpdate: (id: string | undefined, amount: number, type: TestType) => void;
+    onServerUpdate: (
+        id: string | undefined,
+        amount: number,
+        type: TestType,
+    ) => Promise<number>;
 }) => {
     const [testsOnFile, setTestsOnFile] = useState(value);
     const [loading, setLoading] = useState(false);
 
     const handleUpdate = async (amount: number) => {
         setLoading(true);
-
-        let response;
-        if (type === "material") {
-            response = await updateProjectMaterialTestOnFile(id, amount);
-        } else {
-            response = await updateProjectWorkItemTestOnFile(id, amount);
-        }
-
-        const { data, error } = response;
-
-        if (error) {
-            console.log(error);
-        } else {
-            const updatedTestsOnFile = data?.onFile ?? 0;
-            setTestsOnFile(updatedTestsOnFile);
-
+        try {
+            const updatedCount = await onServerUpdate(id, amount, type);
+            setTestsOnFile(updatedCount);
             onUpdate(id, amount, type);
+        } catch (error) {
+            console.error(error);
         }
-
         setLoading(false);
     };
 

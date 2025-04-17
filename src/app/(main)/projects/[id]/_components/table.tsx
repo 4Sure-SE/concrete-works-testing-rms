@@ -14,10 +14,16 @@ import { Fragment, useState } from "react";
 import { TestCounter } from "./test-counter";
 import { TestStatus } from "./test-status";
 
-export default function ProjectworkItemsTable({
+export default function ProjectWorkItemsTable({
     project,
+    onServerUpdate,
 }: {
     project: Projects;
+    onServerUpdate: (
+        id: string | undefined,
+        amount: number,
+        type: "material" | "workItem",
+    ) => Promise<number>;
 }) {
     const [updatedProject, setUpdatedProject] = useState(project);
     const handleTestUpdate = (
@@ -122,6 +128,9 @@ export default function ProjectworkItemsTable({
                                                                 handleTestUpdate
                                                             }
                                                             type="workItem"
+                                                            onServerUpdate={
+                                                                onServerUpdate
+                                                            }
                                                         ></TestCounter>
                                                     </TableCell>
                                                     <TableCell className="text-center">
@@ -174,6 +183,9 @@ export default function ProjectworkItemsTable({
                                                             type="material"
                                                             onUpdate={
                                                                 handleTestUpdate
+                                                            }
+                                                            onServerUpdate={
+                                                                onServerUpdate
                                                             }
                                                         ></TestCounter>
                                                     </TableCell>
@@ -274,6 +286,9 @@ export default function ProjectworkItemsTable({
                                                                         type="material"
                                                                         onUpdate={
                                                                             handleTestUpdate
+                                                                        }
+                                                                        onServerUpdate={
+                                                                            onServerUpdate
                                                                         }
                                                                     ></TestCounter>
                                                                 </TableCell>
