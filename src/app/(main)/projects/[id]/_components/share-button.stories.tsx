@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, screen, userEvent, within } from "@storybook/test";
-import ShareButton from "../projects/[id]/_components/share-button";
+import ShareButton from "./share-button";
 
 const meta = {
     title: "Main/Components/ProjectDetails/Share Button",
