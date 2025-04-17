@@ -1,5 +1,6 @@
 import type { CustomError } from "@/lib/types/custom-error";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { toCamelCase } from "./to-camelcase";
 
 const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
     const { code, meta, message: prismaMessage } = err;
@@ -43,11 +44,11 @@ const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
     return {
         message: userMessage,
         statusCode: statusCode,
+        target: toCamelCase(String(meta?.target)),
     };
 };
-export function errorHandler(error: Error): CustomError {
-    console.error("caught error:", error);
 
+export function errorHandler(error: Error): CustomError {
     if (error instanceof PrismaClientKnownRequestError) {
         return handlePrismaError(error);
     } else {

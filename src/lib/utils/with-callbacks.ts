@@ -1,8 +1,8 @@
-import type { Callbacks, Result } from "../types/actions.types";
+import type { ActionState, Callbacks } from "@/lib/types/actions.types";
 
 // wrapper for server actions to call functions on success or error
 export const withCallbacks = <Args extends unknown[], T, E>(
-    fn: (...args: Args) => Promise<Result<T, E>>,
+    fn: (...args: Args) => Promise<ActionState<T, E>>,
     callbacks: Callbacks<T, E>,
 ) => {
     return async (...args: Args) => {
@@ -10,11 +10,11 @@ export const withCallbacks = <Args extends unknown[], T, E>(
 
         const res = await promise;
 
-        if (res.data) {
+        if (res.success) {
             callbacks.onSuccess?.(res.data);
         }
 
-        if (res.error) {
+        if (!res.success) {
             callbacks.onError?.(res.error);
         }
 
