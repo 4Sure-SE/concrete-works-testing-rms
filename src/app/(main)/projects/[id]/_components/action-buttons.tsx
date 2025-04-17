@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import type { Projects } from "@/lib/types/project/project-details.types";
+import type { Projects } from "@/lib/types/project";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import ExportPdfButton from "./export-pdf-button";

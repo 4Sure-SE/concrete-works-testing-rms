@@ -2,7 +2,7 @@
 import {
     updateProjectMaterialTestOnFile,
     updateProjectWorkItemTestOnFile,
-} from "@/server/actions/projects/update-test-on-file";
+} from "@/server/actions/projects";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 

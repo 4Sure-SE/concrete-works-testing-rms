@@ -7,8 +7,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import type { Projects } from "@/lib/types/project/project-details.types";
-import { UpdateProjectTest } from "@/lib/utils/update-project-test";
+import type { Projects } from "@/lib/types/project";
+import { UpdateProjectTest } from "@/lib/utils";
 import { ArchiveX } from "lucide-react";
 import { Fragment, useState } from "react";
 import { TestCounter } from "./test-counter";

@@ -1,4 +1,4 @@
-import type { Projects } from "@/lib/types/project/project-details.types";
+import type { Projects } from "@/lib/types/project";
 export default function ProjectContractDetails({
     project,
 }: {

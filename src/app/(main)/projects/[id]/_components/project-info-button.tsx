@@ -6,7 +6,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import type { Projects } from "@/lib/types/project/project-details.types";
+import type { Projects } from "@/lib/types/project";
 import {
     Building2,
     Factory,
