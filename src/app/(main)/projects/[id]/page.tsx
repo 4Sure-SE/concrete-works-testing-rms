@@ -63,4 +63,10 @@ export default async function ProjectDetailsPage({
             <ProjectDetailsContent id={id} />
         </Suspense>
     );
+
+    return (
+        <Suspense fallback={<ProjectDetailsSkeleton />}>
+            <ProjectDetailsContent id={id} />
+        </Suspense>
+    );
 }
