@@ -1,6 +1,10 @@
 import "server-only";
 
-import { projectSummaryToDTO, projectToDTO } from "@/lib/adapters/project";
+import {
+    projectDetailsToDTO,
+    projectSummaryToDTO,
+    projectToDTO,
+} from "@/lib/adapters/project";
 import type {
     CreateProjectDTO,
     ProjectDTO,
@@ -9,8 +13,11 @@ import type {
 import {
     createProject,
     getProjectById,
+    getProjectDetailsById,
     getProjectSummaryList,
 } from "@/server/data-access/project";
+
+import type { Projects } from "@/lib/types/project/project-details.types";
 
 export const ProjectService = {
     async getProjectById(projectId: string): Promise<ProjectDTO | null> {
@@ -63,5 +70,16 @@ export const ProjectService = {
         }
 
         return outputDto;
+    },
+
+    async getProjectDetails(projectId: string): Promise<Projects | null> {
+        console.log(
+            `[Service] Getting full project details for ID: ${projectId}`,
+        );
+
+        const rawProject = await getProjectDetailsById(projectId);
+        if (!rawProject) return null;
+
+        return projectDetailsToDTO(rawProject);
     },
 };
