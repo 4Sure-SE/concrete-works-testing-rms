@@ -6,6 +6,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import type { Projects } from "@/lib/types/project/project-details.types";
 import {
     Building2,
     Factory,
@@ -17,7 +18,6 @@ import {
     TriangleAlert,
 } from "lucide-react";
 import { useState } from "react";
-import type { Projects } from "../../../../../lib/types/project/project-details.types";
 
 export default function ProjectInfoButton({ project }: { project: Projects }) {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
