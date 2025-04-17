@@ -1,8 +1,10 @@
 import "@/styles/globals.css";
 
 import Header from "@/components/custom/header";
+import { Toaster } from "@/components/ui/sonner";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
+import AuthProvider from "./_contexts/auth-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -18,13 +20,18 @@ export default function AuthLayout({
     return (
         <html
             lang="en"
-            className={`${inter.className} ${inter.variable}`}
+            className="overflow-hidden"
         >
-            <body>
-                <div className="w-full">
+            <body
+                className={`${inter.className} ${inter.variable} overflow-hidden`}
+            >
+                <AuthProvider>
                     <Header title="Concrete Works Testing RMS" />
-                    <main className="flex-1 overflow-auto p-4">{children}</main>
-                </div>
+                    <div className="flex h-[calc(100vh-4rem)] flex-col items-center justify-center overflow-auto">
+                        <main className="w-full max-w-md p-4">{children}</main>
+                    </div>
+                    <Toaster />
+                </AuthProvider>
             </body>
         </html>
     );

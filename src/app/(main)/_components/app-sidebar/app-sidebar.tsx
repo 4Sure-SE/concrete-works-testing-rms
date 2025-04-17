@@ -1,3 +1,4 @@
+import { SignOut } from "@/app/(auth)/_components";
 import {
     Sidebar,
     SidebarContent,
@@ -40,6 +41,11 @@ export function AppSidebar() {
                         <NavNewProject />
                         <Suspense fallback={<NavProjectListSkeleton />}>
                             <NavProjectList />
+                        </Suspense>
+                    </SidebarGroupContent>
+                    <SidebarGroupContent>
+                        <Suspense fallback={<NavProjectListSkeleton />}>
+                            <SignOut />
                         </Suspense>
                     </SidebarGroupContent>
                 </SidebarGroup>
