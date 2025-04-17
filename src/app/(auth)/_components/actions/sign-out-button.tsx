@@ -15,7 +15,7 @@ export function SignOut() {
                 className="w-full cursor-pointer justify-start"
                 onClick={signOut}
             >
-                <LogOut className="mr-2 size-4" />
+                <LogOut className="mr-2 h-4 w-4" />
                 Sign Out
             </Button>
         </div>
