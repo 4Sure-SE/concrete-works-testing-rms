@@ -1,4 +1,4 @@
-import type { Projects } from "../../../../lib/types/project/project-details.types";
+import type { Projects } from "../../../../../lib/types/project/project-details.types";
 export default function ProjectContractDetails({
     project,
 }: {
@@ -9,7 +9,7 @@ export default function ProjectContractDetails({
         <div className="grid w-full grid-cols-2 gap-x-4 p-8">
             <div className="flex w-full flex-col">
                 <p className="text-xl font-bold text-gray-950">
-                    {project.contractName === ""
+                    {project.contractId === ""
                         ? "N/A"
                         : `${project.contractId}`}
                 </p>
@@ -19,7 +19,7 @@ export default function ProjectContractDetails({
                     </span>
 
                     <p className="flex-1 truncate font-medium text-wrap text-gray-700">
-                        {project.contractId === ""
+                        {project.contractName === ""
                             ? "N/A"
                             : project.contractName}
                     </p>

@@ -17,7 +17,7 @@ import {
     TriangleAlert,
 } from "lucide-react";
 import { useState } from "react";
-import type { Projects } from "../../../../lib/types/project/project-details.types";
+import type { Projects } from "../../../../../lib/types/project/project-details.types";
 
 export default function ProjectInfoButton({ project }: { project: Projects }) {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -41,7 +41,7 @@ export default function ProjectInfoButton({ project }: { project: Projects }) {
                         <DialogTitle>Project Details</DialogTitle>
                     </DialogHeader>
                     <div
-                        className="o w-auto space-y-4 overflow-y-auto px-4 py-4"
+                        className="w-auto space-y-4 overflow-y-auto px-4 py-4"
                         style={{ scrollbarWidth: "none" }}
                     >
                         <div className="flex w-auto items-center gap-2">

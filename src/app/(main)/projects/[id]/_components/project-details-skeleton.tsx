@@ -49,28 +49,28 @@ export default function ProjectDetailsSkeleton() {
                     <Table className="w-full border-separate border-spacing-0 overflow-hidden rounded-[7px]">
                         <TableHeader>
                             <TableRow className="bg-gray-100">
-                                <TableHead className="3 text-center">
+                                <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-16" />
                                 </TableHead>
-                                <TableHead className="3 text-center">
+                                <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-40" />
                                 </TableHead>
-                                <TableHead className="3 text-center">
+                                <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-20" />
                                 </TableHead>
-                                <TableHead className="3 text-center">
+                                <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-14" />
                                 </TableHead>
-                                <TableHead className="3 text-center">
+                                <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-28" />
                                 </TableHead>
-                                <TableHead className="3 text-center">
+                                <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-36" />
                                 </TableHead>
-                                <TableHead className="3 text-center">
+                                <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-16" />
                                 </TableHead>
-                                <TableHead className="3 text-center">
+                                <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-20" />
                                 </TableHead>
                             </TableRow>
@@ -79,28 +79,28 @@ export default function ProjectDetailsSkeleton() {
                         <TableBody>
                             {[1, 2, 3, 4].map((_, index) => (
                                 <TableRow key={index}>
-                                    <TableCell className="3">
+                                    <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-10" />
                                     </TableCell>
-                                    <TableCell className="3">
+                                    <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-full" />
                                     </TableCell>
-                                    <TableCell className="3">
+                                    <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-12" />
                                     </TableCell>
-                                    <TableCell className="3">
+                                    <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-10" />
                                     </TableCell>
-                                    <TableCell className="3">
+                                    <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-16" />
                                     </TableCell>
-                                    <TableCell className="3">
+                                    <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-20" />
                                     </TableCell>
-                                    <TableCell className="3">
+                                    <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-12" />
                                     </TableCell>
-                                    <TableCell className="3">
+                                    <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-16" />
                                     </TableCell>
                                 </TableRow>

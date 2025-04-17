@@ -28,7 +28,7 @@ export const CompleteStatus: Story = {
     },
 };
 
-export const OngoingSatus: Story = {
+export const OngoingStatus: Story = {
     args: {
         testsOnFile: 1,
         balance: 2,

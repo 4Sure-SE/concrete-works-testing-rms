@@ -1,4 +1,4 @@
-import type { Projects } from "../../../../lib/types/project/project-details.types";
+import type { Projects } from "../../../../../lib/types/project/project-details.types";
 
 const fakeProjectsData: Projects = {
     id: "P-001",
@@ -117,5 +117,5 @@ export const fakeEmptyProjectDetails = {
     location: "New York, NY",
     materialsEngineer: "Genesis Bugna",
     contractCost: 8880,
-    ProjectWorkItem: [],
+    projectWorkItem: [],
 };

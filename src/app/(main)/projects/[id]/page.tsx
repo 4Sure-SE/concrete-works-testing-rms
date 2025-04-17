@@ -3,10 +3,10 @@ import { ProjectService } from "@/server/services/project.service";
 import { FolderOpen } from "lucide-react";
 import { Suspense } from "react";
 import { validate as uuidValidate } from "uuid";
-import ProjectDetailsActionButtons from "../../_components/project-details/action-buttons";
-import ProjectContractDetails from "../../_components/project-details/contract-details";
-import ProjectDetailsSkeleton from "../../_components/project-details/project-details-skeleton";
-import ProjectDetailsTable from "../../_components/project-details/table";
+import ProjectDetailsActionButtons from "./_components/action-buttons";
+import ProjectContractDetails from "./_components/contract-details";
+import ProjectDetailsSkeleton from "./_components/project-details-skeleton";
+import ProjectDetailsTable from "./_components/table";
 
 async function ProjectDetailsContent({ id }: { id: string }) {
     if (!uuidValidate(id)) {

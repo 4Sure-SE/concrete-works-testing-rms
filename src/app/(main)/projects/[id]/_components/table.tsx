@@ -10,7 +10,7 @@ import {
 import { UpdateProjectTest } from "@/lib/utils/update-project-test";
 import { ArchiveX } from "lucide-react";
 import { Fragment, useState } from "react";
-import type { Projects } from "../../../../lib/types/project/project-details.types";
+import type { Projects } from "../../../../../lib/types/project/project-details.types";
 import { TestCounter } from "./test-counter";
 import { TestStatus } from "./test-status";
 
