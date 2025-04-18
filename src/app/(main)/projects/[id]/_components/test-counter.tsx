@@ -41,6 +41,7 @@ export const TestCounter = ({
             <button
                 onClick={() => handleUpdate(-1)}
                 disabled={loading || testsOnFile <= 0}
+                aria-label="decrease"
                 className="rounded-sm bg-red-500 px-0.5 py-0.5 text-white hover:bg-red-600"
             >
                 <Minus />
@@ -51,6 +52,7 @@ export const TestCounter = ({
             <button
                 onClick={() => handleUpdate(1)}
                 disabled={loading}
+                aria-label="increase"
                 className="rounded-sm bg-green-500 px-0.5 py-0.5 text-white hover:bg-green-600"
             >
                 <Plus />
