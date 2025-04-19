@@ -1,4 +1,4 @@
-import { addProject } from "./add-project";
+import { createProject } from "./create-project";
 import { updateProjectTestOnFile } from "./update-test-on-file";
 
-export { addProject, updateProjectTestOnFile };
+export { createProject, updateProjectTestOnFile };

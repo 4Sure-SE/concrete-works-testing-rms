@@ -1,19 +1,14 @@
 import type { createProjectSchema } from "@/app/(main)/projects/new/_components/project-form/project-form.schema";
 import type { Project } from "@prisma/client";
 import type { z } from "zod";
-import type { Result } from "../actions.types";
-import type { FormField } from "../form.types";
+import type { ActionErrors, ActionState } from "../actions.types";
 
-export type ProjectActionErrors = Partial<
-    Record<FormField<CreateProjectDTO> | "general", string[]>
->;
+export type ProjectActionErrors = ActionErrors<CreateProjectDTO>;
 
-export type CreateProjectInitialState = Result<
-    CreateProjectDTO,
+export type ProjectActionState = ActionState<
+    ProjectDTO | null,
     ProjectActionErrors
 >;
-
-export type CreateProjectReturnState = Result<ProjectDTO, ProjectActionErrors>;
 
 // project type used in the app
 export type ProjectDTO = Omit<
