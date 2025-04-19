@@ -310,7 +310,7 @@ export const ProjectService = {
 
                         return getProjectWorkItemById(projectWorkItem.id, tx);
                     },
-                    { maxWait: 5000, timeout: 8000 },
+                    { maxWait: 3000, timeout: 6000 },
                 ),
             );
 
@@ -357,56 +357,64 @@ export const ProjectService = {
                 `Work Item definition ${projectWorkItem.workItemId} not found.`,
             );
         }
+        const newQuantity = new Decimal(data.quantity);
+
+        const projectMaterials =
+            await getProjectMaterialListByProjectWorkItem(id);
+
+        // get the update data for the project materials
+        const materialUpdates: { id: string; quantity: Prisma.Decimal }[] = [];
+        for (const projectMaterial of projectMaterials) {
+            const workItemMaterialDef =
+                workItemDefinitions.workItemMaterial.find(
+                    (def) => def.materialId === projectMaterial.materialId,
+                );
+
+            if (workItemMaterialDef) {
+                materialUpdates.push({
+                    id: projectMaterial.id,
+                    quantity:
+                        workItemMaterialDef.quantityPerUnit.mul(newQuantity),
+                });
+            } else {
+                console.warn(
+                    `[Service] Work item material definition not found for material ID: ${projectMaterial.materialId}`,
+                );
+            }
+        }
 
         const { data: updatedProjectWorkItem, error } = await tryCatch(
             // use a transaction to ensure atomicity (if any part fails, all changes are rolled back)
-            client.$transaction(async (tx) => {
-                // update the project work item with the new quantity
-                const updatedProjectWorkItem = await updateProjectWorkItem(
-                    id,
-                    {
-                        // set the new quantity
-                        quantity: new Decimal(data.quantity),
-                    },
-                    tx,
-                );
-
-                const projectMaterials =
-                    await getProjectMaterialListByProjectWorkItem(
-                        updatedProjectWorkItem.id,
-                        tx,
-                    );
-
-                // update each project material with the new quantity
-                for (const projectMaterial of projectMaterials) {
-                    const workItemMaterialDef =
-                        workItemDefinitions.workItemMaterial.find(
-                            (def) =>
-                                def.materialId === projectMaterial.materialId,
-                        );
-
-                    if (!workItemMaterialDef) {
-                        console.warn(
-                            `[Service] Work item material definition not found for material ID: ${projectMaterial.materialId}`,
-                        );
-                        continue; // skip if definition not found
-                    }
-
-                    // update the project material quantity
-                    await updateProjectMaterial(
-                        projectMaterial.id,
+            client.$transaction(
+                async (tx) => {
+                    // update the project work item with the new quantity
+                    const updatedProjectWorkItem = await updateProjectWorkItem(
+                        id,
                         {
-                            // multiply the quantity per unit by the new work item quantity
-                            quantity: workItemMaterialDef.quantityPerUnit.mul(
-                                new Decimal(data.quantity),
-                            ),
+                            // set the new quantity
+                            quantity: new Decimal(data.quantity),
                         },
                         tx,
                     );
-                }
 
-                return updatedProjectWorkItem;
-            }),
+                    // update the project materials with the new quantity
+                    await Promise.all(
+                        materialUpdates.map(
+                            async (update) =>
+                                await updateProjectMaterial(
+                                    update.id,
+                                    {
+                                        quantity: update.quantity,
+                                    },
+                                    tx,
+                                ),
+                        ),
+                    );
+
+                    return updatedProjectWorkItem;
+                },
+                { maxWait: 3000, timeout: 6000 },
+            ),
         );
 
         await client.$disconnect();
