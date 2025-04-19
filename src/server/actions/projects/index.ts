@@ -1,11 +1,11 @@
-import { addProject } from "./add-project";
+import { createProject } from "./create-project";
 import {
     updateProjectMaterialTestOnFile,
     updateProjectWorkItemTestOnFile,
 } from "./update-test-on-file";
 
 export {
-    addProject,
+    createProject,
     updateProjectMaterialTestOnFile,
     updateProjectWorkItemTestOnFile,
 };
