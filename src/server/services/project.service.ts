@@ -298,14 +298,14 @@ export const ProjectService = {
                             tx,
                         );
 
-                        // generate the tests for each project material
-                        for (const projectMaterial of projectMaterials) {
-                            await _generateProjectMaterialTests(
-                                projectMaterial,
-                                projectWorkItem.workItemId,
-                                tx,
-                            );
-                        }
+                        // // generate the tests for each project material
+                        // for (const projectMaterial of projectMaterials) {
+                        //     await _generateProjectMaterialTests(
+                        //         projectMaterial,
+                        //         projectWorkItem.workItemId,
+                        //         tx,
+                        //     );
+                        // }
 
                         return getProjectWorkItemById(projectWorkItem.id, tx);
                     },
