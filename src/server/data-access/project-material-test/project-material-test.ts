@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import type { Prisma } from "@prisma/client";
 
-export async function createProjectMaterialTest(
+export async function createProjectMaterialTests(
     data: Prisma.ProjectMaterialTestCreateManyInput[],
     tx?: Prisma.TransactionClient,
 ) {
