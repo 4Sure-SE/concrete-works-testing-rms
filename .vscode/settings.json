@@ -14,5 +14,12 @@
     "tailwindCSS.experimental.configFile": "src/styles/globals.css",
     "[prisma]": {
         "editor.defaultFormatter": "Prisma.prisma"
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "typescript": true
     }
 }
