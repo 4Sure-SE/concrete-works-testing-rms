@@ -42,6 +42,8 @@ export default function ProjectForm({
         },
         // on server action error
         onError: (error) => {
+            if (error.general)
+                form.setError("root", { message: error.general[0] });
             if (error.contractId)
                 form.setError("contractId", { message: error.contractId[0] });
         },
