@@ -113,5 +113,11 @@
     "prisma": {
         "schema": "src/server/db/schema.prisma",
         "seed": "tsx server/db/seed.ts"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "*",
+        "lightningcss-linux-x64-gnu": "*",
+        "@tailwindcss/oxide-linux-x64-gnu": "*",
+        "sass-embedded-linux-x64": "*"
     }
 }
