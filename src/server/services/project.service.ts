@@ -24,8 +24,12 @@ import {
     getProjectDetailsById,
     getProjectSummaryList,
 } from "@/server/data-access/project";
-import { db } from "@/server/db";
-import type { Prisma, ProjectMaterial, ProjectWorkItem } from "@prisma/client";
+import {
+    PrismaClient,
+    type Prisma,
+    type ProjectMaterial,
+    type ProjectWorkItem,
+} from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 import { createProjectMaterialTests } from "../data-access/project-material-test/project-material-test";
 import {
@@ -40,8 +44,8 @@ import {
     getProjectWorkItemByProjectIdAndWorkItemId,
     updateProjectWorkItem,
 } from "../data-access/project-work-item/project-work-item";
-import { WorkItemMaterialDefinitionPayload } from "../data-access/work-item-material/work-item-material.payloads";
-import { WorkItemTestDefinitionPayload } from "../data-access/work-item-test/work-item-test.payloads";
+import type { WorkItemMaterialDefinitionPayload } from "../data-access/work-item-material/work-item-material.payloads";
+import type { WorkItemTestDefinitionPayload } from "../data-access/work-item-test/work-item-test.payloads";
 import { getWorkItemWithAllDefinitions } from "../data-access/work-item/work-item";
 
 // helpers
@@ -263,9 +267,11 @@ export const ProjectService = {
                 );
             }
 
+            const client = new PrismaClient();
+
             // create a new project work item
             const { data: projectWorkItem, error } = await tryCatch(
-                db.$transaction(
+                client.$transaction(
                     async (tx) => {
                         // create with a transaction to ensure atomicity (if any part fails, all changes are rolled back)
 
@@ -308,6 +314,8 @@ export const ProjectService = {
                 ),
             );
 
+            await client.$disconnect();
+
             if (error) {
                 throw error;
             }
@@ -327,6 +335,8 @@ export const ProjectService = {
     // update project work item
     async updateProjectWorkItem(id: string, data: UpdateProjectWorkItemDTO) {
         console.log(`[Service] Updating project work item with ID: ${id}`);
+
+        const client = new PrismaClient();
 
         const projectWorkItem = await getProjectWorkItemById(id);
 
@@ -350,7 +360,7 @@ export const ProjectService = {
 
         const { data: updatedProjectWorkItem, error } = await tryCatch(
             // use a transaction to ensure atomicity (if any part fails, all changes are rolled back)
-            db.$transaction(async (tx) => {
+            client.$transaction(async (tx) => {
                 // update the project work item with the new quantity
                 const updatedProjectWorkItem = await updateProjectWorkItem(
                     id,
@@ -394,9 +404,13 @@ export const ProjectService = {
                         tx,
                     );
                 }
+
                 return updatedProjectWorkItem;
             }),
         );
+
+        await client.$disconnect();
+
         if (error) {
             throw error;
         }
