@@ -4,8 +4,8 @@ export const createProjectWorkItemSchema = z.object({
     workItemId: z.string().uuid("Invalid Work Item ID"),
     quantity: z.coerce
         .number({
-            required_error: "Contract Cost is required",
-            invalid_type_error: "Contract Cost must be a number",
+            required_error: "Quantity is required",
+            invalid_type_error: "Quantity must be a number",
         })
-        .positive("Contract Cost must be a positive number"),
+        .positive("Quantity must be a positive number"),
 });
