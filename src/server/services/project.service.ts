@@ -309,7 +309,7 @@ export const ProjectService = {
 
                         return getProjectWorkItemById(projectWorkItem.id, tx);
                     },
-                    { timeout: 6000 },
+                    { maxWait: 5000, timeout: 6000 },
                 ),
             );
 
