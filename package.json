@@ -112,7 +112,7 @@
     "packageManager": "npm@11.1.0",
     "prisma": {
         "schema": "src/server/db/schema.prisma",
-        "seed": "tsx server/db/seed.ts"
+        "seed": "tsx src/server/db/seed.ts"
     },
     "optionalDependencies": {
         "@rollup/rollup-linux-x64-gnu": "*",
