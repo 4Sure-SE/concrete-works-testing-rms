@@ -180,7 +180,7 @@ export default function ProjectWorkItemsTable({
                                                             value={
                                                                 test.testsOnFile
                                                             }
-                                                            type="material"
+                                                            type="workItem"
                                                             onUpdate={
                                                                 handleTestUpdate
                                                             }
