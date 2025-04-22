@@ -11,8 +11,8 @@ import type { Projects } from "@/lib/types/project";
 import { UpdateProjectTest } from "@/lib/utils";
 import { ArchiveX } from "lucide-react";
 import { Fragment, useState } from "react";
-import { TestCounter } from "./test-counter";
-import { TestStatus } from "./test-status";
+import MaterialsTable from "./materials-table";
+import WorkItemsTable from "./work-items-table";
 
 export default function ProjectWorkItemsTable({
     project,
@@ -89,122 +89,12 @@ export default function ProjectWorkItemsTable({
                                 return (
                                     <Fragment key={`${workItem.id}`}>
                                         {/* Main item row with first item test if available */}
-                                        <TableRow className="bg-[#FCFCFD]">
-                                            <TableCell className="text-center font-medium text-gray-900">
-                                                {workItem.itemNo}
-                                            </TableCell>
-                                            <TableCell className="text-center">
-                                                {workItem.description}
-                                            </TableCell>
-                                            <TableCell className="text-center">
-                                                {workItem.quantity.toString()}
-                                            </TableCell>
-
-                                            {hasItemTests ? (
-                                                // Show first item test on the main row
-                                                <>
-                                                    <TableCell className="text-center">
-                                                        {workItem.unit ?? "N/A"}
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        {workItem.itemTest?.[0]
-                                                            ?.testRequired ??
-                                                            "N/A"}
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        <TestCounter
-                                                            id={
-                                                                workItem
-                                                                    .itemTest?.[0]
-                                                                    ?.id
-                                                            }
-                                                            value={
-                                                                workItem
-                                                                    .itemTest?.[0]
-                                                                    ?.testsOnFile ??
-                                                                0
-                                                            }
-                                                            onUpdate={
-                                                                handleTestUpdate
-                                                            }
-                                                            type="workItem"
-                                                            onServerUpdate={
-                                                                onServerUpdate
-                                                            }
-                                                        ></TestCounter>
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        {workItem.itemTest?.[0]
-                                                            ?.balance ?? "N/A"}
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        <TestStatus
-                                                            testsOnFile={
-                                                                workItem
-                                                                    .itemTest?.[0]
-                                                                    ?.testsOnFile ??
-                                                                0
-                                                            }
-                                                            balance={
-                                                                workItem
-                                                                    .itemTest?.[0]
-                                                                    ?.balance ??
-                                                                0
-                                                            }
-                                                        ></TestStatus>
-                                                    </TableCell>
-                                                </>
-                                            ) : (
-                                                // No item tests
-                                                <TableCell
-                                                    colSpan={4}
-                                                ></TableCell>
-                                            )}
-                                        </TableRow>
-
-                                        {/* Additional item tests (if any) */}
-                                        {workItem.itemTest
-                                            .slice(1)
-                                            .map((test) => (
-                                                <TableRow key={test.id}>
-                                                    <TableCell></TableCell>
-                                                    <TableCell></TableCell>
-                                                    <TableCell></TableCell>
-                                                    <TableCell></TableCell>
-                                                    <TableCell className="text-center">
-                                                        {test.testRequired}
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        <TestCounter
-                                                            id={test.id}
-                                                            value={
-                                                                test.testsOnFile
-                                                            }
-                                                            type="workItem"
-                                                            onUpdate={
-                                                                handleTestUpdate
-                                                            }
-                                                            onServerUpdate={
-                                                                onServerUpdate
-                                                            }
-                                                        ></TestCounter>
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        {test.balance}
-                                                    </TableCell>
-
-                                                    <TableCell className="text-center">
-                                                        <TestStatus
-                                                            testsOnFile={
-                                                                test.testsOnFile
-                                                            }
-                                                            balance={
-                                                                test.balance
-                                                            }
-                                                        ></TestStatus>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
+                                        <WorkItemsTable
+                                            workItem={workItem}
+                                            onServerUpdate={onServerUpdate}
+                                            handleTestUpdate={handleTestUpdate}
+                                            hasItemTests={hasItemTests}
+                                        ></WorkItemsTable>
 
                                         {/* Materials and their tests */}
                                         {workItem.materials.map((material) => {
@@ -235,81 +125,15 @@ export default function ProjectWorkItemsTable({
                                             // If material has tests, show first test on same row as material
                                             return (
                                                 <Fragment key={material.id}>
-                                                    {material.materialTest.map(
-                                                        (test, testIndex) => (
-                                                            <TableRow
-                                                                key={test.id}
-                                                            >
-                                                                <TableCell></TableCell>
-                                                                {testIndex ===
-                                                                0 ? (
-                                                                    <TableCell className="pl-4 text-center">
-                                                                        {" "}
-                                                                        {
-                                                                            material.name
-                                                                        }
-                                                                    </TableCell>
-                                                                ) : (
-                                                                    <TableCell></TableCell>
-                                                                )}
-                                                                {testIndex ===
-                                                                0 ? (
-                                                                    <TableCell className="text-center">
-                                                                        {material.quantity.toString()}
-                                                                    </TableCell>
-                                                                ) : (
-                                                                    <TableCell></TableCell>
-                                                                )}
-                                                                {testIndex ===
-                                                                0 ? (
-                                                                    <TableCell className="text-center">
-                                                                        {
-                                                                            material.unit
-                                                                        }
-                                                                    </TableCell>
-                                                                ) : (
-                                                                    <TableCell></TableCell>
-                                                                )}
-                                                                <TableCell className="text-center">
-                                                                    {
-                                                                        test.testRequired
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell className="text-center">
-                                                                    <TestCounter
-                                                                        id={
-                                                                            test.id
-                                                                        }
-                                                                        value={
-                                                                            test.testsOnFile
-                                                                        }
-                                                                        type="material"
-                                                                        onUpdate={
-                                                                            handleTestUpdate
-                                                                        }
-                                                                        onServerUpdate={
-                                                                            onServerUpdate
-                                                                        }
-                                                                    ></TestCounter>
-                                                                </TableCell>
-                                                                <TableCell className="text-center">
-                                                                    {
-                                                                        test.balance
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell className="text-center">
-                                                                    <TestStatus
-                                                                        testsOnFile={
-                                                                            test.testsOnFile
-                                                                        }
-                                                                        balance={
-                                                                            test.balance
-                                                                        }
-                                                                    ></TestStatus>
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        ),
-                                                    )}
+                                                    <MaterialsTable
+                                                        material={material}
+                                                        onServerUpdate={
+                                                            onServerUpdate
+                                                        }
+                                                        handleTestUpdate={
+                                                            handleTestUpdate
+                                                        }
+                                                    />
                                                 </Fragment>
                                             );
                                         })}
