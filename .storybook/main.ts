@@ -13,5 +13,18 @@ const config: StorybookConfig = {
         options: {},
     },
     staticDirs: ["../public"],
+    webpackFinal: async (config) => {
+        if (config.resolve) {
+            config.resolve.fallback = {
+                ...config.resolve.fallback,
+                child_process: false,
+                async_hooks: false,
+                fs: false,
+                path: false,
+                os: false,
+            };
+        }
+        return config;
+    },
 };
 export default config;
