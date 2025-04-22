@@ -1,7 +1,7 @@
 "use server";
 
 import { tryCatch } from "@/lib/utils/try-catch";
-import { db } from "@/server/db";
+import { ProjectService } from "@/server/services/project.service";
 
 type TestType = "material" | "workItem";
 
@@ -14,41 +14,39 @@ export const updateProjectTestOnFile = async (
         return { data: null, error: "Invalid Input" };
     }
 
-    const findTest = async () => {
-        if (type === "material") {
-            return await tryCatch(
-                db.projectMaterialTest.findUnique({ where: { id } }),
+    if (type === "workItem") {
+        const { data: updatedWorkItemTest, error: updateError } =
+            await tryCatch(
+                ProjectService.updateProjectWorkItemsTestCount(id, amount),
             );
+
+        if (updateError) {
+            return {
+                data: null,
+                error: updateError || "Error updating work item test",
+            };
         }
-        return await tryCatch(
-            db.projectWorkItemTest.findUnique({ where: { id } }),
-        );
-    };
 
-    const { data: existingTest, error: findError } = await findTest();
-
-    if (findError || !existingTest) {
-        return { data: null, error: "Test Not Found" };
+        return { data: updatedWorkItemTest, error: null };
     }
 
-    const newValue = Math.max(0, (existingTest.onFile ?? 0) + amount);
+    if (type === "material") {
+        const { data: updatedMaterialTest, error: updateError } =
+            await tryCatch(
+                ProjectService.updateProjectMaterialTestCount(id, amount),
+            );
 
-    const updateTest = async () => {
-        if (type === "material") {
-            return await db.projectMaterialTest.update({
-                where: { id },
-                data: { onFile: newValue },
-            });
+        if (updateError) {
+            return {
+                data: null,
+                error: updateError.message || "Error updating material test",
+            };
         }
-        return await db.projectWorkItemTest.update({
-            where: { id },
-            data: { onFile: newValue },
-        });
-    };
 
-    const updatedTest = await updateTest();
+        return { data: updatedMaterialTest, error: null };
+    }
 
-    return { data: updatedTest, error: null };
+    return { data: null, error: "Invalid Test Type" };
 };
 
 export async function UpdateProjectTest(

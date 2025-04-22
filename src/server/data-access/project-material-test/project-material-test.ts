@@ -14,3 +14,14 @@ export async function createProjectMaterialTests(
         });
     return projectMaterialTest;
 }
+
+export async function getProjectMaterialTestById(id: string) {
+    return await db.projectMaterialTest.findUnique({ where: { id } });
+}
+
+export async function updateMaterialTestCount(id: string, newValue: number) {
+    return await db.projectMaterialTest.update({
+        where: { id },
+        data: { onFile: newValue },
+    });
+}
