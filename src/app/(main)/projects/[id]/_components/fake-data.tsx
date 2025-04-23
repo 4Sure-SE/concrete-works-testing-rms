@@ -22,7 +22,7 @@ const fakeProjectsData: Projects = {
                     testRequired: "Slump Test",
                     testsOnFile: 1,
                     balance: 1,
-                    testQuantity: 5, // Added missing field
+                    testQuantity: 5,
                 },
             ],
             materials: [
@@ -37,7 +37,7 @@ const fakeProjectsData: Projects = {
                             testRequired: "Fineness Test",
                             testsOnFile: 1,
                             balance: 0,
-                            unitsPerTest: 10, // Added missing field
+                            unitsPerTest: 10,
                         },
                     ],
                 },
@@ -55,7 +55,7 @@ const fakeProjectsData: Projects = {
                     testRequired: "Tensile Test",
                     testsOnFile: 2,
                     balance: 1,
-                    testQuantity: 3, // Added missing field
+                    testQuantity: 3,
                 },
             ],
             materials: [
@@ -70,7 +70,7 @@ const fakeProjectsData: Projects = {
                             testRequired: "Bend Test",
                             testsOnFile: 1,
                             balance: 1,
-                            unitsPerTest: 5, // Added missing field
+                            unitsPerTest: 5,
                         },
                     ],
                 },

@@ -25,6 +25,15 @@ import {
     getProjectSummaryList,
 } from "@/server/data-access/project";
 import {
+    getProjectMaterialTestById,
+    updateMaterialTestCount,
+} from "../data-access/project-material-test/project-material-test";
+import {
+    getProjectWorkItemTestById,
+    updateWorkItemsTestCount,
+} from "../data-access/project-work-item-test/project-work-item-test";
+
+import {
     PrismaClient,
     type Prisma,
     type ProjectMaterial,
@@ -226,6 +235,30 @@ export const ProjectService = {
             throw new Error(`[Service] Project with ID ${projectId} not found`);
 
         return projectDetailsToDTO(rawProject);
+    },
+
+    async updateProjectWorkItemsTestCount(id: string, amount: number) {
+        const test = await getProjectWorkItemTestById(id);
+
+        if (!test) {
+            throw new Error("Work item test not found");
+        }
+
+        const newValue = Math.max(0, (test.onFile ?? 0) + amount);
+
+        return await updateWorkItemsTestCount(id, newValue);
+    },
+
+    async updateProjectMaterialTestCount(id: string, amount: number) {
+        const test = await getProjectMaterialTestById(id);
+
+        if (!test) {
+            throw new Error("Work item test not found");
+        }
+
+        const newValue = Math.max(0, (test.onFile ?? 0) + amount);
+
+        return await updateMaterialTestCount(id, newValue);
     },
 
     // create project work item

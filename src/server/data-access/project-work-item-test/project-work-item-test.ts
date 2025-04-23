@@ -15,3 +15,14 @@ export async function addProjectWorkItemTests(
 
     return projectWorkItemTests;
 }
+
+export async function getProjectWorkItemTestById(id: string) {
+    return await db.projectWorkItemTest.findUnique({ where: { id } });
+}
+
+export async function updateWorkItemsTestCount(id: string, newValue: number) {
+    return await db.projectWorkItemTest.update({
+        where: { id },
+        data: { onFile: newValue },
+    });
+}
