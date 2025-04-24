@@ -7,7 +7,7 @@ const mockAction = async (): Promise<void> => {
 };
 
 const meta = {
-    title: "Auth/Forms/ForgotPasswordForm",
+    title: "Auth/Components/Forms/ForgotPasswordForm",
     component: ForgotPasswordForm,
     parameters: {
         layout: "centered",

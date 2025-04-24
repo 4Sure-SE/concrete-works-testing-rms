@@ -15,7 +15,7 @@ const mockSubmitSamePasswordError = async (): Promise<void> => {
 };
 
 const meta = {
-    title: "Auth/Forms/ResetPasswordForm",
+    title: "Auth/Components/Forms/ResetPasswordForm",
     component: ResetPasswordForm,
     parameters: {
         layout: "centered",

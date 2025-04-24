@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { FormInput } from "./form-input";
 
 const meta = {
-    title: "Auth/Forms/FormInput",
+    title: "Auth/Components/Forms/FormInput",
     component: FormInput,
     parameters: {
         layout: "centered",

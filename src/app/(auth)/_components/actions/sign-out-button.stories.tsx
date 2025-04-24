@@ -5,7 +5,7 @@ import AuthProvider from "../../_contexts/auth-provider";
 import SignOut from "./sign-out-button";
 
 const meta = {
-    title: "Auth/Actions/SignOutButton",
+    title: "Auth/Components/Actions/SignOutButton",
     component: SignOut,
     decorators: [
         (Story) => (

@@ -15,7 +15,7 @@ const mockActionEmailError = async (): Promise<{
 };
 
 const meta = {
-    title: "Auth/Forms/SignupForm",
+    title: "Auth/Components/Forms/SignupForm",
     component: SignupForm,
     parameters: { layout: "centered" },
     tags: ["autodocs"],

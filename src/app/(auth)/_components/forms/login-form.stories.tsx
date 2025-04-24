@@ -15,7 +15,7 @@ const mockActionEmailError = async (): Promise<{
 };
 
 const meta = {
-    title: "Auth/Forms/LoginForm",
+    title: "Auth/Components/Forms/LoginForm",
     component: LoginForm,
     parameters: {
         layout: "centered",

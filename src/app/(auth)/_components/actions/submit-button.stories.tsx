@@ -4,7 +4,7 @@ import type { AuthFormMode } from "../types";
 import { SubmitButton } from "./submit-button";
 
 const meta = {
-    title: "Auth/Actions/SubmitButton",
+    title: "Auth/Components/Actions/SubmitButton",
     component: SubmitButton,
     decorators: [
         (Story) => (

@@ -3,7 +3,7 @@ import { expect, within } from "@storybook/test";
 import PasswordRequirements from "./password-req";
 
 const meta = {
-    title: "Auth/Forms/PasswordRequirements",
+    title: "Auth/Components/Forms/PasswordRequirements",
     component: PasswordRequirements,
     parameters: {
         layout: "centered",
