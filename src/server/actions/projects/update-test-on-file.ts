@@ -1,58 +1,65 @@
 "use server";
 
 import { tryCatch } from "@/lib/utils/try-catch";
-import { db } from "@/server/db";
+import { ProjectService } from "@/server/services/project.service";
 
-const updateProjectMaterialTestOnFile = async (
+type TestType = "material" | "workItem";
+
+export const updateProjectTestOnFile = async (
     id: string | undefined,
     amount: number,
+    type: TestType,
 ) => {
     if (typeof amount !== "number" || !id) {
         return { data: null, error: "Invalid Input" };
     }
 
-    const { data: existingTest, error: findError } = await tryCatch(
-        db.projectMaterialTest.findUnique({ where: { id } }),
-    );
+    if (type === "workItem") {
+        const { data: updatedWorkItemTest, error: updateError } =
+            await tryCatch(
+                ProjectService.updateProjectWorkItemsTestCount(id, amount),
+            );
 
-    if (findError || !existingTest) {
-        return { data: null, error: "Test Not Found" };
+        if (updateError) {
+            return {
+                data: null,
+                error: updateError || "Error updating work item test",
+            };
+        }
+
+        return { data: updatedWorkItemTest, error: null };
     }
 
-    const newValue = Math.max(0, (existingTest.onFile ?? 0) + amount);
+    if (type === "material") {
+        const { data: updatedMaterialTest, error: updateError } =
+            await tryCatch(
+                ProjectService.updateProjectMaterialTestCount(id, amount),
+            );
 
-    const updatedTest = await db.projectMaterialTest.update({
-        where: { id },
-        data: { onFile: newValue },
-    });
+        if (updateError) {
+            return {
+                data: null,
+                error: updateError.message || "Error updating material test",
+            };
+        }
 
-    return { data: updatedTest, error: null };
+        return { data: updatedMaterialTest, error: null };
+    }
+
+    return { data: null, error: "Invalid Test Type" };
 };
 
-const updateProjectWorkItemTestOnFile = async (
+export async function UpdateProjectTest(
     id: string | undefined,
     amount: number,
-) => {
-    if (typeof amount !== "number" || !id) {
-        return { data: null, error: "Invalid Input" };
+    type: "material" | "workItem",
+): Promise<number> {
+    const { data, error } = await updateProjectTestOnFile(id, amount, type);
+
+    if (error) {
+        console.error("Update Error:", error);
+        return 0;
     }
 
-    const { data: existingTest, error: findError } = await tryCatch(
-        db.projectWorkItemTest.findUnique({ where: { id } }),
-    );
-
-    if (findError || !existingTest) {
-        return { data: null, error: "Test Not Found" };
-    }
-
-    const newValue = Math.max(0, (existingTest.onFile ?? 0) + amount);
-
-    const updatedTest = await db.projectWorkItemTest.update({
-        where: { id },
-        data: { onFile: newValue },
-    });
-
-    return { data: updatedTest, error: null };
-};
-
-export { updateProjectMaterialTestOnFile, updateProjectWorkItemTestOnFile };
+    return data?.onFile ?? 0;
+}
