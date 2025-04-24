@@ -17,8 +17,8 @@ type Story = StoryObj<typeof meta>;
 
 const sampleProjects = [
     {
-        id: "CT-2024-001",
         contractId: "CC-001",
+        id: "CT-2024-001",
         title: "Highway Bridge Renovation",
         dateStarted: "02-24-2024",
         stats: {
@@ -28,8 +28,8 @@ const sampleProjects = [
         },
     },
     {
-        id: "CT-2024-002",
         contractId: "AA-002",
+        id: "CT-2024-002",
         title: "Commercial Complex Foundation",
         dateStarted: "03-14-2024",
         stats: {
@@ -39,8 +39,8 @@ const sampleProjects = [
         },
     },
     {
-        id: "CT-2024-003",
         contractId: "AC-003",
+        id: "CT-2024-003",
         title: "Residential Tower Construction",
         dateStarted: "03-18-2024",
         stats: {
@@ -50,8 +50,8 @@ const sampleProjects = [
         },
     },
     {
-        id: "CT-2024-004",
         contractId: "EW-004",
+        id: "CT-2024-004",
         title: "Municipal Infrastructure Project",
         dateStarted: "04-02-2024",
         stats: {
@@ -66,8 +66,8 @@ export const Default: Story = {
     args: {
         projects: [
             {
-                id: "",
                 contractId: "",
+                id: "",
                 title: "",
                 dateStarted: "",
                 stats: {

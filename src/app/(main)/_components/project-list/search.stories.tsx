@@ -26,7 +26,7 @@ const baseProps = {
 export const Default: Story = {
     args: {
         ...baseProps,
-        placeholder: "",
+        placeholder: "Search projects...",
         value: "",
         onChange: (value: string) => {
             console.log(value);

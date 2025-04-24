@@ -42,15 +42,15 @@ export const DateSelection: Story = {
         const startDateInput = fromLabel.nextElementSibling;
 
         if (startDateInput instanceof HTMLInputElement) {
-            await userEvent.type(startDateInput, "03-15-2025");
+            await userEvent.type(startDateInput, "2025-03-15");
         }
     },
 };
 
 export const ResetDates: Story = {
     args: {
-        startDate: "02-25-2025",
-        endDate: "04-02-2025",
+        startDate: "2025-02-25",
+        endDate: "2025-04-02",
         onStartDateChange: (date) => console.log("Start date changed:", date),
         onEndDateChange: (date) => console.log("End date changed:", date),
     },

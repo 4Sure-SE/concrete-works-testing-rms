@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ProgressBar } from "./progress";
-import { ProjectStats } from "./stats";
+import { ProgressBar } from "@/app/(main)/projects/_components/progress";
+import { ProjectStats } from "@/app/(main)/projects/_components/stats";
 
 interface ProjectCardProps {
     contractId: string;
@@ -13,7 +13,12 @@ interface ProjectCardProps {
     };
 }
 
-export function ProjectCard({ contractId, title, stats }: ProjectCardProps) {
+export function ProjectCard({
+    contractId,
+    id,
+    title,
+    stats,
+}: ProjectCardProps) {
     const completionPercentage = Math.round(
         (stats.completed / stats.total) * 100,
     );
@@ -22,7 +27,8 @@ export function ProjectCard({ contractId, title, stats }: ProjectCardProps) {
         <Card className="transition-shadow hover:shadow-md">
             <CardHeader className="pb-2">
                 <h3 className="text-lg font-bold">{contractId}</h3>
-                <p className="text-muted-foreground">{title}</p>
+                <p className="text-sm text-muted-foreground">{id}</p>
+                <p className="text-sm font-semibold">{title}</p>
             </CardHeader>
             <CardContent>
                 <div className="space-y-3">

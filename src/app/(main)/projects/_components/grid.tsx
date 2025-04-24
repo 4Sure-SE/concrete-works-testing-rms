@@ -1,4 +1,4 @@
-import { ProjectCard } from "./card";
+import { ProjectCard } from "@/app/(main)/projects/_components/card";
 
 interface Project {
     contractId: string;

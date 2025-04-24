@@ -17,6 +17,7 @@ export const Default: Story = {
     args: {
         projects: [
             {
+                contractId: "CC-A240",
                 id: "CT-2024-001",
                 title: "Highway Bridge Renovation",
                 stats: {
@@ -26,6 +27,7 @@ export const Default: Story = {
                 },
             },
             {
+                contractId: "YW-A280",
                 id: "CT-2024-002",
                 title: "Commercial Complex Foundation",
                 stats: {
@@ -35,6 +37,7 @@ export const Default: Story = {
                 },
             },
             {
+                contractId: "OC-B291",
                 id: "CT-2024-003",
                 title: "Residential Tower Construction",
                 stats: {
@@ -44,6 +47,7 @@ export const Default: Story = {
                 },
             },
             {
+                contractId: "PC-C479",
                 id: "CT-2024-004",
                 title: "Municipal Infrastructure Project",
                 stats: {
@@ -66,6 +70,7 @@ export const SpecificProject: Story = {
     args: {
         projects: [
             {
+                contractId: "SS-A098",
                 id: "CT-2024-001",
                 title: "Highway Bridge Renovation",
                 stats: {
@@ -82,6 +87,7 @@ export const FilteredProjects: Story = {
     args: {
         projects: [
             {
+                contractId: "BW-A222",
                 id: "CT-2024-002",
                 title: "Commercial Complex Foundation",
                 stats: {
@@ -91,6 +97,7 @@ export const FilteredProjects: Story = {
                 },
             },
             {
+                contractId: "VS-S430",
                 id: "CT-2024-003",
                 title: "Residential Tower Construction",
                 stats: {

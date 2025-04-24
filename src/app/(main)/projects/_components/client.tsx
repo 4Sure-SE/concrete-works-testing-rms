@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { PageHeader } from "./header";
-import { ProjectGrid } from "./grid";
+import { PageHeader } from "@/app/(main)/projects/_components/header";
+import { ProjectGrid } from "@/app/(main)/projects/_components/grid";
 
 interface Project {
     contractId: string;

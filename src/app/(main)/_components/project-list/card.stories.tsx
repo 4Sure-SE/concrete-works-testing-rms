@@ -17,6 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const HighCompletion: Story = {
     args: {
+        contractId: "254-611",
         id: "CT-2024-001",
         title: "Highway Bridge Renovation",
         stats: {
@@ -37,6 +38,7 @@ export const HighCompletion: Story = {
 
 export const MediumCompletion: Story = {
     args: {
+        contractId: "264-801",
         id: "CT-2024-002",
         title: "Commercial Complex Foundation",
         stats: {
@@ -49,6 +51,7 @@ export const MediumCompletion: Story = {
 
 export const LowCompletion: Story = {
     args: {
+        contractId: "138-390",
         id: "CT-2024-003",
         title: "Residential Tower Construction",
         stats: {
@@ -61,6 +64,7 @@ export const LowCompletion: Story = {
 
 export const Completed: Story = {
     args: {
+        contractId: "224-11",
         id: "CT-2024-004",
         title: "Municipal Infrastructure Project",
         stats: {
