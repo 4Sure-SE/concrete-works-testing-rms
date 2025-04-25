@@ -1,17 +1,27 @@
 import type {
     CreateProjectDTO,
-    CreateProjectInitialState,
-    CreateProjectReturnState,
     ProjectActionErrors,
+    ProjectActionState,
     ProjectDTO,
     ProjectSummaryDTO,
 } from "./project.types";
 
+import type {
+    ItemTest,
+    Material,
+    MaterialTest,
+    Projects,
+    ProjectWorkItem,
+} from "./project-details.types";
 export type {
     CreateProjectDTO,
-    CreateProjectInitialState,
-    CreateProjectReturnState,
+    ItemTest,
+    Material,
+    MaterialTest,
     ProjectActionErrors,
+    ProjectActionState,
     ProjectDTO,
+    Projects,
     ProjectSummaryDTO,
+    ProjectWorkItem,
 };

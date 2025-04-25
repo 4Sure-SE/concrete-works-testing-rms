@@ -46,3 +46,44 @@ export type ProjectSummaryPayload = Prisma.ProjectGetPayload<{
 }>;
 
 // add other complex include/payload definitions here if needed
+
+export const projectDetails = Prisma.validator<Prisma.ProjectInclude>()({
+    projectWorkItem: {
+        include: {
+            workItem: {
+                include: {
+                    unit: true,
+                    workItemTest: {
+                        include: { test: true },
+                    },
+                    workItemMaterial: {
+                        include: {
+                            workItemMaterialTest: true,
+                        },
+                    },
+                },
+            },
+            projectMaterial: {
+                include: {
+                    material: {
+                        include: {
+                            unit: true,
+                        },
+                    },
+                    projectMaterialTest: {
+                        include: { test: true },
+                    },
+                },
+            },
+            projectWorkItemTest: {
+                include: {
+                    test: true,
+                },
+            },
+        },
+    },
+});
+
+export type ProjectDetailsPayload = Prisma.ProjectGetPayload<{
+    include: typeof projectDetails;
+}>;

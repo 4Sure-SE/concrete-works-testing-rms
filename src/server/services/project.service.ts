@@ -1,25 +1,178 @@
 import "server-only";
 
-import { projectSummaryToDTO, projectToDTO } from "@/lib/adapters/project";
+import {
+    projectDetailsToDTO,
+    projectSummaryToDTO,
+    projectToDTO,
+} from "@/lib/adapters/project";
+import { projectWorkItemToDTO } from "@/lib/adapters/project-work-item/project-work-item-to-dto";
 import type {
     CreateProjectDTO,
     ProjectDTO,
     ProjectSummaryDTO,
 } from "@/lib/types/project";
+import type {
+    ProjectWorkItemDTO,
+    UpdateProjectWorkItemDTO,
+} from "@/lib/types/project-work-item/project-work-item.types";
+import type { Projects } from "@/lib/types/project/project-details.types";
+import type { CreateProjectWorkItemDTO } from "@/lib/types/work-item";
+import { tryCatch } from "@/lib/utils";
 import {
     createProject,
     getProjectById,
+    getProjectDetailsById,
     getProjectSummaryList,
 } from "@/server/data-access/project";
+import {
+    getProjectMaterialTestById,
+    updateMaterialTestCount,
+} from "../data-access/project-material-test/project-material-test";
+import {
+    getProjectWorkItemTestById,
+    updateWorkItemsTestCount,
+} from "../data-access/project-work-item-test/project-work-item-test";
+
+import {
+    PrismaClient,
+    type Prisma,
+    type ProjectMaterial,
+    type ProjectWorkItem,
+} from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
+import { createProjectMaterialTests } from "../data-access/project-material-test/project-material-test";
+import {
+    createProjectMaterials,
+    getProjectMaterialListByProjectWorkItem,
+    updateProjectMaterial,
+} from "../data-access/project-material/project-material";
+import { addProjectWorkItemTests } from "../data-access/project-work-item-test/project-work-item-test";
+import {
+    createProjectWorkItem,
+    getProjectWorkItemById,
+    getProjectWorkItemByProjectIdAndWorkItemId,
+    updateProjectWorkItem,
+} from "../data-access/project-work-item/project-work-item";
+import type { WorkItemMaterialDefinitionPayload } from "../data-access/work-item-material/work-item-material.payloads";
+import type { WorkItemTestDefinitionPayload } from "../data-access/work-item-test/work-item-test.payloads";
+import { getWorkItemWithAllDefinitions } from "../data-access/work-item/work-item";
+
+// helpers
+
+// generate project materials for a work item
+const _generateProjectMaterials = async (
+    data: ProjectWorkItem,
+    workItemMaterials: WorkItemMaterialDefinitionPayload[],
+    tx: Prisma.TransactionClient,
+) => {
+    console.log(
+        `[Service] Generating project materials for work item ID: ${data.workItemId}`,
+    );
+
+    // get all materials based on the work item definition
+    const projectMaterialData = workItemMaterials.map((wimDef) => ({
+        projectWorkItemId: data.id,
+        materialId: wimDef.materialId,
+        quantity: wimDef.quantityPerUnit.mul(data.quantity),
+    }));
+
+    //  add all materials found in the work item definition to the project material table
+    const projectMaterials = await createProjectMaterials(
+        projectMaterialData,
+        tx,
+    );
+    return projectMaterials;
+};
+
+// generate project work item tests for a work item
+const _generateProjectWorkItemTests = async (
+    data: ProjectWorkItem,
+    workItemTests: WorkItemTestDefinitionPayload[],
+    tx: Prisma.TransactionClient,
+) => {
+    console.log(
+        `[Service] Generating project work item tests for work item ID: ${data.workItemId}`,
+    );
+    //  get the tests required for the work item
+
+    // create project work item test records
+    const projectWorkItemTestsData: Prisma.ProjectWorkItemTestCreateManyInput[] =
+        workItemTests.map((test) => {
+            return {
+                testId: test.testId,
+                projectWorkItemId: data.id,
+            };
+        });
+
+    const projectWorkItemTests = await addProjectWorkItemTests(
+        projectWorkItemTestsData,
+        tx,
+    );
+
+    return projectWorkItemTests;
+};
+
+// generate project materialt tests for a material
+const _generateProjectMaterialTests = async (
+    data: ProjectMaterial[],
+    workItemMaterials: (WorkItemMaterialDefinitionPayload & {
+        workItemMaterialTest: { testId: string }[];
+    })[],
+    tx: Prisma.TransactionClient,
+) => {
+    console.log(`[Service] Generating project material tests`);
+
+    const projectMaterialTestData: Prisma.ProjectMaterialTestCreateManyInput[] =
+        [];
+
+    // go through the work item materials and get the tests for each material
+    workItemMaterials.forEach((workItemMaterialDef) => {
+        // find the current material from the generated materials
+        const projectMaterial = data.find(
+            (projectMaterial) =>
+                projectMaterial.materialId === workItemMaterialDef.materialId,
+        );
+        // skip if not found
+        if (!projectMaterial) return;
+
+        // get the tests for the material
+        workItemMaterialDef.workItemMaterialTest.forEach(
+            (workItemMaterialDef) => {
+                projectMaterialTestData.push({
+                    projectMaterialId: projectMaterial.id,
+                    testId: workItemMaterialDef.testId,
+                });
+            },
+        );
+    });
+
+    const projectMaterialTests = await createProjectMaterialTests(
+        projectMaterialTestData,
+        tx,
+    );
+
+    return projectMaterialTests;
+};
 
 export const ProjectService = {
-    async getProjectById(projectId: string): Promise<ProjectDTO | null> {
+    // get project by id
+    async getProjectById(projectId: string): Promise<ProjectDTO> {
         console.log(`[Service] Getting project ID: ${projectId}`);
 
         const rawProject = await getProjectById(projectId);
-        return projectToDTO(rawProject);
+
+        const dto = projectToDTO(rawProject);
+
+        if (!dto) {
+            throw new Error(
+                `[Service] Failed to convert project ID: ${projectId}`,
+            );
+        }
+
+        return dto;
     },
 
+    // get project summary list
     async getProjectSummaryList(): Promise<ProjectSummaryDTO[]> {
         console.log(`[Service] Getting project list summary`);
 
@@ -35,6 +188,8 @@ export const ProjectService = {
         return dtoList;
     },
 
+    // get last 5 project summaries
+    // used in the sidebar
     async getLastFiveProjectSummaryList(): Promise<ProjectSummaryDTO[]> {
         console.log(`[Service] Getting last 5 project summaries`);
         const allProjectsPayload = await getProjectSummaryList();
@@ -51,6 +206,7 @@ export const ProjectService = {
         return lastFiveSummaries;
     },
 
+    // create new project
     async createNewProject(input: CreateProjectDTO): Promise<ProjectDTO> {
         console.log(`[Service] Creating new project: ${input.contractId}`);
 
@@ -59,9 +215,267 @@ export const ProjectService = {
         const outputDto = projectToDTO(newProjectRecord);
 
         if (!outputDto) {
-            throw new Error("Failed to convert newly created project.");
+            throw new Error(
+                "[Service] Failed to convert newly created project.",
+            );
         }
 
         return outputDto;
+    },
+
+    // get project details by id
+    async getProjectDetails(projectId: string): Promise<Projects> {
+        console.log(
+            `[Service] Getting full project details for ID: ${projectId}`,
+        );
+
+        const rawProject = await getProjectDetailsById(projectId);
+
+        if (!rawProject)
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
+
+        return projectDetailsToDTO(rawProject);
+    },
+
+    async updateProjectWorkItemsTestCount(id: string, amount: number) {
+        const test = await getProjectWorkItemTestById(id);
+
+        if (!test) {
+            throw new Error("Work item test not found");
+        }
+
+        const newValue = Math.max(0, (test.onFile ?? 0) + amount);
+
+        return await updateWorkItemsTestCount(id, newValue);
+    },
+
+    async updateProjectMaterialTestCount(id: string, amount: number) {
+        const test = await getProjectMaterialTestById(id);
+
+        if (!test) {
+            throw new Error("Work item test not found");
+        }
+
+        const newValue = Math.max(0, (test.onFile ?? 0) + amount);
+
+        return await updateMaterialTestCount(id, newValue);
+    },
+
+    // create project work item
+    async createProjectWorkItem(
+        projectId: string,
+        data: CreateProjectWorkItemDTO,
+    ): Promise<ProjectWorkItemDTO> {
+        if (!projectId)
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
+
+        // check if the project work item already exists
+        const existingProjectWorkItem =
+            await getProjectWorkItemByProjectIdAndWorkItemId(
+                projectId,
+                data.workItemId,
+            );
+
+        // if it exists, update the project work item instead
+        if (existingProjectWorkItem) {
+            console.log(
+                `[Service] Project work item already exists. Updating work item and material qunatities.`,
+            );
+
+            return this.updateProjectWorkItem(existingProjectWorkItem.id, {
+                quantity:
+                    data.quantity + existingProjectWorkItem.quantity.toNumber(),
+            });
+        } else {
+            console.log(`[Service] Creating new project work item.`);
+            // all the definitions of the work item - material, test conversions
+            // used to generate the project work item tests and materials
+            const workItemDefinitions = await getWorkItemWithAllDefinitions(
+                data.workItemId,
+            );
+
+            if (!workItemDefinitions) {
+                throw new Error(
+                    `Work Item definition ${data.workItemId} not found.`,
+                );
+            }
+
+            const client = new PrismaClient();
+
+            // create a new project work item
+            const { data: projectWorkItem, error } = await tryCatch(
+                client.$transaction(
+                    async (tx) => {
+                        // create with a transaction to ensure atomicity (if any part fails, all changes are rolled back)
+
+                        console.log(
+                            `[Service] Creating project work item for project ID: ${projectId}`,
+                        );
+
+                        // create project work item record
+                        const projectWorkItem = await createProjectWorkItem(
+                            projectId,
+                            data,
+                            tx,
+                        );
+
+                        // generate the work item tests
+                        await _generateProjectWorkItemTests(
+                            projectWorkItem,
+                            workItemDefinitions.workItemTest,
+                            tx,
+                        );
+
+                        // generate the project materials
+                        const projectMaterials =
+                            await _generateProjectMaterials(
+                                projectWorkItem,
+                                workItemDefinitions.workItemMaterial,
+                                tx,
+                            );
+
+                        // generate the project material tests
+                        await _generateProjectMaterialTests(
+                            projectMaterials,
+                            workItemDefinitions.workItemMaterial,
+                            tx,
+                        );
+
+                        return getProjectWorkItemById(projectWorkItem.id, tx);
+                    },
+                    { maxWait: 3000, timeout: 6000 },
+                ),
+            );
+
+            await client.$disconnect();
+
+            if (error) {
+                throw error;
+            }
+
+            if (projectWorkItem === null) {
+                throw new Error(
+                    `[Service] Failed to create project work item for project ID: ${projectId}`,
+                );
+            }
+
+            const projectWorkItemDTO = projectWorkItemToDTO(projectWorkItem);
+
+            return projectWorkItemDTO;
+        }
+    },
+
+    // update project work item
+    async updateProjectWorkItem(id: string, data: UpdateProjectWorkItemDTO) {
+        console.log(`[Service] Updating project work item with ID: ${id}`);
+
+        const client = new PrismaClient();
+
+        const projectWorkItem = await getProjectWorkItemById(id);
+
+        if (!projectWorkItem) {
+            throw new Error(
+                `[Service] Project work item with ID ${id} not found`,
+            );
+        }
+
+        // all the definitions of the work item - material, test conversions
+        // used to generate the project work item tests and materials
+        const workItemDefinitions = await getWorkItemWithAllDefinitions(
+            projectWorkItem.workItemId,
+        );
+
+        if (!workItemDefinitions) {
+            throw new Error(
+                `Work Item definition ${projectWorkItem.workItemId} not found.`,
+            );
+        }
+        const newQuantity = new Decimal(data.quantity);
+
+        const projectMaterials =
+            await getProjectMaterialListByProjectWorkItem(id);
+
+        // get the update data for the project materials
+        const materialUpdates: { id: string; quantity: Prisma.Decimal }[] = [];
+        for (const projectMaterial of projectMaterials) {
+            const workItemMaterialDef =
+                workItemDefinitions.workItemMaterial.find(
+                    (def) => def.materialId === projectMaterial.materialId,
+                );
+
+            if (workItemMaterialDef) {
+                materialUpdates.push({
+                    id: projectMaterial.id,
+                    quantity:
+                        workItemMaterialDef.quantityPerUnit.mul(newQuantity),
+                });
+            } else {
+                console.warn(
+                    `[Service] Work item material definition not found for material ID: ${projectMaterial.materialId}`,
+                );
+            }
+        }
+
+        const { data: updatedProjectWorkItem, error } = await tryCatch(
+            // use a transaction to ensure atomicity (if any part fails, all changes are rolled back)
+            client.$transaction(
+                async (tx) => {
+                    // update the project work item with the new quantity
+                    const updatedProjectWorkItem = await updateProjectWorkItem(
+                        id,
+                        {
+                            // set the new quantity
+                            quantity: new Decimal(data.quantity),
+                        },
+                        tx,
+                    );
+
+                    // update the project materials with the new quantity
+                    await Promise.all(
+                        materialUpdates.map(
+                            async (update) =>
+                                await updateProjectMaterial(
+                                    update.id,
+                                    {
+                                        quantity: update.quantity,
+                                    },
+                                    tx,
+                                ),
+                        ),
+                    );
+
+                    return updatedProjectWorkItem;
+                },
+                { maxWait: 3000, timeout: 6000 },
+            ),
+        );
+
+        await client.$disconnect();
+
+        if (error) {
+            throw error;
+        }
+
+        if (!updatedProjectWorkItem) {
+            throw new Error(
+                `[Service] Failed to update project work item with ID: ${id}`,
+            );
+        }
+
+        const projectWorkItemPayload = await getProjectWorkItemById(
+            updatedProjectWorkItem.id,
+        );
+
+        if (!projectWorkItemPayload) {
+            throw new Error(
+                `[Service] Failed to get updated project work item with ID: ${id}`,
+            );
+        }
+
+        const updatedProjectWorkItemDTO = projectWorkItemToDTO(
+            projectWorkItemPayload,
+        );
+
+        return updatedProjectWorkItemDTO;
     },
 };
