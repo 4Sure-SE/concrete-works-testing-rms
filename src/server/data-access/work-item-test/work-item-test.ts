@@ -2,7 +2,7 @@ import "server-only";
 
 import { db } from "@/server/db";
 import type { Prisma } from "@prisma/client";
-import { WorkItemTestDefinitionPayload } from "./work-item-test.payloads";
+import { type WorkItemTestDefinitionPayload } from "./work-item-test.payloads";
 
 export async function getWorkItemTestDefinitions(
     workItemId: string,

@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import type { Prisma } from "@prisma/client";
-import { WorkItemMaterialTestDefinitionPayload } from "./work-item-material-test.payloads";
+import { type WorkItemMaterialTestDefinitionPayload } from "./work-item-material-test.payloads";
 
 export async function getWorkItemMaterialTestDefinitions(
     workItemMaterialId: string,
