@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ProgressBar } from "@/app/(main)/projects/_components/progress";
 import { ProjectStats } from "@/app/(main)/projects/_components/stats";
-
+import Link from "next/link";
 interface ProjectCardProps {
     contractId: string;
     id: string;
@@ -24,26 +24,32 @@ export function ProjectCard({
     );
 
     return (
-        <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="pb-2">
-                <h3 className="text-lg font-bold">{contractId}</h3>
-                <p className="text-sm text-muted-foreground">{id}</p>
-                <p className="text-sm font-semibold">{title}</p>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-3">
-                    <div className="flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span className="text-sm">{completionPercentage}%</span>
+        <Link
+            href={`/projects/${id}`}
+            className="block h-full"
+        >
+            <Card className="transition-shadow hover:shadow-md">
+                <CardHeader className="pb-2">
+                    <h3 className="text-lg font-bold">{contractId}</h3>
+                    <p className="text-sm font-semibold">{title}</p>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-3">
+                        <div className="flex justify-between text-sm">
+                            <span>Progress</span>
+                            <span className="text-sm">
+                                {completionPercentage}%
+                            </span>
+                        </div>
+                        <ProgressBar percentage={completionPercentage} />
+                        <ProjectStats
+                            total={stats.total}
+                            ongoing={stats.ongoing}
+                            completed={stats.completed}
+                        />
                     </div>
-                    <ProgressBar percentage={completionPercentage} />
-                    <ProjectStats
-                        total={stats.total}
-                        ongoing={stats.ongoing}
-                        completed={stats.completed}
-                    />
-                </div>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </Link>
     );
 }
