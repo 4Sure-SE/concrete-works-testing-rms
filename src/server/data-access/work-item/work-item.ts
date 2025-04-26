@@ -1,7 +1,7 @@
 import "server-only";
 
 import { db } from "@/server/db";
-import { Prisma } from "@prisma/client";
+import { type Prisma } from "@prisma/client";
 import {
     workItemWithAllDefinitionsInclude,
     type WorkItemPayload,
