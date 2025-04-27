@@ -22,7 +22,7 @@ export default async function ProjectEditPage({
         <div className="mx-auto max-w-7xl py-2 md:py-4">
             <SectionHeader
                 title="Edit Project"
-                description={`Update information about project ${project.id}`}
+                description={`Update information about project ${project.contractId}`}
             />
             <UpdateProjectForm
                 projectId={id}
