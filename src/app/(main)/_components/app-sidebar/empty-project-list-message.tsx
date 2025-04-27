@@ -1,7 +1,8 @@
 "use client";
 
-import { SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { FolderOpen } from "lucide-react";
+
+import { SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 
 export function EmptyProjectListMessage() {
     const { open: sidebarOpen } = useSidebar();

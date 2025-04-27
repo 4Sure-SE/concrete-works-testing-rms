@@ -1,6 +1,6 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import type { Meta, StoryObj } from "@storybook/react";
-import AppHeader from "./app-header";
+import { AppHeader } from ".";
 
 const meta = {
     title: "Main/Components/AppHeader",

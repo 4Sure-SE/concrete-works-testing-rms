@@ -8,7 +8,7 @@ type HeaderWithSidebarStateProps = {
     title: string;
 };
 
-function HeaderWithSidebarState(props: HeaderWithSidebarStateProps) {
+export function HeaderWithSidebarState(props: HeaderWithSidebarStateProps) {
     const { state } = useSidebar();
     const isOpen = state === "expanded";
 
@@ -19,5 +19,3 @@ function HeaderWithSidebarState(props: HeaderWithSidebarStateProps) {
         />
     );
 }
-
-export default HeaderWithSidebarState;
