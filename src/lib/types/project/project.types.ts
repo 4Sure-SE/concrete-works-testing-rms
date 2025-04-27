@@ -1,4 +1,5 @@
-import type { createProjectSchema } from "@/app/(main)/projects/new/_components/project-form/project-form.schema";
+import type { updateProjectSchema } from "@/app/(main)/projects/[id]/edit/_components/update-project-form/schema";
+import type { createProjectSchema } from "@/app/(main)/projects/new/_components/create-project-form";
 import type { Project } from "@prisma/client";
 import type { z } from "zod";
 import type { ActionErrors, ActionState } from "../actions.types";
@@ -13,7 +14,7 @@ export type ProjectActionState = ActionState<
 // project type used in the app
 export type ProjectDTO = Omit<
     Project,
-    "createdAt" | "contractCost" | "limits" | "location"
+    "updatedAt" | "contractCost" | "limits" | "location"
 > & {
     contractCost: number;
     limits: string | null;
@@ -33,3 +34,4 @@ export type ProjectSummaryDTO = {
 
 // client to server dto for creating project
 export type CreateProjectDTO = z.infer<typeof createProjectSchema>;
+export type UpdateProjectDTO = z.infer<typeof updateProjectSchema>;
