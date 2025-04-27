@@ -11,6 +11,18 @@ import {
     type ProjectWorkItemWithDetailsPayload,
 } from "./project-work-item.payloads";
 
+// get list of work items in a project
+export async function getProjectWorkItemListByProjectId(
+    projectId: string,
+): Promise<ProjectWorkItemPayload[]> {
+    const projectWorkItems = await db.projectWorkItem.findMany({
+        where: { projectId },
+        include: projectWorkItemInclude,
+    });
+
+    return projectWorkItems;
+}
+
 // get project work item dwith details by id
 export async function getProjectWorkItemDetailsById(
     id: string,
@@ -70,6 +82,11 @@ export async function createProjectWorkItem(
         },
     });
 
+    await client.project.update({
+        where: { id: projectWorkItem.projectId },
+        data: { updatedAt: new Date() },
+    });
+
     return projectWorkItem;
 }
 
@@ -83,6 +100,11 @@ export async function updateProjectWorkItem(
     const updatedProjectWorkItem = await client.projectWorkItem.update({
         where: { id },
         data,
+    });
+
+    await client.project.update({
+        where: { id: updatedProjectWorkItem.projectId },
+        data: { updatedAt: new Date() },
     });
 
     return updatedProjectWorkItem;
