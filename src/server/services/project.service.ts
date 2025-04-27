@@ -17,12 +17,13 @@ import type {
 } from "@/lib/types/project-work-item/project-work-item.types";
 import type { Projects } from "@/lib/types/project/project-details.types";
 import type { CreateProjectWorkItemDTO } from "@/lib/types/work-item";
-import { tryCatch } from "@/lib/utils";
+import { formatDate, tryCatch } from "@/lib/utils";
 import {
     createProject,
     getProjectById,
     getProjectDetailsById,
     getProjectSummaryList,
+    updateProject,
 } from "@/server/data-access/project";
 import {
     getProjectMaterialTestById,
@@ -33,6 +34,7 @@ import {
     updateWorkItemsTestCount,
 } from "../data-access/project-work-item-test/project-work-item-test";
 
+import type { UpdateProjectDTO } from "@/lib/types/project/project.types";
 import {
     PrismaClient,
     type Prisma,
@@ -223,6 +225,45 @@ export const ProjectService = {
         return outputDto;
     },
 
+    // update project
+    async updateProject(
+        projectId: string,
+        data: UpdateProjectDTO,
+    ): Promise<ProjectDTO> {
+        console.log(`[Service] Updating project ID: ${projectId}`);
+
+        // check if the project exists
+        const existingProject = await getProjectById(projectId);
+
+        if (!existingProject) {
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
+        }
+
+        // check if there are any changes to the project
+        if (
+            existingProject.contractId === data.contractId &&
+            existingProject.contractName === data.contractName &&
+            existingProject.contractor === data.contractor &&
+            existingProject.materialsEngineer === data.materialsEngineer &&
+            formatDate(existingProject.dateStarted) ===
+                formatDate(data.dateStarted!) &&
+            existingProject.contractCost.toNumber() === data.contractCost &&
+            existingProject.limits === data.limits &&
+            existingProject.location === data.location
+        ) {
+            throw new Error(`[Service] No changes made`);
+        }
+
+        const updatedProjectRecord = await updateProject(projectId, data);
+        const outputDto = projectToDTO(updatedProjectRecord);
+
+        if (!outputDto) {
+            throw new Error("[Service] Failed to convert updated project.");
+        }
+
+        return outputDto;
+    },
+
     // get project details by id
     async getProjectDetails(projectId: string): Promise<Projects> {
         console.log(
@@ -350,7 +391,7 @@ export const ProjectService = {
             await client.$disconnect();
 
             if (error) {
-                throw error;
+                throw new Error(`[Service] Failed to create project work item`);
             }
 
             if (projectWorkItem === null) {
