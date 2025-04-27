@@ -49,7 +49,7 @@ export const updateProjectTestOnFile = async (
     return { data: null, error: "Invalid Test Type" };
 };
 
-export async function UpdateProjectTest(
+export async function updateProjectTest(
     id: string | undefined,
     amount: number,
     type: "material" | "workItem",

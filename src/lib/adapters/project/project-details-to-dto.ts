@@ -1,5 +1,14 @@
 import type { Projects } from "@/lib/types/project/project-details.types";
 import type { ProjectDetailsPayload } from "@/server/data-access/project/project.payloads";
+function calculateBalance(testQuantity: number, testsOnFile: number): number {
+    const rawBalance = testQuantity - testsOnFile;
+
+    const nonNegativeBalance = Math.max(rawBalance, 0);
+
+    return nonNegativeBalance < 1
+        ? Math.ceil(nonNegativeBalance)
+        : Math.round(nonNegativeBalance);
+}
 
 export function projectDetailsToDTO(
     rawProject: ProjectDetailsPayload,
@@ -30,13 +39,18 @@ export function projectDetailsToDTO(
                             matchingWIT?.testQuantity?.toNumber() ?? 0;
                         const testsOnFile = pjwit.onFile ?? 0;
 
+                        const balance = calculateBalance(
+                            testQuantity,
+                            testsOnFile,
+                        );
+
                         return {
                             id: pjwit.id,
                             testRequired: pjwit.test.name,
                             testsOnFile,
                             requiredTests: testQuantity,
                             testQuantity,
-                            balance: testQuantity - testsOnFile,
+                            balance,
                         };
                     }) ?? [],
                 materials:
@@ -68,13 +82,10 @@ export function projectDetailsToDTO(
                                             : pm.quantity.toNumber() /
                                               unitsPerTest;
 
-                                    const rawBalance =
-                                        estimatedRequiredTests - testsOnFile;
-
-                                    const balance =
-                                        rawBalance < 1
-                                            ? Math.ceil(rawBalance)
-                                            : Math.round(rawBalance);
+                                    const balance = calculateBalance(
+                                        estimatedRequiredTests,
+                                        testsOnFile,
+                                    );
 
                                     return {
                                         id: pmt.id,

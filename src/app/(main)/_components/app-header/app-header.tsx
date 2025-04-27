@@ -25,5 +25,3 @@ export function AppHeader() {
         />
     );
 }
-
-export default AppHeader;

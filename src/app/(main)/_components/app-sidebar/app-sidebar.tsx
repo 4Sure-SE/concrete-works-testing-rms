@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { SignOut } from "@/app/(auth)/_components";
 import {
     Sidebar,
@@ -9,13 +11,11 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Suspense } from "react";
-import {
-    NavNewProject,
-    NavProjectList,
-    NavProjectListSkeleton,
-    SidebarHeaderButton,
-} from ".";
+
+import { NavNewProject } from "./nav-new-project";
+import { NavProjectList } from "./nav-project-list";
+import { NavProjectListSkeleton } from "./nav-project-list-skeleton";
+import { SidebarHeaderButton } from "./sidebar-header-button";
 
 export function AppSidebar() {
     return (
@@ -53,5 +53,3 @@ export function AppSidebar() {
         </Sidebar>
     );
 }
-
-export default AppSidebar;

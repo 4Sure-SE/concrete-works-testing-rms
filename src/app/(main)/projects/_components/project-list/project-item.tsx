@@ -1,38 +1,36 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ProgressBar } from "./progress";
-import { ProjectStats } from "./stats";
 import Link from "next/link";
 
-interface ProjectCardProps {
-    contractId: string;
-    id: string;
-    title: string;
-    stats: {
-        total: number;
-        ongoing: number;
-        completed: number;
-    };
-}
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ProjectSummaryDTO } from "@/lib/types/project";
 
-export function ProjectCard({
+import { ProgressBar } from "./progress-bar";
+import { ProjectStats } from "./project-stats";
+
+export function ProjectItem({
     contractId,
     id,
-    title,
+    contractName,
     stats,
-}: ProjectCardProps) {
-    const completionPercentage = Math.round(
-        (stats.completed / stats.total) * 100,
-    );
+}: Omit<ProjectSummaryDTO, "dateStarted">) {
+    const completionPercentage =
+        stats.totalRequiredTests === 0
+            ? 0
+            : Math.min(
+                  Math.round(
+                      (stats.totalOnFileTests / stats.totalRequiredTests) * 100,
+                  ),
+                  100,
+              );
 
     return (
         <Link
             href={`/projects/${id}`}
             className="block h-full"
         >
-            <Card className="h-full cursor-pointer transition-shadow hover:shadow-md">
+            <Card className="transition-shadow hover:shadow-md">
                 <CardHeader className="pb-2">
                     <h3 className="text-lg font-bold">{contractId}</h3>
-                    <p className="text-sm font-semibold">{title}</p>
+                    <p className="text-sm font-semibold">{contractName}</p>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-3">
@@ -44,9 +42,9 @@ export function ProjectCard({
                         </div>
                         <ProgressBar percentage={completionPercentage} />
                         <ProjectStats
-                            total={stats.total}
-                            ongoing={stats.ongoing}
-                            completed={stats.completed}
+                            total={stats.totalRequiredTests}
+                            balance={stats.totalBalanceTests}
+                            onFile={stats.totalOnFileTests}
                         />
                     </div>
                 </CardContent>
