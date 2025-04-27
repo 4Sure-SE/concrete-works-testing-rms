@@ -67,9 +67,11 @@ export function projectSummaryToDTO(
         id: project.id,
         contractId: project.contractId,
         contractName: project.contractName,
-        totalRequiredTests: totalRequired,
-        totalBalanceTests: totalRequired - totalOnFile,
-        totalOnFileTests: totalOnFile,
         dateStarted: project.dateStarted,
+        stats: {
+            totalRequiredTests: totalRequired,
+            totalOnFileTests: totalOnFile,
+            totalBalanceTests: totalRequired - totalOnFile,
+        },
     };
 }

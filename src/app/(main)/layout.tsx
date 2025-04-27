@@ -1,11 +1,13 @@
 import "@/styles/globals.css";
 
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { Toaster } from "@/components/ui/sonner";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
-import AuthProvider from "../(auth)/_contexts/auth-provider";
-import { AppHeader, AppSidebar } from "./_components/";
+
+import AuthProvider from "@/app/(auth)/_contexts/auth-provider";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
+
+import { AppHeader, AppSidebar } from "./_components";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
