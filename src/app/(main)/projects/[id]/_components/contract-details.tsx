@@ -1,3 +1,4 @@
+import { BackButton } from "@/app/(main)/_components";
 import type { Projects } from "@/lib/types/project";
 export default function ProjectContractDetails({
     project,
@@ -8,7 +9,8 @@ export default function ProjectContractDetails({
     return (
         <div className="grid w-full grid-cols-2 gap-x-4 p-8">
             <div className="flex w-full flex-col">
-                <p className="text-xl font-bold text-gray-950">
+                <p className="flex items-center gap-2 text-xl font-bold text-gray-950">
+                    <BackButton />
                     {project.contractId === ""
                         ? "N/A"
                         : `${project.contractId}`}
