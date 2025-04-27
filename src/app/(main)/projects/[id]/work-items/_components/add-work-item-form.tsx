@@ -1,6 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import Form from "next/form";
+import { useRouter } from "next/navigation";
+
+import ButtonWithLoader from "@/components/custom/button-with-loader";
 import {
     FormControl,
     FormField,
@@ -10,20 +13,15 @@ import {
     Form as UIForm,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useFormAction } from "@/hooks/use-form-action";
 import type { Callbacks } from "@/lib/types/actions.types";
 import type {
-    CreateProjectWorkItemDTO,
     ProjectWorkItemActionErrors,
     ProjectWorkItemActionState,
     WorkItemDefinitionDTO,
 } from "@/lib/types/work-item/";
 import { withCallbacks } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader } from "lucide-react";
-import Form from "next/form";
-import { useRouter } from "next/navigation";
-import { useActionState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+
 import { createProjectWorkItemSchema } from "./add-work-item-form.schema";
 import WorkItemSelect from "./work-item-select";
 
@@ -35,15 +33,15 @@ interface AddWorkItemFormProps {
     ) => Promise<ProjectWorkItemActionState>;
     projectId: string;
     workItemDefinitions: WorkItemDefinitionDTO[];
-    defaultValues: CreateProjectWorkItemDTO;
 }
 
 function AddWorkItemForm({
     action,
     projectId,
     workItemDefinitions,
-    defaultValues,
 }: AddWorkItemFormProps) {
+    const defaultValues = { workItemId: "", quantity: 0 };
+
     const router = useRouter();
 
     // server action callbacks on success or error
@@ -65,30 +63,15 @@ function AddWorkItemForm({
         },
     };
 
-    // to handle the server action state
-    // and to submit the form data to the server action with callbacks
-    const [, submitAction, isPending] = useActionState<
-        ProjectWorkItemActionState,
-        FormData
-    >(withCallbacks(action.bind(null, projectId), callbacks), {
-        success: true,
-        data: null,
-    });
-
-    // use transition to allow interaction while the form is submitting
-    // and to prevent blocking the UI
-    const [, startTransition] = useTransition();
-
-    // useForm hook to handle form state and validation
-    const form = useForm<CreateProjectWorkItemDTO>({
-        resolver: zodResolver(createProjectWorkItemSchema),
-        mode: "onBlur",
+    const { form, isPending, startAction, submitAction } = useFormAction({
+        action: withCallbacks(action.bind(null, projectId), callbacks), // bind projectId to the action
+        schema: createProjectWorkItemSchema,
         defaultValues,
     });
 
     // handle form submission and call the server action with the form data
     const handleSubmit = form.handleSubmit((_, e) => {
-        startTransition(() => {
+        startAction(() => {
             const formData = new FormData(e?.target as HTMLFormElement);
             submitAction(formData);
         });
@@ -153,20 +136,12 @@ function AddWorkItemForm({
                 />
                 {/* current selected work item unit */}
                 <div className="mt-6 flex items-center gap-2">
-                    {" "}
                     <span className="text-sm font-medium text-gray-700">{`${selectedWorkItemUnit}`}</span>
-                    {/* ADD WORK ITEM BUTTON */}
-                    <Button
-                        className="cursor-pointer"
+                    <ButtonWithLoader
                         type="submit"
-                        disabled={isPending}
-                    >
-                        {isPending ? (
-                            <Loader className="animate-spin" />
-                        ) : (
-                            "Add"
-                        )}
-                    </Button>
+                        isPending={isPending}
+                        text="Add"
+                    />
                 </div>
 
                 {/* display general server error */}

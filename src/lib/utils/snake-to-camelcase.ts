@@ -1,4 +1,4 @@
-export function toCamelCase(str: string) {
+export function snakeToCamelCase(str: string) {
     str = str.replace(/[-_\s]+(.)?/g, (_match: unknown, ch: string) =>
         ch ? ch.toUpperCase() : "",
     );

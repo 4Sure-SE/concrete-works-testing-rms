@@ -1,10 +1,11 @@
 "use client";
 
-import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 import { TrafficCone } from "lucide-react";
 import Link from "next/link";
 
-function SidebarHeaderButton() {
+import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
+
+export function SidebarHeaderButton() {
     const { open: sidebarOpen } = useSidebar();
 
     return (
@@ -38,5 +39,3 @@ function SidebarHeaderButton() {
         </SidebarMenuButton>
     );
 }
-
-export default SidebarHeaderButton;

@@ -1,15 +1,16 @@
 "use client";
 
+import { Plus } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Plus } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-function NavNewProject() {
+export function NavNewProject() {
     const pathname = usePathname();
 
     const isActive = pathname.startsWith(`/projects/new`);
@@ -39,5 +40,3 @@ function NavNewProject() {
         </SidebarMenu>
     );
 }
-
-export default NavNewProject;

@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
     SidebarMenuButton,
@@ -7,14 +10,12 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar";
 import type { ProjectSummaryDTO } from "@/lib/types/project";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 type NavProjectItemProps = {
     data: ProjectSummaryDTO;
 };
 
-function NavProjectItem({ data: project }: NavProjectItemProps) {
+export function NavProjectItem({ data: project }: NavProjectItemProps) {
     const pathname = usePathname();
     const { open: sidebarOpen } = useSidebar();
 
@@ -47,5 +48,3 @@ function NavProjectItem({ data: project }: NavProjectItemProps) {
         </SidebarMenuItem>
     );
 }
-
-export default NavProjectItem;

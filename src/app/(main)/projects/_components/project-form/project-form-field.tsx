@@ -1,5 +1,7 @@
 "use client";
 
+import type { Control } from "react-hook-form";
+
 import {
     FormControl,
     FormField,
@@ -10,15 +12,17 @@ import {
 import { Input } from "@/components/ui/input";
 import type { FieldConfig } from "@/lib/types/form.types";
 import type { CreateProjectDTO } from "@/lib/types/project";
+import type { UpdateProjectDTO } from "@/lib/types/project/project.types";
 import { formatDate } from "@/lib/utils";
-import type { Control } from "react-hook-form";
 
-interface FormFieldProps {
-    control: Control<CreateProjectDTO>;
-    fieldDetails: FieldConfig<CreateProjectDTO>;
+interface FormFieldProps<T extends CreateProjectDTO | UpdateProjectDTO> {
+    control: Control<T>;
+    fieldDetails: FieldConfig<T>;
 }
 
-function ProjectFormField({ control, fieldDetails }: FormFieldProps) {
+export function ProjectFormField<
+    T extends CreateProjectDTO | UpdateProjectDTO,
+>({ control, fieldDetails }: FormFieldProps<T>) {
     const {
         name,
         label,
@@ -61,5 +65,3 @@ function ProjectFormField({ control, fieldDetails }: FormFieldProps) {
         />
     );
 }
-
-export default ProjectFormField;

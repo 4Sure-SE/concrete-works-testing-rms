@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import type { Projects } from "@/lib/types/project";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import EditButton from "./edit-button";
 import ExportPdfButton from "./export-pdf-button";
 import ProjectInfoButton from "./project-info-button";
 import ShareButton from "./share-button";
@@ -18,6 +19,7 @@ export default function ProjectDetailsActionButtons({
             <div className="flex items-center justify-center space-x-2">
                 <ShareButton />
                 <ExportPdfButton project={project} />
+                <EditButton projectId={project.id} />
                 <Button
                     asChild
                     variant="default"

@@ -1,13 +1,14 @@
 "use server";
 
-import { createProjectSchema } from "@/app/(main)/projects/new/_components/create-project-form";
+import { updateProjectSchema } from "@/app/(main)/projects/[id]/edit/_components/update-project-form/update-project-form.schema";
 import type { ProjectActionState } from "@/lib/types/project/project.types";
 import { tryCatch } from "@/lib/utils";
 import { errorHandler } from "@/lib/utils/error-handler";
 import { ProjectService } from "@/server/services/project.service";
 import { revalidatePath } from "next/cache";
 
-export async function createProject(
+export async function updateProject(
+    projectId: string,
     _initialState: ProjectActionState,
     formData: FormData,
 ): Promise<ProjectActionState> {
@@ -19,7 +20,7 @@ export async function createProject(
         data: parsedData,
         error: parseError,
         success: parseSuccess,
-    } = createProjectSchema.safeParse(formDataObj);
+    } = updateProjectSchema.safeParse(formDataObj);
 
     // if it has errors return an object with the error message of each field
     if (!parseSuccess) {
@@ -30,13 +31,13 @@ export async function createProject(
     }
 
     // create a new project with the parsed data
-    const { data, error: dbError } = await tryCatch(
-        ProjectService.createNewProject(parsedData),
+    const { data, error: cError } = await tryCatch(
+        ProjectService.updateProject(projectId, parsedData),
     );
 
     // if there's an error in creating the project in the db
-    if (dbError) {
-        const error = errorHandler(dbError);
+    if (cError) {
+        const error = errorHandler(cError);
         // if the target is undefined set it to a general error
         const errorKey =
             typeof error.target === "string" && error.target
