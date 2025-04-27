@@ -1,5 +1,5 @@
 import { tryCatch } from "@/lib/utils";
-import { UpdateProjectTest } from "@/server/actions/projects/update-test-on-file";
+import { updateProjectTest } from "@/server/actions/projects/update-test-on-file";
 import { ProjectService } from "@/server/services/project.service";
 import { FolderOpen } from "lucide-react";
 import { Suspense } from "react";
@@ -45,7 +45,7 @@ async function ProjectDetailsContent({ id }: { id: string }) {
             <ProjectDetailsActionButtons project={project} />
             <ProjectWorkItemsTable
                 project={project}
-                onServerUpdate={UpdateProjectTest}
+                onServerUpdate={updateProjectTest}
             />
         </div>
     );
