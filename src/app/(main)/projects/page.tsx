@@ -1,6 +1,6 @@
-import { ProjectClient } from "@/app/(main)/_components/project-list/client";
 import { tryCatch } from "@/lib/utils";
 import { ProjectService } from "@/server/services/project.service";
+import { ProjectClient } from "./_components/project-list/client";
 
 export default async function ProjectListPage() {
     const { data: projectSummaries, error } = await tryCatch(
