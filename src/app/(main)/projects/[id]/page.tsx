@@ -1,4 +1,5 @@
 import { tryCatch } from "@/lib/utils";
+import { updateProjectTest } from "@/server/actions/projects/update-test-on-file";
 import { ProjectService } from "@/server/services/project.service";
 import { FolderOpen } from "lucide-react";
 import { Suspense } from "react";
@@ -6,7 +7,7 @@ import { validate as uuidValidate } from "uuid";
 import ProjectDetailsActionButtons from "./_components/action-buttons";
 import ProjectContractDetails from "./_components/contract-details";
 import ProjectDetailsSkeleton from "./_components/project-details-skeleton";
-import ProjectDetailsTable from "./_components/table";
+import ProjectWorkItemsTable from "./_components/table";
 
 async function ProjectDetailsContent({ id }: { id: string }) {
     if (!uuidValidate(id)) {
@@ -42,7 +43,10 @@ async function ProjectDetailsContent({ id }: { id: string }) {
                 project={project}
             />
             <ProjectDetailsActionButtons project={project} />
-            <ProjectDetailsTable project={project} />
+            <ProjectWorkItemsTable
+                project={project}
+                onServerUpdate={updateProjectTest}
+            />
         </div>
     );
 }

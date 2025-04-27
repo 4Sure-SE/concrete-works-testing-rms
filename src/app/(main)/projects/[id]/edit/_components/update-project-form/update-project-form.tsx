@@ -1,44 +1,50 @@
 "use client";
 
+import Form from "next/form";
+import { useRouter } from "next/navigation";
+
 import FormRow from "@/components/custom/form-row";
-import { Button } from "@/components/ui/button";
 import { Form as UIForm } from "@/components/ui/form";
+import { useFormAction } from "@/hooks/use-form-action";
 import { type Callbacks } from "@/lib/types/actions.types";
-import { type CreateProjectDTO } from "@/lib/types/project";
 import type {
     ProjectActionErrors,
     ProjectActionState,
     ProjectDTO,
+    UpdateProjectDTO,
 } from "@/lib/types/project/project.types";
 import { withCallbacks } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader } from "lucide-react";
-import Form from "next/form";
-import { useRouter } from "next/navigation";
-import { useActionState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import ProjectFormField from "./project-form-field";
-import { formLayout, projectFormConfig } from "./project-form.config";
-import { createProjectSchema } from "./project-form.schema";
 
-interface ProjectFormProps {
+import { ProjectFormField } from "@/app/(main)/projects/_components/project-form";
+import { formLayout } from "@/app/(main)/projects/_components/project-form/project-form.config";
+import ButtonWithLoader from "@/components/custom/button-with-loader";
+import { Edit } from "lucide-react";
+import { updateProjectFormConfig } from "./update-project-form.config";
+import { updateProjectSchema } from "./update-project-form.schema";
+
+interface UpdateProjectFormProps {
+    projectId: string;
     action: (
+        projectId: string,
         previousState: ProjectActionState,
         formData: FormData,
     ) => Promise<ProjectActionState>;
-    defaultValues: CreateProjectDTO;
+    defaultValues: UpdateProjectDTO;
 }
 
-export default function ProjectForm({
+export default function UpdateProjectForm({
+    projectId,
     action,
     defaultValues,
-}: ProjectFormProps) {
+}: UpdateProjectFormProps) {
+    const router = useRouter();
+
     // server action callbacks on success or error
     const callbacks: Callbacks<ProjectDTO | null, ProjectActionErrors> = {
         // on server action success
-        onSuccess: (data) => {
+        onSuccess: (_data) => {
+            router.back();
             form.reset();
-            router.push(`/projects/${data?.id}/work-items`);
         },
         // on server action error
         onError: (error) => {
@@ -49,27 +55,15 @@ export default function ProjectForm({
         },
     };
 
-    // to handle the server action state
-    // submitAction will be called when the form is submitted
-    const [, submitAction, isPending] = useActionState<
-        ProjectActionState,
-        FormData
-    >(withCallbacks(action, callbacks), { success: true, data: null });
-
-    // use transition to prevent blocking the UI while the form is submitting
-    const [, startTransition] = useTransition();
-    const router = useRouter();
-
-    const form = useForm<CreateProjectDTO>({
-        resolver: zodResolver(createProjectSchema),
-        // validate form on blur
-        mode: "onBlur",
+    const { form, isPending, startAction, submitAction } = useFormAction({
+        action: withCallbacks(action.bind(null, projectId), callbacks),
+        schema: updateProjectSchema,
         defaultValues,
     });
 
     // handle form submission and call the server action with the form data
     const handleSubmit = form.handleSubmit((_, e) => {
-        startTransition(() => {
+        startAction(() => {
             const formData = new FormData(e?.target as HTMLFormElement);
             submitAction(formData);
         });
@@ -95,10 +89,12 @@ export default function ProjectForm({
                         >
                             {/* render each field on the row*/}
                             {row.map((fieldName) => (
-                                <ProjectFormField
+                                <ProjectFormField<UpdateProjectDTO>
                                     key={fieldName}
                                     control={form.control}
-                                    fieldDetails={projectFormConfig[fieldName]}
+                                    fieldDetails={
+                                        updateProjectFormConfig[fieldName]
+                                    }
                                 />
                             ))}
                         </FormRow>
@@ -114,17 +110,13 @@ export default function ProjectForm({
 
                 {/* submit button */}
                 <div className="flex justify-end">
-                    <Button
-                        className="min-w-48 cursor-pointer"
+                    <ButtonWithLoader
+                        isPending={isPending}
+                        text="Update"
                         type="submit"
-                        disabled={isPending}
-                    >
-                        {isPending ? (
-                            <Loader className="animate-spin" />
-                        ) : (
-                            "Add"
-                        )}
-                    </Button>
+                        loadingText="Updating..."
+                        icon={<Edit className="size-4" />}
+                    />
                 </div>
             </Form>
         </UIForm>

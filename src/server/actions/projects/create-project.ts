@@ -1,6 +1,6 @@
 "use server";
 
-import { createProjectSchema } from "@/app/(main)/projects/new/_components/project-form";
+import { createProjectSchema } from "@/app/(main)/projects/new/_components/create-project-form";
 import type { ProjectActionState } from "@/lib/types/project/project.types";
 import { tryCatch } from "@/lib/utils";
 import { errorHandler } from "@/lib/utils/error-handler";
