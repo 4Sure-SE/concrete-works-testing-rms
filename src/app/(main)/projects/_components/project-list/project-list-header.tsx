@@ -1,11 +1,13 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { DateRangeFilter } from "@/app/(main)/projects/_components/date";
-import { SearchBar } from "@/app/(main)/projects/_components/search";
 
-interface PageHeaderProps {
+import { Button } from "@/components/ui/button";
+
+import { DateRangeFilter } from "./date-filter";
+import { SearchBar } from "./search-bar";
+
+interface ProjectListHeaderProps {
     title: string;
     searchTerm: string;
     onSearchChange: (value: string) => void;
@@ -15,7 +17,7 @@ interface PageHeaderProps {
     onEndDateChange: (date: string) => void;
 }
 
-export function PageHeader({
+export function ProjectListHeader({
     title,
     searchTerm,
     onSearchChange,
@@ -23,7 +25,7 @@ export function PageHeader({
     endDate,
     onStartDateChange,
     onEndDateChange,
-}: PageHeaderProps) {
+}: ProjectListHeaderProps) {
     return (
         <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
             <h1 className="text-2xl font-bold">{title}</h1>

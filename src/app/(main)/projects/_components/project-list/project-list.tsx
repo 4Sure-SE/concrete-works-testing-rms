@@ -1,26 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { PageHeader } from "./header";
-import { ProjectGrid } from "./grid";
 
-interface Project {
-    contractId: string;
-    id: string;
-    title: string;
-    dateStarted: string;
-    stats: {
-        total: number;
-        ongoing: number;
-        completed: number;
-    };
+import { ProjectSummaryDTO } from "@/lib/types/project";
+
+import { ProjectItem } from "./project-item";
+import { ProjectListHeader } from "./project-list-header";
+
+interface ProjectListProps {
+    projects: ProjectSummaryDTO[];
 }
 
-interface ProjectClientProps {
-    projects: Project[];
-}
-
-export function ProjectClient({ projects }: ProjectClientProps) {
+export function ProjectList({ projects }: ProjectListProps) {
     const [searchTerm, setSearchTerm] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -31,7 +22,9 @@ export function ProjectClient({ projects }: ProjectClientProps) {
             project.contractId
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase()) ||
-            project.title.toLowerCase().includes(searchTerm.toLowerCase());
+            project.contractName
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
 
         let matchesDate = true;
         if (startDate) {
@@ -50,7 +43,7 @@ export function ProjectClient({ projects }: ProjectClientProps) {
 
     return (
         <>
-            <PageHeader
+            <ProjectListHeader
                 title="Projects"
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
@@ -60,7 +53,17 @@ export function ProjectClient({ projects }: ProjectClientProps) {
                 onEndDateChange={setEndDate}
             />
             {filteredProjects.length > 0 ? (
-                <ProjectGrid projects={filteredProjects} />
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    {projects.map((project) => (
+                        <ProjectItem
+                            contractId={project.contractId}
+                            key={project.id}
+                            id={project.id}
+                            contractName={project.contractName}
+                            stats={project.stats}
+                        />
+                    ))}
+                </div>
             ) : (
                 <div className="flex flex-col items-center justify-center py-24">
                     <p className="text-lg text-muted-foreground">

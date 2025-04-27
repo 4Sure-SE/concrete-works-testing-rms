@@ -1,4 +1,4 @@
-import type { updateProjectSchema } from "@/app/(main)/projects/[id]/edit/_components/update-project-form/schema";
+import type { updateProjectSchema } from "@/app/(main)/projects/[id]/edit/_components/update-project-form/update-project-form.schema";
 import type { createProjectSchema } from "@/app/(main)/projects/new/_components/create-project-form";
 import type { Project } from "@prisma/client";
 import type { z } from "zod";
@@ -21,15 +21,19 @@ export type ProjectDTO = Omit<
     location: string | null;
 };
 
+export type ProjectSummaryStats = {
+    totalRequiredTests: number;
+    totalOnFileTests: number;
+    totalBalanceTests: number;
+};
+
 // project summary type used in the app
 export type ProjectSummaryDTO = {
     id: string;
     contractId: string;
     contractName: string;
-    totalRequiredTests: number;
-    totalOnFileTests: number;
-    totalBalanceTests: number;
     dateStarted: Date;
+    stats: ProjectSummaryStats;
 };
 
 // client to server dto for creating project

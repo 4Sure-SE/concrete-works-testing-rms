@@ -1,16 +1,8 @@
 import type { FieldConfig, FormField } from "@/lib/types/form.types";
 import type { CreateProjectDTO } from "@/lib/types/project";
 
-// grid layout of the form
-export const formLayout = [
-    ["contractId", "contractName"],
-    ["contractor", "location"],
-    ["dateStarted", "materialsEngineer"],
-    ["limits", "contractCost"],
-] as const;
-
 // field details of the project form
-export const projectFormConfig: Record<
+export const createProjectFormConfig: Record<
     FormField<CreateProjectDTO>,
     FieldConfig<CreateProjectDTO>
 > = {
@@ -71,7 +63,7 @@ export const projectFormConfig: Record<
 
 // generate an object of default values
 export function getDefaultValues(): CreateProjectDTO {
-    return Object.entries(projectFormConfig).reduce(
+    return Object.entries(createProjectFormConfig).reduce(
         (values, [key, config]) => {
             values[key as FormField<CreateProjectDTO>] = config.default ?? "";
             return values;
