@@ -19,7 +19,7 @@ export function NavProjectItem({ data: project }: NavProjectItemProps) {
     const pathname = usePathname();
     const { open: sidebarOpen } = useSidebar();
 
-    const isActive = pathname === `/projects/${project.id}`;
+    const isActive = pathname.startsWith(`/projects/${project.id}`);
     const initials = project.contractId.substring(0, 2);
 
     return (

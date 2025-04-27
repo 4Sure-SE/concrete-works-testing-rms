@@ -1,6 +1,7 @@
 import SectionHeader from "@/components/custom/section-header";
 import { createProject } from "@/server/actions/projects";
 
+import { BackButton } from "../../_components";
 import { getDefaultValues } from "./_components/create-project-form";
 import CreateProjectForm from "./_components/create-project-form/create-project-form";
 
@@ -12,6 +13,7 @@ export default function NewProjectPage() {
             <SectionHeader
                 title="Project Information"
                 description="Provide information about the project"
+                leftControl={<BackButton />}
             />
             <CreateProjectForm
                 action={createProject}

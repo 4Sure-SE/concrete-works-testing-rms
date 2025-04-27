@@ -18,6 +18,7 @@ import { withCallbacks } from "@/lib/utils";
 import { ProjectFormField } from "@/app/(main)/projects/_components/project-form";
 import { formLayout } from "@/app/(main)/projects/_components/project-form/project-form.config";
 import ButtonWithLoader from "@/components/custom/button-with-loader";
+import { Edit } from "lucide-react";
 import { updateProjectFormConfig } from "./update-project-form.config";
 import { updateProjectSchema } from "./update-project-form.schema";
 
@@ -113,6 +114,8 @@ export default function UpdateProjectForm({
                         isPending={isPending}
                         text="Update"
                         type="submit"
+                        loadingText="Updating..."
+                        icon={<Edit className="size-4" />}
                     />
                 </div>
             </Form>
