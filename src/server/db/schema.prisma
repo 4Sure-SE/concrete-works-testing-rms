@@ -107,7 +107,7 @@ model Project {
   limits            String?
   location          String?
   dateStarted       DateTime          @map("date_started") @db.Date
-  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime          @default(now()) @map("updated_at") @db.Timestamptz(6)
   materialsEngineer String            @map("materials_engineer")
   contractCost      Decimal           @map("contract_cost") @db.Decimal(18, 2)
   projectWorkItem   ProjectWorkItem[]

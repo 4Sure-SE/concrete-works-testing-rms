@@ -21,7 +21,7 @@ export async function getProjectSummaryList(): Promise<
     ProjectSummaryPayload[]
 > {
     const projects = await db.project.findMany({
-        orderBy: { createdAt: "desc" },
+        orderBy: { updatedAt: "desc" },
         include: projectSummaryInclude,
     });
     return projects;
@@ -44,7 +44,10 @@ export async function updateProject(
 ): Promise<Project> {
     const updatedProject = await db.project.update({
         where: { id },
-        data,
+        data: {
+            ...data,
+            updatedAt: new Date(),
+        },
     });
     return updatedProject;
 }
