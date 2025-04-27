@@ -37,7 +37,6 @@ export default async function ManageWorkItemsPage({
                 action={createProjectWorkItem}
                 projectId={id}
                 workItemDefinitions={workItemDefinitions}
-                defaultValues={{ workItemId: "", quantity: 0 }}
             />
             <WorkItemsTable />
         </div>
