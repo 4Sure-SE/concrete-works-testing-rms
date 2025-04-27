@@ -1,9 +1,9 @@
 "use client";
 
-import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DateRangeFilter } from "@/app/(main)/projects/_components/date";
-import { SearchBar } from "@/app/(main)/projects/_components/search";
+import { Plus } from "lucide-react";
+import { DateRangeFilter } from "./date";
+import { SearchBar } from "./search";
 
 interface PageHeaderProps {
     title: string;

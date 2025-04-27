@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Link from "next/link";
 import { ProgressBar } from "./progress";
 import { ProjectStats } from "./stats";
-import Link from "next/link";
-
 interface ProjectCardProps {
     contractId: string;
     id: string;
@@ -29,7 +28,7 @@ export function ProjectCard({
             href={`/projects/${id}`}
             className="block h-full"
         >
-            <Card className="h-full cursor-pointer transition-shadow hover:shadow-md">
+            <Card className="transition-shadow hover:shadow-md">
                 <CardHeader className="pb-2">
                     <h3 className="text-lg font-bold">{contractId}</h3>
                     <p className="text-sm font-semibold">{title}</p>
