@@ -17,7 +17,7 @@ export default function ProjectDetailsActionButtons({
             <ProjectInfoButton project={project} />
             <div className="flex items-center justify-center space-x-2">
                 <ShareButton />
-                <ExportPdfButton />
+                <ExportPdfButton project={project} />
                 <Button
                     asChild
                     variant="default"
