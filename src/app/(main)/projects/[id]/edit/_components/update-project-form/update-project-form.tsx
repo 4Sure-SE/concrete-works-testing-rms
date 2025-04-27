@@ -111,7 +111,7 @@ export default function UpdateProjectForm({
                 <div className="flex justify-end">
                     <ButtonWithLoader
                         isPending={isPending}
-                        text="Add"
+                        text="Update"
                         type="submit"
                     />
                 </div>
