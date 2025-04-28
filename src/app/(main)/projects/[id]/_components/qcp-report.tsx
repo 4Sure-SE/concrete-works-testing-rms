@@ -20,7 +20,7 @@ const abbreviateUnit = (unit: string) => {
 const MyDoc = (project: Projects) => (
     <Document>
         <Page
-            size="A4"
+            size="LETTER"
             style={styles.page}
         >
             <View style={styles.section}>
