@@ -51,7 +51,7 @@ async function ProjectDetailsContent({ id }: { id: string }) {
     );
 }
 
-export async function ProjectDetailsPage({
+export default async function ProjectDetailsPage({
     params,
 }: {
     params: Promise<{ id: string }>;
