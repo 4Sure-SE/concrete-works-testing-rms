@@ -295,7 +295,7 @@ const MyDoc = (project: Projects) => (
                             <Text style={[styles.text, { marginLeft: 4 }]}>
                                 {project.contractCost === 0
                                     ? "N/A"
-                                    : `₱${new Intl.NumberFormat("en-PH", {
+                                    : `PHP ${new Intl.NumberFormat("en-PH", {
                                           minimumFractionDigits: 0,
                                           maximumFractionDigits: 2,
                                       }).format(
@@ -304,6 +304,7 @@ const MyDoc = (project: Projects) => (
                                           ),
                                       )}`}
                             </Text>
+
                             <View
                                 style={{
                                     height: 1,
@@ -369,8 +370,11 @@ const MyDoc = (project: Projects) => (
                                 marginLeft: 44,
                             }}
                         >
-                            <Text style={[styles.text, { fontWeight: 700 }]}>
-                                DATE: {new Date().toLocaleDateString()}
+                            <Text style={styles.text}>
+                                <Text style={{ fontWeight: "700" }}>
+                                    DATE:{" "}
+                                </Text>
+                                {new Date().toLocaleDateString()}
                             </Text>
                         </View>
                     </View>
