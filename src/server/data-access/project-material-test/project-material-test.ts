@@ -20,8 +20,26 @@ export async function getProjectMaterialTestById(id: string) {
 }
 
 export async function updateMaterialTestCount(id: string, newValue: number) {
-    return await db.projectMaterialTest.update({
+    const updatedMaterialTest = await db.projectMaterialTest.update({
         where: { id },
         data: { onFile: newValue },
+        include: {
+            projectMaterial: {
+                select: { projectWorkItem: { select: { projectId: true } } },
+            },
+        },
     });
+
+    await db.project.update({
+        where: {
+            id: updatedMaterialTest.projectMaterial.projectWorkItem.projectId,
+        },
+        data: {
+            updatedAt: new Date(),
+        },
+    });
+
+    const { projectMaterial, ...result } = updatedMaterialTest;
+
+    return result;
 }
