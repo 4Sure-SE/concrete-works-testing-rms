@@ -11,28 +11,15 @@ import {
 import React from "react";
 
 const styles = StyleSheet.create({
-    page: { padding: 30 },
-    text: { fontSize: 11 },
+    page: { padding: 35 },
+    text: { fontSize: 8 },
     section: {
-        margin: 10,
-        padding: 10,
         display: "flex",
         alignItems: "flex-start",
     },
 
     tableContainer: {
-        paddingHorizontal: 20,
-        // flexWrap: "wrap",
         width: "100%",
-    },
-
-    tableHeaderText: {
-        fontSize: 10,
-        fontWeight: 700,
-        justifyContent: "center",
-        alignItems: "center",
-        paddingVertical: 5,
-        paddingHorizontal: 5,
     },
 
     tableHeaderPayItemNo: {
@@ -78,7 +65,6 @@ const styles = StyleSheet.create({
 
     tdItemNo: {
         fontSize: 8,
-        fontWeight: 700,
         justifyContent: "flex-start",
         alignItems: "center",
         paddingVertical: 0.5,
@@ -86,7 +72,6 @@ const styles = StyleSheet.create({
     },
     tdDescription: {
         fontSize: 8,
-        fontWeight: 700,
         justifyContent: "flex-start",
         alignItems: "center",
         paddingVertical: 0.5,
@@ -94,7 +79,6 @@ const styles = StyleSheet.create({
     },
     tdUnit: {
         fontSize: 8,
-        fontWeight: 700,
         justifyContent: "center",
         alignItems: "center",
         paddingVertical: 0.5,
@@ -102,7 +86,6 @@ const styles = StyleSheet.create({
     },
     tdQuantity: {
         fontSize: 8,
-        fontWeight: 700,
         justifyContent: "center",
         alignItems: "center",
         paddingVertical: 0.5,
@@ -110,7 +93,6 @@ const styles = StyleSheet.create({
     },
     tdTestQuantity: {
         fontSize: 8,
-        fontWeight: 700,
         justifyContent: "center",
         alignItems: "center",
         paddingVertical: 0.5,
@@ -121,11 +103,23 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
     },
+    contractIdContainer: {
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "flex-start",
+        paddingVertical: 4,
+    },
+    contractNameContainer: {
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "flex-start",
+        paddingVertical: 4,
+    },
 
     limitsContainer: {
         width: "75%",
         flexDirection: "row",
-        alignItems: "flex-end",
+        alignItems: "flex-start",
         paddingVertical: 4,
         paddingRight: 10,
     },
@@ -133,14 +127,14 @@ const styles = StyleSheet.create({
     locationContainer: {
         width: "25%",
         flexDirection: "row",
-        alignItems: "flex-end",
+        alignItems: "flex-start",
         paddingVertical: 4,
     },
 
-    contactCostContainer: {
+    contractCostContainer: {
         width: "75%",
         flexDirection: "row",
-        alignItems: "flex-end",
+        alignItems: "flex-start",
         paddingVertical: 4,
         paddingRight: 10,
     },
@@ -148,7 +142,7 @@ const styles = StyleSheet.create({
     sourceContainer: {
         width: "25%",
         flexDirection: "row",
-        alignItems: "flex-end",
+        alignItems: "flex-start",
         paddingVertical: 4,
     },
 });
@@ -156,9 +150,9 @@ const styles = StyleSheet.create({
 const abbreviateUnit = (unit: string) => {
     switch (unit) {
         case "square meter":
-            return "m²";
+            return "sq.m";
         case "cubic meter":
-            return "m³";
+            return "cu.m";
         case "kilogram":
             return "kg";
         default:
@@ -173,60 +167,213 @@ const MyDoc = (project: Projects) => (
             style={styles.page}
         >
             <View style={styles.section}>
-                <Text style={styles.text}>Contract Id:</Text>
-                <Text style={styles.text}>Contract Name:</Text>
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: 30,
+                        width: "100%",
+                    }}
+                >
+                    <Text style={{ fontSize: 10, fontWeight: 700 }}>
+                        QUALITY CONTROL PROGRAM
+                    </Text>
+                </View>
                 <View style={styles.contractContainer}>
+                    {/* CONTRACT ID */}
+                    <View style={styles.contractIdContainer}>
+                        <Text style={[styles.text, { fontWeight: 700 }]}>
+                            CONTRACT ID:{" "}
+                        </Text>
+                        <View
+                            style={{
+                                width: "100%",
+                                flexDirection: "column",
+                                justifyContent: "flex-start",
+                            }}
+                        >
+                            <Text style={[styles.text, { marginLeft: 6 }]}>
+                                {project.contractId ?? "N/A"}
+                            </Text>
+                            <View
+                                style={{
+                                    height: 1,
+                                    backgroundColor: "#000",
+                                    marginLeft: 6,
+                                }}
+                            />
+                        </View>
+                    </View>
+
+                    {/* CONTRACT NAME */}
+                    <View style={styles.contractNameContainer}>
+                        <Text style={[styles.text, { fontWeight: 700 }]}>
+                            CONTRACT NAME:{" "}
+                        </Text>
+                        <View
+                            style={{
+                                width: "90%",
+                                flexDirection: "column",
+                                justifyContent: "flex-start",
+                            }}
+                        >
+                            <Text style={[styles.text, { marginLeft: 4 }]}>
+                                {project.contractName ?? "N/A"}
+                            </Text>
+                            <View
+                                style={{
+                                    height: 1,
+                                    backgroundColor: "#000",
+                                    marginLeft: 4,
+                                }}
+                            />
+                        </View>
+                    </View>
+
+                    {/* LIMITS */}
                     <View style={styles.limitsContainer}>
-                        <Text style={styles.text}>LIMITS:</Text>
+                        <Text style={[styles.text, { fontWeight: 700 }]}>
+                            LIMITS:{" "}
+                        </Text>
                         <View
                             style={{
-                                flex: 1,
-                                height: 1,
-                                backgroundColor: "#000",
-                                marginLeft: 4,
+                                width: "100%",
+                                flexDirection: "column",
+                                justifyContent: "flex-start",
                             }}
-                        />
+                        >
+                            <Text style={[styles.text, { marginLeft: 4 }]}>
+                                {project.limits ?? "N/A"}
+                            </Text>
+                            <View
+                                style={{
+                                    height: 1,
+                                    backgroundColor: "#000",
+                                    marginLeft: 4,
+                                }}
+                            />
+                        </View>
                     </View>
+
+                    {/* LOCATION */}
                     <View style={styles.locationContainer}>
-                        <Text style={styles.text}>LOCATION:</Text>
+                        <Text style={[styles.text, { fontWeight: 700 }]}>
+                            LOCATION:{" "}
+                        </Text>
                         <View
                             style={{
-                                flex: 1,
-                                height: 1,
-                                backgroundColor: "#000",
-                                marginLeft: 4,
+                                width: "75%",
+                                flexDirection: "column",
+                                justifyContent: "flex-start",
                             }}
-                        />
+                        >
+                            <Text style={[styles.text, { marginLeft: 4 }]}>
+                                {project.location ?? "N/A"}
+                            </Text>
+                            <View
+                                style={{
+                                    height: 1,
+                                    backgroundColor: "#000",
+                                    marginLeft: 4,
+                                }}
+                            />
+                        </View>
                     </View>
-                    <View style={styles.contactCostContainer}>
-                        <Text style={styles.text}>
+
+                    {/* APPROPRIATION/CONTRACT COST */}
+                    <View style={styles.contractCostContainer}>
+                        <Text style={[styles.text, { fontWeight: "700" }]}>
                             APPROPRIATION/CONTRACT COST:
                         </Text>
                         <View
                             style={{
-                                flex: 1,
-                                height: 1,
-                                backgroundColor: "#000",
-                                marginLeft: 4,
+                                width: "65%",
+                                flexDirection: "column",
+                                justifyContent: "flex-start",
                             }}
-                        />
+                        >
+                            <Text style={[styles.text, { marginLeft: 4 }]}>
+                                {project.contractCost === 0
+                                    ? "N/A"
+                                    : `₱${new Intl.NumberFormat("en-PH", {
+                                          minimumFractionDigits: 0,
+                                          maximumFractionDigits: 2,
+                                      }).format(
+                                          Number(
+                                              project.contractCost.toFixed(2),
+                                          ),
+                                      )}`}
+                            </Text>
+                            <View
+                                style={{
+                                    height: 1,
+                                    backgroundColor: "#000",
+                                    marginLeft: 4,
+                                }}
+                            />
+                        </View>
                     </View>
+
+                    {/* SOURCE */}
                     <View style={styles.sourceContainer}>
-                        <Text style={styles.text}>SOURCE:</Text>
+                        <Text
+                            style={[
+                                styles.text,
+                                {
+                                    marginLeft: 7,
+                                    fontWeight: 700,
+                                },
+                            ]}
+                        >
+                            SOURCE:{" "}
+                        </Text>
                         <View
                             style={{
-                                flex: 1,
-                                height: 1,
-                                backgroundColor: "#000",
-                                marginLeft: 4,
+                                width: "75%",
+                                flexDirection: "column",
+                                justifyContent: "flex-start",
                             }}
-                        />
-                    </View>
-                </View>
+                        >
+                            <Text style={[styles.text, { marginLeft: 4 }]}>
+                                {/* {project.source ?? "N/A"} */}
+                                N/A
+                            </Text>
+                            <View
+                                style={{
+                                    height: 1,
+                                    backgroundColor: "#000",
 
-                <View>
-                    <Text style={styles.text}>A. Test TO BE PERFORMED:</Text>
-                    <Text style={styles.text}>Date:</Text>
+                                    marginLeft: 4,
+                                }}
+                            />
+                        </View>
+                    </View>
+                    <View
+                        style={{
+                            width: "100%",
+                            flexDirection: "row",
+                            alignItems: "flex-end",
+                            justifyContent: "space-between",
+                            paddingVertical: 4,
+                        }}
+                    >
+                        <View style={{ width: "12%" }}></View>
+                        <View style={{ width: "65%" }}>
+                            <Text style={[styles.text, { fontWeight: 700 }]}>
+                                A. Test TO BE PERFORMED:
+                            </Text>
+                        </View>
+                        <View
+                            style={{
+                                width: "23%",
+                                marginLeft: 44,
+                            }}
+                        >
+                            <Text style={[styles.text, { fontWeight: 700 }]}>
+                                DATE: {new Date().toLocaleDateString()}
+                            </Text>
+                        </View>
+                    </View>
                 </View>
             </View>
             <View style={styles.tableContainer}>
@@ -249,13 +396,13 @@ const MyDoc = (project: Projects) => (
                             style={styles.tableHeaderUnit}
                             weighting={0.1}
                         >
-                            Unit
+                            UNIT
                         </TD>
                         <TD
                             style={styles.tableHeaderQuantity}
                             weighting={0.1}
                         >
-                            Quantity
+                            QUANTITY
                         </TD>
                         <TD
                             style={styles.tableHeaderNoOfTest}
@@ -376,6 +523,22 @@ const MyDoc = (project: Projects) => (
                     ))}
                 </Table>
             </View>
+            <View style={{ width: "100%", marginTop: 30 }}>
+                <Text style={[styles.text, { marginBottom: 20 }]}>
+                    Prepared By:
+                </Text>
+                <Text
+                    style={[styles.text, { fontWeight: 700, marginBottom: 15 }]}
+                >
+                    NAME & SIGNATURE
+                </Text>
+                <Text style={[styles.text, { marginBottom: 15 }]}>
+                    {project.materialsEngineer}
+                </Text>
+                <Text style={[styles.text, { marginBottom: 15 }]}>
+                    {project.contractor}
+                </Text>
+            </View>
         </Page>
     </Document>
 );
@@ -385,7 +548,7 @@ const downloadQCP = async (project: Projects) => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "document.pdf";
+    link.download = `${project.contractId}-QCP.pdf`;
     link.click();
     URL.revokeObjectURL(url);
 };
