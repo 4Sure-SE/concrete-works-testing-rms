@@ -1,6 +1,6 @@
 import type { Projects } from "@/lib/types/project";
 
-const fakeProjectsData: Projects = {
+export const fakeProjectsData: Projects = {
     id: "P-001",
     contractId: "C-2023-001",
     contractName: "City Bridge Construction",
@@ -78,7 +78,6 @@ const fakeProjectsData: Projects = {
         },
     ],
 };
-export default fakeProjectsData;
 
 export const fakeLongContractDetails = {
     id: "PRJ-2023-001-45678-ABCDE",

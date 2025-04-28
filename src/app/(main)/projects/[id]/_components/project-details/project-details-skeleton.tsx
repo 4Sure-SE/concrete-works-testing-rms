@@ -8,7 +8,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-export default function ProjectDetailsSkeleton() {
+export function ProjectDetailsSkeleton() {
     return (
         <div>
             <div className="grid w-full grid-cols-1 gap-x-4 p-8">

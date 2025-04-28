@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Check, ChevronDown, Copy, Share2 } from "lucide-react";
 import { useState } from "react";
 
-export default function ShareButton() {
+export function ShareButton() {
     const [copied, setCopied] = useState(false);
 
     const shareableLink = "https://yourwebsite.com/shared-link";

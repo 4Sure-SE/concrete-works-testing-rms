@@ -6,7 +6,7 @@ interface EditButtonProps {
     projectId: string;
 }
 
-export default function EditButton({ projectId }: EditButtonProps) {
+export function EditButton({ projectId }: EditButtonProps) {
     return (
         <Button
             asChild
