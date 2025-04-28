@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-export default function ProjectInfoButton({ project }: { project: Projects }) {
+export function ProjectInfoButton({ project }: { project: Projects }) {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     return (
         <>

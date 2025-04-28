@@ -1,6 +1,6 @@
 import { BackButton } from "@/app/(main)/_components";
 import type { Projects } from "@/lib/types/project";
-export default function ProjectContractDetails({
+export function ProjectContractDetails({
     project,
 }: {
     id: string;

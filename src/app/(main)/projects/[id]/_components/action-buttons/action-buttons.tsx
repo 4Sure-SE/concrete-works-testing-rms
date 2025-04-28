@@ -1,12 +1,12 @@
 "use client";
 import type { Projects } from "@/lib/types/project";
-import EditButton from "./edit-button";
-import ExportPdfButton from "./export-pdf-button";
-import ProjectInfoButton from "./project-info-button";
-import ShareButton from "./share-button";
+import { ProjectInfoButton } from "../project-details/project-info-button";
+import { EditButton } from "./edit-button";
+import { ExportPdfButton } from "./export-pdf-button";
+import { ShareButton } from "./share-button";
 import { WorkItemsButton } from "./work-items-button";
 
-export default function ProjectDetailsActionButtons({
+export function ProjectDetailsActionButtons({
     project,
 }: {
     project: Projects;

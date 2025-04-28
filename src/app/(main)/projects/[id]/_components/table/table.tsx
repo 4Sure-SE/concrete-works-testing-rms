@@ -11,10 +11,10 @@ import type { Projects } from "@/lib/types/project";
 import { UpdateProjectTest } from "@/lib/utils";
 import { ArchiveX } from "lucide-react";
 import { Fragment, useState } from "react";
-import MaterialsTable from "./materials-table";
-import WorkItemsTable from "./work-items-table";
+import { MaterialsTable } from "./materials-table";
+import { WorkItemsTable } from "./work-items-table";
 
-export default function ProjectWorkItemsTable({
+export function ProjectWorkItemsTable({
     project,
     onServerUpdate,
 }: {

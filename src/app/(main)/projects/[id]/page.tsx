@@ -4,10 +4,10 @@ import { ProjectService } from "@/server/services/project.service";
 import { FolderOpen } from "lucide-react";
 import { Suspense } from "react";
 import { validate as uuidValidate } from "uuid";
-import ProjectDetailsActionButtons from "./_components/action-buttons";
-import ProjectContractDetails from "./_components/contract-details";
-import ProjectDetailsSkeleton from "./_components/project-details-skeleton";
-import ProjectWorkItemsTable from "./_components/table";
+import { ProjectDetailsActionButtons } from "./_components/action-buttons/action-buttons";
+import { ProjectContractDetails } from "./_components/project-details/contract-details";
+import { ProjectDetailsSkeleton } from "./_components/project-details/project-details-skeleton";
+import { ProjectWorkItemsTable } from "./_components/table/table";
 
 async function ProjectDetailsContent({ id }: { id: string }) {
     if (!uuidValidate(id)) {
@@ -51,7 +51,7 @@ async function ProjectDetailsContent({ id }: { id: string }) {
     );
 }
 
-export default async function ProjectDetailsPage({
+export async function ProjectDetailsPage({
     params,
 }: {
     params: Promise<{ id: string }>;
