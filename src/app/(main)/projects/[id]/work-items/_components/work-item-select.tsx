@@ -24,7 +24,7 @@ export function WorkItemSelect({
         <Select
             name="workItemId"
             onValueChange={onValueChange}
-            defaultValue={defaultValue}
+            value={defaultValue}
         >
             <SelectTrigger className="cursor-pointer">
                 <SelectValue placeholder="Select a work item" />

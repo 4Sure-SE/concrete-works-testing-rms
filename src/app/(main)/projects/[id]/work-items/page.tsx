@@ -2,6 +2,7 @@ import { BackButton } from "@/app/(main)/_components";
 import SectionHeader from "@/components/custom/section-header";
 import { tryCatch } from "@/lib/utils";
 import { createProjectWorkItem } from "@/server/actions/projects/create-project-work-item";
+import { deleteProjectWorkItem } from "@/server/actions/projects/delete-project-work-item";
 import { ProjectService } from "@/server/services/project.service";
 import { WorkItemService } from "@/server/services/work-item.service";
 import { AddWorkItemForm } from "./_components";
@@ -47,7 +48,10 @@ export default async function ManageWorkItemsPage({
                 projectId={id}
                 workItemDefinitions={workItemDefinitions}
             />
-            <ProjectWorkItemsTable data={projectWorkItems} />
+            <ProjectWorkItemsTable
+                data={projectWorkItems}
+                onDeleteAction={deleteProjectWorkItem}
+            />
         </div>
     );
 }
