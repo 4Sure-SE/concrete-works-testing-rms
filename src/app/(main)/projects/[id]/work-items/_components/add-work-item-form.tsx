@@ -133,6 +133,7 @@ export function AddWorkItemForm({
                                                 type="number"
                                                 placeholder="Enter quantity"
                                                 {...field}
+                                                min={0}
                                             />
                                         </FormControl>
                                         <FormMessage />
