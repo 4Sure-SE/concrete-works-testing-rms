@@ -314,12 +314,6 @@ export const ProjectService = {
         const rawProjectWorkItems =
             await getProjectWorkItemListByProjectId(projectId);
 
-        if (rawProjectWorkItems === null) {
-            throw new Error(
-                `[Service] Project work item list for ID ${projectId} not found`,
-            );
-        }
-
         const dtoList = rawProjectWorkItems
             .map(projectWorkItemToDTO)
             .filter((dto): dto is ProjectWorkItemDTO => dto !== null);
