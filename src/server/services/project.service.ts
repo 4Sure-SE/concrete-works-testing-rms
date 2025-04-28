@@ -53,6 +53,7 @@ import {
     createProjectWorkItem,
     getProjectWorkItemById,
     getProjectWorkItemByProjectIdAndWorkItemId,
+    getProjectWorkItemListByProjectId,
     updateProjectWorkItem,
 } from "../data-access/project-work-item/project-work-item";
 import type { WorkItemMaterialDefinitionPayload } from "../data-access/work-item-material/work-item-material.payloads";
@@ -300,6 +301,29 @@ export const ProjectService = {
         const newValue = Math.max(0, (test.onFile ?? 0) + amount);
 
         return await updateMaterialTestCount(id, newValue);
+    },
+
+    async getProjectWorkItemList(
+        projectId: string,
+    ): Promise<ProjectWorkItemDTO[]> {
+        console.log(
+            `[Service] Getting project work item list for ID: ${projectId}`,
+        );
+
+        const rawProjectWorkItems =
+            await getProjectWorkItemListByProjectId(projectId);
+
+        if (rawProjectWorkItems === null) {
+            throw new Error(
+                `[Service] Project work item list for ID ${projectId} not found`,
+            );
+        }
+
+        const dtoList = rawProjectWorkItems
+            .map(projectWorkItemToDTO)
+            .filter((dto): dto is ProjectWorkItemDTO => dto !== null);
+
+        return dtoList;
     },
 
     // create project work item
