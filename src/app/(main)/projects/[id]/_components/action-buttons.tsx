@@ -16,7 +16,7 @@ export default function ProjectDetailsActionButtons({
             <ProjectInfoButton project={project} />
             <div className="flex items-center justify-center space-x-2">
                 <ShareButton />
-                <ExportPdfButton />
+                <ExportPdfButton project={project} />
                 <EditButton projectId={project.id} />
                 <WorkItemsButton projectId={project.id} />
             </div>
