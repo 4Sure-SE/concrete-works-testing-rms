@@ -15,7 +15,7 @@ interface WorkItemSelectProps {
     defaultValue?: string;
 }
 
-function WorkItemSelect({
+export function WorkItemSelect({
     definitions,
     onValueChange,
     defaultValue,
@@ -46,5 +46,3 @@ function WorkItemSelect({
         </Select>
     );
 }
-
-export default WorkItemSelect;
