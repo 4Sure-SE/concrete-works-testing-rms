@@ -7,9 +7,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Projects } from "@/lib/types/project";
 import { BarChart2, ClipboardCheck, FileText } from "lucide-react";
-import downloadQCP from "./qcp-report";
+import downloadQCP from "../export-pdf/qcp-report";
 
-export default function ExportPdfButton({ project }: { project: Projects }) {
+export function ExportPdfButton({ project }: { project: Projects }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
