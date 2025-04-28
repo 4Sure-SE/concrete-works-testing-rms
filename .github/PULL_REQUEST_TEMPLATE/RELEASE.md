@@ -1,4 +1,4 @@
-# Release Notes - Version [INSERT_VERSION_NUMBER_HERE] - [YYYY-MM-DD]
+## Release Notes - Version [INSERT_VERSION_NUMBER_HERE] - [YYYY-MM-DD]
 
 ### ✨ New Features
 
