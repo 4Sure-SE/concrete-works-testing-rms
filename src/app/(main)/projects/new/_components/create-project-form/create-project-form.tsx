@@ -20,6 +20,7 @@ import {
     formLayout,
     ProjectFormField,
 } from "@/app/(main)/projects/_components/project-form";
+import { Plus } from "lucide-react";
 import { createProjectFormConfig } from "./create-project-form.config";
 import { createProjectSchema } from "./create-project-form.schema";
 
@@ -112,6 +113,8 @@ export default function CreateProjectForm({
                         isPending={isPending}
                         text="Add"
                         type="submit"
+                        loadingText="Adding..."
+                        icon={<Plus className="size-4" />}
                     />
                 </div>
             </Form>

@@ -1,3 +1,4 @@
+import { BackButton } from "@/app/(main)/_components";
 import SectionHeader from "@/components/custom/section-header";
 import { tryCatch } from "@/lib/utils";
 import { updateProject } from "@/server/actions/projects/update-project";
@@ -23,6 +24,7 @@ export default async function ProjectEditPage({
             <SectionHeader
                 title="Edit Project"
                 description={`Update information about project ${project.contractId}`}
+                leftControl={<BackButton />}
             />
             <UpdateProjectForm
                 projectId={id}

@@ -6,6 +6,7 @@
 - [Environment Variables](#-environment-variables)
 - [Running the App](#-running-the-app)
 - [Contributing Guidelines](.github/CONTRIBUTING.md)
+- [Diagrams](#-diagrams)
 
 ## 🔧 Installation
 
@@ -48,3 +49,9 @@
     ```
     http://localhost:3000
     ```
+
+## 📊 Diagrams
+
+- [Entity Relationship Diagram](docs/erd.md)
+- [Context Diagram](docs/context-diagram.md)
+- [Data Flow Diagram](docs/data-flow-diagram.md)
