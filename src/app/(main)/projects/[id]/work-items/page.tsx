@@ -3,7 +3,7 @@ import { tryCatch } from "@/lib/utils";
 import { createProjectWorkItem } from "@/server/actions/projects/create-project-work-item";
 import { ProjectService } from "@/server/services/project.service";
 import { WorkItemService } from "@/server/services/work-item.service";
-import AddWorkItemForm from "./_components/add-work-item-form";
+import { AddWorkItemForm } from "./_components";
 import WorkItemsTable from "./_components/work-items-table";
 
 export default async function ManageWorkItemsPage({
