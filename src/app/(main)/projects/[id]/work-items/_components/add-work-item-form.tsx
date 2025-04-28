@@ -1,5 +1,6 @@
 "use client";
 
+import { Plus } from "lucide-react";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
 
@@ -23,7 +24,7 @@ import type {
 import { withCallbacks } from "@/lib/utils";
 
 import { createProjectWorkItemSchema } from "./add-work-item-form.schema";
-import WorkItemSelect from "./work-item-select";
+import { WorkItemSelect } from "./work-item-select";
 
 interface AddWorkItemFormProps {
     action: (
@@ -35,7 +36,7 @@ interface AddWorkItemFormProps {
     workItemDefinitions: WorkItemDefinitionDTO[];
 }
 
-function AddWorkItemForm({
+export function AddWorkItemForm({
     action,
     projectId,
     workItemDefinitions,
@@ -90,69 +91,82 @@ function AddWorkItemForm({
                 action={submitAction}
                 onSubmit={handleSubmit}
                 noValidate
-                className="flex flex-row items-center gap-4"
+                className="space-y-4"
             >
-                {/* WORK ITEM SELECTION */}
-                <FormField
-                    control={form.control}
-                    name="workItemId"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Select Work Item</FormLabel>
-                            <FormControl>
-                                <WorkItemSelect
-                                    definitions={workItemDefinitions}
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                {/* WORK ITEM QUANTITY INPUT */}
-                <FormField
-                    name="quantity"
-                    control={form.control}
-                    render={({ field }) => (
-                        <FormItem className="w-32">
-                            <FormLabel
-                                htmlFor="workItemQuantity"
-                                className="mb-1 block text-sm font-medium"
-                            >
+                <div className="flex gap-4">
+                    {/* WORK ITEM SELECTION */}
+                    <div className="space-y-2">
+                        <FormLabel className="text-sm font-medium">
+                            Select Work Item
+                        </FormLabel>
+                        <FormField
+                            control={form.control}
+                            name="workItemId"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <WorkItemSelect
+                                            definitions={workItemDefinitions}
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* QUANTITY AND UNIT */}
+                    <div className="flex gap-2">
+                        <div className="space-y-2">
+                            <FormLabel className="text-sm font-medium">
                                 Quantity
                             </FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="number"
-                                    className="block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                    placeholder="Enter quantity"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                {/* current selected work item unit */}
-                <div className="mt-6 flex items-center gap-2">
-                    <span className="text-sm font-medium text-gray-700">{`${selectedWorkItemUnit}`}</span>
-                    <ButtonWithLoader
-                        type="submit"
-                        isPending={isPending}
-                        text="Add"
-                    />
+                            <FormField
+                                name="quantity"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem className="w-32">
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                placeholder="Enter quantity"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="mt-10 items-baseline">
+                            <span className="text-sm font-medium text-muted-foreground">
+                                {selectedWorkItemUnit}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* ADD BUTTON */}
+                    <div className="mt-7 flex items-baseline">
+                        <ButtonWithLoader
+                            type="submit"
+                            isPending={isPending}
+                            text="Add"
+                            icon={<Plus className="size-4" />}
+                            loadingText="Adding..."
+                            compact
+                        />
+                    </div>
                 </div>
 
-                {/* display general server error */}
-                {form.formState.errors.root ? (
-                    <span className="font-medium text-destructive">
+                {/* ERROR MESSAGE */}
+                {form.formState.errors.root && (
+                    <div className="rounded-md bg-destructive/10 p-3 text-sm font-medium text-destructive">
                         {form.formState.errors.root.message}
-                    </span>
-                ) : null}
+                    </div>
+                )}
             </Form>
         </UIForm>
     );
 }
-
-export default AddWorkItemForm;
