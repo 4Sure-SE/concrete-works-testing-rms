@@ -51,6 +51,7 @@ import {
 import { addProjectWorkItemTests } from "../data-access/project-work-item-test/project-work-item-test";
 import {
     createProjectWorkItem,
+    deleteProjectWorkItem,
     getProjectWorkItemById,
     getProjectWorkItemByProjectIdAndWorkItemId,
     getProjectWorkItemListByProjectId,
@@ -542,5 +543,27 @@ export const ProjectService = {
         );
 
         return updatedProjectWorkItemDTO;
+    },
+
+    async deleteProjectWorkItem(id: string) {
+        console.log(`[Service] Deleting project work item with ID: ${id}`);
+
+        const { data, error } = await tryCatch(deleteProjectWorkItem(id));
+
+        if (error || !data) {
+            throw new Error(
+                `[Service] Failed to delete project work item with ID: ${id}`,
+            );
+        }
+
+        const dto = projectWorkItemToDTO(data);
+
+        if (!dto) {
+            throw new Error(
+                `[Service] Failed to convert deleted project work item with ID: ${id}`,
+            );
+        }
+
+        return dto;
     },
 };

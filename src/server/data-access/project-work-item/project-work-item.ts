@@ -109,3 +109,22 @@ export async function updateProjectWorkItem(
 
     return updatedProjectWorkItem;
 }
+
+export async function deleteProjectWorkItem(
+    id: string,
+    tx?: Prisma.TransactionClient,
+): Promise<ProjectWorkItemPayload | null> {
+    const client = tx ?? db;
+
+    const deletedProjectWorkItem = await client.projectWorkItem.delete({
+        where: { id },
+        include: projectWorkItemInclude,
+    });
+
+    await client.project.update({
+        where: { id: deletedProjectWorkItem.projectId },
+        data: { updatedAt: new Date() },
+    });
+
+    return deletedProjectWorkItem;
+}

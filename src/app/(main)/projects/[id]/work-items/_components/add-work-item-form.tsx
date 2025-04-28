@@ -2,7 +2,6 @@
 
 import { Plus } from "lucide-react";
 import Form from "next/form";
-import { useRouter } from "next/navigation";
 
 import ButtonWithLoader from "@/components/custom/button-with-loader";
 import {
@@ -43,7 +42,7 @@ export function AddWorkItemForm({
 }: AddWorkItemFormProps) {
     const defaultValues = { workItemId: "", quantity: 0 };
 
-    const router = useRouter();
+    // const router = useRouter();
 
     // server action callbacks on success or error
     const callbacks: Callbacks<
@@ -52,7 +51,8 @@ export function AddWorkItemForm({
     > = {
         // on server action success
         onSuccess: (data) => {
-            router.push(`/projects/${projectId}`);
+            form.reset();
+            // router.push(`/projects/${projectId}`);
             console.log("success", data);
         },
         // on server action error
