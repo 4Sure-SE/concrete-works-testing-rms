@@ -3,7 +3,7 @@ import SectionHeader from "@/components/custom/section-header";
 import { tryCatch } from "@/lib/utils";
 import { updateProject } from "@/server/actions/projects/update-project";
 import { ProjectService } from "@/server/services/project.service";
-import UpdateProjectForm from "./_components/update-project-form/update-project-form";
+import { UpdateProjectForm } from "./_components/";
 
 export default async function ProjectEditPage({
     params,

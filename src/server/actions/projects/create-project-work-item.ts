@@ -1,6 +1,6 @@
 "use server";
 
-import { createProjectWorkItemSchema } from "@/app/(main)/projects/[id]/work-items/_components/add-work-item-form.schema";
+import { createProjectWorkItemSchema } from "@/app/(main)/projects/[id]/work-items/_components/";
 import type { ProjectWorkItemActionState } from "@/lib/types/work-item";
 import { tryCatch } from "@/lib/utils";
 import { errorHandler } from "@/lib/utils/error-handler";
