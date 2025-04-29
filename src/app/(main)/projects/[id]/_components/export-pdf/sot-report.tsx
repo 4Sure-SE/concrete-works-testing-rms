@@ -88,30 +88,14 @@ const MyDoc = ({ project }: { project: Projects }) => (
                     >
                         <Text style={[styles.text, {}]}>As of </Text>
                         <Text style={[styles.text, {}]}>{monthName}</Text>
-                        {/* <View
-                            style={{
-                                width: "10%",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Text style={[styles.text, {}]}>{monthName}</Text>
-                            <View
-                                style={{
-                                    width: "100%",
-                                    height: 0.5,
-                                    backgroundColor: "#000",
-                                }}
-                            />
-                        </View> */}
+
                         <Text style={[styles.text, {}]}>, {year}</Text>
                     </View>
                 </View>
                 <View style={{ width: "100%", alignItems: "flex-end" }}>
                     <View style={{ width: "25%", alignItems: "flex-start" }}>
                         <Text style={[styles.text]}>
-                            Physical Accomplishment:{"      "}0.33%
+                            Physical Accomplishment:{"                     "}%
                         </Text>
                     </View>
                 </View>
@@ -227,7 +211,7 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                     justifyContent: "center",
                                 }}
                             >
-                                <Text>Payk</Text>
+                                <Text>Pay</Text>
                                 <Text>Item</Text>
                                 <Text>No.</Text>
                             </View>
@@ -256,17 +240,77 @@ const MyDoc = ({ project }: { project: Projects }) => (
                         >
                             Min. # Total Required
                         </TD>
+
                         <TD
-                            style={styles.tableHeaderOnFile}
-                            weighting={0.07}
+                            style={styles.tableHeaderNoOfTest}
+                            weighting={0.176}
                         >
-                            On File
-                        </TD>
-                        <TD
-                            style={styles.tableHeaderBalance}
-                            weighting={0.07}
-                        >
-                            Balance
+                            <View
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    flex: 1,
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        borderBottom: 1,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        height: "50%",
+                                    }}
+                                >
+                                    <Text
+                                        style={{ fontSize: 9, fontWeight: 700 }}
+                                    >
+                                        No. of Test
+                                    </Text>
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        height: "50%",
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            borderRight: 1,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            width: "50.5%",
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontSize: 9,
+                                                fontWeight: 700,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            On File
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={{
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            width: "49.5%",
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontSize: 9,
+                                                fontWeight: 700,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            Balance
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
                         </TD>
                         <TD
                             style={styles.tableHeaderPercentOfWorkAccomplished}
@@ -314,9 +358,11 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                         style={styles.tdUnit}
                                         weighting={0.08}
                                     >
-                                        {cellIndex === 0
-                                            ? abbreviateUnit(pjwi.unit)
-                                            : ""}
+                                        <Text style={{ textAlign: "center" }}>
+                                            {cellIndex === 0
+                                                ? abbreviateUnit(pjwi.unit)
+                                                : ""}
+                                        </Text>
                                     </TD>
                                     <TD
                                         style={styles.tdMinNumberTotalRequired}
@@ -342,9 +388,7 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                             styles.tdPercentOfWorkAccomplished
                                         }
                                         weighting={0.12}
-                                    >
-                                        N/A
-                                    </TD>
+                                    ></TD>
                                 </TR>
                             ))}
 
@@ -430,9 +474,7 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                                         styles.tdPercentOfWorkAccomplished
                                                     }
                                                     weighting={0.12}
-                                                >
-                                                    N/A
-                                                </TD>
+                                                ></TD>
                                             </TR>
                                         ),
                                     )}
@@ -467,13 +509,13 @@ const MyDoc = ({ project }: { project: Projects }) => (
                     >
                         {project.materialsEngineer}
                     </Text>
-                    {/* <Text style={[styles.text, { marginBottom: 5 }]}></Text> */}
+
                     <Text style={[styles.text, { marginBottom: 5 }]}>
                         Materials Engineer
                     </Text>
 
                     <Text style={[styles.text, { marginBottom: 15 }]}>
-                        {project.contractor}
+                        DPWH
                     </Text>
                 </View>
                 <View
@@ -491,9 +533,7 @@ const MyDoc = ({ project }: { project: Projects }) => (
                             styles.text,
                             { fontWeight: 700, marginBottom: 15 },
                         ]}
-                    >
-                        NAME & SIGNATURE
-                    </Text>
+                    ></Text>
                     <Text style={[styles.text, { marginBottom: 5 }]}>
                         Chief of QAS/QAHD/Project Manager
                     </Text>

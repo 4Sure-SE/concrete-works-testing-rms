@@ -46,6 +46,15 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 4,
     },
 
+    tableHeaderNoOfTest: {
+        fontSize: 8,
+        fontWeight: 700,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        height: "auto",
+    },
+
     tableHeaderMinNumberTotalRequred: {
         fontSize: 8,
         fontWeight: 700,
@@ -113,8 +122,11 @@ export const styles = StyleSheet.create({
         fontSize: 8,
         justifyContent: "center",
         alignItems: "center",
+        textAlign: "center",
+        textAlignVertical: "center",
         paddingVertical: 0.5,
         paddingHorizontal: 4,
+        flexDirection: "column",
     },
 
     tdMinNumberTotalRequired: {
