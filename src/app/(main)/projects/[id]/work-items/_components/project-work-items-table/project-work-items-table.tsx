@@ -56,13 +56,9 @@ export function ProjectWorkItemsTable({
     const handleDelete = async (id: string) => {
         setDeletingId(id);
         startTransition(async () => {
+            setOptimisticItems(id);
             const action = withCallbacks(onDeleteAction, callbacks);
             await action(id);
-
-            startTransition(() => {
-                setOptimisticItems(id);
-            });
-
             setDeletingId(null);
         });
     };

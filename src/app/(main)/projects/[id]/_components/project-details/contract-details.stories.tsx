@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import ProjectContractDetails from "./contract-details";
-import fakeProjectsData, {
+import {
     fakeEmptyContractDetails,
     fakeLongContractDetails,
-} from "./fake-data";
+    fakeProjectsData,
+} from "../fake-data";
+import { ProjectContractDetails } from "./contract-details";
 const meta = {
     title: "Main/Components/ProjectDetails/Contract Details",
     component: ProjectContractDetails,

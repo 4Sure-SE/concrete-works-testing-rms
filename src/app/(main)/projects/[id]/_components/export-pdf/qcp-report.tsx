@@ -17,7 +17,7 @@ const abbreviateUnit = (unit: string) => {
     }
 };
 
-const MyDoc = (project: Projects) => (
+const MyDoc = ({ project }: { project: Projects }) => (
     <Document>
         <Page
             size="LETTER"
@@ -405,7 +405,7 @@ const MyDoc = (project: Projects) => (
 );
 
 const downloadQCP = async (project: Projects) => {
-    const blob = await pdf(<MyDoc {...project} />).toBlob();
+    const blob = await pdf(<MyDoc project={project} />).toBlob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;

@@ -32,7 +32,7 @@ interface CreateProjectFormProps {
     defaultValues: CreateProjectDTO;
 }
 
-export default function CreateProjectForm({
+export function CreateProjectForm({
     action,
     defaultValues,
 }: CreateProjectFormProps) {

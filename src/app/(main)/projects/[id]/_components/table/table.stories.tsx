@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import fakeProjectsData, { fakeEmptyProjectDetails } from "./fake-data";
-import ProjectWorkItemsTable from "./table";
+import { fakeEmptyProjectDetails, fakeProjectsData } from "../fake-data";
+import { ProjectWorkItemsTable } from "./table";
 
 const meta = {
     title: "Main/Components/ProjectDetails/Table",

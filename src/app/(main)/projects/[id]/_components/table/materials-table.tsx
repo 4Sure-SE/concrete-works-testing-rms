@@ -1,10 +1,10 @@
 "use client";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { Material } from "@/lib/types/project";
-import { TestCounter } from "./test-counter";
-import { TestStatus } from "./test-status";
+import { TestCounter } from "../test-columns/test-counter";
+import { TestStatus } from "../test-columns/test-status";
 
-export default function MaterialsTable({
+export function MaterialsTable({
     material,
     onServerUpdate,
     handleTestUpdate,

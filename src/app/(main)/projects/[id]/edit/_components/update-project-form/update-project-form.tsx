@@ -32,7 +32,7 @@ interface UpdateProjectFormProps {
     defaultValues: UpdateProjectDTO;
 }
 
-export default function UpdateProjectForm({
+export function UpdateProjectForm({
     projectId,
     action,
     defaultValues,

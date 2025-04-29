@@ -7,9 +7,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Projects } from "@/lib/types/project";
 import { BarChart2, ClipboardCheck, FileText } from "lucide-react";
-import downloadQCP from "./qcp-report";
+import downloadQCP from "../export-pdf/qcp-report";
+import downloadSOT from "../export-pdf/sot-report";
 
-export default function ExportPdfButton({ project }: { project: Projects }) {
+export function ExportPdfButton({ project }: { project: Projects }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -32,7 +33,7 @@ export default function ExportPdfButton({ project }: { project: Projects }) {
                     Quality Control Program
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    onClick={() => console.log("Exporting Status of Test")}
+                    onClick={() => downloadSOT(project)}
                     className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                 >
                     <BarChart2 className="mr-2 h-4 w-4 text-blue-500" />
