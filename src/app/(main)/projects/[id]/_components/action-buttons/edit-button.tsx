@@ -6,13 +6,13 @@ interface EditButtonProps {
     projectId: string;
 }
 
-export default function EditButton({ projectId }: EditButtonProps) {
+export function EditButton({ projectId }: EditButtonProps) {
     return (
         <Button
             asChild
             variant="default"
             size="default"
-            className="flex items-center gap-1 bg-blue-700 px-2 py-1 text-xs text-white hover:bg-blue-800 sm:gap-2 sm:text-sm md:text-sm"
+            className="flex w-[137px] items-center gap-1 bg-blue-700 px-2 py-1 text-xs text-white hover:bg-blue-800 sm:w-[169px] sm:gap-2 sm:text-sm md:text-sm"
         >
             <Link href={`/projects/${projectId}/edit`}>
                 <>

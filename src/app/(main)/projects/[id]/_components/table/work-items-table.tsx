@@ -2,10 +2,10 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { ProjectWorkItem } from "@/lib/types/project";
 import { Fragment } from "react";
-import { TestCounter } from "./test-counter";
-import { TestStatus } from "./test-status";
+import { TestCounter } from "../test-columns/test-counter";
+import { TestStatus } from "../test-columns/test-status";
 
-export default function WorkItemsTable({
+export function WorkItemsTable({
     workItem,
     handleTestUpdate,
     onServerUpdate,

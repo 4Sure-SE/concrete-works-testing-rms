@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
+import { useRouter } from "next/navigation";
 import { DateRangeFilter } from "./date-filter";
 import { SearchBar } from "./search-bar";
 
@@ -26,6 +27,8 @@ export function ProjectListHeader({
     onStartDateChange,
     onEndDateChange,
 }: ProjectListHeaderProps) {
+    const router = useRouter();
+
     return (
         <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
             <h1 className="text-2xl font-bold">{title}</h1>
@@ -42,7 +45,7 @@ export function ProjectListHeader({
                         value={searchTerm}
                         onChange={onSearchChange}
                     />
-                    <Button>
+                    <Button onClick={() => router.push("/projects/new")}>
                         <Plus className="h-4 w-4" />
                         <span>New Project</span>
                     </Button>

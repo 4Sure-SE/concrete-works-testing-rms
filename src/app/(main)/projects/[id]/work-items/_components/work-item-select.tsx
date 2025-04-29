@@ -15,7 +15,7 @@ interface WorkItemSelectProps {
     defaultValue?: string;
 }
 
-function WorkItemSelect({
+export function WorkItemSelect({
     definitions,
     onValueChange,
     defaultValue,
@@ -24,7 +24,7 @@ function WorkItemSelect({
         <Select
             name="workItemId"
             onValueChange={onValueChange}
-            defaultValue={defaultValue}
+            value={defaultValue}
         >
             <SelectTrigger className="cursor-pointer">
                 <SelectValue placeholder="Select a work item" />
@@ -46,5 +46,3 @@ function WorkItemSelect({
         </Select>
     );
 }
-
-export default WorkItemSelect;
