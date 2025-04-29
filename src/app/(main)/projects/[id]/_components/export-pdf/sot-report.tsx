@@ -17,6 +17,11 @@ const abbreviateUnit = (unit: string) => {
     }
 };
 
+const today = new Date();
+const monthName = today.toLocaleString("default", { month: "long" });
+const year = today.getFullYear();
+const statusText = "S T A T U S   O  F   T E S T";
+
 const MyDoc = ({ project }: { project: Projects }) => (
     <Document>
         <Page
@@ -28,14 +33,89 @@ const MyDoc = ({ project }: { project: Projects }) => (
                     style={{
                         justifyContent: "center",
                         alignItems: "center",
-                        marginBottom: 30,
+                        marginBottom: 15,
                         width: "100%",
+                        flexDirection: "column",
                     }}
                 >
-                    <Text style={{ fontSize: 10, fontWeight: 700 }}>
-                        QUALITY CONTROL PROGRAM
+                    <Text style={[styles.text, { marginBottom: 10 }]}>
+                        Republic of the Philippines
+                    </Text>
+                    <Text
+                        style={[
+                            styles.text,
+                            { fontWeight: 700, marginBottom: 10 },
+                        ]}
+                    >
+                        DEPARTMENT OF PUBLIC WORKS AND HIGHWAYS
+                    </Text>
+                    <Text
+                        style={[
+                            styles.text,
+                            { fontWeight: 700, marginBottom: 10 },
+                        ]}
+                    >
+                        Iloilo City District Engineering Office
                     </Text>
                 </View>
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: 10,
+                        width: "100%",
+                        flexDirection: "column",
+                    }}
+                >
+                    {" "}
+                    <Text
+                        style={{
+                            fontSize: 10,
+                            fontWeight: 700,
+                            marginBottom: 10,
+                        }}
+                    >
+                        {statusText}
+                    </Text>
+                    <View
+                        style={{
+                            width: "100%",
+                            flexDirection: "row",
+                            alignItems: "flex-start",
+                            justifyContent: "center",
+                            paddingVertical: 4,
+                        }}
+                    >
+                        <Text style={[styles.text, {}]}>As of </Text>
+                        <Text style={[styles.text, {}]}>{monthName}</Text>
+                        {/* <View
+                            style={{
+                                width: "10%",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Text style={[styles.text, {}]}>{monthName}</Text>
+                            <View
+                                style={{
+                                    width: "100%",
+                                    height: 0.5,
+                                    backgroundColor: "#000",
+                                }}
+                            />
+                        </View> */}
+                        <Text style={[styles.text, {}]}>, {year}</Text>
+                    </View>
+                </View>
+                <View style={{ width: "100%", alignItems: "flex-end" }}>
+                    <View style={{ width: "25%", alignItems: "flex-start" }}>
+                        <Text style={[styles.text]}>
+                            Physical Accomplishment:{"      "}0.33%
+                        </Text>
+                    </View>
+                </View>
+
                 <View style={styles.contractContainer}>
                     {/* CONTRACT ID */}
                     <View style={styles.contractIdContainer}>
@@ -44,19 +124,18 @@ const MyDoc = ({ project }: { project: Projects }) => (
                         </Text>
                         <View
                             style={{
-                                width: "100%",
+                                width: "82%",
                                 flexDirection: "column",
                                 justifyContent: "flex-start",
                             }}
                         >
-                            <Text style={[styles.text, { marginLeft: 6 }]}>
+                            <Text style={[styles.text, {}]}>
                                 {project.contractId ?? "N/A"}
                             </Text>
                             <View
                                 style={{
                                     height: 1,
                                     backgroundColor: "#000",
-                                    marginLeft: 6,
                                 }}
                             />
                         </View>
@@ -69,44 +148,18 @@ const MyDoc = ({ project }: { project: Projects }) => (
                         </Text>
                         <View
                             style={{
-                                width: "90%",
+                                width: "82%",
                                 flexDirection: "column",
                                 justifyContent: "flex-start",
                             }}
                         >
-                            <Text style={[styles.text, { marginLeft: 4 }]}>
+                            <Text style={[styles.text, {}]}>
                                 {project.contractName ?? "N/A"}
                             </Text>
                             <View
                                 style={{
                                     height: 1,
                                     backgroundColor: "#000",
-                                    marginLeft: 4,
-                                }}
-                            />
-                        </View>
-                    </View>
-
-                    {/* LIMITS */}
-                    <View style={styles.limitsContainer}>
-                        <Text style={[styles.text, { fontWeight: 700 }]}>
-                            LIMITS:{" "}
-                        </Text>
-                        <View
-                            style={{
-                                width: "100%",
-                                flexDirection: "column",
-                                justifyContent: "flex-start",
-                            }}
-                        >
-                            <Text style={[styles.text, { marginLeft: 4 }]}>
-                                {project.limits ?? "N/A"}
-                            </Text>
-                            <View
-                                style={{
-                                    height: 1,
-                                    backgroundColor: "#000",
-                                    marginLeft: 4,
                                 }}
                             />
                         </View>
@@ -119,120 +172,42 @@ const MyDoc = ({ project }: { project: Projects }) => (
                         </Text>
                         <View
                             style={{
-                                width: "75%",
+                                width: "82%",
                                 flexDirection: "column",
                                 justifyContent: "flex-start",
                             }}
                         >
-                            <Text style={[styles.text, { marginLeft: 4 }]}>
+                            <Text style={[styles.text, {}]}>
                                 {project.location ?? "N/A"}
                             </Text>
                             <View
                                 style={{
                                     height: 1,
                                     backgroundColor: "#000",
-                                    marginLeft: 4,
                                 }}
                             />
                         </View>
                     </View>
-
-                    {/* APPROPRIATION/CONTRACT COST */}
-                    <View style={styles.contractCostContainer}>
-                        <Text style={[styles.text, { fontWeight: "700" }]}>
-                            APPROPRIATION/CONTRACT COST:
+                    <View style={styles.contractorContainer}>
+                        <Text style={[styles.text, { fontWeight: 700 }]}>
+                            CONTRACTOR:{" "}
                         </Text>
                         <View
                             style={{
-                                width: "65%",
+                                width: "82%",
                                 flexDirection: "column",
                                 justifyContent: "flex-start",
                             }}
                         >
-                            <Text style={[styles.text, { marginLeft: 4 }]}>
-                                {project.contractCost === 0
-                                    ? "N/A"
-                                    : `PHP ${new Intl.NumberFormat("en-PH", {
-                                          minimumFractionDigits: 0,
-                                          maximumFractionDigits: 2,
-                                      }).format(
-                                          Number(
-                                              project.contractCost.toFixed(2),
-                                          ),
-                                      )}`}
-                            </Text>
-
-                            <View
-                                style={{
-                                    height: 1,
-                                    backgroundColor: "#000",
-                                    marginLeft: 4,
-                                }}
-                            />
-                        </View>
-                    </View>
-
-                    {/* SOURCE */}
-                    <View style={styles.sourceContainer}>
-                        <Text
-                            style={[
-                                styles.text,
-                                {
-                                    marginLeft: 7,
-                                    fontWeight: 700,
-                                },
-                            ]}
-                        >
-                            SOURCE:{" "}
-                        </Text>
-                        <View
-                            style={{
-                                width: "75%",
-                                flexDirection: "column",
-                                justifyContent: "flex-start",
-                            }}
-                        >
-                            <Text style={[styles.text, { marginLeft: 4 }]}>
-                                {/* {project.source ?? "N/A"} */}
-                                N/A
+                            <Text style={[styles.text, {}]}>
+                                {project.contractor ?? "N/A"}
                             </Text>
                             <View
                                 style={{
                                     height: 1,
                                     backgroundColor: "#000",
-
-                                    marginLeft: 4,
                                 }}
                             />
-                        </View>
-                    </View>
-                    <View
-                        style={{
-                            width: "100%",
-                            flexDirection: "row",
-                            alignItems: "flex-end",
-                            justifyContent: "space-between",
-                            paddingVertical: 4,
-                        }}
-                    >
-                        <View style={{ width: "12%" }}></View>
-                        <View style={{ width: "65%" }}>
-                            <Text style={[styles.text, { fontWeight: 700 }]}>
-                                A. Test TO BE PERFORMED:
-                            </Text>
-                        </View>
-                        <View
-                            style={{
-                                width: "23%",
-                                marginLeft: 44,
-                            }}
-                        >
-                            <Text style={styles.text}>
-                                <Text style={{ fontWeight: "700" }}>
-                                    DATE:{" "}
-                                </Text>
-                                {new Date().toLocaleDateString()}
-                            </Text>
                         </View>
                     </View>
                 </View>
@@ -243,33 +218,70 @@ const MyDoc = ({ project }: { project: Projects }) => (
                     <TH>
                         <TD
                             style={styles.tableHeaderPayItemNo}
-                            weighting={0.1}
+                            weighting={0.07}
                         >
-                            Pay Item {"  "}No.
+                            <View
+                                style={{
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Text>Payk</Text>
+                                <Text>Item</Text>
+                                <Text>No.</Text>
+                            </View>
                         </TD>
                         <TD
                             style={styles.tableHeaderDescription}
-                            weighting={0.4}
+                            weighting={0.25}
                         >
-                            Description
+                            Description/Materials
+                        </TD>
+                        <TD
+                            style={styles.tableHeaderContractQuantity}
+                            weighting={0.08}
+                        >
+                            Contract Quantity
                         </TD>
                         <TD
                             style={styles.tableHeaderUnit}
-                            weighting={0.1}
+                            weighting={0.08}
                         >
-                            UNIT
+                            Unit
                         </TD>
                         <TD
-                            style={styles.tableHeaderQuantity}
-                            weighting={0.1}
+                            style={styles.tableHeaderMinNumberTotalRequred}
+                            weighting={0.26}
                         >
-                            QUANTITY
+                            Min. # Total Required
                         </TD>
                         <TD
-                            style={styles.tableHeaderNoOfTest}
-                            weighting={0.3}
+                            style={styles.tableHeaderOnFile}
+                            weighting={0.07}
                         >
-                            No. OF TEST (MIN.)
+                            On File
+                        </TD>
+                        <TD
+                            style={styles.tableHeaderBalance}
+                            weighting={0.07}
+                        >
+                            Balance
+                        </TD>
+                        <TD
+                            style={styles.tableHeaderPercentOfWorkAccomplished}
+                            weighting={0.12}
+                        >
+                            <View
+                                style={{
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Text>% of Work</Text>
+                                <Text>Accomplished</Text>
+                            </View>
                         </TD>
                     </TH>
 
@@ -280,38 +292,58 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                 <TR key={`test-${rowIndex}-${cellIndex}`}>
                                     <TD
                                         style={styles.tdItemNo}
-                                        weighting={0.1}
+                                        weighting={0.07}
                                     >
                                         {cellIndex === 0 ? pjwi.itemNo : ""}
                                     </TD>
                                     <TD
                                         style={styles.tdDescription}
-                                        weighting={0.4}
+                                        weighting={0.25}
                                     >
                                         {cellIndex === 0
                                             ? pjwi.description
                                             : ""}
                                     </TD>
                                     <TD
+                                        style={styles.tdContractQuantity}
+                                        weighting={0.08}
+                                    >
+                                        {cellIndex === 0 ? pjwi.quantity : ""}
+                                    </TD>
+                                    <TD
                                         style={styles.tdUnit}
-                                        weighting={0.1}
+                                        weighting={0.08}
                                     >
                                         {cellIndex === 0
                                             ? abbreviateUnit(pjwi.unit)
                                             : ""}
                                     </TD>
                                     <TD
-                                        style={styles.tdQuantity}
-                                        weighting={0.1}
-                                    >
-                                        {cellIndex === 0 ? pjwi.quantity : ""}
-                                    </TD>
-                                    <TD
-                                        style={styles.tdTestQuantity}
-                                        weighting={0.3}
+                                        style={styles.tdMinNumberTotalRequired}
+                                        weighting={0.26}
                                     >
                                         {cell.testQuantity} -{" "}
                                         {cell.testRequired}
+                                    </TD>
+                                    <TD
+                                        style={styles.tdOnFile}
+                                        weighting={0.07}
+                                    >
+                                        {cell.testsOnFile}
+                                    </TD>
+                                    <TD
+                                        style={styles.tdBalance}
+                                        weighting={0.07}
+                                    >
+                                        {cell.balance}
+                                    </TD>
+                                    <TD
+                                        style={
+                                            styles.tdPercentOfWorkAccomplished
+                                        }
+                                        weighting={0.12}
+                                    >
+                                        N/A
                                     </TD>
                                 </TR>
                             ))}
@@ -328,19 +360,29 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                             >
                                                 <TD
                                                     style={styles.tdItemNo}
-                                                    weighting={0.1}
+                                                    weighting={0.07}
                                                 ></TD>
                                                 <TD
                                                     style={styles.tdDescription}
-                                                    weighting={0.4}
+                                                    weighting={0.25}
                                                 >
                                                     {mtIndex === 0
                                                         ? material.name
                                                         : ""}
                                                 </TD>
                                                 <TD
+                                                    style={
+                                                        styles.tdContractQuantity
+                                                    }
+                                                    weighting={0.08}
+                                                >
+                                                    {mtIndex === 0
+                                                        ? material.quantity
+                                                        : ""}
+                                                </TD>
+                                                <TD
                                                     style={styles.tdUnit}
-                                                    weighting={0.1}
+                                                    weighting={0.08}
                                                 >
                                                     {mtIndex === 0
                                                         ? abbreviateUnit(
@@ -349,18 +391,10 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                                         : ""}
                                                 </TD>
                                                 <TD
-                                                    style={styles.tdQuantity}
-                                                    weighting={0.1}
-                                                >
-                                                    {mtIndex === 0
-                                                        ? material.quantity
-                                                        : ""}
-                                                </TD>
-                                                <TD
                                                     style={
-                                                        styles.tdTestQuantity
+                                                        styles.tdMinNumberTotalRequired
                                                     }
-                                                    weighting={0.3}
+                                                    weighting={0.26}
                                                 >
                                                     {material.quantity /
                                                         matTest.unitsPerTest <
@@ -375,6 +409,30 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                                           )}{" "}
                                                     - {matTest.testRequired}
                                                 </TD>
+                                                <TD
+                                                    style={styles.tdOnFile}
+                                                    weighting={0.07}
+                                                >
+                                                    {mtIndex === 0
+                                                        ? matTest.testsOnFile
+                                                        : ""}
+                                                </TD>
+                                                <TD
+                                                    style={styles.tdBalance}
+                                                    weighting={0.07}
+                                                >
+                                                    {mtIndex === 0
+                                                        ? matTest.balance
+                                                        : ""}
+                                                </TD>
+                                                <TD
+                                                    style={
+                                                        styles.tdPercentOfWorkAccomplished
+                                                    }
+                                                    weighting={0.12}
+                                                >
+                                                    N/A
+                                                </TD>
                                             </TR>
                                         ),
                                     )}
@@ -384,34 +442,78 @@ const MyDoc = ({ project }: { project: Projects }) => (
                     ))}
                 </Table>
             </View>
-            <View style={{ width: "100%", marginTop: 30 }}>
-                <Text style={[styles.text, { marginBottom: 20 }]}>
-                    Prepared By:
-                </Text>
-                <Text
-                    style={[styles.text, { fontWeight: 700, marginBottom: 15 }]}
+            <View
+                style={{
+                    width: "100%",
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                }}
+            >
+                <View
+                    style={{
+                        width: "50%",
+                        marginTop: 30,
+                    }}
+                    wrap={false}
                 >
-                    NAME & SIGNATURE
-                </Text>
-                <Text style={[styles.text, { marginBottom: 15 }]}>
-                    {project.materialsEngineer}
-                </Text>
-                <Text style={[styles.text, { marginBottom: 15 }]}>
-                    {project.contractor}
-                </Text>
+                    <Text style={[styles.text, { marginBottom: 20 }]}>
+                        Prepared By:
+                    </Text>
+                    <Text
+                        style={[
+                            styles.text,
+                            { fontWeight: 700, marginBottom: 15 },
+                        ]}
+                    >
+                        {project.materialsEngineer}
+                    </Text>
+                    {/* <Text style={[styles.text, { marginBottom: 5 }]}></Text> */}
+                    <Text style={[styles.text, { marginBottom: 5 }]}>
+                        Materials Engineer
+                    </Text>
+
+                    <Text style={[styles.text, { marginBottom: 15 }]}>
+                        {project.contractor}
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        width: "50%",
+                        marginTop: 30,
+                    }}
+                    wrap={false}
+                >
+                    <Text style={[styles.text, { marginBottom: 20 }]}>
+                        Submitted By:
+                    </Text>
+                    <Text
+                        style={[
+                            styles.text,
+                            { fontWeight: 700, marginBottom: 15 },
+                        ]}
+                    >
+                        NAME & SIGNATURE
+                    </Text>
+                    <Text style={[styles.text, { marginBottom: 5 }]}>
+                        Chief of QAS/QAHD/Project Manager
+                    </Text>
+                    <Text style={[styles.text, { marginBottom: 15 }]}>
+                        DPWH
+                    </Text>
+                </View>
             </View>
         </Page>
     </Document>
 );
 
-const downloadQCP = async (project: Projects) => {
+const downloadSOT = async (project: Projects) => {
     const blob = await pdf(<MyDoc project={project} />).toBlob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${project.contractId}-QCP.pdf`;
+    link.download = `${project.contractId}-SOT.pdf`;
     link.click();
     URL.revokeObjectURL(url);
 };
 
-export default downloadQCP;
+export default downloadSOT;
