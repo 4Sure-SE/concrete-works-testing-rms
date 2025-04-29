@@ -5,8 +5,7 @@ import { createProjectWorkItem } from "@/server/actions/projects/create-project-
 import { deleteProjectWorkItem } from "@/server/actions/projects/delete-project-work-item";
 import { ProjectService } from "@/server/services/project.service";
 import { WorkItemService } from "@/server/services/work-item.service";
-import { AddWorkItemForm } from "./_components";
-import { ProjectWorkItemsTable } from "./_components/project-work-items-table";
+import { AddWorkItemForm, ProjectWorkItemsTable } from "./_components";
 
 export default async function ManageWorkItemsPage({
     params,
