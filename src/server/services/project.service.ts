@@ -467,6 +467,10 @@ export const ProjectService = {
             );
         }
 
+        if (projectWorkItem.quantity.toNumber() === data.quantity) {
+            throw new Error(`[Service] No changes made`);
+        }
+
         // all the definitions of the work item - material, test conversions
         // used to generate the project work item tests and materials
         const workItemDefinitions = await getWorkItemWithAllDefinitions(
