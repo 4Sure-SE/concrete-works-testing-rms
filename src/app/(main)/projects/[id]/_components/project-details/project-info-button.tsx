@@ -128,7 +128,9 @@ export function ProjectInfoButton({ project }: { project: Projects }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.location ?? "N/A"}
+                                    {project.location?.trim()
+                                        ? project.location
+                                        : "N/A"}
                                 </p>
                             </div>
                         </div>
@@ -142,7 +144,9 @@ export function ProjectInfoButton({ project }: { project: Projects }) {
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
-                                    {project.limits ?? "N/A"}
+                                    {project.limits?.trim()
+                                        ? project.limits
+                                        : "N/A"}
                                 </p>
                             </div>
                         </div>
