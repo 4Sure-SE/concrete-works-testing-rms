@@ -12,7 +12,8 @@
     {
         "id": "2353cedd-c338-47e4-a745-1cdd0492f513",
         "name": "bag",
-        "abbreviation": "bag"
+        "abbreviation": "bag",
+        "isWholeNumber": true
     },
     {
         "id": "d6f72112-23a3-4ade-b813-7eeef9cfd871",

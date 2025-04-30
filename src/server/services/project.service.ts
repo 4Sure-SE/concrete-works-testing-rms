@@ -63,6 +63,32 @@ import { getWorkItemWithAllDefinitions } from "../data-access/work-item/work-ite
 
 // helpers
 
+const _calculateMaterialQuantity = (
+    wimDef: WorkItemMaterialDefinitionPayload,
+    workItemQty: Decimal,
+) => {
+    let quantity: Decimal;
+
+    // if the conversion (quantity per unit) is defined, use that to calculate the quantity
+    if (wimDef.quantityPerUnit) {
+        quantity = wimDef.quantityPerUnit.mul(workItemQty);
+        // otherwise if the static quantity is defined, use that
+    } else if (wimDef.staticQuantity) {
+        quantity = wimDef.staticQuantity;
+    } else {
+        throw new Error(
+            `[Service] No quantity found for work item material ID: ${wimDef.id}`,
+        );
+    }
+
+    // if the unit is a whole number round the quantity up
+    if (wimDef.workItem.unit.isWholeNumber) {
+        quantity = quantity.round();
+    }
+
+    return quantity;
+};
+
 // generate project materials for a work item
 const _generateProjectMaterials = async (
     data: ProjectWorkItem,
@@ -74,11 +100,13 @@ const _generateProjectMaterials = async (
     );
 
     // get all materials based on the work item definition
-    const projectMaterialData = workItemMaterials.map((wimDef) => ({
-        projectWorkItemId: data.id,
-        materialId: wimDef.materialId,
-        quantity: wimDef.quantityPerUnit.mul(data.quantity),
-    }));
+    const projectMaterialData = workItemMaterials.map((wimDef) => {
+        return {
+            materialId: wimDef.materialId,
+            quantity: _calculateMaterialQuantity(wimDef, data.quantity),
+            projectWorkItemId: data.id,
+        };
+    });
 
     //  add all materials found in the work item definition to the project material table
     const projectMaterials = await createProjectMaterials(
@@ -439,6 +467,10 @@ export const ProjectService = {
             );
         }
 
+        if (projectWorkItem.quantity.toNumber() === data.quantity) {
+            throw new Error(`[Service] No changes made`);
+        }
+
         // all the definitions of the work item - material, test conversions
         // used to generate the project work item tests and materials
         const workItemDefinitions = await getWorkItemWithAllDefinitions(
@@ -456,7 +488,7 @@ export const ProjectService = {
             await getProjectMaterialListByProjectWorkItem(id);
 
         // get the update data for the project materials
-        const materialUpdates: { id: string; quantity: Prisma.Decimal }[] = [];
+        const materialUpdates: { id: string; quantity: Decimal }[] = [];
         for (const projectMaterial of projectMaterials) {
             const workItemMaterialDef =
                 workItemDefinitions.workItemMaterial.find(
@@ -464,10 +496,13 @@ export const ProjectService = {
                 );
 
             if (workItemMaterialDef) {
+                // add the new quantity to the material updates array
                 materialUpdates.push({
                     id: projectMaterial.id,
-                    quantity:
-                        workItemMaterialDef.quantityPerUnit.mul(newQuantity),
+                    quantity: _calculateMaterialQuantity(
+                        workItemMaterialDef,
+                        newQuantity,
+                    ),
                 });
             } else {
                 console.warn(

@@ -1,77 +1,93 @@
 "use client";
 
-import { FileText, Loader } from "lucide-react";
+import { useOptimistic, useState, useTransition } from "react";
+import { toast } from "sonner";
 
-import { DeleteDialog } from "@/components/custom/delete-dialog";
-import { Button } from "@/components/ui/button";
+import EmptyMessage from "@/components/custom/empty-message";
 import {
     Table,
     TableBody,
-    TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Callbacks } from "@/lib/types/actions.types";
 import type {
-    ProjectWorkItemActionErrors,
     ProjectWorkItemActionState,
     ProjectWorkItemDTO,
 } from "@/lib/types/project-work-item/project-work-item.types";
-import { withCallbacks } from "@/lib/utils";
-import { useOptimistic, useState, useTransition } from "react";
+import { updateProjectWorkItem } from "@/server/actions/projects/update-project-work-item";
+import { ProjectWorkItemRow } from "./project-work-item-row";
 
 interface ProjectWorkItemsTableProps {
     data: ProjectWorkItemDTO[];
     onDeleteAction: (id: string) => Promise<ProjectWorkItemActionState>;
 }
 
+type OptimisticAction = { type: "DELETE"; payload: { id: string } };
+
 export function ProjectWorkItemsTable({
     data,
     onDeleteAction,
 }: ProjectWorkItemsTableProps) {
-    const callbacks: Callbacks<
-        ProjectWorkItemDTO | null,
-        ProjectWorkItemActionErrors
-    > = {
-        onSuccess: (data) => {
-            console.table(data);
-        },
-
-        onError: (error) => {
-            console.error(error);
-        },
-    };
+    const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
     const [optimisticItems, setOptimisticItems] = useOptimistic(
         data,
-        (currState, deletingId: string) => {
-            return currState.filter((pwi) => pwi.id != deletingId);
+        (currentState, action: OptimisticAction): ProjectWorkItemDTO[] => {
+            switch (action.type) {
+                case "DELETE":
+                    return currentState.filter(
+                        (pwi) => pwi.id !== action.payload.id,
+                    );
+
+                default:
+                    return currentState;
+            }
         },
     );
 
-    const [isPending, startTransition] = useTransition();
+    const [isDeletePending, startDeleteTransition] = useTransition();
+
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = (id: string) => {
+        if (editingItemId === id) {
+            setEditingItemId(null);
+        }
         setDeletingId(id);
-        startTransition(async () => {
-            setOptimisticItems(id);
-            const action = withCallbacks(onDeleteAction, callbacks);
-            await action(id);
+        startDeleteTransition(async () => {
+            setOptimisticItems({ type: "DELETE", payload: { id } });
+            const result = await onDeleteAction(id);
             setDeletingId(null);
+
+            if (!result.success) {
+                const errorMsg =
+                    result.error?.general?.[0] ?? "Failed to delete work item.";
+                toast.error(errorMsg);
+            } else {
+                toast.success(
+                    `Work item ${result.data?.itemNo ?? ""} deleted.`,
+                );
+            }
         });
     };
 
-    if (!data || data.length === 0) {
+    const handleEdit = (id: string) => {
+        // prevent starting a new edit if a delete is pending
+        if (isDeletePending) return;
+        setEditingItemId(id);
+    };
+
+    const handleCancel = () => {
+        setEditingItemId(null);
+    };
+
+    if (!optimisticItems || optimisticItems.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-                <FileText className="mb-2 h-10 w-10 text-muted-foreground" />
-                <h3 className="text-lg font-medium">No work items</h3>
-                <p className="text-sm text-muted-foreground">
-                    There are no work items added to this project yet.
-                </p>
-            </div>
+            <EmptyMessage
+                title="No work items"
+                description="There are no work items added to this project yet."
+            />
         );
     }
 
@@ -83,42 +99,31 @@ export function ProjectWorkItemsTable({
                     <TableHead>Description</TableHead>
                     <TableHead className="w-[150px]">Quantity</TableHead>
                     <TableHead className="w-[100px]">Unit</TableHead>
-                    <TableHead className="w-[50px] text-right" />
+                    <TableHead className="w-[120px] text-right">
+                        Actions
+                    </TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {optimisticItems.map((item) => (
-                    <TableRow key={item.id}>
-                        <TableCell className="font-medium">
-                            {item.itemNo}
-                        </TableCell>
-                        <TableCell>
-                            {item.description ?? "No description"}
-                        </TableCell>
-                        <TableCell>{item.quantity.toLocaleString()}</TableCell>
-                        <TableCell>{item.unitAbbreviation}</TableCell>
-                        <TableCell className="text-center">
-                            {deletingId === item.id ? (
-                                <Button
-                                    disabled
-                                    variant="ghost"
-                                    size="icon"
-                                    className="size-8 cursor-pointer text-destructive"
-                                >
-                                    <Loader className="size-4 animate-spin" />
-                                </Button>
-                            ) : (
-                                <DeleteDialog
-                                    entityId={item.id}
-                                    entityAlias={item.itemNo}
-                                    entityName="work item"
-                                    onDeleteAction={handleDelete}
-                                    disabled={isPending}
-                                />
-                            )}
-                        </TableCell>
-                    </TableRow>
-                ))}
+                {optimisticItems.map((item) => {
+                    const isEditingThisRow = editingItemId === item.id;
+                    const isDeletingThisRow =
+                        isDeletePending && deletingId === item.id;
+
+                    return (
+                        <ProjectWorkItemRow
+                            key={item.id}
+                            item={item}
+                            isEditing={isEditingThisRow}
+                            isDeleting={isDeletingThisRow}
+                            isOverallPending={isDeletePending}
+                            onEdit={handleEdit}
+                            onCancel={handleCancel}
+                            onDelete={handleDelete}
+                            updateAction={updateProjectWorkItem}
+                        />
+                    );
+                })}
             </TableBody>
         </Table>
     );
