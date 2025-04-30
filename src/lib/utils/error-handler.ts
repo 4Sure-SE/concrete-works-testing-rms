@@ -36,8 +36,7 @@ const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
             console.error(
                 `Unhandled Prisma Error Code ${code}: ${prismaMessage}`,
             );
-            userMessage =
-                "A database operation failed unexpectedly. Please try again later.";
+            userMessage = "An unexpected error occurred. Please try again.";
             statusCode = 500;
             break;
     }
