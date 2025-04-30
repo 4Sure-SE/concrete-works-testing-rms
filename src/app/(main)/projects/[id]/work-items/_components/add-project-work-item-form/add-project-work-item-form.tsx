@@ -22,10 +22,10 @@ import type {
 } from "@/lib/types/work-item/";
 import { withCallbacks } from "@/lib/utils";
 
-import { createProjectWorkItemSchema } from "./add-work-item-form.schema";
+import { createProjectWorkItemSchema } from "./add-project-work-item-form.schema";
 import { WorkItemSelect } from "./work-item-select";
 
-interface AddWorkItemFormProps {
+interface AddProjectWorkItemFormProps {
     action: (
         projectId: string,
         previousState: ProjectWorkItemActionState,
@@ -35,11 +35,11 @@ interface AddWorkItemFormProps {
     workItemDefinitions: WorkItemDefinitionDTO[];
 }
 
-export function AddWorkItemForm({
+export function AddProjectWorkItemForm({
     action,
     projectId,
     workItemDefinitions,
-}: AddWorkItemFormProps) {
+}: AddProjectWorkItemFormProps) {
     const defaultValues = { workItemId: "", quantity: 0 };
 
     // const router = useRouter();
