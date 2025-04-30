@@ -2,7 +2,10 @@ import "server-only";
 
 import { db } from "@/server/db";
 import type { Prisma } from "@prisma/client";
-import type { WorkItemMaterialDefinitionPayload } from "./work-item-material.payloads";
+import {
+    workItemMaterialSelect,
+    type WorkItemMaterialDefinitionPayload,
+} from "./work-item-material.payloads";
 
 export async function getWorkItemMaterialDefinition(
     workItemId: string,
@@ -12,11 +15,7 @@ export async function getWorkItemMaterialDefinition(
     const client = tx ?? db;
     const material = await client.workItemMaterial.findFirst({
         where: { workItemId, materialId },
-        select: {
-            id: true,
-            materialId: true,
-            quantityPerUnit: true,
-        },
+        select: workItemMaterialSelect,
     });
 
     return material;
@@ -29,11 +28,7 @@ export async function getWorkItemMaterialDefinitionList(
     const client = tx ?? db;
     const materials = await client.workItemMaterial.findMany({
         where: { workItemId },
-        select: {
-            id: true,
-            materialId: true,
-            quantityPerUnit: true,
-        },
+        select: workItemMaterialSelect,
     });
 
     return materials;
