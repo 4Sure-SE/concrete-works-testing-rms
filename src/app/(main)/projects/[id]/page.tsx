@@ -41,7 +41,6 @@ async function ProjectDetailsContent({ id }: { id: string }) {
                 id={id}
                 project={project}
             />
-            {/* <ProjectDetailsActionButtons project={project} /> */}
             <ProjectWorkItemsTable
                 project={project}
                 onServerUpdate={updateProjectTest}
