@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 export const workItemInclude = Prisma.validator<Prisma.WorkItemInclude>()({
-    unit: { select: { abbreviation: true } },
+    unit: { select: { abbreviation: true, isWholeNumber: true } },
 });
 
 export type WorkItemPayload = Prisma.WorkItemGetPayload<{
@@ -16,6 +16,10 @@ export const workItemWithAllDefinitionsInclude =
                 id: true,
                 materialId: true,
                 quantityPerUnit: true,
+                staticQuantity: true,
+                workItem: {
+                    select: { unit: { select: { isWholeNumber: true } } },
+                },
                 workItemMaterialTest: {
                     select: {
                         testId: true,
