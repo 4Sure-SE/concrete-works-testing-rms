@@ -156,7 +156,7 @@ export function ProjectInfoButton({ project }: { project: Projects }) {
                                 <div className="flex flex-row items-center">
                                     <HardHat className="h-5 w-5" />
                                     <span className="ml-2 font-bold whitespace-nowrap">
-                                        Material Engineer
+                                        Materials Engineer
                                     </span>
                                 </div>
                                 <p className="flex-1 truncate pl-7 text-wrap">
