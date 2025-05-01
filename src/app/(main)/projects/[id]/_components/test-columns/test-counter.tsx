@@ -1,5 +1,5 @@
 "use client";
-import { Minus, Plus } from "lucide-react";
+import { Loader2, Minus, Plus } from "lucide-react";
 import { useState } from "react";
 
 type TestType = "material" | "workItem";
@@ -22,10 +22,12 @@ export const TestCounter = ({
     ) => Promise<number>;
 }) => {
     const [testsOnFile, setTestsOnFile] = useState(value);
-    const [loading, setLoading] = useState(false);
+    const [loadingDirection, setLoadingDirection] = useState<
+        "inc" | "dec" | null
+    >(null);
 
     const handleUpdate = async (amount: number) => {
-        setLoading(true);
+        setLoadingDirection(amount > 0 ? "inc" : "dec");
         try {
             const updatedCount = await onServerUpdate(id, amount, type);
             setTestsOnFile(updatedCount);
@@ -33,29 +35,37 @@ export const TestCounter = ({
         } catch (error) {
             console.error(error);
         }
-        setLoading(false);
+        setLoadingDirection(null);
     };
 
     return (
         <div className="flex items-center justify-center gap-2 py-1">
             <button
                 onClick={() => handleUpdate(-1)}
-                disabled={loading || testsOnFile <= 0}
+                disabled={loadingDirection !== null || testsOnFile <= 0}
                 aria-label="decrease"
                 className="rounded-sm bg-red-500 px-0.5 py-0.5 text-white hover:bg-red-600"
             >
-                <Minus />
+                {loadingDirection == "dec" ? (
+                    <Loader2 className="animate-spin" />
+                ) : (
+                    <Minus />
+                )}
             </button>
             <div className="flex h-8.5 w-11 items-center justify-center rounded-sm border border-gray-200 bg-white">
                 {testsOnFile}
             </div>
             <button
                 onClick={() => handleUpdate(1)}
-                disabled={loading}
+                disabled={loadingDirection !== null}
                 aria-label="increase"
                 className="rounded-sm bg-green-500 px-0.5 py-0.5 text-white hover:bg-green-600"
             >
-                <Plus />
+                {loadingDirection === "inc" ? (
+                    <Loader2 className="animate-spin" />
+                ) : (
+                    <Plus />
+                )}
             </button>
         </div>
     );
