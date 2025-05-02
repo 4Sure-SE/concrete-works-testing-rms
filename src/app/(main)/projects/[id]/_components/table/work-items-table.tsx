@@ -10,6 +10,7 @@ export function WorkItemsTable({
     handleTestUpdate,
     onServerUpdate,
     hasItemTests,
+    setLoading,
 }: {
     workItem: ProjectWorkItem;
     handleTestUpdate: (
@@ -23,6 +24,7 @@ export function WorkItemsTable({
         type: "material" | "workItem",
     ) => Promise<number>;
     hasItemTests: boolean;
+    setLoading: (loading: boolean) => void;
 }) {
     return (
         <Fragment>
@@ -53,6 +55,7 @@ export function WorkItemsTable({
                                 onUpdate={handleTestUpdate}
                                 type="workItem"
                                 onServerUpdate={onServerUpdate}
+                                setLoading={setLoading}
                             ></TestCounter>
                         </TableCell>
                         <TableCell className="text-center">
@@ -90,6 +93,7 @@ export function WorkItemsTable({
                             type="workItem"
                             onUpdate={handleTestUpdate}
                             onServerUpdate={onServerUpdate}
+                            setLoading={setLoading}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">
