@@ -36,6 +36,9 @@ export const IncrementTest: Story = {
             await sleep(1000);
             return amount;
         },
+        setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
@@ -65,6 +68,9 @@ export const DecrementTest: Story = {
             const updated = Math.max(0, current + amount);
             return updated;
         },
+        setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
@@ -77,5 +83,59 @@ export const DecrementTest: Story = {
 
         const counterDisplay = await canvas.findByText("0");
         await expect(counterDisplay).toBeInTheDocument();
+    },
+};
+
+export const LoadingWhileIncrementing: Story = {
+    args: {
+        id: "test-id",
+        value: 0,
+        type: "material",
+        onUpdate: (id, amount, type) => {
+            console.log("onUpdate:", { id, amount, type });
+        },
+        onServerUpdate: async () => {
+            return new Promise(() => {
+                //stays loading
+            });
+        },
+        setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
+    },
+    play: async ({ canvasElement }) => {
+        const button = canvasElement.querySelector(
+            'button[aria-label="increase"]',
+        );
+        if (button) {
+            (button as HTMLButtonElement).click();
+        }
+    },
+};
+
+export const LoadingWhileDecrementing: Story = {
+    args: {
+        id: "test-id",
+        value: 1,
+        type: "material",
+        onUpdate: (id, amount, type) => {
+            console.log("onUpdate:", { id, amount, type });
+        },
+        onServerUpdate: async () => {
+            return new Promise(() => {
+                //stays loading
+            });
+        },
+        setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
+    },
+    play: async ({ canvasElement }) => {
+        const button = canvasElement.querySelector(
+            'button[aria-label="decrease"]',
+        );
+        if (button) {
+            (button as HTMLButtonElement).click();
+        }
     },
 };
