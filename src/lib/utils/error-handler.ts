@@ -1,6 +1,7 @@
 import type { CustomError } from "@/lib/types/custom-error";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { toCamelCase } from "./to-camelcase";
+import { snakeToCamelCase } from "./snake-to-camelcase";
+import { snakeToTitleCase } from "./snake-to-titlecase";
 
 const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
     const { code, meta, message: prismaMessage } = err;
@@ -12,7 +13,7 @@ const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
     switch (code) {
         case "P2002": {
             // duplicate value existing in db
-            userMessage = `The value provided for ${String(meta?.target)} is already in use. Please choose a different value.`;
+            userMessage = `The value provided for ${snakeToTitleCase(String(meta?.target))} is already in use. Please choose a different value.`;
             statusCode = 409;
             break;
         }
@@ -35,8 +36,7 @@ const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
             console.error(
                 `Unhandled Prisma Error Code ${code}: ${prismaMessage}`,
             );
-            userMessage =
-                "A database operation failed unexpectedly. Please try again later.";
+            userMessage = "An unexpected error occurred. Please try again.";
             statusCode = 500;
             break;
     }
@@ -44,7 +44,7 @@ const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
     return {
         message: userMessage,
         statusCode: statusCode,
-        target: toCamelCase(String(meta?.target)),
+        target: snakeToCamelCase(String(meta?.target)),
     };
 };
 
@@ -53,7 +53,7 @@ export function errorHandler(error: Error): CustomError {
         return handlePrismaError(error);
     } else {
         return {
-            message: "An unknown error occurred.",
+            message: error.message || "An unexpected error occurred.",
             statusCode: 500,
         };
     }

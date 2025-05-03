@@ -31,6 +31,8 @@ jobs:
 
             # ^ to fix weird ci error: "Cannot find module 'rollup'"
 
+            # ^ to fix weird ci error: "Cannot find module 'rollup'"
+
             - name: Lint project
               run: npm run check
 
