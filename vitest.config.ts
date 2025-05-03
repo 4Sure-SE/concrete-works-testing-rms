@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
 import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin";
+import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 const dirname =
     typeof __dirname !== "undefined"
@@ -13,6 +15,7 @@ const dirname =
 // More info at: https://storybook.js.org/docs/writing-tests/test-addon
 export default defineConfig({
     test: {
+        globals: true,
         workspace: [
             {
                 extends: true,
@@ -32,6 +35,13 @@ export default defineConfig({
                         provider: "playwright",
                     },
                     setupFiles: [".storybook/vitest.setup.ts"],
+                },
+            },
+            {
+                plugins: [tsconfigPaths(), react()],
+                test: {
+                    name: "unit",
+                    environment: "jsdom",
                 },
             },
         ],

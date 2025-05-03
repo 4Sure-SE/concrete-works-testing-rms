@@ -1,11 +1,10 @@
-name: lint-test-build
+name: Lint & Build
 
 on: [push, pull_request]
 
 jobs:
-    lint-test-build:
+    lint-build:
         runs-on: ubuntu-latest
-
         strategy:
             matrix:
                 node-version: [20.x, 22.x]
@@ -29,18 +28,11 @@ jobs:
                   npm ci
                   npm install @rollup/rollup-linux-x64-gnu --save-optional
 
-            # ^ to fix weird ci error: "Cannot find module 'rollup'"
-
-            # ^ to fix weird ci error: "Cannot find module 'rollup'"
-
             - name: Lint project
               run: npm run check
 
             - name: Check format
               run: npm run format:check
-
-            - name: Test project
-              run: npm run test
 
             - name: Build project
               run: npm run build

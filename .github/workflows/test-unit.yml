@@ -1,0 +1,30 @@
+name: Unit Tests
+
+on: [push, pull_request]
+
+jobs:
+    lint-build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [20.x, 22.x]
+
+        env:
+            DATABASE_URL: ${{ secrets.DATABASE_URL }}
+            DIRECT_URL: ${{ secrets.DIRECT_URL }}
+            NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run unit tests
+              run: npm run test:unit
