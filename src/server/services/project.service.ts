@@ -213,9 +213,6 @@ export const ProjectService = {
     ): Promise<ProjectSummaryDTO[]> {
         console.log(`[Service] Getting project list summary`);
 
-        //delay for 10 seconds to simulate a long running process
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 10 seconds
-
         // fetch raw data
         const projectSummaryListPayload = await getProjectSummaryList(filters);
 
