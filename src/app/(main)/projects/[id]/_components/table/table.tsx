@@ -28,6 +28,7 @@ export function ProjectWorkItemsTable({
 }) {
     const [updatedProject, setUpdatedProject] = useState(project);
     const [isLoading, setIsLoading] = useState(false);
+    const [globalLoading, setGlobalLoading] = useState(false);
 
     const handleTestUpdate = (
         id: string | undefined,
@@ -108,6 +109,12 @@ export function ProjectWorkItemsTable({
                                                     }
                                                     hasItemTests={hasItemTests}
                                                     setLoading={setIsLoading}
+                                                    globalLoading={
+                                                        globalLoading
+                                                    }
+                                                    setGlobalLoading={
+                                                        setGlobalLoading
+                                                    }
                                                 ></WorkItemsTable>
 
                                                 {/* Materials and their tests */}
@@ -166,6 +173,12 @@ export function ProjectWorkItemsTable({
                                                                     }
                                                                     setLoading={
                                                                         setIsLoading
+                                                                    }
+                                                                    globalLoading={
+                                                                        globalLoading
+                                                                    }
+                                                                    setGlobalLoading={
+                                                                        setGlobalLoading
                                                                     }
                                                                 />
                                                             </Fragment>
