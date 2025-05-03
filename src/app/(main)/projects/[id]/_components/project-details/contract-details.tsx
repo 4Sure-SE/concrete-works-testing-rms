@@ -1,5 +1,6 @@
-import { BackButton } from "@/app/(main)/_components";
+import { BackButton } from "@/app/(main)/_components/back-button";
 import type { Projects } from "@/lib/types/project";
+
 export function ProjectContractDetails({
     project,
 }: {
