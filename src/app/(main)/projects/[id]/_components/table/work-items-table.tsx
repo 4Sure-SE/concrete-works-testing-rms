@@ -10,9 +10,7 @@ export function WorkItemsTable({
     handleTestUpdate,
     onServerUpdate,
     hasItemTests,
-    setLoading,
-    globalLoading,
-    setGlobalLoading,
+    isReadOnly = false,
 }: {
     workItem: ProjectWorkItem;
     handleTestUpdate: (
@@ -26,9 +24,7 @@ export function WorkItemsTable({
         type: "material" | "workItem",
     ) => Promise<number>;
     hasItemTests: boolean;
-    setLoading: (loading: boolean) => void;
-    globalLoading: boolean;
-    setGlobalLoading: (loading: boolean) => void;
+    isReadOnly?: boolean;
 }) {
     return (
         <Fragment>
@@ -51,7 +47,7 @@ export function WorkItemsTable({
                         </TableCell>
                         <TableCell className="text-center">
                             {workItem.itemTest?.[0]?.testRequired ?? "N/A"}
-                        </TableCell>
+                        </TableCell>{" "}
                         <TableCell className="text-center">
                             <TestCounter
                                 id={workItem.itemTest?.[0]?.id}
@@ -59,9 +55,7 @@ export function WorkItemsTable({
                                 onUpdate={handleTestUpdate}
                                 type="workItem"
                                 onServerUpdate={onServerUpdate}
-                                setLoading={setLoading}
-                                globalLoading={globalLoading}
-                                setGlobalLoading={setGlobalLoading}
+                                isReadOnly={isReadOnly}
                             ></TestCounter>
                         </TableCell>
                         <TableCell className="text-center">
@@ -91,7 +85,7 @@ export function WorkItemsTable({
                     <TableCell></TableCell>
                     <TableCell className="text-center">
                         {test.testRequired}
-                    </TableCell>
+                    </TableCell>{" "}
                     <TableCell className="text-center">
                         <TestCounter
                             id={test.id}
@@ -99,15 +93,12 @@ export function WorkItemsTable({
                             type="workItem"
                             onUpdate={handleTestUpdate}
                             onServerUpdate={onServerUpdate}
-                            setLoading={setLoading}
-                            globalLoading={globalLoading}
-                            setGlobalLoading={setGlobalLoading}
+                            isReadOnly={isReadOnly}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">
                         {test.balance}
                     </TableCell>
-
                     <TableCell className="text-center">
                         <TestStatus
                             testsOnFile={test.testsOnFile}

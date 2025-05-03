@@ -8,9 +8,7 @@ export function MaterialsTable({
     material,
     onServerUpdate,
     handleTestUpdate,
-    setLoading,
-    globalLoading,
-    setGlobalLoading,
+    isReadOnly = false,
 }: {
     material: Material;
     handleTestUpdate: (
@@ -23,9 +21,7 @@ export function MaterialsTable({
         amount: number,
         type: "material" | "workItem",
     ) => Promise<number>;
-    setLoading: (loading: boolean) => void;
-    globalLoading: boolean;
-    setGlobalLoading: (loading: boolean) => void;
+    isReadOnly?: boolean;
 }) {
     return (
         <>
@@ -56,7 +52,7 @@ export function MaterialsTable({
                     )}
                     <TableCell className="text-center">
                         {test.testRequired}
-                    </TableCell>
+                    </TableCell>{" "}
                     <TableCell className="text-center">
                         <TestCounter
                             id={test.id}
@@ -64,9 +60,7 @@ export function MaterialsTable({
                             type="material"
                             onUpdate={handleTestUpdate}
                             onServerUpdate={onServerUpdate}
-                            setLoading={setLoading}
-                            globalLoading={globalLoading}
-                            setGlobalLoading={setGlobalLoading}
+                            isReadOnly={isReadOnly}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">

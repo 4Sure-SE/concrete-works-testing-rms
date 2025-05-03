@@ -6,23 +6,56 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { Check, ChevronDown, Copy, Share2 } from "lucide-react";
-import { useState } from "react";
+import { generateProjectShareLink } from "@/server/actions/projects/share-project";
+import { Check, ChevronDown, Copy, Loader2, Share2 } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function ShareButton() {
+    const params = useParams();
+    const projectId = params.id as string;
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [shareableLink, setShareableLink] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
 
-    const shareableLink = "https://yourwebsite.com/shared-link";
+    useEffect(() => {
+        const fetchShareLink = async () => {
+            try {
+                setIsLoading(true);
+                setError(null);
+
+                const data = await generateProjectShareLink(projectId);
+                setShareableLink(data);
+            } catch (err) {
+                console.error("Failed to fetch share link:", err);
+                setError("Failed to generate share link.");
+                setShareableLink(null);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        void fetchShareLink();
+    }, [projectId]);
 
     const handleCopy = async () => {
+        if (!shareableLink) return;
+
         try {
             await navigator.clipboard.writeText(shareableLink);
+            setError(null);
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
         } catch (error) {
             console.error("Failed to copy:", error);
+            setError("Failed to copy link to clipboard.");
         }
     };
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -54,28 +87,53 @@ export function ShareButton() {
                         </p>
                     </div>
 
-                    <div className="flex w-full justify-start space-x-2 py-2">
+                    <div className="flex w-full justify-start py-2">
                         <Input
-                            value={shareableLink}
+                            value={shareableLink ?? ""}
+                            placeholder={
+                                isLoading
+                                    ? "Loading project share link..."
+                                    : shareableLink
+                                      ? "Click Copy Link button to share"
+                                      : "No share link available"
+                            }
                             readOnly
                             className="w-full"
                             autoFocus={false}
                         />
-                        <button
-                            onClick={handleCopy}
-                            className="rounded-md p-2.5 hover:bg-gray-300"
-                            data-testid="copy-button"
-                        >
-                            {!copied ? (
-                                <Copy className="h-4 w-4" />
-                            ) : (
-                                <Check
-                                    data-testid="check-icon"
-                                    className="h-4 w-4 text-green-500"
-                                ></Check>
-                            )}
-                        </button>
                     </div>
+
+                    {error && (
+                        <p className="mt-1 self-start text-xs text-red-500">
+                            {error}
+                        </p>
+                    )}
+
+                    <Button
+                        onClick={handleCopy}
+                        disabled={isLoading || !shareableLink}
+                        className={`mt-2 w-full ${
+                            copied ? "bg-green-600 hover:bg-green-700" : ""
+                        }`}
+                        size="sm"
+                    >
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Loading...
+                            </>
+                        ) : copied ? (
+                            <>
+                                <Check className="mr-2 h-4 w-4" />
+                                Copied!
+                            </>
+                        ) : (
+                            <>
+                                <Copy className="mr-2 h-4 w-4" />
+                                Copy Link
+                            </>
+                        )}
+                    </Button>
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>

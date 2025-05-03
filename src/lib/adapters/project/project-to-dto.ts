@@ -13,5 +13,6 @@ export function projectToDTO(project: Project | null): ProjectDTO | null {
         dateStarted: project.dateStarted,
         materialsEngineer: project.materialsEngineer,
         contractCost: Number(project.contractCost),
+        token: project.token,
     };
 }

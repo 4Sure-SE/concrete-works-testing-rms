@@ -19,6 +19,7 @@ export type ProjectDTO = Omit<
     contractCost: number;
     limits: string | null;
     location: string | null;
+    token: string | null;
 };
 
 export type ProjectSummaryStats = {
