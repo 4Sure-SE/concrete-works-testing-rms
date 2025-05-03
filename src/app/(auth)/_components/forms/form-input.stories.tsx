@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, within } from "@storybook/test";
 import { Lock, Mail } from "lucide-react";
-import { useEffect, useState } from "react";
 import { FormInput } from "./form-input";
 
 const meta = {
@@ -25,19 +24,10 @@ const meta = {
     },
     decorators: [
         (Story, context) => {
-            const [value, setValue] = useState(context.args.value ?? "");
             const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                setValue(e.target.value);
                 context.args.onChange?.(e);
             };
-            useEffect(() => {
-                setValue(context.args.value ?? "");
-            }, [context.args.value]);
-            return (
-                <Story
-                    args={{ ...context.args, value, onChange: handleChange }}
-                />
-            );
+            return <Story args={{ ...context.args, onChange: handleChange }} />;
         },
     ],
 } satisfies Meta<typeof FormInput>;
@@ -66,7 +56,7 @@ const basePlayFunction = async ({
             await expect(canvas.getByRole("alert")).toBeInTheDocument();
         }
     } else {
-        await expect(inputElement).not.toHaveAttribute("aria-invalid");
+        await expect(inputElement).toHaveAttribute("aria-invalid", "false");
         await expect(canvas.queryByRole("alert")).not.toBeInTheDocument();
     }
 };
