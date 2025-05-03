@@ -11,6 +11,11 @@
         "db:push": "prisma db push",
         "db:pull": "prisma db pull",
         "db:studio": "prisma studio",
+        "test-db:generate": "dotenv -e .env.test -o -- npx prisma migrate dev",
+        "test-db:migrate": "dotenv -e .env.test -o -- npx prisma migrate deploy",
+        "test-db:push": "dotenv -e .env.test -o -- npx prisma db push",
+        "test-db:pull": "dotenv -e .env.test -o -- npx prisma db pull",
+        "test-db:studio": "dotenv -e .env.test -o -- npx prisma studio",
         "dev": "next dev --turbo",
         "postinstall": "prisma generate",
         "lint": "next lint",
@@ -21,11 +26,11 @@
         "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
         "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
         "prepare": "husky",
-        "test": "vitest",
         "sb": "storybook dev -p 6006",
+        "sb:build": "storybook build",
+        "test": "vitest",
         "test:sb": "vitest --project=storybook",
-        "test:unit": "vitest --project=unit",
-        "sb:build": "storybook build"
+        "test:unit": "vitest --project=unit"
     },
     "dependencies": {
         "@ag-media/react-pdf-table": "^2.0.2",
