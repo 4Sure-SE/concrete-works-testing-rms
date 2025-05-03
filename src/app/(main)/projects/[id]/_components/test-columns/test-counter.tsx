@@ -51,7 +51,7 @@ export const TestCounter = ({
 
     return (
         <div className="flex items-center justify-center gap-2 py-1">
-            <button
+            {/* <button
                 onClick={() => handleUpdate(-1)}
                 disabled={globalLoading || testsOnFile <= 0}
                 aria-label="decrease"
@@ -62,7 +62,24 @@ export const TestCounter = ({
                 ) : (
                     <Minus />
                 )}
-            </button>
+            </button> */}
+
+            {testsOnFile === 0 ? (
+                <div className="h-[32px] w-[28px]"></div>
+            ) : (
+                <button
+                    onClick={() => handleUpdate(-1)}
+                    disabled={globalLoading || testsOnFile <= 0}
+                    aria-label="decrease"
+                    className={`cursor-pointer rounded-sm px-0.5 py-0.5 text-white ${isSelfLoading || globalLoading ? "bg-red-400 hover:bg-red-400" : "bg-red-500 hover:bg-red-600"}`}
+                >
+                    {loadingDirection === "dec" ? (
+                        <Loader2 className="animate-spin" />
+                    ) : (
+                        <Minus />
+                    )}
+                </button>
+            )}
 
             <div className="flex h-8.5 w-11 items-center justify-center rounded-sm border border-gray-200 bg-white">
                 {testsOnFile}
