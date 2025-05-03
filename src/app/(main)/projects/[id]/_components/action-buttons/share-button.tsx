@@ -21,7 +21,7 @@ export function ShareButton() {
     const [isOpen, setIsOpen] = useState(false);
 
     const fetchShareLink = async () => {
-        if (shareableLink) return; 
+        if (shareableLink) return;
 
         try {
             setIsLoading(true);
