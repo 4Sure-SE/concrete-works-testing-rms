@@ -8,6 +8,9 @@ export function MaterialsTable({
     material,
     onServerUpdate,
     handleTestUpdate,
+    setLoading,
+    globalLoading,
+    setGlobalLoading,
 }: {
     material: Material;
     handleTestUpdate: (
@@ -20,6 +23,9 @@ export function MaterialsTable({
         amount: number,
         type: "material" | "workItem",
     ) => Promise<number>;
+    setLoading: (loading: boolean) => void;
+    globalLoading: boolean;
+    setGlobalLoading: (loading: boolean) => void;
 }) {
     return (
         <>
@@ -58,6 +64,9 @@ export function MaterialsTable({
                             type="material"
                             onUpdate={handleTestUpdate}
                             onServerUpdate={onServerUpdate}
+                            setLoading={setLoading}
+                            globalLoading={globalLoading}
+                            setGlobalLoading={setGlobalLoading}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">
