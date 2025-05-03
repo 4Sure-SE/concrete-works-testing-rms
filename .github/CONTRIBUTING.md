@@ -165,7 +165,7 @@ Before submitting a pull request, ensure all tests pass.
     cp .env.example .env.test
     ```
 
-2. Update the `.env` file with the provided values
+2. Update the `.env.test` file with the provided values
 
 ### Running Tests
 
