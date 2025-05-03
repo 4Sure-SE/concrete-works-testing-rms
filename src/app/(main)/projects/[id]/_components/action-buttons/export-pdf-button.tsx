@@ -6,7 +6,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { Projects } from "@/lib/types/project";
-import { BarChart2, ClipboardCheck, FileText } from "lucide-react";
+import { ClipboardCheck, FileText, ListCheck } from "lucide-react";
 import downloadQCP from "../export-pdf/qcp-report";
 import downloadSOT from "../export-pdf/sot-report";
 
@@ -43,7 +43,7 @@ export function ExportPdfButton({
                     onClick={() => downloadSOT(project)}
                     className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                 >
-                    <BarChart2 className="mr-2 h-4 w-4 text-blue-500" />
+                    <ListCheck className="mr-2 h-4 w-4 text-blue-500" />
                     Status of Test
                 </DropdownMenuItem>
             </DropdownMenuContent>
