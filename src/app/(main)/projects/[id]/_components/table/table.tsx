@@ -27,6 +27,9 @@ export function ProjectWorkItemsTable({
     ) => Promise<number>;
 }) {
     const [updatedProject, setUpdatedProject] = useState(project);
+    const [isLoading, setIsLoading] = useState(false);
+    const [globalLoading, setGlobalLoading] = useState(false);
+
     const handleTestUpdate = (
         id: string | undefined,
         amount: number,
@@ -40,6 +43,7 @@ export function ProjectWorkItemsTable({
         <>
             <ProjectDetailsActionButtons
                 project={updatedProject}
+                disabled={isLoading}
             ></ProjectDetailsActionButtons>
             <div className="overflow-y-auto p-8">
                 {updatedProject.projectWorkItem?.length === 0 ? (
@@ -104,6 +108,13 @@ export function ProjectWorkItemsTable({
                                                         handleTestUpdate
                                                     }
                                                     hasItemTests={hasItemTests}
+                                                    setLoading={setIsLoading}
+                                                    globalLoading={
+                                                        globalLoading
+                                                    }
+                                                    setGlobalLoading={
+                                                        setGlobalLoading
+                                                    }
                                                 ></WorkItemsTable>
 
                                                 {/* Materials and their tests */}
@@ -159,6 +170,15 @@ export function ProjectWorkItemsTable({
                                                                     }
                                                                     handleTestUpdate={
                                                                         handleTestUpdate
+                                                                    }
+                                                                    setLoading={
+                                                                        setIsLoading
+                                                                    }
+                                                                    globalLoading={
+                                                                        globalLoading
+                                                                    }
+                                                                    setGlobalLoading={
+                                                                        setGlobalLoading
                                                                     }
                                                                 />
                                                             </Fragment>
