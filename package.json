@@ -25,7 +25,7 @@
         "sb": "storybook dev -p 6006",
         "test:sb": "vitest --project=storybook",
         "test:unit": "vitest --project=unit",
-        "build-sb": "storybook build"
+        "sb:build": "storybook build"
     },
     "dependencies": {
         "@ag-media/react-pdf-table": "^2.0.2",
