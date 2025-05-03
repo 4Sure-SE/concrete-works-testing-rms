@@ -36,6 +36,9 @@ export default defineConfig({
                     },
                     setupFiles: [".storybook/vitest.setup.ts"],
                 },
+                optimizeDeps: {
+                    exclude: ["node_modules/.cache/storybook"],
+                },
             },
             {
                 plugins: [tsconfigPaths(), react()],
