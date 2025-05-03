@@ -10,11 +10,18 @@ import { BarChart2, ClipboardCheck, FileText } from "lucide-react";
 import downloadQCP from "../export-pdf/qcp-report";
 import downloadSOT from "../export-pdf/sot-report";
 
-export function ExportPdfButton({ project }: { project: Projects }) {
+export function ExportPdfButton({
+    project,
+    disabled,
+}: {
+    project: Projects;
+    disabled?: boolean;
+}) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button
+                    disabled={disabled}
                     variant="outline"
                     size="default"
                     className="flex w-[110px] items-center gap-1 px-2 py-1 text-xs text-gray-700 sm:w-[142px] sm:gap-2 sm:text-sm md:text-sm"

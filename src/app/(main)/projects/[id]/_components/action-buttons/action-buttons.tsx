@@ -8,15 +8,20 @@ import { WorkItemsButton } from "./work-items-button";
 
 export function ProjectDetailsActionButtons({
     project,
+    disabled,
 }: {
     project: Projects;
+    disabled: boolean;
 }) {
     return (
         <div className="flex flex-wrap justify-between gap-4 px-8">
             <ProjectInfoButton project={project} />
             <div className="flex items-center justify-center space-x-2">
                 <ShareButton />
-                <ExportPdfButton project={project} />
+                <ExportPdfButton
+                    project={project}
+                    disabled={disabled}
+                />
                 <EditButton projectId={project.id} />
                 <WorkItemsButton projectId={project.id} />
             </div>
