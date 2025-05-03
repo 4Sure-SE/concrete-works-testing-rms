@@ -3,12 +3,17 @@ name: UI Tests
 on: [push, pull_request]
 
 jobs:
-    test:
+    test-ui:
         runs-on: ubuntu-latest
 
         strategy:
             matrix:
                 node-version: [22.x]
+        env:
+            DATABASE_URL: ${{ secrets.DATABASE_URL }}
+            DIRECT_URL: ${{ secrets.DIRECT_URL }}
+            NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         container:
             image: mcr.microsoft.com/playwright:v1.50.1-noble
         steps:
