@@ -18,6 +18,7 @@ import { WorkItemsTable } from "./work-items-table";
 export function ProjectWorkItemsTable({
     project,
     onServerUpdate,
+    isReadOnly = false,
 }: {
     project: Projects;
     onServerUpdate: (
@@ -25,16 +26,16 @@ export function ProjectWorkItemsTable({
         amount: number,
         type: "material" | "workItem",
     ) => Promise<number>;
+    isReadOnly?: boolean;
 }) {
     const [updatedProject, setUpdatedProject] = useState(project);
-    const [isLoading, setIsLoading] = useState(false);
-    const [globalLoading, setGlobalLoading] = useState(false);
 
     const handleTestUpdate = (
         id: string | undefined,
         amount: number,
         type: "material" | "workItem",
     ) => {
+        if (isReadOnly) return;
         setUpdatedProject((prevProject) =>
             UpdateProjectTest(prevProject, id, amount, type),
         );
@@ -43,8 +44,8 @@ export function ProjectWorkItemsTable({
         <>
             <ProjectDetailsActionButtons
                 project={updatedProject}
-                disabled={isLoading}
-            ></ProjectDetailsActionButtons>
+                isReadOnly={isReadOnly}
+            />
             <div className="overflow-y-auto p-8">
                 {updatedProject.projectWorkItem?.length === 0 ? (
                     <div>
@@ -95,10 +96,9 @@ export function ProjectWorkItemsTable({
                                         // Determine if we have item tests to display
                                         const hasItemTests =
                                             workItem.itemTest.length > 0;
-
                                         return (
                                             <Fragment key={`${workItem.id}`}>
-                                                {/* Main item row with first item test if available */}
+                                                {/* Main item row with first item test if available */}{" "}
                                                 <WorkItemsTable
                                                     workItem={workItem}
                                                     onServerUpdate={
@@ -108,15 +108,8 @@ export function ProjectWorkItemsTable({
                                                         handleTestUpdate
                                                     }
                                                     hasItemTests={hasItemTests}
-                                                    setLoading={setIsLoading}
-                                                    globalLoading={
-                                                        globalLoading
-                                                    }
-                                                    setGlobalLoading={
-                                                        setGlobalLoading
-                                                    }
+                                                    isReadOnly={isReadOnly}
                                                 ></WorkItemsTable>
-
                                                 {/* Materials and their tests */}
                                                 {workItem.materials.map(
                                                     (material) => {
@@ -161,6 +154,7 @@ export function ProjectWorkItemsTable({
                                                                     material.id
                                                                 }
                                                             >
+                                                                {" "}
                                                                 <MaterialsTable
                                                                     material={
                                                                         material
@@ -171,21 +165,14 @@ export function ProjectWorkItemsTable({
                                                                     handleTestUpdate={
                                                                         handleTestUpdate
                                                                     }
-                                                                    setLoading={
-                                                                        setIsLoading
-                                                                    }
-                                                                    globalLoading={
-                                                                        globalLoading
-                                                                    }
-                                                                    setGlobalLoading={
-                                                                        setGlobalLoading
+                                                                    isReadOnly={
+                                                                        isReadOnly
                                                                     }
                                                                 />
                                                             </Fragment>
                                                         );
                                                     },
                                                 )}
-
                                                 {/* If no tests or materials, show a message */}
                                                 {workItem.materials.length ===
                                                     0 &&
