@@ -3,36 +3,41 @@
 import { Search } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 interface SearchBarProps {
     placeholder: string;
+    onSearchAction: (query: string) => void;
+    value: string;
+    isPending?: boolean;
 }
 
-export function SearchBar({ placeholder }: SearchBarProps) {
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const router = useRouter();
+export function SearchBar({
+    placeholder,
+    onSearchAction,
+    value,
+    isPending = false,
+}: SearchBarProps) {
+    const inputRef = useRef<HTMLInputElement>(null);
 
-    function handleSearch(term: string) {
-        const params = new URLSearchParams(searchParams);
-        if (term) {
-            params.set("query", term);
-        } else {
-            params.delete("query");
+    // set default value when the component mounts
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.value = value ?? "";
         }
-        router.replace(`${pathname}?${params.toString()}`);
-    }
+    }, [value]);
 
     return (
         <div className="relative flex-grow">
             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
             <Input
+                ref={inputRef}
                 type="text"
                 placeholder={placeholder}
                 className="pl-10"
-                onChange={(e) => handleSearch(e.target.value)}
-                defaultValue={searchParams.get("query")?.toString()}
+                onChange={(e) => onSearchAction(e.target.value)}
+                defaultValue={value}
+                disabled={isPending}
             />
         </div>
     );
