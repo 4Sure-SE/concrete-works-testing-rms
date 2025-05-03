@@ -9,35 +9,41 @@ import { Input } from "@/components/ui/input";
 import { generateProjectShareLink } from "@/server/actions/projects/share-project";
 import { Check, ChevronDown, Copy, Loader2, Share2 } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function ShareButton() {
     const params = useParams();
     const projectId = params.id as string;
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [shareableLink, setShareableLink] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-        const fetchShareLink = async () => {
-            try {
-                setIsLoading(true);
-                setError(null);
+    const fetchShareLink = async () => {
+        if (shareableLink) return; 
 
-                const data = await generateProjectShareLink(projectId);
-                setShareableLink(data);
-            } catch (err) {
-                console.error("Failed to fetch share link:", err);
-                setError("Failed to generate share link.");
-                setShareableLink(null);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        try {
+            setIsLoading(true);
+            setError(null);
 
-        void fetchShareLink();
-    }, [projectId]);
+            const data = await generateProjectShareLink(projectId);
+            setShareableLink(data);
+        } catch (err) {
+            console.error("Failed to fetch share link:", err);
+            setError("Failed to generate share link.");
+            setShareableLink(null);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleOpen = (open: boolean) => {
+        setIsOpen(open);
+        if (open) {
+            void fetchShareLink();
+        }
+    };
 
     const handleCopy = async () => {
         if (!shareableLink) return;
@@ -57,7 +63,10 @@ export function ShareButton() {
     };
 
     return (
-        <DropdownMenu>
+        <DropdownMenu
+            open={isOpen}
+            onOpenChange={handleOpen}
+        >
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="outline"
