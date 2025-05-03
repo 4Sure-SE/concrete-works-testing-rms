@@ -42,7 +42,6 @@ export const TestCounter = ({
         }
         setLoading(false);
         setLoadingDirection(null);
-        setLoading(false);
     };
     return (
         <div className="flex items-center justify-center gap-2 py-1">
