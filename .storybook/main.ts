@@ -1,4 +1,4 @@
-import type { StorybookConfig } from "@storybook/nextjs";
+import type { StorybookConfig } from "@storybook/experimental-nextjs-vite";
 
 const config: StorybookConfig = {
     stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -6,25 +6,12 @@ const config: StorybookConfig = {
         "@storybook/addon-essentials",
         "@storybook/addon-onboarding",
         "@chromatic-com/storybook",
-        "@storybook/addon-interactions",
+        "@storybook/experimental-addon-test",
     ],
     framework: {
-        name: "@storybook/nextjs",
+        name: "@storybook/experimental-nextjs-vite",
         options: {},
     },
     staticDirs: ["../public"],
-    webpackFinal: async (config) => {
-        if (config.resolve) {
-            config.resolve.fallback = {
-                ...config.resolve.fallback,
-                child_process: false,
-                async_hooks: false,
-                fs: false,
-                path: false,
-                os: false,
-            };
-        }
-        return config;
-    },
 };
 export default config;

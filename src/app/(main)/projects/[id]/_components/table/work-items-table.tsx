@@ -11,6 +11,8 @@ export function WorkItemsTable({
     onServerUpdate,
     hasItemTests,
     setLoading,
+    globalLoading,
+    setGlobalLoading,
 }: {
     workItem: ProjectWorkItem;
     handleTestUpdate: (
@@ -25,6 +27,8 @@ export function WorkItemsTable({
     ) => Promise<number>;
     hasItemTests: boolean;
     setLoading: (loading: boolean) => void;
+    globalLoading: boolean;
+    setGlobalLoading: (loading: boolean) => void;
 }) {
     return (
         <Fragment>
@@ -56,6 +60,8 @@ export function WorkItemsTable({
                                 type="workItem"
                                 onServerUpdate={onServerUpdate}
                                 setLoading={setLoading}
+                                globalLoading={globalLoading}
+                                setGlobalLoading={setGlobalLoading}
                             ></TestCounter>
                         </TableCell>
                         <TableCell className="text-center">
@@ -94,6 +100,8 @@ export function WorkItemsTable({
                             onUpdate={handleTestUpdate}
                             onServerUpdate={onServerUpdate}
                             setLoading={setLoading}
+                            globalLoading={globalLoading}
+                            setGlobalLoading={setGlobalLoading}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">

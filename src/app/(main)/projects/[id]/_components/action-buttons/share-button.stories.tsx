@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { expect, screen, userEvent, within } from "@storybook/test";
+import { expect, fn, userEvent, within } from "@storybook/test";
 import { ShareButton } from "./share-button";
 
 const meta = {
@@ -27,21 +27,34 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const CopiedState: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        await sleep(1000);
+
+        const writeTextMock = fn().mockResolvedValue(undefined);
+        Object.defineProperty(navigator, "clipboard", {
+            value: {
+                writeText: writeTextMock,
+            },
+            configurable: true,
+            writable: true,
+        });
 
         const trigger = await canvas.findByRole("button", { name: /share/i });
         await userEvent.click(trigger);
-        await sleep(1000);
 
-        const copyBtn = await screen.findByTestId("copy-button");
+        const copyBtn = await within(document.body).findByTestId("copy-button");
         await userEvent.click(copyBtn);
-        await sleep(1000);
 
-        await expect(
-            screen.findByTestId("check-icon"),
-        ).resolves.toBeInTheDocument();
+        await expect(writeTextMock).toHaveBeenCalledTimes(1);
 
-        await sleep(1000);
+        const checkIcon = await within(document.body).findByTestId(
+            "check-icon",
+        );
+        await expect(checkIcon).toBeInTheDocument();
+
+        Object.defineProperty(navigator, "clipboard", {
+            value: undefined,
+            configurable: true,
+            writable: true,
+        });
     },
 };
 
@@ -54,8 +67,7 @@ export const HoverColor: Story = {
                 <style>
                     {`
                         button{
-                            background-color: #e5e7eb !important; 
-                            
+                            background-color: #e5e7eb !important;
                             color: black !important;
                         }
                     `}

@@ -39,6 +39,10 @@ export const IncrementTest: Story = {
         setLoading: (loading) => {
             console.log("setLoading:", loading);
         },
+        globalLoading: false,
+        setGlobalLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
@@ -69,6 +73,10 @@ export const DecrementTest: Story = {
             return updated;
         },
         setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
+        globalLoading: false,
+        setGlobalLoading: (loading) => {
             console.log("setLoading:", loading);
         },
     },
@@ -102,6 +110,10 @@ export const LoadingWhileIncrementing: Story = {
         setLoading: (loading) => {
             console.log("setLoading:", loading);
         },
+        globalLoading: false,
+        setGlobalLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
     },
     play: async ({ canvasElement }) => {
         const button = canvasElement.querySelector(
@@ -127,6 +139,10 @@ export const LoadingWhileDecrementing: Story = {
             });
         },
         setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
+        globalLoading: false,
+        setGlobalLoading: (loading) => {
             console.log("setLoading:", loading);
         },
     },
