@@ -384,21 +384,27 @@ const MyDoc = ({ project }: { project: Projects }) => (
                     ))}
                 </Table>
             </View>
-            <View style={{ width: "100%", marginTop: 30 }}>
+            <View
+                style={{
+                    width: "100%",
+                    marginTop: 30,
+                }}
+                wrap={false}
+            >
                 <Text style={[styles.text, { marginBottom: 20 }]}>
                     Prepared By:
                 </Text>
                 <Text
                     style={[styles.text, { fontWeight: 700, marginBottom: 15 }]}
                 >
-                    NAME & SIGNATURE
-                </Text>
-                <Text style={[styles.text, { marginBottom: 15 }]}>
                     {project.materialsEngineer}
                 </Text>
-                <Text style={[styles.text, { marginBottom: 15 }]}>
-                    {project.contractor}
+
+                <Text style={[styles.text, { marginBottom: 5 }]}>
+                    Materials Engineer
                 </Text>
+
+                <Text style={[styles.text, { marginBottom: 15 }]}>DPWH</Text>
             </View>
         </Page>
     </Document>

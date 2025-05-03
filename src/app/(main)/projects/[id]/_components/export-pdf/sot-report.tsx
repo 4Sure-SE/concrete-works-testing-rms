@@ -457,17 +457,13 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                                     style={styles.tdOnFile}
                                                     weighting={0.07}
                                                 >
-                                                    {mtIndex === 0
-                                                        ? matTest.testsOnFile
-                                                        : ""}
+                                                    {matTest.testsOnFile}
                                                 </TD>
                                                 <TD
                                                     style={styles.tdBalance}
                                                     weighting={0.07}
                                                 >
-                                                    {mtIndex === 0
-                                                        ? matTest.balance
-                                                        : ""}
+                                                    {matTest.balance}
                                                 </TD>
                                                 <TD
                                                     style={
