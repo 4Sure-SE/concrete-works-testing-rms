@@ -1,61 +1,83 @@
-import Link from "next/link";
-
+import { DeleteDialog } from "@/components/custom/delete-dialog";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { ProjectSummaryDTO } from "@/lib/types/project";
-
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
 import { ProgressBar } from "./progress-bar";
 import { ProjectStats } from "./project-stats";
 
+interface ProjectItemProps {
+    data: ProjectSummaryDTO;
+    onDeleteAction: (id: string) => Promise<void>;
+    disabled?: boolean;
+}
+
 export function ProjectItem({
-    id,
-    contractId,
-    contractName,
-    dateStarted,
-    stats,
-}: ProjectSummaryDTO) {
+    data,
+    onDeleteAction,
+    disabled = false,
+}: ProjectItemProps) {
     const completionPercentage =
-        stats.totalRequiredTests === 0
+        data.stats.totalRequiredTests === 0
             ? 0
             : Math.min(
                   Math.round(
-                      (stats.totalOnFileTests / stats.totalRequiredTests) * 100,
+                      (data.stats.totalOnFileTests /
+                          data.stats.totalRequiredTests) *
+                          100,
                   ),
                   100,
               );
 
     return (
-        <Link
-            href={`/projects/${id}`}
-            className="block h-full"
-        >
-            <Card className="transition-shadow hover:shadow-md">
-                <CardHeader className="flex flex-row justify-between pb-2">
-                    <div>
-                        <h3 className="text-lg font-bold">{contractId}</h3>
-                        <p className="text-sm font-semibold">{contractName}</p>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                        Started: {formatDate(dateStarted)}
-                    </p>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-3">
-                        <div className="flex justify-between text-sm">
-                            <span>Progress</span>
-                            <span className="text-sm">
-                                {completionPercentage}%
-                            </span>
+        <div className="group relative">
+            <Link
+                href={`/projects/${data.id}`}
+                className={disabled ? "pointer-events-none" : ""}
+                aria-disabled={disabled}
+            >
+                <Card
+                    className={`transition-shadow hover:shadow-md ${disabled ? "opacity-50" : ""}`}
+                >
+                    <CardHeader className="pb-2">
+                        <div>
+                            <h3 className="text-lg font-bold">
+                                {data.contractId}
+                            </h3>
+                            <p className="text-sm font-semibold">
+                                {data.contractName}
+                            </p>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                                Started: {formatDate(data.dateStarted)}
+                            </p>
                         </div>
-                        <ProgressBar percentage={completionPercentage} />
-                        <ProjectStats
-                            total={stats.totalRequiredTests}
-                            balance={stats.totalBalanceTests}
-                            onFile={stats.totalOnFileTests}
-                        />
-                    </div>
-                </CardContent>
-            </Card>
-        </Link>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-3">
+                            <div className="flex justify-between text-sm">
+                                <span>Progress</span>
+                                <span className="text-sm">
+                                    {completionPercentage}%
+                                </span>
+                            </div>
+                            <ProgressBar percentage={completionPercentage} />
+                            <ProjectStats
+                                total={data.stats.totalRequiredTests}
+                                balance={data.stats.totalBalanceTests}
+                                onFile={data.stats.totalOnFileTests}
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
+            </Link>
+            <div className="absolute top-2 right-2 z-10">
+                <DeleteDialog
+                    entityId={data.id}
+                    entityName={"project"}
+                    entityAlias={data.contractId}
+                    onDeleteAction={onDeleteAction}
+                />
+            </div>
+        </div>
     );
 }
