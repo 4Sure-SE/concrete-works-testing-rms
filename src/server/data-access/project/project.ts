@@ -1,5 +1,6 @@
 import "server-only";
 
+import type { ProjectListFilters } from "@/lib/types/project/project.types";
 import { db } from "@/server/db";
 import type { Prisma, Project } from "@prisma/client";
 import type { ProjectDetailsPayload } from "./project.payloads";
@@ -17,13 +18,41 @@ export async function getProjectById(id: string): Promise<Project | null> {
 }
 
 // get project list
-export async function getProjectSummaryList(): Promise<
-    ProjectSummaryPayload[]
-> {
+export async function getProjectSummaryList(
+    filters: ProjectListFilters,
+): Promise<ProjectSummaryPayload[]> {
     const projects = await db.project.findMany({
         orderBy: { updatedAt: "desc" },
         include: projectSummaryInclude,
+        // apply filters
+        where: {
+            // search by contractId or contractName
+            OR: [
+                {
+                    contractId: {
+                        contains: filters.query ?? "",
+                        mode: "insensitive",
+                    },
+                },
+                {
+                    contractName: {
+                        contains: filters.query ?? "",
+                        mode: "insensitive",
+                    },
+                },
+            ],
+            // filter by date range
+            AND: {
+                dateStarted: {
+                    gte: filters.dateFrom
+                        ? new Date(filters.dateFrom)
+                        : undefined,
+                    lte: filters.dateTo ? new Date(filters.dateTo) : undefined,
+                },
+            },
+        },
     });
+
     return projects;
 }
 
