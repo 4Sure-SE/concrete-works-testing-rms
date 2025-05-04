@@ -1,17 +1,19 @@
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { type ProjectSummaryDTO } from "@/lib/types/project";
+import type { ProjectSummaryDTO } from "@/lib/types/project";
 
+import { formatDate } from "@/lib/utils";
 import { ProgressBar } from "./progress-bar";
 import { ProjectStats } from "./project-stats";
 
 export function ProjectItem({
-    contractId,
     id,
+    contractId,
     contractName,
+    dateStarted,
     stats,
-}: Omit<ProjectSummaryDTO, "dateStarted">) {
+}: ProjectSummaryDTO) {
     const completionPercentage =
         stats.totalRequiredTests === 0
             ? 0
@@ -28,9 +30,14 @@ export function ProjectItem({
             className="block h-full"
         >
             <Card className="transition-shadow hover:shadow-md">
-                <CardHeader className="pb-2">
-                    <h3 className="text-lg font-bold">{contractId}</h3>
-                    <p className="text-sm font-semibold">{contractName}</p>
+                <CardHeader className="flex flex-row justify-between pb-2">
+                    <div>
+                        <h3 className="text-lg font-bold">{contractId}</h3>
+                        <p className="text-sm font-semibold">{contractName}</p>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                        Started: {formatDate(dateStarted)}
+                    </p>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-3">

@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { workItemMaterialInclude } from "../work-item-material/work-item-material.payloads";
 
 export const workItemInclude = Prisma.validator<Prisma.WorkItemInclude>()({
     unit: { select: { abbreviation: true, isWholeNumber: true } },
@@ -11,28 +12,12 @@ export type WorkItemPayload = Prisma.WorkItemGetPayload<{
 export const workItemWithAllDefinitionsInclude =
     Prisma.validator<Prisma.WorkItemInclude>()({
         // unit: { select: { abbreviation: true } },
+        unit: true,
         workItemMaterial: {
-            select: {
-                id: true,
-                materialId: true,
-                quantityPerUnit: true,
-                staticQuantity: true,
-                workItem: {
-                    select: { unit: { select: { isWholeNumber: true } } },
-                },
-                workItemMaterialTest: {
-                    select: {
-                        testId: true,
-                        unitsPerTest: true,
-                    },
-                },
-            },
+            include: workItemMaterialInclude,
         },
         workItemTest: {
-            select: {
-                testId: true,
-                testQuantity: true,
-            },
+            include: { test: true },
         },
     });
 

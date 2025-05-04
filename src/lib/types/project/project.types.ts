@@ -37,6 +37,12 @@ export type ProjectSummaryDTO = {
     stats: ProjectSummaryStats;
 };
 
+export type ProjectListFilters = {
+    query?: string;
+    dateFrom?: string;
+    dateTo?: string;
+};
+
 // client to server dto for creating project
 export type CreateProjectDTO = z.infer<typeof createProjectSchema>;
 export type UpdateProjectDTO = z.infer<typeof updateProjectSchema>;
