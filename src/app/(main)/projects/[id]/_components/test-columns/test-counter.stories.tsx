@@ -36,6 +36,13 @@ export const IncrementTest: Story = {
             await sleep(1000);
             return amount;
         },
+        setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
+        globalLoading: false,
+        setGlobalLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
@@ -65,6 +72,13 @@ export const DecrementTest: Story = {
             const updated = Math.max(0, current + amount);
             return updated;
         },
+        setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
+        globalLoading: false,
+        setGlobalLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
@@ -93,6 +107,13 @@ export const LoadingWhileIncrementing: Story = {
                 //stays loading
             });
         },
+        setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
+        globalLoading: false,
+        setGlobalLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
     },
     play: async ({ canvasElement }) => {
         const button = canvasElement.querySelector(
@@ -116,6 +137,13 @@ export const LoadingWhileDecrementing: Story = {
             return new Promise(() => {
                 //stays loading
             });
+        },
+        setLoading: (loading) => {
+            console.log("setLoading:", loading);
+        },
+        globalLoading: false,
+        setGlobalLoading: (loading) => {
+            console.log("setLoading:", loading);
         },
     },
     play: async ({ canvasElement }) => {

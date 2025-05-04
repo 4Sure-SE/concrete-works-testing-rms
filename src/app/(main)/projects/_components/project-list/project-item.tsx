@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ProjectSummaryDTO } from "@/lib/types/project";
+import { type ProjectSummaryDTO } from "@/lib/types/project";
 
 import { ProgressBar } from "./progress-bar";
 import { ProjectStats } from "./project-stats";

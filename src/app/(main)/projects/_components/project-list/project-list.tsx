@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { ProjectSummaryDTO } from "@/lib/types/project";
+import { type ProjectSummaryDTO } from "@/lib/types/project";
 
 import { ProjectItem } from "./project-item";
 import { ProjectListHeader } from "./project-list-header";

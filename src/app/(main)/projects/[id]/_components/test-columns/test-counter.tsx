@@ -10,6 +10,9 @@ export const TestCounter = ({
     type,
     onUpdate,
     onServerUpdate,
+    setLoading,
+    globalLoading,
+    setGlobalLoading,
     isReadOnly = false,
 }: {
     id: string | undefined;
@@ -21,17 +24,21 @@ export const TestCounter = ({
         amount: number,
         type: TestType,
     ) => Promise<number>;
+    setLoading: (loading: boolean) => void;
+    globalLoading: boolean;
+    setGlobalLoading: (loading: boolean) => void;
     isReadOnly?: boolean;
 }) => {
     const [testsOnFile, setTestsOnFile] = useState(value);
     const [loadingDirection, setLoadingDirection] = useState<
         "inc" | "dec" | null
     >(null);
-    const [loading, setLoading] = useState(false);
+    const isSelfLoading = loadingDirection !== null;
 
     const handleUpdate = async (amount: number) => {
         if (isReadOnly) return;
         setLoading(true);
+        setGlobalLoading(true);
         setLoadingDirection(amount > 0 ? "inc" : "dec");
         try {
             const updatedCount = await onServerUpdate(id, amount, type);
@@ -42,35 +49,43 @@ export const TestCounter = ({
         }
         setLoading(false);
         setLoadingDirection(null);
+        setGlobalLoading(false);
     };
     return (
         <div className="flex items-center justify-center gap-2 py-1">
-            {!isReadOnly && (
+            {testsOnFile === 0 || isReadOnly ? (
+                <div className="h-[32px] w-[28px]"></div>
+            ) : (
                 <button
                     onClick={() => handleUpdate(-1)}
-                    disabled={loading || testsOnFile <= 0}
+                    disabled={globalLoading || testsOnFile <= 0}
                     aria-label="decrease"
-                    className="rounded-sm bg-red-500 px-0.5 py-0.5 text-white hover:bg-red-600"
+                    className={`cursor-pointer rounded-sm px-0.5 py-0.5 text-white ${isSelfLoading || globalLoading ? "bg-red-400 hover:bg-red-400" : "bg-red-500 hover:bg-red-600"}`}
                 >
-                    {loading && loadingDirection === "dec" ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
+                    {loadingDirection === "dec" ? (
+                        <Loader2 className="animate-spin" />
                     ) : (
                         <Minus />
                     )}
                 </button>
             )}
+
             <div className="flex h-8.5 w-11 items-center justify-center rounded-sm border border-gray-200 bg-white">
                 {testsOnFile}
             </div>
             {!isReadOnly && (
                 <button
                     onClick={() => handleUpdate(1)}
-                    disabled={loading}
+                    disabled={globalLoading}
                     aria-label="increase"
-                    className="rounded-sm bg-green-500 px-0.5 py-0.5 text-white hover:bg-green-600"
+                    className={`cursor-pointer rounded-sm px-0.5 py-0.5 text-white ${
+                        isSelfLoading || globalLoading
+                            ? "bg-green-400 hover:bg-green-400"
+                            : "bg-green-500 hover:bg-green-600"
+                    }`}
                 >
-                    {loading && loadingDirection === "inc" ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
+                    {loadingDirection === "inc" ? (
+                        <Loader2 className="animate-spin" />
                     ) : (
                         <Plus />
                     )}

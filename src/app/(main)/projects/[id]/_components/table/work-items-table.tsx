@@ -10,6 +10,9 @@ export function WorkItemsTable({
     handleTestUpdate,
     onServerUpdate,
     hasItemTests,
+    setLoading,
+    globalLoading,
+    setGlobalLoading,
     isReadOnly = false,
 }: {
     workItem: ProjectWorkItem;
@@ -24,6 +27,9 @@ export function WorkItemsTable({
         type: "material" | "workItem",
     ) => Promise<number>;
     hasItemTests: boolean;
+    setLoading: (loading: boolean) => void;
+    globalLoading: boolean;
+    setGlobalLoading: (loading: boolean) => void;
     isReadOnly?: boolean;
 }) {
     return (
@@ -55,6 +61,9 @@ export function WorkItemsTable({
                                 onUpdate={handleTestUpdate}
                                 type="workItem"
                                 onServerUpdate={onServerUpdate}
+                                setLoading={setLoading}
+                                globalLoading={globalLoading}
+                                setGlobalLoading={setGlobalLoading}
                                 isReadOnly={isReadOnly}
                             ></TestCounter>
                         </TableCell>
@@ -93,6 +102,9 @@ export function WorkItemsTable({
                             type="workItem"
                             onUpdate={handleTestUpdate}
                             onServerUpdate={onServerUpdate}
+                            setLoading={setLoading}
+                            globalLoading={globalLoading}
+                            setGlobalLoading={setGlobalLoading}
                             isReadOnly={isReadOnly}
                         ></TestCounter>
                     </TableCell>

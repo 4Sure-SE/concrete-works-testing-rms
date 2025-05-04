@@ -11,6 +11,7 @@ export function ProjectDetailsActionButtons({
     isReadOnly = false,
 }: {
     project: Projects;
+    disabled: boolean;
     isReadOnly?: boolean;
 }) {
     return (

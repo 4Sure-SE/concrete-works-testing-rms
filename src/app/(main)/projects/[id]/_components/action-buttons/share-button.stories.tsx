@@ -22,8 +22,6 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export const CopiedState: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);

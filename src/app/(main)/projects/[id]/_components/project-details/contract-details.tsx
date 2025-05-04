@@ -1,22 +1,20 @@
 import { BackButton } from "@/app/(main)/_components/back-button";
 import type { Projects } from "@/lib/types/project";
-import type { ReactNode } from "react";
 
 export function ProjectContractDetails({
     project,
-    customBackButton,
     hideBackButton = false,
 }: {
     id: string;
     project: Projects;
-    customBackButton?: ReactNode;
     hideBackButton?: boolean;
 }) {
     return (
         <div className="grid w-full grid-cols-2 gap-x-4 p-8">
             <div className="flex w-full flex-col">
+                {" "}
                 <p className="flex items-center gap-2 text-xl font-bold text-gray-950">
-                    {!hideBackButton && (customBackButton ?? <BackButton />)}
+                    {!hideBackButton && <BackButton />}
                     {project.contractId === ""
                         ? "N/A"
                         : `${project.contractId}`}
