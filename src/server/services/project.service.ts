@@ -34,7 +34,10 @@ import {
     updateWorkItemsTestCount,
 } from "../data-access/project-work-item-test/project-work-item-test";
 
-import type { UpdateProjectDTO } from "@/lib/types/project/project.types";
+import type {
+    ProjectListFilters,
+    UpdateProjectDTO,
+} from "@/lib/types/project/project.types";
 import {
     PrismaClient,
     type Prisma,
@@ -205,11 +208,13 @@ export const ProjectService = {
     },
 
     // get project summary list
-    async getProjectSummaryList(): Promise<ProjectSummaryDTO[]> {
+    async getProjectSummaryList(
+        filters: ProjectListFilters,
+    ): Promise<ProjectSummaryDTO[]> {
         console.log(`[Service] Getting project list summary`);
 
         // fetch raw data
-        const projectSummaryListPayload = await getProjectSummaryList();
+        const projectSummaryListPayload = await getProjectSummaryList(filters);
 
         // transform to dto used by the ui
         const dtoList = projectSummaryListPayload
@@ -224,7 +229,7 @@ export const ProjectService = {
     // used in the sidebar
     async getLastFiveProjectSummaryList(): Promise<ProjectSummaryDTO[]> {
         console.log(`[Service] Getting last 5 project summaries`);
-        const allProjectsPayload = await getProjectSummaryList();
+        const allProjectsPayload = await getProjectSummaryList({});
 
         // transform to dto used by the ui
         const allSummaries = allProjectsPayload
