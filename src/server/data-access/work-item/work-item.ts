@@ -19,7 +19,7 @@ export async function getWorkItemList(): Promise<WorkItemPayload[]> {
 
 export async function getWorkItemWithAllDefinitions(
     id: string,
-    tx?: Prisma.TransactionClient, // Optional tx client
+    tx?: Prisma.TransactionClient,
 ): Promise<WorkItemWithAllDefinitionsPayload | null> {
     const client = tx ?? db;
     return client.workItem.findUnique({

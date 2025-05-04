@@ -84,8 +84,8 @@ const _calculateMaterialQuantity = (
         );
     }
 
-    // if the unit is a whole number round the quantity up
-    if (wimDef.workItem.unit.isWholeNumber) {
+    // if the unit of the material is a whole number, round the quantity
+    if (wimDef.material.unit.isWholeNumber) {
         quantity = quantity.round();
     }
 
