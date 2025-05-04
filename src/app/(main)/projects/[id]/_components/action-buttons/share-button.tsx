@@ -37,9 +37,10 @@ export function ShareButton() {
         }
 
         if (data?.success) {
-            setIsLoading(false);
             setShareableLink(data.data);
         }
+
+        setIsLoading(false);
     };
 
     const handleOpen = async (open: boolean) => {
