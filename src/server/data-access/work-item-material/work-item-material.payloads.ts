@@ -1,15 +1,21 @@
 import { Prisma } from "@prisma/client";
 
-export const workItemMaterialSelect =
-    Prisma.validator<Prisma.WorkItemMaterialSelect>()({
-        id: true,
-        materialId: true,
-        quantityPerUnit: true,
-        staticQuantity: true,
-        workItem: { select: { unit: { select: { isWholeNumber: true } } } },
+export const workItemMaterialInclude =
+    Prisma.validator<Prisma.WorkItemMaterialInclude>()({
+        workItem: {
+            include: {
+                unit: true,
+            },
+        },
+        workItemMaterialTest: true,
+        material: {
+            include: {
+                unit: true,
+            },
+        },
     });
 
 export type WorkItemMaterialDefinitionPayload =
     Prisma.WorkItemMaterialGetPayload<{
-        select: typeof workItemMaterialSelect;
+        include: typeof workItemMaterialInclude;
     }>;
