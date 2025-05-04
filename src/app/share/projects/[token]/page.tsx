@@ -2,35 +2,17 @@ import { ProjectContractDetails } from "@/app/(main)/projects/[id]/_components/p
 import { ProjectDetailsSkeleton } from "@/app/(main)/projects/[id]/_components/project-details/project-details-skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { tryCatch } from "@/lib/utils";
-import { getProjectShareLinkByToken } from "@/server/data-access/project-share-link/project-share-link";
-import { ProjectService } from "@/server/services/project.service";
+import { ProjectService } from "@/server/services";
 import { FolderOpen, InfoIcon } from "lucide-react";
 import { Suspense } from "react";
-import { ReadOnlyProjecContent } from "../_components/read-only-content";
+import { ReadOnlyProjectContent } from "../_components/read-only-content";
 
 async function SharedProjectContent({ token }: { token: string }) {
-    const { data: shareLink, error: shareLinkError } = await tryCatch(
-        getProjectShareLinkByToken(token),
+    const { data: sharedProject, error } = await tryCatch(
+        ProjectService.getProjectDetailsByToken(token),
     );
 
-    if (shareLinkError || !shareLink) {
-        return (
-            <div className="flex h-full w-full flex-col items-center justify-center">
-                <FolderOpen className="h-15 w-15" />
-                <div className="p-4 text-lg font-medium">
-                    Shared Project Not Found
-                </div>
-                <div className="text-sm text-gray-500">
-                    The shared link may be invalid
-                </div>
-            </div>
-        );
-    }
-
-    const { data: project, error: projectError } = await tryCatch(
-        ProjectService.getProjectDetails(shareLink.projectId),
-    );
-    if (projectError || !project) {
+    if (error) {
         return (
             <div className="flex h-full w-full flex-col items-center justify-center">
                 <FolderOpen className="h-15 w-15" />
@@ -58,11 +40,11 @@ async function SharedProjectContent({ token }: { token: string }) {
                 </Alert>
             </div>
             <ProjectContractDetails
-                id={project.id}
-                project={project}
+                id={sharedProject.id}
+                project={sharedProject}
                 hideBackButton={true}
             />
-            <ReadOnlyProjecContent project={project} />
+            <ReadOnlyProjectContent project={sharedProject} />
         </div>
     );
 }

@@ -12,7 +12,6 @@ export function ProjectContractDetails({
     return (
         <div className="grid w-full grid-cols-2 gap-x-4 p-8">
             <div className="flex w-full flex-col">
-                {" "}
                 <p className="flex items-center gap-2 text-xl font-bold text-gray-950">
                     {!hideBackButton && <BackButton />}
                     {project.contractId === ""
@@ -33,7 +32,7 @@ export function ProjectContractDetails({
                 <div className="mt-4 flex w-auto flex-row gap-2">
                     <span className="font-medium whitespace-nowrap text-gray-800">
                         Contractor:
-                    </span>{" "}
+                    </span>
                     <p className="text-gray-7000 flex-1 truncate font-medium text-wrap">
                         {project.contractor === "" ? "N/A" : project.contractor}
                     </p>
@@ -41,7 +40,7 @@ export function ProjectContractDetails({
                 <div className="mt-4 flex w-auto flex-row gap-2">
                     <span className="font-medium whitespace-nowrap text-gray-800">
                         Contract Cost:
-                    </span>{" "}
+                    </span>
                     <p className="text-gray-7000 flex-1 truncate font-medium text-wrap">
                         {project.contractCost === 0
                             ? "N/A"

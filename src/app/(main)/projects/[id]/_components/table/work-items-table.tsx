@@ -53,7 +53,7 @@ export function WorkItemsTable({
                         </TableCell>
                         <TableCell className="text-center">
                             {workItem.itemTest?.[0]?.testRequired ?? "N/A"}
-                        </TableCell>{" "}
+                        </TableCell>
                         <TableCell className="text-center">
                             <TestCounter
                                 id={workItem.itemTest?.[0]?.id}
@@ -94,7 +94,7 @@ export function WorkItemsTable({
                     <TableCell></TableCell>
                     <TableCell className="text-center">
                         {test.testRequired}
-                    </TableCell>{" "}
+                    </TableCell>
                     <TableCell className="text-center">
                         <TestCounter
                             id={test.id}

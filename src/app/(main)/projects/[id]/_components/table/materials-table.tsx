@@ -36,7 +36,6 @@ export function MaterialsTable({
                     <TableCell></TableCell>
                     {testIndex === 0 ? (
                         <TableCell className="pl-4 text-center">
-                            {" "}
                             {material.name}
                         </TableCell>
                     ) : (
@@ -58,7 +57,7 @@ export function MaterialsTable({
                     )}
                     <TableCell className="text-center">
                         {test.testRequired}
-                    </TableCell>{" "}
+                    </TableCell>
                     <TableCell className="text-center">
                         <TestCounter
                             id={test.id}

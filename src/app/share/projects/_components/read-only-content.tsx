@@ -3,7 +3,7 @@
 import { ProjectWorkItemsTable } from "@/app/(main)/projects/[id]/_components/table/table";
 import type { Projects } from "@/lib/types/project";
 
-export function ReadOnlyProjecContent({ project }: { project: Projects }) {
+export function ReadOnlyProjectContent({ project }: { project: Projects }) {
     // function that doesn't actually do anything
     // since we're in read-only mode
     const dummyUpdate = async (

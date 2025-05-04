@@ -101,7 +101,7 @@ export function ProjectWorkItemsTable({
                                             workItem.itemTest.length > 0;
                                         return (
                                             <Fragment key={`${workItem.id}`}>
-                                                {/* Main item row with first item test if available */}{" "}
+                                                {/* Main item row with first item test if available */}
                                                 <WorkItemsTable
                                                     workItem={workItem}
                                                     onServerUpdate={
@@ -164,7 +164,6 @@ export function ProjectWorkItemsTable({
                                                                     material.id
                                                                 }
                                                             >
-                                                                {" "}
                                                                 <MaterialsTable
                                                                     material={
                                                                         material
