@@ -304,6 +304,13 @@ export const ProjectService = {
     async deleteProject(projectId: string): Promise<ProjectDTO> {
         console.log(`[Service] Deleting project ID: ${projectId}`);
 
+        // check if the project exists
+        const existingProject = await getProjectById(projectId);
+
+        if (!existingProject) {
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
+        }
+
         const { data, error } = await tryCatch(deleteProject(projectId));
 
         if (error || !data) {
