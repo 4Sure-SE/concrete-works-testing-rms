@@ -20,6 +20,7 @@ import type { CreateProjectWorkItemDTO } from "@/lib/types/work-item";
 import { formatDate, tryCatch } from "@/lib/utils";
 import {
     createProject,
+    deleteProject,
     getProjectById,
     getProjectDetailsById,
     getProjectSummaryList,
@@ -297,6 +298,29 @@ export const ProjectService = {
         }
 
         return outputDto;
+    },
+
+    // delete project
+    async deleteProject(projectId: string): Promise<ProjectDTO> {
+        console.log(`[Service] Deleting project ID: ${projectId}`);
+
+        const { data, error } = await tryCatch(deleteProject(projectId));
+
+        if (error || !data) {
+            throw new Error(
+                `[Service] Failed to delete project ID: ${projectId}`,
+            );
+        }
+
+        const dto = projectToDTO(data);
+
+        if (!dto) {
+            throw new Error(
+                `[Service] Failed to convert deleted project ID: ${projectId}`,
+            );
+        }
+
+        return dto;
     },
 
     // get project details by id
