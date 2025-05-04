@@ -100,7 +100,7 @@ const MyDoc = ({ project }: { project: Projects }) => (
                             }}
                         >
                             <Text style={[styles.text, { marginLeft: 4 }]}>
-                                {project.limits ?? "N/A"}
+                                {project.limits === "" ? "N/A" : project.limits}
                             </Text>
                             <View
                                 style={{
@@ -125,7 +125,9 @@ const MyDoc = ({ project }: { project: Projects }) => (
                             }}
                         >
                             <Text style={[styles.text, { marginLeft: 4 }]}>
-                                {project.location ?? "N/A"}
+                                {project.location === ""
+                                    ? "N/A"
+                                    : project.location}
                             </Text>
                             <View
                                 style={{
