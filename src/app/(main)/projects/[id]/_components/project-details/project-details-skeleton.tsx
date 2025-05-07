@@ -16,18 +16,18 @@ export function ProjectDetailsSkeleton() {
                     <Skeleton className="mb-2 h-7 w-80" />
 
                     <div className="mt-4 flex w-auto flex-row gap-2">
-                        <Skeleton className="h-5 w-32" />{" "}
-                        <Skeleton className="h-5 w-80" />{" "}
+                        <Skeleton className="h-5 w-32" />
+                        <Skeleton className="h-5 w-80" />
                     </div>
 
                     <div className="mt-4 flex w-auto flex-row gap-2">
-                        <Skeleton className="h-5 w-24" />{" "}
-                        <Skeleton className="h-5 w-70" />{" "}
+                        <Skeleton className="h-5 w-24" />
+                        <Skeleton className="h-5 w-70" />
                     </div>
 
                     <div className="mt-4 flex w-auto flex-row gap-2">
-                        <Skeleton className="h-5 w-32" />{" "}
-                        <Skeleton className="h-5 w-40" />{" "}
+                        <Skeleton className="h-5 w-32" />
+                        <Skeleton className="h-5 w-40" />
                     </div>
                 </div>
             </div>

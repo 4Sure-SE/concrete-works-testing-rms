@@ -1,10 +1,9 @@
+import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
 import type { Projects } from "@/lib/types/project/project-details.types";
 
-export type TestUpdateType = "material" | "workItem";
-
-export function UpdateProjectTest(
+export function updateProjectTest(
     prevProject: Projects,
-    id: string | undefined,
+    id: string,
     amount: number,
     type: TestUpdateType,
 ): Projects {

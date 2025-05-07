@@ -8,6 +8,7 @@ const publicRoutes = [
     "/forgot-password",
     "/reset-password",
 ];
+const shareRoutes = ["/share/projects"];
 
 export async function middleware(request: NextRequest) {
     const { supabase, response } = createClient(request);
@@ -16,17 +17,21 @@ export async function middleware(request: NextRequest) {
     const {
         data: { session },
     } = await supabase.auth.getSession();
-
     const path = request.nextUrl.pathname;
     const isOnProtectedRoute = protectedRoutes.some((route) =>
         path.startsWith(route),
     );
     const isOnPublicRoute = publicRoutes.includes(path);
-
+    const isOnShareRoute = shareRoutes.some((route) => path.startsWith(route));
     if (
         path === "/reset-password" &&
         request.nextUrl.searchParams.has("code")
     ) {
+        return response;
+    }
+
+    // Allow shared routes without authentication
+    if (isOnShareRoute) {
         return response;
     }
 

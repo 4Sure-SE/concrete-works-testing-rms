@@ -1,17 +1,19 @@
 "use server";
 
+import type {
+    ProjectTestActionState,
+    TestUpdateType,
+} from "@/lib/types/project-test/project-test.types";
 import { tryCatch } from "@/lib/utils/try-catch";
 import { ProjectService } from "@/server/services/project.service";
 
-type TestType = "material" | "workItem";
-
 export const updateProjectTestOnFile = async (
-    id: string | undefined,
+    id: string,
     amount: number,
-    type: TestType,
-) => {
-    if (typeof amount !== "number" || !id) {
-        return { data: null, error: "Invalid Input" };
+    type: TestUpdateType,
+): Promise<ProjectTestActionState> => {
+    if (typeof amount !== "number") {
+        return { success: false, error: "Invalid Input" };
     }
 
     if (type === "workItem") {
@@ -22,12 +24,12 @@ export const updateProjectTestOnFile = async (
 
         if (updateError) {
             return {
-                data: null,
-                error: updateError || "Error updating work item test",
+                success: false,
+                error: updateError.message || "Error updating work item test",
             };
         }
 
-        return { data: updatedWorkItemTest, error: null };
+        return { success: true, data: updatedWorkItemTest };
     }
 
     if (type === "material") {
@@ -38,28 +40,13 @@ export const updateProjectTestOnFile = async (
 
         if (updateError) {
             return {
-                data: null,
+                success: false,
                 error: updateError.message || "Error updating material test",
             };
         }
 
-        return { data: updatedMaterialTest, error: null };
+        return { success: true, data: updatedMaterialTest };
     }
 
-    return { data: null, error: "Invalid Test Type" };
+    return { success: false, error: "Invalid Test Type" };
 };
-
-export async function updateProjectTest(
-    id: string | undefined,
-    amount: number,
-    type: "material" | "workItem",
-): Promise<number> {
-    const { data, error } = await updateProjectTestOnFile(id, amount, type);
-
-    if (error) {
-        console.error("Update Error:", error);
-        return 0;
-    }
-
-    return data?.onFile ?? 0;
-}

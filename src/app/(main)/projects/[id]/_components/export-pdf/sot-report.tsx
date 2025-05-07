@@ -67,7 +67,6 @@ const MyDoc = ({ project }: { project: Projects }) => (
                         flexDirection: "column",
                     }}
                 >
-                    {" "}
                     <Text
                         style={{
                             fontSize: 10,

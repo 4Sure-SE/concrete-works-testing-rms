@@ -19,6 +19,7 @@ const mockCreateProjectActionFn = async (): Promise<ProjectActionState> => {
             materialsEngineer: "Eng. Test",
             limits: "Test limits",
             contractCost: 1000000,
+            token: null,
         },
     };
 };

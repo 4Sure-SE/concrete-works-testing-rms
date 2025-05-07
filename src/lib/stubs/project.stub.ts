@@ -12,6 +12,7 @@ export const fakeProject: Project = {
     contractor: "Fake Contractor",
     materialsEngineer: "Fake Engineer",
     limits: "Fake Limits",
+    token: null,
     location: "Fake Location",
 };
 
@@ -24,5 +25,6 @@ export const fakeProjectDTO: ProjectDTO = {
     materialsEngineer: fakeProject.materialsEngineer,
     limits: fakeProject.limits,
     location: fakeProject.location,
+    token: null,
     contractCost: fakeProject.contractCost.toNumber(),
 };

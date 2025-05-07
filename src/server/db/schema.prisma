@@ -112,6 +112,7 @@ model Project {
   materialsEngineer String            @map("materials_engineer")
   contractCost      Decimal           @map("contract_cost") @db.Decimal(18, 2)
   updatedAt         DateTime          @default(now()) @map("updated_at") @db.Timestamptz(6)
+  token             String?           @unique
   projectWorkItem   ProjectWorkItem[]
 
   @@map("project")

@@ -7,16 +7,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Projects } from "@/lib/types/project";
 import { ClipboardCheck, FileText, ListCheck } from "lucide-react";
-import downloadQCP from "../export-pdf/qcp-report";
-import downloadSOT from "../export-pdf/sot-report";
+
+interface ExportPdfButtonProps {
+    project: Projects;
+    disabled?: boolean;
+    downloadQCP: (project: Projects) => void;
+    downloadSOT: (project: Projects) => void;
+}
 
 export function ExportPdfButton({
     project,
     disabled,
-}: {
-    project: Projects;
-    disabled?: boolean;
-}) {
+    downloadQCP,
+    downloadSOT,
+}: ExportPdfButtonProps) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

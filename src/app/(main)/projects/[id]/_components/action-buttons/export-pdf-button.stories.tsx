@@ -4,19 +4,8 @@ import { expect, fn, userEvent, within } from "@storybook/test";
 import { fakeProjectsData } from "../fake-data";
 import { ExportPdfButton } from "./export-pdf-button";
 
-import downloadQCP from "../export-pdf/qcp-report";
-import downloadSOT from "../export-pdf/sot-report";
-
-import { vi } from "vitest";
-
-// mock download functions
-
-vi.mock("../export-pdf/qcp-report", () => ({
-    default: fn().mockResolvedValue(undefined),
-}));
-vi.mock("../export-pdf/sot-report", () => ({
-    default: fn().mockResolvedValue(undefined),
-}));
+const mockDownloadQCP = fn();
+const mockDownloadSOT = fn();
 
 const meta = {
     title: "Main/Components/ProjectDetails/Export Pdf Button",
@@ -34,6 +23,8 @@ const meta = {
     tags: ["autodocs"],
     args: {
         project: fakeProjectsData,
+        downloadQCP: mockDownloadQCP,
+        downloadSOT: mockDownloadSOT,
     },
 } satisfies Meta<typeof ExportPdfButton>;
 
@@ -55,8 +46,8 @@ export const DownloadQCP: Story = {
         );
         await userEvent.click(qcpItem);
 
-        await expect(downloadQCP).toHaveBeenCalledTimes(1);
-        await expect(downloadQCP).toHaveBeenCalledWith(args.project);
+        await expect(mockDownloadQCP).toHaveBeenCalledTimes(1);
+        await expect(mockDownloadQCP).toHaveBeenCalledWith(args.project);
     },
 };
 
@@ -74,7 +65,7 @@ export const DownloadSOT: Story = {
         );
         await userEvent.click(sotItem);
 
-        await expect(downloadSOT).toHaveBeenCalledTimes(1);
-        await expect(downloadSOT).toHaveBeenCalledWith(args.project);
+        await expect(mockDownloadSOT).toHaveBeenCalledTimes(1);
+        await expect(mockDownloadSOT).toHaveBeenCalledWith(args.project);
     },
 };

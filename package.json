@@ -6,11 +6,11 @@
     "scripts": {
         "build": "next build",
         "check": "next lint && tsc --noEmit",
-        "db:generate": "prisma migrate dev",
-        "db:migrate": "prisma migrate deploy",
-        "db:push": "prisma db push",
-        "db:pull": "prisma db pull",
-        "db:studio": "prisma studio",
+        "db:generate": "dotenv -e .env.development -o -- prisma migrate dev",
+        "db:migrate": "dotenv -e .env.development -o -- prisma migrate deploy",
+        "db:push": "dotenv -e .env.development -o -- prisma db push",
+        "db:pull": "dotenv -e .env.development -o -- prisma db pull",
+        "db:studio": "dotenv -e .env.development -o -- prisma studio",
         "test-db:generate": "dotenv -e .env.test -o -- prisma migrate dev",
         "test-db:migrate": "dotenv -e .env.test -o -- prisma migrate deploy",
         "test-db:push": "dotenv -e .env.test -o -- prisma db push",
@@ -30,6 +30,7 @@
         "sb:build": "storybook build",
         "test": "dotenv -e .env.test -o -- vitest",
         "test:sb": "vitest --project=storybook",
+        "test:sb-headless": "vitest --project=storybook --browser.headless=false",
         "test:unit": "dotenv -e .env.test -o -- vitest --project=unit"
     },
     "dependencies": {
@@ -117,6 +118,7 @@
         "tailwindcss": "^4.0.0",
         "tsx": "^4.19.3",
         "typescript": "^5.5.3",
+        "vite": "^6.3.5",
         "vite-tsconfig-paths": "^5.1.4",
         "vitest": "^3.1.2"
     },
