@@ -67,7 +67,7 @@ export default defineConfig({
                 },
             },
             {
-                plugins: [react()],
+                plugins: [react(), tsconfigPaths()],
                 test: {
                     name: "unit",
                     environment: "jsdom",
