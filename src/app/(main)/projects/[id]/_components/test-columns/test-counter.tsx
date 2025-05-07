@@ -30,7 +30,7 @@ export const TestCounter = ({
         (state, amount: number) => state + amount,
     );
     const [isPending, startTransition] = useTransition();
-    const [loadingDirection, setLoadingDirection] = useState("inc");
+    const [loadingDirection, setLoadingDirection] = useState<"inc" | "dec" | null>(null);
     const isDisabled = isPending;
 
     const handleUpdate = async (amount: number) => {
