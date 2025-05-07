@@ -2,9 +2,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin";
+import { storybookNextJsPlugin } from "@storybook/experimental-nextjs-vite/vite-plugin";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
 const dirname =
@@ -20,13 +21,7 @@ export default defineConfig({
         workspace: [
             {
                 extends: true,
-                plugins: [
-                    // The plugin will run tests for the stories defined in your Storybook config
-                    // See options at: https://storybook.js.org/docs/writing-tests/test-addon#storybooktest
-                    storybookTest({
-                        configDir: path.join(dirname, ".storybook"),
-                    }),
-                ],
+                plugins: [storybookTest(), storybookNextJsPlugin()],
                 test: {
                     name: "storybook",
                     browser: {
@@ -72,10 +67,12 @@ export default defineConfig({
                 },
             },
             {
-                plugins: [react()],
+                plugins: [react(), tsconfigPaths()],
                 test: {
                     name: "unit",
                     environment: "jsdom",
+                    globals: true,
+                    setupFiles: ["src/server/services/__tests__/setup.ts"],
                 },
             },
         ],

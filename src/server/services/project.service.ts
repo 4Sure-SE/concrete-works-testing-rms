@@ -20,6 +20,7 @@ import type { CreateProjectWorkItemDTO } from "@/lib/types/work-item";
 import { formatDate, tryCatch } from "@/lib/utils";
 import {
     createProject,
+    deleteProject,
     getProjectById,
     getProjectDetailsById,
     getProjectSummaryList,
@@ -60,6 +61,10 @@ import {
     getProjectWorkItemListByProjectId,
     updateProjectWorkItem,
 } from "../data-access/project-work-item/project-work-item";
+import {
+    generateProjectShareLink,
+    getProjectDetailsByToken,
+} from "../data-access/project/project";
 import type { WorkItemMaterialDefinitionPayload } from "../data-access/work-item-material/work-item-material.payloads";
 import type { WorkItemTestDefinitionPayload } from "../data-access/work-item-test/work-item-test.payloads";
 import { getWorkItemWithAllDefinitions } from "../data-access/work-item/work-item";
@@ -190,6 +195,59 @@ const _generateProjectMaterialTests = async (
 };
 
 export const ProjectService = {
+    async generateShareLink(projectId: string): Promise<string> {
+        console.log(
+            `[Service] Generating share link for project ID: ${projectId}`,
+        );
+
+        const existingProject = await getProjectById(projectId);
+
+        if (!existingProject) {
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
+        }
+
+        const existingToken = existingProject.token;
+
+        // check if the project is already shared
+        if (existingToken !== null) {
+            console.log(
+                `[Service] Project with ID ${projectId} already has a share link`,
+            );
+            return existingToken;
+        }
+
+        // generate a new share link
+        const res = await generateProjectShareLink(projectId);
+
+        if (!res.token) {
+            throw new Error(
+                `[Service] Failed to generate share link for project ID: ${projectId}`,
+            );
+        }
+
+        return res.token;
+    },
+
+    // get project details by token
+    async getProjectDetailsByToken(token: string): Promise<Projects> {
+        console.log(`[Service] Getting project details by token: ${token}`);
+
+        const rawProject = await getProjectDetailsByToken(token);
+
+        if (!rawProject) {
+            throw new Error(`[Service] Invalid token: no project found`);
+        }
+
+        const dto = projectDetailsToDTO(rawProject);
+        if (!dto) {
+            throw new Error(
+                `[Service] Failed to convert project with token: ${token}`,
+            );
+        }
+
+        return dto;
+    },
+
     // get project by id
     async getProjectById(projectId: string): Promise<ProjectDTO> {
         console.log(`[Service] Getting project ID: ${projectId}`);
@@ -297,6 +355,36 @@ export const ProjectService = {
         }
 
         return outputDto;
+    },
+
+    // delete project
+    async deleteProject(projectId: string): Promise<ProjectDTO> {
+        console.log(`[Service] Deleting project ID: ${projectId}`);
+
+        // check if the project exists
+        const existingProject = await getProjectById(projectId);
+
+        if (!existingProject) {
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
+        }
+
+        const { data, error } = await tryCatch(deleteProject(projectId));
+
+        if (error || !data) {
+            throw new Error(
+                `[Service] Failed to delete project ID: ${projectId}`,
+            );
+        }
+
+        const dto = projectToDTO(data);
+
+        if (!dto) {
+            throw new Error(
+                `[Service] Failed to convert deleted project ID: ${projectId}`,
+            );
+        }
+
+        return dto;
     },
 
     // get project details by id

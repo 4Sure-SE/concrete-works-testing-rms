@@ -10,6 +10,8 @@ import {
     type ProjectSummaryPayload,
 } from "./project.payloads";
 
+import { v4 as uuidv4 } from "uuid";
+
 // get project by id
 export async function getProjectById(id: string): Promise<Project | null> {
     if (!id) return null;
@@ -100,4 +102,34 @@ export async function getProjectDetailsById(
     });
 
     return project;
+}
+
+export async function getProjectDetailsByToken(
+    token: string,
+): Promise<ProjectDetailsPayload | null> {
+    if (!token) return null;
+
+    const project = await db.project.findUnique({
+        where: { token },
+        include: projectDetails,
+    });
+
+    return project;
+}
+
+// generate shareable link for project
+export async function generateProjectShareLink(
+    id: string,
+): Promise<{ token: string }> {
+    const token = uuidv4();
+
+    await db.project.update({
+        where: { id },
+        data: {
+            token,
+            updatedAt: new Date(),
+        },
+    });
+
+    return { token };
 }

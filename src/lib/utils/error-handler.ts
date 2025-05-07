@@ -1,9 +1,11 @@
 import type { CustomError } from "@/lib/types/custom-error";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { Prisma } from "@prisma/client";
 import { snakeToCamelCase } from "./snake-to-camelcase";
 import { snakeToTitleCase } from "./snake-to-titlecase";
 
-const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
+const handlePrismaError = (
+    err: Prisma.PrismaClientKnownRequestError,
+): CustomError => {
     const { code, meta, message: prismaMessage } = err;
     let userMessage = "An unexpected database error occurred.";
     let statusCode = 500; // default error code
@@ -49,7 +51,7 @@ const handlePrismaError = (err: PrismaClientKnownRequestError): CustomError => {
 };
 
 export function errorHandler(error: Error): CustomError {
-    if (error instanceof PrismaClientKnownRequestError) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
         return handlePrismaError(error);
     } else {
         return {
