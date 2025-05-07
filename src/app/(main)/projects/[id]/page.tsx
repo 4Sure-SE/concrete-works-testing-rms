@@ -1,5 +1,4 @@
 import { tryCatch } from "@/lib/utils";
-import { updateProjectTest } from "@/server/actions/projects/update-test-on-file";
 import { ProjectService } from "@/server/services/project.service";
 import { FolderOpen } from "lucide-react";
 import { Suspense } from "react";
@@ -41,10 +40,7 @@ async function ProjectDetailsContent({ id }: { id: string }) {
                 id={id}
                 project={project}
             />
-            <ProjectWorkItemsTable
-                project={project}
-                onServerUpdate={updateProjectTest}
-            />
+            <ProjectWorkItemsTable initialProjectData={project} />
         </div>
     );
 }
