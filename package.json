@@ -28,7 +28,7 @@
         "prepare": "husky",
         "sb": "storybook dev -p 6006",
         "sb:build": "storybook build",
-        "test": "vitest",
+        "test": "dotenv -e .env.test -o -- vitest",
         "test:sb": "vitest --project=storybook",
         "test:sb-headless": "vitest --project=storybook --browser.headless=false",
         "test:unit": "dotenv -e .env.test -o -- vitest --project=unit"
