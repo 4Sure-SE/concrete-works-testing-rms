@@ -22,7 +22,7 @@ export const TestCounter = ({
     value,
     type,
     updateTestAction,
-    isLoading: parentIsLoading = false,
+    // isLoading: parentIsLoading = false,
     isReadOnly = false,
 }: TestCounterProps) => {
     const [optimisticValue, addOptimisticValue] = useOptimistic(
@@ -31,7 +31,7 @@ export const TestCounter = ({
     );
     const [isPending, startTransition] = useTransition();
     const [loadingDirection, setLoadingDirection] = useState("inc");
-    const isDisabled = isPending || parentIsLoading;
+    const isDisabled = isPending;
 
     const handleUpdate = async (amount: number) => {
         if (isReadOnly || !id || isDisabled) return;

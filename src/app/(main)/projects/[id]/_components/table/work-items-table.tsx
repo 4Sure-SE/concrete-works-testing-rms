@@ -50,14 +50,6 @@ export function WorkItemsTable({
                                 id={workItem.itemTest[0]?.id}
                                 value={workItem.itemTest[0]?.testsOnFile ?? 0}
                                 type="workItem"
-                                // isLoading={
-                                //     !!(
-                                //         workItem.itemTest[0]?.id &&
-                                //         updatingTests.includes(
-                                //             workItem.itemTest[0].id,
-                                //         )
-                                //     )
-                                // }
                                 updateTestAction={onTestCountUpdate}
                                 isReadOnly={isReadOnly}
                             ></TestCounter>
@@ -95,7 +87,6 @@ export function WorkItemsTable({
                             id={test.id}
                             value={test.testsOnFile}
                             type="workItem"
-                            // isLoading={test.id in updatingTests}
                             updateTestAction={onTestCountUpdate}
                             isReadOnly={isReadOnly}
                         ></TestCounter>
