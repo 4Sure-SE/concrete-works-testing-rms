@@ -1,9 +1,9 @@
 "use server";
 
 import type { ActionState } from "@/lib/types/actions.types";
-import { tryCatch } from "@/lib/utils";
 import { errorHandler } from "@/lib/utils/error-handler";
-import { ProjectService } from "@/server/services";
+import { tryCatch } from "@/lib/utils/try-catch";
+import { ProjectService } from "@/server/services/project.service";
 
 export async function generateProjectShareLink(
     projectId: string,

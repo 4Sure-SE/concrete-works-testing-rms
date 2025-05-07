@@ -4,31 +4,21 @@ import type { Material } from "@/lib/types/project";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
+interface MaterialsTableProps {
+    material: Material;
+    isReadOnly?: boolean;
+    onTestCountUpdate: (
+        id: string,
+        amount: number,
+        type: "material" | "workItem",
+    ) => Promise<void>;
+}
+
 export function MaterialsTable({
     material,
-    onServerUpdate,
-    handleTestUpdate,
-    setLoading,
-    globalLoading,
-    setGlobalLoading,
+    onTestCountUpdate,
     isReadOnly = false,
-}: {
-    material: Material;
-    handleTestUpdate: (
-        id: string | undefined,
-        amount: number,
-        type: "material" | "workItem",
-    ) => void;
-    onServerUpdate: (
-        id: string | undefined,
-        amount: number,
-        type: "material" | "workItem",
-    ) => Promise<number>;
-    setLoading: (loading: boolean) => void;
-    globalLoading: boolean;
-    setGlobalLoading: (loading: boolean) => void;
-    isReadOnly?: boolean;
-}) {
+}: MaterialsTableProps) {
     return (
         <>
             {material.materialTest.map((test, testIndex) => (
@@ -63,11 +53,7 @@ export function MaterialsTable({
                             id={test.id}
                             value={test.testsOnFile}
                             type="material"
-                            onUpdate={handleTestUpdate}
-                            onServerUpdate={onServerUpdate}
-                            setLoading={setLoading}
-                            globalLoading={globalLoading}
-                            setGlobalLoading={setGlobalLoading}
+                            updateTestAction={onTestCountUpdate}
                             isReadOnly={isReadOnly}
                         ></TestCounter>
                     </TableCell>

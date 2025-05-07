@@ -111,8 +111,8 @@ model Project {
   dateStarted       DateTime          @map("date_started") @db.Date
   materialsEngineer String            @map("materials_engineer")
   contractCost      Decimal           @map("contract_cost") @db.Decimal(18, 2)
-  token             String?           @unique
   updatedAt         DateTime          @default(now()) @map("updated_at") @db.Timestamptz(6)
+  token             String?           @unique
   projectWorkItem   ProjectWorkItem[]
 
   @@map("project")

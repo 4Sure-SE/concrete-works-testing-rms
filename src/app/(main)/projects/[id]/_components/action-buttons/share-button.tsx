@@ -6,7 +6,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { tryCatch } from "@/lib/utils";
 import { generateProjectShareLink } from "@/server/actions/projects/generate-project-share-link";
 import { Check, ChevronDown, Copy, Loader2, Share2 } from "lucide-react";
 import { useParams } from "next/navigation";
@@ -26,18 +25,16 @@ export function ShareButton() {
 
         setIsLoading(true);
         setError(null);
-        const { data, error } = await tryCatch(
-            generateProjectShareLink(projectId),
-        );
+        const result = await generateProjectShareLink(projectId);
 
-        if (error) {
-            console.error("Failed to fetch share link:", data);
+        if (!result.success) {
+            console.error("Failed to fetch share link:", result.error);
             setError("Failed to generate share link.");
             setShareableLink(null);
         }
 
-        if (data?.success) {
-            setShareableLink(data.data);
+        if (result.success) {
+            setShareableLink(result.data);
         }
 
         setIsLoading(false);

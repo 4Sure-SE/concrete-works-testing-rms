@@ -1,37 +1,28 @@
 "use client";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { ProjectWorkItem } from "@/lib/types/project";
+import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
 import { Fragment } from "react";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
+interface WorkItemsTableProps {
+    workItem: ProjectWorkItem;
+    isReadOnly?: boolean;
+    onTestCountUpdate: (
+        id: string,
+        amount: number,
+        type: TestUpdateType,
+    ) => Promise<void>;
+}
+
 export function WorkItemsTable({
     workItem,
-    handleTestUpdate,
-    onServerUpdate,
-    hasItemTests,
-    setLoading,
-    globalLoading,
-    setGlobalLoading,
     isReadOnly = false,
-}: {
-    workItem: ProjectWorkItem;
-    handleTestUpdate: (
-        id: string | undefined,
-        amount: number,
-        type: "material" | "workItem",
-    ) => void;
-    onServerUpdate: (
-        id: string | undefined,
-        amount: number,
-        type: "material" | "workItem",
-    ) => Promise<number>;
-    hasItemTests: boolean;
-    setLoading: (loading: boolean) => void;
-    globalLoading: boolean;
-    setGlobalLoading: (loading: boolean) => void;
-    isReadOnly?: boolean;
-}) {
+    onTestCountUpdate,
+}: WorkItemsTableProps) {
+    const hasItemTests = workItem.itemTest.length > 0;
+
     return (
         <Fragment>
             <TableRow className="bg-[#FCFCFD]">
@@ -56,14 +47,18 @@ export function WorkItemsTable({
                         </TableCell>
                         <TableCell className="text-center">
                             <TestCounter
-                                id={workItem.itemTest?.[0]?.id}
-                                value={workItem.itemTest?.[0]?.testsOnFile ?? 0}
-                                onUpdate={handleTestUpdate}
+                                id={workItem.itemTest[0]?.id}
+                                value={workItem.itemTest[0]?.testsOnFile ?? 0}
                                 type="workItem"
-                                onServerUpdate={onServerUpdate}
-                                setLoading={setLoading}
-                                globalLoading={globalLoading}
-                                setGlobalLoading={setGlobalLoading}
+                                // isLoading={
+                                //     !!(
+                                //         workItem.itemTest[0]?.id &&
+                                //         updatingTests.includes(
+                                //             workItem.itemTest[0].id,
+                                //         )
+                                //     )
+                                // }
+                                updateTestAction={onTestCountUpdate}
                                 isReadOnly={isReadOnly}
                             ></TestCounter>
                         </TableCell>
@@ -100,11 +95,8 @@ export function WorkItemsTable({
                             id={test.id}
                             value={test.testsOnFile}
                             type="workItem"
-                            onUpdate={handleTestUpdate}
-                            onServerUpdate={onServerUpdate}
-                            setLoading={setLoading}
-                            globalLoading={globalLoading}
-                            setGlobalLoading={setGlobalLoading}
+                            // isLoading={test.id in updatingTests}
+                            updateTestAction={onTestCountUpdate}
                             isReadOnly={isReadOnly}
                         ></TestCounter>
                     </TableCell>

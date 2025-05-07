@@ -1,6 +1,15 @@
+import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
 import type { Meta, StoryObj } from "@storybook/react";
-import { expect, userEvent, within } from "@storybook/test";
+import { expect, fn, userEvent, within } from "@storybook/test";
 import { TestCounter } from "./test-counter";
+
+const mockUpdateTestAction = fn().mockImplementation(
+    async (id: string, amount: number, type: TestUpdateType) => {
+        console.log("onUpdate:", { id, amount, type });
+
+        await sleep(1000);
+    },
+);
 
 const meta = {
     title: "Main/Components/ProjectDetails/Test-Counter",
@@ -29,20 +38,7 @@ export const IncrementTest: Story = {
         id: "test-id",
         value: 0,
         type: "material",
-        onUpdate: (id, amount, type) => {
-            console.log("onUpdate:", { id, amount, type });
-        },
-        onServerUpdate: async (_id, amount, _type) => {
-            await sleep(1000);
-            return amount;
-        },
-        setLoading: (loading) => {
-            console.log("setLoading:", loading);
-        },
-        globalLoading: false,
-        setGlobalLoading: (loading) => {
-            console.log("setLoading:", loading);
-        },
+        updateTestAction: mockUpdateTestAction,
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
@@ -53,8 +49,12 @@ export const IncrementTest: Story = {
         await userEvent.click(plusButton);
         await sleep(1000);
 
-        const counterDisplay = await canvas.findByText("1");
-        await expect(counterDisplay).toBeInTheDocument();
+        await expect(mockUpdateTestAction).toHaveBeenCalledTimes(1);
+        await expect(mockUpdateTestAction).toHaveBeenCalledWith(
+            "test-id",
+            1,
+            "material",
+        );
     },
 };
 
@@ -63,34 +63,23 @@ export const DecrementTest: Story = {
         id: "test-id",
         value: 1,
         type: "material",
-        onUpdate: (id, amount, type) => {
-            console.log("onUpdate:", { id, amount, type });
-        },
-        onServerUpdate: async (_id, amount, _type) => {
-            await sleep(1000);
-            const current = 1;
-            const updated = Math.max(0, current + amount);
-            return updated;
-        },
-        setLoading: (loading) => {
-            console.log("setLoading:", loading);
-        },
-        globalLoading: false,
-        setGlobalLoading: (loading) => {
-            console.log("setLoading:", loading);
-        },
+        updateTestAction: mockUpdateTestAction,
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
 
-        const plusButton = await canvas.findByRole("button", {
+        const minusButton = await canvas.findByRole("button", {
             name: /decrease/i,
         });
-        await userEvent.click(plusButton);
+        await userEvent.click(minusButton);
         await sleep(1000);
 
-        const counterDisplay = await canvas.findByText("0");
-        await expect(counterDisplay).toBeInTheDocument();
+        await expect(mockUpdateTestAction).toHaveBeenCalledTimes(1);
+        await expect(mockUpdateTestAction).toHaveBeenCalledWith(
+            "test-id",
+            -1,
+            "material",
+        );
     },
 };
 
@@ -99,21 +88,7 @@ export const LoadingWhileIncrementing: Story = {
         id: "test-id",
         value: 0,
         type: "material",
-        onUpdate: (id, amount, type) => {
-            console.log("onUpdate:", { id, amount, type });
-        },
-        onServerUpdate: async () => {
-            return new Promise(() => {
-                //stays loading
-            });
-        },
-        setLoading: (loading) => {
-            console.log("setLoading:", loading);
-        },
-        globalLoading: false,
-        setGlobalLoading: (loading) => {
-            console.log("setLoading:", loading);
-        },
+        updateTestAction: mockUpdateTestAction,
     },
     play: async ({ canvasElement }) => {
         const button = canvasElement.querySelector(
@@ -130,21 +105,7 @@ export const LoadingWhileDecrementing: Story = {
         id: "test-id",
         value: 1,
         type: "material",
-        onUpdate: (id, amount, type) => {
-            console.log("onUpdate:", { id, amount, type });
-        },
-        onServerUpdate: async () => {
-            return new Promise(() => {
-                //stays loading
-            });
-        },
-        setLoading: (loading) => {
-            console.log("setLoading:", loading);
-        },
-        globalLoading: false,
-        setGlobalLoading: (loading) => {
-            console.log("setLoading:", loading);
-        },
+        updateTestAction: mockUpdateTestAction,
     },
     play: async ({ canvasElement }) => {
         const button = canvasElement.querySelector(
