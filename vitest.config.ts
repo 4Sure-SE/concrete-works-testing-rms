@@ -15,6 +15,7 @@ const dirname =
 
 // More info at: https://storybook.js.org/docs/writing-tests/test-addon
 export default defineConfig({
+    plugins: [tsconfigPaths()],
     test: {
         globals: true,
         workspace: [
@@ -66,7 +67,7 @@ export default defineConfig({
                 },
             },
             {
-                plugins: [tsconfigPaths(), react()],
+                plugins: [react()],
                 test: {
                     name: "unit",
                     environment: "jsdom",
