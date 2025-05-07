@@ -37,9 +37,7 @@ export function ProjectDetailsSkeleton() {
 
                 <div className="flex items-center justify-center space-x-2">
                     <Skeleton className="h-9 w-35" />
-
                     <Skeleton className="h-9 w-35" />
-
                     <Skeleton className="h-9 w-[137px] sm:w-[169px]" />
                 </div>
             </div>
@@ -53,7 +51,7 @@ export function ProjectDetailsSkeleton() {
                                     <Skeleton className="mx-auto h-5 w-16" />
                                 </TableHead>
                                 <TableHead className="text-center">
-                                    <Skeleton className="mx-auto h-5 w-40" />
+                                    <Skeleton className="mx-auto h-5 w-28" />
                                 </TableHead>
                                 <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-20" />
@@ -69,6 +67,9 @@ export function ProjectDetailsSkeleton() {
                                 </TableHead>
                                 <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-16" />
+                                </TableHead>
+                                <TableHead className="px-6 text-center">
+                                    <Skeleton className="mx-auto h-5 w-28" />
                                 </TableHead>
                                 <TableHead className="text-center">
                                     <Skeleton className="mx-auto h-5 w-20" />
@@ -99,6 +100,9 @@ export function ProjectDetailsSkeleton() {
                                     </TableCell>
                                     <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-12" />
+                                    </TableCell>
+                                    <TableCell className="px-6 py-3">
+                                        <Skeleton className="mx-auto h-5 w-20" />
                                     </TableCell>
                                     <TableCell className="py-3">
                                         <Skeleton className="mx-auto h-5 w-16" />

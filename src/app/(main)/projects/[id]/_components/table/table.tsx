@@ -100,16 +100,19 @@ export function ProjectWorkItemsTable({
                                         Quantity
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
-                                        Unit
+                                        Unit{" "}
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
                                         Test Required
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
-                                        No. of Tests on File
+                                        No. of Tests on File{" "}
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
                                         Balance
+                                    </TableHead>
+                                    <TableHead className="px-6 text-center text-gray-700">
+                                        Test Record
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
                                         Status

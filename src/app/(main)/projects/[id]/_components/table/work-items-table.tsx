@@ -1,8 +1,11 @@
 "use client";
+import { TestRecordModal } from "@/components/custom/test-record-modal";
+import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { ProjectWorkItem } from "@/lib/types/project";
 import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
-import { Fragment } from "react";
+import { FileText } from "lucide-react";
+import { Fragment, useState } from "react";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
@@ -22,6 +25,18 @@ export function WorkItemsTable({
     onTestCountUpdate,
 }: WorkItemsTableProps) {
     const hasItemTests = workItem.itemTest.length > 0;
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+
+    const handleManageClick = (testId: string) => {
+        setSelectedTestId(testId);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setSelectedTestId(null);
+        setIsModalOpen(false);
+    };
 
     return (
         <Fragment>
@@ -57,6 +72,23 @@ export function WorkItemsTable({
                         <TableCell className="text-center">
                             {workItem.itemTest?.[0]?.balance ?? "N/A"}
                         </TableCell>
+                        <TableCell className="px-6 text-center">
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                className="bg-primary-50 hover:bg-primary-100 flex min-w-[100px] items-center gap-1 text-xs font-medium"
+                                onClick={() =>
+                                    workItem.itemTest[0]?.id
+                                        ? handleManageClick(
+                                              workItem.itemTest[0].id,
+                                          )
+                                        : undefined
+                                }
+                            >
+                                <FileText className="h-4 w-4" />
+                                Manage
+                            </Button>
+                        </TableCell>
                         <TableCell className="text-center">
                             <TestStatus
                                 testsOnFile={
@@ -68,7 +100,7 @@ export function WorkItemsTable({
                     </>
                 ) : (
                     // No item tests
-                    <TableCell colSpan={4}></TableCell>
+                    <TableCell colSpan={5}></TableCell>
                 )}
             </TableRow>
 
@@ -93,6 +125,17 @@ export function WorkItemsTable({
                     </TableCell>
                     <TableCell className="text-center">
                         {test.balance}
+                    </TableCell>{" "}
+                    <TableCell className="px-6 text-center">
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className="bg-primary-50 hover:bg-primary-100 flex min-w-[100px] items-center gap-1 text-xs font-medium"
+                            onClick={() => handleManageClick(test.id)}
+                        >
+                            <FileText className="h-4 w-4" />
+                            Manage
+                        </Button>
                     </TableCell>
                     <TableCell className="text-center">
                         <TestStatus
@@ -102,6 +145,15 @@ export function WorkItemsTable({
                     </TableCell>
                 </TableRow>
             ))}
+
+            {isModalOpen && selectedTestId && (
+                <TestRecordModal
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    testId={selectedTestId}
+                    testType="work-item"
+                />
+            )}
         </Fragment>
     );
 }
