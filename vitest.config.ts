@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 
 import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin";
 import { storybookNextJsPlugin } from "@storybook/experimental-nextjs-vite/vite-plugin";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
 const dirname =
