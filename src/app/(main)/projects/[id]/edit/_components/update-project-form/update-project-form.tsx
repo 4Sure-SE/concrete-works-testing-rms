@@ -19,6 +19,7 @@ import { ProjectFormField } from "@/app/(main)/projects/_components/project-form
 import { formLayout } from "@/app/(main)/projects/_components/project-form/project-form.config";
 import ButtonWithLoader from "@/components/custom/button-with-loader";
 import { Edit } from "lucide-react";
+import { startTransition } from "react";
 import { updateProjectFormConfig } from "./update-project-form.config";
 import { updateProjectSchema } from "./update-project-form.schema";
 
@@ -43,8 +44,10 @@ export function UpdateProjectForm({
     const callbacks: Callbacks<ProjectDTO | null, ProjectActionErrors> = {
         // on server action success
         onSuccess: (_data) => {
-            router.back();
-            form.reset();
+            startTransition(() => {
+                router.push(`/projects/${projectId}`);
+                form.reset();
+            });
         },
         // on server action error
         onError: (error) => {
@@ -55,7 +58,7 @@ export function UpdateProjectForm({
         },
     };
 
-    const { form, isPending, startAction, submitAction } = useFormAction({
+    const { form, isPending, submitAction } = useFormAction({
         action: withCallbacks(action.bind(null, projectId), callbacks),
         schema: updateProjectSchema,
         defaultValues,
@@ -63,7 +66,7 @@ export function UpdateProjectForm({
 
     // handle form submission and call the server action with the form data
     const handleSubmit = form.handleSubmit((_, e) => {
-        startAction(() => {
+        startTransition(() => {
             const formData = new FormData(e?.target as HTMLFormElement);
             submitAction(formData);
         });
