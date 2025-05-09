@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useActionState, useTransition } from "react";
+import { useActionState } from "react";
 import { useForm, type UseFormProps } from "react-hook-form";
 import { type z } from "zod";
 
@@ -40,8 +40,6 @@ export function useFormAction<
 >) {
     type TFormData = z.infer<TForm>;
 
-    const [, startTransition] = useTransition();
-
     const initialActionState: ActionState<TData | null, TError> = {
         // initial action state
         success: true,
@@ -65,7 +63,6 @@ export function useFormAction<
     return {
         form,
         actionState,
-        startAction: startTransition,
         submitAction,
         isPending,
     };
