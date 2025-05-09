@@ -22,6 +22,7 @@ import type {
 } from "@/lib/types/work-item/";
 import { withCallbacks } from "@/lib/utils";
 
+import { startTransition } from "react";
 import { createProjectWorkItemSchema } from "./add-project-work-item-form.schema";
 import { WorkItemSelect } from "./work-item-select";
 
@@ -42,8 +43,6 @@ export function AddProjectWorkItemForm({
 }: AddProjectWorkItemFormProps) {
     const defaultValues = { workItemId: "", quantity: 0 };
 
-    // const router = useRouter();
-
     // server action callbacks on success or error
     const callbacks: Callbacks<
         WorkItemDefinitionDTO | null,
@@ -51,8 +50,9 @@ export function AddProjectWorkItemForm({
     > = {
         // on server action success
         onSuccess: (data) => {
-            form.reset();
-            // router.push(`/projects/${projectId}`);
+            startTransition(() => {
+                form.reset();
+            });
             console.log("success", data);
         },
         // on server action error
@@ -64,7 +64,7 @@ export function AddProjectWorkItemForm({
         },
     };
 
-    const { form, isPending, startAction, submitAction } = useFormAction({
+    const { form, isPending, submitAction } = useFormAction({
         action: withCallbacks(action.bind(null, projectId), callbacks), // bind projectId to the action
         schema: createProjectWorkItemSchema,
         defaultValues,
@@ -72,12 +72,11 @@ export function AddProjectWorkItemForm({
 
     // handle form submission and call the server action with the form data
     const handleSubmit = form.handleSubmit((_, e) => {
-        startAction(() => {
+        startTransition(() => {
             const formData = new FormData(e?.target as HTMLFormElement);
             submitAction(formData);
         });
     });
-
     // work item unit
     const selectedWorkItemId = form.watch("workItemId");
     const selectedWorkItem = workItemDefinitions.find(

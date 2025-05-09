@@ -29,7 +29,8 @@ export function ProjectWorkItemsTable({
     data,
     onDeleteAction,
 }: ProjectWorkItemsTableProps) {
-    const [editingItemId, setEditingItemId] = useState<string | null>(null);
+    // allow simultaneous edits
+    const [editingItemIds, setEditingItemIds] = useState<string[]>([]);
 
     const [optimisticItems, setOptimisticItems] = useOptimistic(
         data,
@@ -51,8 +52,8 @@ export function ProjectWorkItemsTable({
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
     const handleDelete = (id: string) => {
-        if (editingItemId === id) {
-            setEditingItemId(null);
+        if (editingItemIds.includes(id)) {
+            handleCancel(id);
         }
         setDeletingId(id);
         startDeleteTransition(async () => {
@@ -73,13 +74,11 @@ export function ProjectWorkItemsTable({
     };
 
     const handleEdit = (id: string) => {
-        // prevent starting a new edit if a delete is pending
-        if (isDeletePending) return;
-        setEditingItemId(id);
+        setEditingItemIds((prev) => [...prev, id]);
     };
 
-    const handleCancel = () => {
-        setEditingItemId(null);
+    const handleCancel = (id: string) => {
+        setEditingItemIds((prev) => prev.filter((itemId) => itemId !== id));
     };
 
     if (!optimisticItems || optimisticItems.length === 0) {
@@ -105,8 +104,8 @@ export function ProjectWorkItemsTable({
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {optimisticItems.map((item) => {
-                    const isEditingThisRow = editingItemId === item.id;
+                {data.map((item) => {
+                    const isEditingThisRow = editingItemIds.includes(item.id);
                     const isDeletingThisRow =
                         isDeletePending && deletingId === item.id;
 
@@ -116,9 +115,8 @@ export function ProjectWorkItemsTable({
                             item={item}
                             isEditing={isEditingThisRow}
                             isDeleting={isDeletingThisRow}
-                            isOverallPending={isDeletePending}
                             onEdit={handleEdit}
-                            onCancel={handleCancel}
+                            onCancel={() => handleCancel(item.id)}
                             onDelete={handleDelete}
                             updateAction={updateProjectWorkItem}
                         />
