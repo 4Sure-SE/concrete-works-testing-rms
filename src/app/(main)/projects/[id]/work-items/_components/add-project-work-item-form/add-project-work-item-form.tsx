@@ -23,6 +23,7 @@ import type {
 import { withCallbacks } from "@/lib/utils";
 
 import { startTransition } from "react";
+import { toast } from "sonner";
 import { createProjectWorkItemSchema } from "./add-project-work-item-form.schema";
 import { WorkItemSelect } from "./work-item-select";
 
@@ -49,11 +50,11 @@ export function AddProjectWorkItemForm({
         ProjectWorkItemActionErrors
     > = {
         // on server action success
-        onSuccess: (data) => {
+        onSuccess: (_data) => {
+            toast.success("Work item added to project successfully");
             startTransition(() => {
                 form.reset();
             });
-            console.log("success", data);
         },
         // on server action error
         onError: (error) => {
