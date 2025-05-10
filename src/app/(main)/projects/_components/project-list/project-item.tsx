@@ -44,7 +44,7 @@ export function ProjectItem({
                             <h3 className="truncate overflow-hidden text-lg font-bold whitespace-nowrap">
                                 {data.contractId}
                             </h3>
-                            <p className="text-sm leading-tight font-semibold">
+                            <p className="text-sm leading-tight font-semibold break-words">
                                 {data.contractName}
                             </p>
                             <p className="mt-1 text-xs text-muted-foreground">
