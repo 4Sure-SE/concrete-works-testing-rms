@@ -20,6 +20,7 @@ import { formLayout } from "@/app/(main)/projects/_components/project-form/proje
 import ButtonWithLoader from "@/components/custom/button-with-loader";
 import { Edit } from "lucide-react";
 import { startTransition } from "react";
+import { toast } from "sonner";
 import { updateProjectFormConfig } from "./update-project-form.config";
 import { updateProjectSchema } from "./update-project-form.schema";
 
@@ -44,6 +45,7 @@ export function UpdateProjectForm({
     const callbacks: Callbacks<ProjectDTO | null, ProjectActionErrors> = {
         // on server action success
         onSuccess: (_data) => {
+            toast.success("Project updated successfully.");
             startTransition(() => {
                 router.push(`/projects/${projectId}`);
                 form.reset();

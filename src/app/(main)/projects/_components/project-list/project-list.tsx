@@ -9,7 +9,7 @@ import type {
 import type { Callbacks } from "@/lib/types/actions.types";
 import { withCallbacks } from "@/lib/utils";
 import { deleteProject } from "@/server/actions/projects/delete-project";
-import { useOptimistic, useState, useTransition } from "react";
+import { startTransition, useOptimistic, useState } from "react";
 import { toast } from "sonner";
 import { ProjectItem } from "./project-item";
 import { ProjectListHeader } from "./project-list-header";
@@ -27,7 +27,10 @@ export function ProjectList({ data }: ProjectListProps) {
             toast.success("Project deleted successfully.");
         },
         onError: (error) => {
-            toast.error(error.general?.[0] ?? "Failed to delete project.");
+            startTransition(() => {
+                setDeletingId(null);
+                toast.error(error.general?.[0] ?? "Failed to delete project.");
+            });
         },
     };
 
@@ -46,22 +49,27 @@ export function ProjectList({ data }: ProjectListProps) {
         },
     );
 
-    const [, startTransition] = useTransition();
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
     const deleteAction = async (id: string) => {
         setDeletingId(id);
-        const deleteProjectAction = withCallbacks(
-            deleteProject.bind(null, id),
-            callbacks,
-        );
-        const res = await deleteProjectAction();
 
+        // start a transition to delete the project
         startTransition(async () => {
-            if (res.success && res.data) {
-                setProjects({ type: "DELETE", payload: { id: res.data.id } });
-                setDeletingId(null);
-            }
+            const deleteProjectAction = withCallbacks(
+                deleteProject.bind(null, id),
+                callbacks,
+            );
+
+            await deleteProjectAction();
+
+            // make the transition wait for the state update to finish
+            startTransition(() => {
+                setProjects({
+                    type: "DELETE",
+                    payload: { id: id },
+                });
+            });
         });
     };
 
