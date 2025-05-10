@@ -60,7 +60,7 @@ export function errorHandler(error: Error): CustomError {
         };
     } else {
         return {
-            message: error.message ?? "An unexpected error occurred.",
+            message: error.message || "An unexpected error occurred.",
             statusCode: 500,
         };
     }
