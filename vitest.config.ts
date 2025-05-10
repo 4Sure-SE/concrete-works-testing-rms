@@ -73,6 +73,10 @@ export default defineConfig({
                     environment: "jsdom",
                     globals: true,
                     setupFiles: ["src/server/services/__tests__/setup.ts"],
+                    env: {
+                        NODE_ENV: "test",
+                        SKIP_ENV_VALIDATION: "true",
+                    },
                 },
             },
         ],
