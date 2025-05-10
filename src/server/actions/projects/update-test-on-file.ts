@@ -6,6 +6,7 @@ import type {
 } from "@/lib/types/project-test/project-test.types";
 import { tryCatch } from "@/lib/utils/try-catch";
 import { ProjectService } from "@/server/services/project.service";
+import { revalidatePath } from "next/cache";
 
 export const updateProjectTestOnFile = async (
     id: string,
@@ -29,6 +30,9 @@ export const updateProjectTestOnFile = async (
             };
         }
 
+        revalidatePath("/projects");
+        revalidatePath(`/projects/[id]`);
+
         return { success: true, data: updatedWorkItemTest };
     }
 
@@ -44,6 +48,9 @@ export const updateProjectTestOnFile = async (
                 error: updateError.message || "Error updating material test",
             };
         }
+
+        revalidatePath("/projects");
+        revalidatePath(`/projects/[id]`);
 
         return { success: true, data: updatedMaterialTest };
     }
