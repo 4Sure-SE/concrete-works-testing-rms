@@ -1,7 +1,6 @@
 "use client";
 
 import { startTransition, useEffect, useRef } from "react";
-import { toast } from "sonner";
 
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useFormAction } from "@/hooks/use-form-action";
@@ -12,6 +11,7 @@ import type {
     ProjectWorkItemDTO,
 } from "@/lib/types/project-work-item/project-work-item.types";
 import { withCallbacks } from "@/lib/utils";
+import { toast } from "sonner";
 import {
     UpdateProjectWorkItemActions,
     UpdateProjectWorkItemForm,
@@ -48,13 +48,21 @@ export function ProjectWorkItemRow({
     > = {
         onSuccess: (_data) => {
             toast.success("Quantity updated successfully.");
-            onCancel();
+            startTransition(() => {
+                form.reset();
+                onCancel();
+            });
+        },
+        onError: (error) => {
+            if (error.general)
+                form.setError("root", { message: error.general[0] });
+            if (error.quantity)
+                form.setError("quantity", { message: error.quantity[0] });
         },
     };
 
     const {
         form,
-        actionState,
         isPending: isSubmittingEdit,
         submitAction: submitUpdateAction,
     } = useFormAction({
@@ -97,7 +105,6 @@ export function ProjectWorkItemRow({
                     <UpdateProjectWorkItemForm
                         form={form}
                         formRef={formRef}
-                        actionState={actionState}
                         fieldDetails={{
                             name: "quantity",
                             default: item.quantity,

@@ -53,6 +53,11 @@ const handlePrismaError = (
 export function errorHandler(error: Error): CustomError {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
         return handlePrismaError(error);
+    } else if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+        return {
+            message: "An unknown error occurred.",
+            statusCode: 500,
+        };
     } else {
         return {
             message: error.message || "An unexpected error occurred.",

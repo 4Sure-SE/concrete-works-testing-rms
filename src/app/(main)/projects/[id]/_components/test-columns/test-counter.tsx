@@ -13,7 +13,6 @@ interface TestCounterProps {
         amount: number,
         type: TestUpdateType,
     ) => Promise<void>;
-    isLoading?: boolean;
     isReadOnly?: boolean;
 }
 
@@ -22,7 +21,6 @@ export const TestCounter = ({
     value,
     type,
     updateTestAction,
-    // isLoading: parentIsLoading = false,
     isReadOnly = false,
 }: TestCounterProps) => {
     const [optimisticValue, addOptimisticValue] = useOptimistic(

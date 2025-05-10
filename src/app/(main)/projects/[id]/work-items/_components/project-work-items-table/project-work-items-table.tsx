@@ -66,9 +66,7 @@ export function ProjectWorkItemsTable({
                     result.error?.general?.[0] ?? "Failed to delete work item.";
                 toast.error(errorMsg);
             } else {
-                toast.success(
-                    `Work item ${result.data?.itemNo ?? ""} deleted.`,
-                );
+                toast.success(`Work ${result.data?.itemNo ?? ""} deleted.`);
             }
         });
     };
@@ -104,7 +102,7 @@ export function ProjectWorkItemsTable({
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {data.map((item) => {
+                {optimisticItems.map((item) => {
                     const isEditingThisRow = editingItemIds.includes(item.id);
                     const isDeletingThisRow =
                         isDeletePending && deletingId === item.id;
