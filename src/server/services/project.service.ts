@@ -17,12 +17,14 @@ import type {
 } from "@/lib/types/project-work-item/project-work-item.types";
 import type { Projects } from "@/lib/types/project/project-details.types";
 import type { CreateProjectWorkItemDTO } from "@/lib/types/work-item";
-import { tryCatch } from "@/lib/utils";
+import { formatDate, tryCatch } from "@/lib/utils";
 import {
     createProject,
+    deleteProject,
     getProjectById,
     getProjectDetailsById,
     getProjectSummaryList,
+    updateProject,
 } from "@/server/data-access/project";
 import {
     getProjectMaterialTestById,
@@ -33,6 +35,10 @@ import {
     updateWorkItemsTestCount,
 } from "../data-access/project-work-item-test/project-work-item-test";
 
+import type {
+    ProjectListFilters,
+    UpdateProjectDTO,
+} from "@/lib/types/project/project.types";
 import {
     PrismaClient,
     type Prisma,
@@ -49,15 +55,47 @@ import {
 import { addProjectWorkItemTests } from "../data-access/project-work-item-test/project-work-item-test";
 import {
     createProjectWorkItem,
+    deleteProjectWorkItem,
     getProjectWorkItemById,
     getProjectWorkItemByProjectIdAndWorkItemId,
+    getProjectWorkItemListByProjectId,
     updateProjectWorkItem,
 } from "../data-access/project-work-item/project-work-item";
+import {
+    generateProjectShareLink,
+    getProjectDetailsByToken,
+} from "../data-access/project/project";
 import type { WorkItemMaterialDefinitionPayload } from "../data-access/work-item-material/work-item-material.payloads";
 import type { WorkItemTestDefinitionPayload } from "../data-access/work-item-test/work-item-test.payloads";
 import { getWorkItemWithAllDefinitions } from "../data-access/work-item/work-item";
 
 // helpers
+
+const _calculateMaterialQuantity = (
+    wimDef: WorkItemMaterialDefinitionPayload,
+    workItemQty: Decimal,
+) => {
+    let quantity: Decimal;
+
+    // if the conversion (quantity per unit) is defined, use that to calculate the quantity
+    if (wimDef.quantityPerUnit) {
+        quantity = wimDef.quantityPerUnit.mul(workItemQty);
+        // otherwise if the static quantity is defined, use that
+    } else if (wimDef.staticQuantity) {
+        quantity = wimDef.staticQuantity;
+    } else {
+        throw new Error(
+            `[Service] No quantity found for work item material ID: ${wimDef.id}`,
+        );
+    }
+
+    // if the unit of the material is a whole number, round the quantity
+    if (wimDef.material.unit.isWholeNumber) {
+        quantity = quantity.round();
+    }
+
+    return quantity;
+};
 
 // generate project materials for a work item
 const _generateProjectMaterials = async (
@@ -70,11 +108,13 @@ const _generateProjectMaterials = async (
     );
 
     // get all materials based on the work item definition
-    const projectMaterialData = workItemMaterials.map((wimDef) => ({
-        projectWorkItemId: data.id,
-        materialId: wimDef.materialId,
-        quantity: wimDef.quantityPerUnit.mul(data.quantity),
-    }));
+    const projectMaterialData = workItemMaterials.map((wimDef) => {
+        return {
+            materialId: wimDef.materialId,
+            quantity: _calculateMaterialQuantity(wimDef, data.quantity),
+            projectWorkItemId: data.id,
+        };
+    });
 
     //  add all materials found in the work item definition to the project material table
     const projectMaterials = await createProjectMaterials(
@@ -155,6 +195,59 @@ const _generateProjectMaterialTests = async (
 };
 
 export const ProjectService = {
+    async generateShareLink(projectId: string): Promise<string> {
+        console.log(
+            `[Service] Generating share link for project ID: ${projectId}`,
+        );
+
+        const existingProject = await getProjectById(projectId);
+
+        if (!existingProject) {
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
+        }
+
+        const existingToken = existingProject.token;
+
+        // check if the project is already shared
+        if (existingToken !== null) {
+            console.log(
+                `[Service] Project with ID ${projectId} already has a share link`,
+            );
+            return existingToken;
+        }
+
+        // generate a new share link
+        const res = await generateProjectShareLink(projectId);
+
+        if (!res.token) {
+            throw new Error(
+                `[Service] Failed to generate share link for project ID: ${projectId}`,
+            );
+        }
+
+        return res.token;
+    },
+
+    // get project details by token
+    async getProjectDetailsByToken(token: string): Promise<Projects> {
+        console.log(`[Service] Getting project details by token: ${token}`);
+
+        const rawProject = await getProjectDetailsByToken(token);
+
+        if (!rawProject) {
+            throw new Error(`[Service] Invalid token: no project found`);
+        }
+
+        const dto = projectDetailsToDTO(rawProject);
+        if (!dto) {
+            throw new Error(
+                `[Service] Failed to convert project with token: ${token}`,
+            );
+        }
+
+        return dto;
+    },
+
     // get project by id
     async getProjectById(projectId: string): Promise<ProjectDTO> {
         console.log(`[Service] Getting project ID: ${projectId}`);
@@ -173,11 +266,13 @@ export const ProjectService = {
     },
 
     // get project summary list
-    async getProjectSummaryList(): Promise<ProjectSummaryDTO[]> {
+    async getProjectSummaryList(
+        filters: ProjectListFilters,
+    ): Promise<ProjectSummaryDTO[]> {
         console.log(`[Service] Getting project list summary`);
 
         // fetch raw data
-        const projectSummaryListPayload = await getProjectSummaryList();
+        const projectSummaryListPayload = await getProjectSummaryList(filters);
 
         // transform to dto used by the ui
         const dtoList = projectSummaryListPayload
@@ -192,7 +287,7 @@ export const ProjectService = {
     // used in the sidebar
     async getLastFiveProjectSummaryList(): Promise<ProjectSummaryDTO[]> {
         console.log(`[Service] Getting last 5 project summaries`);
-        const allProjectsPayload = await getProjectSummaryList();
+        const allProjectsPayload = await getProjectSummaryList({});
 
         // transform to dto used by the ui
         const allSummaries = allProjectsPayload
@@ -221,6 +316,75 @@ export const ProjectService = {
         }
 
         return outputDto;
+    },
+
+    // update project
+    async updateProject(
+        projectId: string,
+        data: UpdateProjectDTO,
+    ): Promise<ProjectDTO> {
+        console.log(`[Service] Updating project ID: ${projectId}`);
+
+        // check if the project exists
+        const existingProject = await getProjectById(projectId);
+
+        if (!existingProject) {
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
+        }
+
+        // check if there are any changes to the project
+        if (
+            existingProject.contractId === data.contractId &&
+            existingProject.contractName === data.contractName &&
+            existingProject.contractor === data.contractor &&
+            existingProject.materialsEngineer === data.materialsEngineer &&
+            formatDate(existingProject.dateStarted) ===
+                formatDate(data.dateStarted!) &&
+            existingProject.contractCost.toNumber() === data.contractCost &&
+            existingProject.limits === data.limits &&
+            existingProject.location === data.location
+        ) {
+            throw new Error(`[Service] No changes made`);
+        }
+
+        const updatedProjectRecord = await updateProject(projectId, data);
+        const outputDto = projectToDTO(updatedProjectRecord);
+
+        if (!outputDto) {
+            throw new Error("[Service] Failed to convert updated project.");
+        }
+
+        return outputDto;
+    },
+
+    // delete project
+    async deleteProject(projectId: string): Promise<ProjectDTO> {
+        console.log(`[Service] Deleting project ID: ${projectId}`);
+
+        // check if the project exists
+        const existingProject = await getProjectById(projectId);
+
+        if (!existingProject) {
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
+        }
+
+        const { data, error } = await tryCatch(deleteProject(projectId));
+
+        if (error || !data) {
+            throw new Error(
+                `[Service] Failed to delete project ID: ${projectId}`,
+            );
+        }
+
+        const dto = projectToDTO(data);
+
+        if (!dto) {
+            throw new Error(
+                `[Service] Failed to convert deleted project ID: ${projectId}`,
+            );
+        }
+
+        return dto;
     },
 
     // get project details by id
@@ -259,6 +423,23 @@ export const ProjectService = {
         const newValue = Math.max(0, (test.onFile ?? 0) + amount);
 
         return await updateMaterialTestCount(id, newValue);
+    },
+
+    async getProjectWorkItemList(
+        projectId: string,
+    ): Promise<ProjectWorkItemDTO[]> {
+        console.log(
+            `[Service] Getting project work item list for ID: ${projectId}`,
+        );
+
+        const rawProjectWorkItems =
+            await getProjectWorkItemListByProjectId(projectId);
+
+        const dtoList = rawProjectWorkItems
+            .map(projectWorkItemToDTO)
+            .filter((dto): dto is ProjectWorkItemDTO => dto !== null);
+
+        return dtoList;
     },
 
     // create project work item
@@ -350,7 +531,7 @@ export const ProjectService = {
             await client.$disconnect();
 
             if (error) {
-                throw error;
+                throw new Error(`[Service] Failed to create project work item`);
             }
 
             if (projectWorkItem === null) {
@@ -379,6 +560,10 @@ export const ProjectService = {
             );
         }
 
+        if (projectWorkItem.quantity.toNumber() === data.quantity) {
+            throw new Error(`[Service] No changes made`);
+        }
+
         // all the definitions of the work item - material, test conversions
         // used to generate the project work item tests and materials
         const workItemDefinitions = await getWorkItemWithAllDefinitions(
@@ -396,7 +581,7 @@ export const ProjectService = {
             await getProjectMaterialListByProjectWorkItem(id);
 
         // get the update data for the project materials
-        const materialUpdates: { id: string; quantity: Prisma.Decimal }[] = [];
+        const materialUpdates: { id: string; quantity: Decimal }[] = [];
         for (const projectMaterial of projectMaterials) {
             const workItemMaterialDef =
                 workItemDefinitions.workItemMaterial.find(
@@ -404,10 +589,13 @@ export const ProjectService = {
                 );
 
             if (workItemMaterialDef) {
+                // add the new quantity to the material updates array
                 materialUpdates.push({
                     id: projectMaterial.id,
-                    quantity:
-                        workItemMaterialDef.quantityPerUnit.mul(newQuantity),
+                    quantity: _calculateMaterialQuantity(
+                        workItemMaterialDef,
+                        newQuantity,
+                    ),
                 });
             } else {
                 console.warn(
@@ -477,5 +665,27 @@ export const ProjectService = {
         );
 
         return updatedProjectWorkItemDTO;
+    },
+
+    async deleteProjectWorkItem(id: string) {
+        console.log(`[Service] Deleting project work item with ID: ${id}`);
+
+        const { data, error } = await tryCatch(deleteProjectWorkItem(id));
+
+        if (error || !data) {
+            throw new Error(
+                `[Service] Failed to delete project work item with ID: ${id}`,
+            );
+        }
+
+        const dto = projectWorkItemToDTO(data);
+
+        if (!dto) {
+            throw new Error(
+                `[Service] Failed to convert deleted project work item with ID: ${id}`,
+            );
+        }
+
+        return dto;
     },
 };

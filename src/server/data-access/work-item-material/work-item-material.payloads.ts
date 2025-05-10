@@ -1,6 +1,21 @@
-import type { WorkItemMaterial } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
-export type WorkItemMaterialDefinitionPayload = Pick<
-    WorkItemMaterial,
-    "materialId" | "quantityPerUnit" | "id"
->;
+export const workItemMaterialInclude =
+    Prisma.validator<Prisma.WorkItemMaterialInclude>()({
+        workItem: {
+            include: {
+                unit: true,
+            },
+        },
+        workItemMaterialTest: true,
+        material: {
+            include: {
+                unit: true,
+            },
+        },
+    });
+
+export type WorkItemMaterialDefinitionPayload =
+    Prisma.WorkItemMaterialGetPayload<{
+        include: typeof workItemMaterialInclude;
+    }>;

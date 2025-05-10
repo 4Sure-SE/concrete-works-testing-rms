@@ -1,5 +1,6 @@
 import "server-only";
 
+import type { ProjectListFilters } from "@/lib/types/project/project.types";
 import { db } from "@/server/db";
 import type { Prisma, Project } from "@prisma/client";
 import type { ProjectDetailsPayload } from "./project.payloads";
@@ -9,6 +10,8 @@ import {
     type ProjectSummaryPayload,
 } from "./project.payloads";
 
+import { v4 as uuidv4 } from "uuid";
+
 // get project by id
 export async function getProjectById(id: string): Promise<Project | null> {
     if (!id) return null;
@@ -17,13 +20,41 @@ export async function getProjectById(id: string): Promise<Project | null> {
 }
 
 // get project list
-export async function getProjectSummaryList(): Promise<
-    ProjectSummaryPayload[]
-> {
+export async function getProjectSummaryList(
+    filters: ProjectListFilters,
+): Promise<ProjectSummaryPayload[]> {
     const projects = await db.project.findMany({
-        orderBy: { createdAt: "desc" },
+        orderBy: { updatedAt: "desc" },
         include: projectSummaryInclude,
+        // apply filters
+        where: {
+            // search by contractId or contractName
+            OR: [
+                {
+                    contractId: {
+                        contains: filters.query ?? "",
+                        mode: "insensitive",
+                    },
+                },
+                {
+                    contractName: {
+                        contains: filters.query ?? "",
+                        mode: "insensitive",
+                    },
+                },
+            ],
+            // filter by date range
+            AND: {
+                dateStarted: {
+                    gte: filters.dateFrom
+                        ? new Date(filters.dateFrom)
+                        : undefined,
+                    lte: filters.dateTo ? new Date(filters.dateTo) : undefined,
+                },
+            },
+        },
     });
+
     return projects;
 }
 
@@ -44,7 +75,10 @@ export async function updateProject(
 ): Promise<Project> {
     const updatedProject = await db.project.update({
         where: { id },
-        data,
+        data: {
+            ...data,
+            updatedAt: new Date(),
+        },
     });
     return updatedProject;
 }
@@ -68,4 +102,34 @@ export async function getProjectDetailsById(
     });
 
     return project;
+}
+
+export async function getProjectDetailsByToken(
+    token: string,
+): Promise<ProjectDetailsPayload | null> {
+    if (!token) return null;
+
+    const project = await db.project.findUnique({
+        where: { token },
+        include: projectDetails,
+    });
+
+    return project;
+}
+
+// generate shareable link for project
+export async function generateProjectShareLink(
+    id: string,
+): Promise<{ token: string }> {
+    const token = uuidv4();
+
+    await db.project.update({
+        where: { id },
+        data: {
+            token,
+            updatedAt: new Date(),
+        },
+    });
+
+    return { token };
 }

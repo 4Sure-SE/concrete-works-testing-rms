@@ -1,10 +1,11 @@
 "use server";
 
-import { createProjectWorkItemSchema } from "@/app/(main)/projects/[id]/work-items/_components/add-work-item-form.schema";
+import { createProjectWorkItemSchema } from "@/app/(main)/projects/[id]/work-items/_components/";
 import type { ProjectWorkItemActionState } from "@/lib/types/work-item";
 import { tryCatch } from "@/lib/utils";
 import { errorHandler } from "@/lib/utils/error-handler";
 import { ProjectService } from "@/server/services/project.service";
+import { revalidatePath } from "next/cache";
 
 export async function createProjectWorkItem(
     projectId: string,
@@ -41,6 +42,11 @@ export async function createProjectWorkItem(
         const errorMsg = errorHandler(error).message;
         return { success: false, error: { general: [errorMsg] } };
     }
+
+    // refetch project work items data on the /projects/[id]/work-items route
+    revalidatePath(`/projects`);
+    revalidatePath(`/projects/[id]`);
+    revalidatePath(`/projects/[id]/work-items`);
 
     return {
         success: true,

@@ -1,33 +1,48 @@
-import { ProjectClient } from "@/app/(main)/_components/project-list/client";
 import { tryCatch } from "@/lib/utils";
-import { ProjectService } from "@/server/services/project.service";
+import { ProjectService } from "@/server/services";
+import { Suspense } from "react";
+import { ProjectList, ProjectListSkeleton } from "./_components";
 
-export default async function ProjectListPage() {
-    const { data: projectSummaries, error } = await tryCatch(
-        ProjectService.getProjectSummaryList(),
+interface ProjectListPageSearchParams {
+    query?: string;
+    from?: string;
+    to?: string;
+}
+
+export default async function ProjectListPage({
+    searchParams,
+}: {
+    searchParams?: Promise<ProjectListPageSearchParams>;
+}) {
+    const params = await searchParams;
+
+    return (
+        <Suspense fallback={<ProjectListSkeleton />}>
+            <ProjectsLoader searchParams={params} />
+        </Suspense>
+    );
+}
+
+async function ProjectsLoader({
+    searchParams,
+}: {
+    searchParams?: ProjectListPageSearchParams;
+}) {
+    const query = searchParams?.query ?? "";
+    const dateFrom = searchParams?.from;
+    const dateTo = searchParams?.to;
+
+    const { data: projects, error } = await tryCatch(
+        ProjectService.getProjectSummaryList({ query, dateFrom, dateTo }),
     );
 
     if (error) {
         throw error;
     }
 
-    const projects =
-        projectSummaries?.map((summary) => ({
-            contractId: summary.contractId,
-            id: summary.id,
-            title: summary.contractName,
-            dateStarted: summary.dateStarted.toISOString(),
-            stats: {
-                total: summary.totalRequiredTests,
-                ongoing: summary.totalOnFileTests,
-                completed: summary.totalBalanceTests,
-            },
-            contractCost: 0, // Default value o
-        })) || [];
-
     return (
         <div className="container mx-auto p-4">
-            <ProjectClient projects={projects} />
+            <ProjectList data={projects} />
         </div>
     );
 }

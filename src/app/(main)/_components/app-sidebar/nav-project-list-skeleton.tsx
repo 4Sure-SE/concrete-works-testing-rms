@@ -4,7 +4,7 @@ import {
     SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 
-function NavProjectListSkeleton() {
+export function NavProjectListSkeleton() {
     return (
         <SidebarMenu>
             {Array.from({ length: 5 }).map((_, index) => (
@@ -15,5 +15,3 @@ function NavProjectListSkeleton() {
         </SidebarMenu>
     );
 }
-
-export default NavProjectListSkeleton;

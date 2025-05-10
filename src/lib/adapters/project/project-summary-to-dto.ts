@@ -62,14 +62,18 @@ export function projectSummaryToDTO(
             }
         }
     }
+    // calculate the total balance of tests required
+    const totalBalance = Math.max(0, totalRequired - totalOnFile);
 
     return {
         id: project.id,
         contractId: project.contractId,
         contractName: project.contractName,
-        totalRequiredTests: totalRequired,
-        totalBalanceTests: totalRequired - totalOnFile,
-        totalOnFileTests: totalOnFile,
         dateStarted: project.dateStarted,
+        stats: {
+            totalRequiredTests: totalRequired,
+            totalOnFileTests: totalOnFile,
+            totalBalanceTests: totalBalance,
+        },
     };
 }

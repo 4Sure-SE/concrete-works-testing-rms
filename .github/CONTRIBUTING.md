@@ -5,6 +5,7 @@
 - [Branch Naming](#branch-naming)
 - [Pull Requests](#pull-requests)
 - [File Naming](#file-naming)
+- [Testing](#testing)
 - [Additional Guidelines](#additional-guidelines)
 
 ## Folder Structure
@@ -149,6 +150,37 @@ To submit a pull request (PR), follow these steps:
 To maintain consistency across the project, follow this file naming convention:
 
 - `kebab-case` - **Use lowercase** for file and directory names, with hyphens (`-`) to separate words (e.g., `add-work-item`).
+
+---
+
+## Testing
+
+Before submitting a pull request, ensure all tests pass.
+
+### Setup
+
+1. Copy the `.env.example` file:
+
+    ```bash
+    cp .env.example .env.test
+    ```
+
+2. Update the `.env.test` file with the provided values
+
+### Running Tests
+
+- **Run all tests:**
+    ```bash
+    npm run test
+    ```
+- **Run only Unit tests:**
+    ```bash
+    npm run test:unit
+    ```
+- **Run only UI/Storybook tests:**
+    ```bash
+    npm run test:sb
+    ```
 
 ---
 
