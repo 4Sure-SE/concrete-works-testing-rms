@@ -51,6 +51,7 @@ export async function updateProject(
 
     // refetch projects on the /projects route
     revalidatePath("/projects");
+    revalidatePath(`/projects/${projectId}`);
 
     return {
         success: true,
