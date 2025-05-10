@@ -133,3 +133,7 @@ export async function generateProjectShareLink(
 
     return { token };
 }
+
+export async function clearProjects(): Promise<void> {
+    await db.project.deleteMany();
+}
