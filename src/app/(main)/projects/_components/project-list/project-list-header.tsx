@@ -9,7 +9,7 @@ import { useTransition } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { DateRangeFilter } from "./date-filter";
 import { SearchBar } from "./search-bar";
-
+import { ClearFiltersButton } from "./clear-filter";
 interface ProjectListHeaderProps {
     title: string;
 }
@@ -68,13 +68,16 @@ export function ProjectListHeader({ title }: ProjectListHeaderProps) {
                         value={searchParams.get("query") ?? ""}
                         isPending={isPending}
                     />
-                    <Button
-                        onClick={() => router.push("/projects/new")}
-                        className="cursor-pointer"
-                    >
-                        <Plus className="h-4 w-4" />
-                        <span>New Project</span>
-                    </Button>
+                    <div className="ml-auto flex items-center gap-4">
+                        <ClearFiltersButton />
+                        <Button
+                            onClick={() => router.push("/projects/new")}
+                            className="ml-12 cursor-pointer"
+                        >
+                            <Plus className="h-4 w-4" />
+                            <span>New Project</span>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
