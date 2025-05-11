@@ -14,9 +14,19 @@ export async function deleteTestRecord(
     }
 
     try {
+        const record = await db.workItemTestRecord.findUnique({
+            where: { id: recordId },
+            select: { fileName: true },
+        });
+
+        if (!record) {
+            return { success: false, error: "Record not found" };
+        }
+
+        const actualFileName = record.fileName;
         const supabase = await createClient();
 
-        const filePath = `${testId}/${fileName}`;
+        const filePath = `${testId}/${actualFileName}`;
         const { error: storageError } = await supabase.storage
             .from("test-records")
             .remove([filePath]);
