@@ -1,8 +1,9 @@
 "use client";
+import { DialogContent } from "@/components/custom/hidden-close-button-dialog";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
-    DialogContent,
+    DialogClose,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
@@ -16,6 +17,7 @@ import {
     MapPinned,
     PhilippinePeso,
     TriangleAlert,
+    X,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -26,7 +28,7 @@ export function ProjectInfoButton({ project }: { project: Projects }) {
             <Button
                 variant="outline"
                 size="default"
-                className="flex w-[110px] items-center gap-1 px-2 py-1 text-xs text-gray-700 sm:w-[142px] sm:gap-2 sm:text-sm md:text-sm"
+                className="flex w-[110px] cursor-pointer items-center gap-1 px-2 py-1 text-xs text-gray-700 sm:w-[142px] sm:gap-2 sm:text-sm md:text-sm"
                 onClick={() => setIsDetailsOpen(true)}
             >
                 <Info className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
@@ -36,10 +38,19 @@ export function ProjectInfoButton({ project }: { project: Projects }) {
                 open={isDetailsOpen}
                 onOpenChange={setIsDetailsOpen}
             >
-                <DialogContent className="h-140">
+                <DialogContent
+                    hideCloseButton={true}
+                    className="h-140"
+                >
+                    <DialogClose className="absolute top-4 right-4 cursor-pointer rounded-md p-1 text-muted-foreground hover:bg-gray-100 hover:text-foreground">
+                        <X className="h-6 w-6 text-black" />
+                        <span className="sr-only">Close</span>
+                    </DialogClose>
+
                     <DialogHeader className="flex justify-center px-4 py-1">
                         <DialogTitle>Project Details</DialogTitle>
                     </DialogHeader>
+
                     <div
                         className="w-auto space-y-4 overflow-y-auto px-4 py-4"
                         style={{ scrollbarWidth: "none" }}

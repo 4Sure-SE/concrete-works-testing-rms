@@ -19,6 +19,40 @@ export async function getProjectById(id: string): Promise<Project | null> {
     return project;
 }
 
+export async function getProjectsCount(
+    filters: ProjectListFilters,
+): Promise<number> {
+    const count = await db.project.count({
+        where: {
+            // search by contractId or contractName
+            OR: [
+                {
+                    contractId: {
+                        contains: filters.query ?? "",
+                        mode: "insensitive",
+                    },
+                },
+                {
+                    contractName: {
+                        contains: filters.query ?? "",
+                        mode: "insensitive",
+                    },
+                },
+            ],
+            // filter by date range
+            AND: {
+                dateStarted: {
+                    gte: filters.dateFrom
+                        ? new Date(filters.dateFrom)
+                        : undefined,
+                    lte: filters.dateTo ? new Date(filters.dateTo) : undefined,
+                },
+            },
+        },
+    });
+    return count;
+}
+
 // get project list
 export async function getProjectSummaryList(
     filters: ProjectListFilters,
@@ -53,6 +87,8 @@ export async function getProjectSummaryList(
                 },
             },
         },
+        skip: (filters.currentPage - 1) * filters.itemsPerPage,
+        take: filters.itemsPerPage,
     });
 
     return projects;

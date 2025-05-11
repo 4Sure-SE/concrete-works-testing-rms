@@ -1,31 +1,34 @@
 "use client";
 
-import { Search } from "lucide-react";
-
 import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 interface SearchBarProps {
     placeholder: string;
-    onSearchAction: (query: string) => void;
     value: string;
     isPending?: boolean;
+    onSearchChange: (query: string | undefined) => void;
 }
 
 export function SearchBar({
     placeholder,
-    onSearchAction,
     value,
     isPending = false,
+    onSearchChange,
 }: SearchBarProps) {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // set default value when the component mounts
     useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.value = value ?? "";
+        if (inputRef.current && inputRef.current.value !== value) {
+            inputRef.current.value = value;
         }
     }, [value]);
+
+    const debouncedSearch = useDebouncedCallback((term: string) => {
+        onSearchChange(term || undefined);
+    }, 500);
 
     return (
         <div className="relative flex-grow">
@@ -35,9 +38,10 @@ export function SearchBar({
                 type="text"
                 placeholder={placeholder}
                 className="pl-10"
-                onChange={(e) => onSearchAction(e.target.value)}
+                onChange={(e) => debouncedSearch(e.target.value)}
                 defaultValue={value}
                 disabled={isPending}
+                key={value}
             />
         </div>
     );
