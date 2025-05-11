@@ -9,6 +9,10 @@ import {
 import { ProjectWorkItemsTable } from "@/app/(main)/projects/[id]/_components/table/table";
 import type { Projects } from "@/lib/types/project";
 
+vi.mock("@/server/db", () => ({
+    db: {},
+}));
+
 vi.mock("@/server/services/project.service", () => ({
     ProjectService: {
         updateProjectWorkItemsTestCount: fn().mockImplementation(async () => {
