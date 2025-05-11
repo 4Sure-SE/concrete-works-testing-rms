@@ -85,7 +85,7 @@ export function MaterialsTable({
                             onClick={() => handleManageClick(test.id)}
                         >
                             <FileText className="h-4 w-4" />
-                            Manage
+                            {isReadOnly ? "View" : "Manage"}
                         </Button>
                     </TableCell>
                     <TableCell className="text-center">
@@ -101,7 +101,8 @@ export function MaterialsTable({
                     isOpen={isModalOpen}
                     onClose={closeModal}
                     testId={selectedTestId}
-                    testType="material"
+                    testType="work-item"
+                    isReadOnly={isReadOnly}
                 />
             )}
         </>

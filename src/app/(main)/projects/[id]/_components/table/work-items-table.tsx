@@ -86,7 +86,7 @@ export function WorkItemsTable({
                                 }
                             >
                                 <FileText className="h-4 w-4" />
-                                Manage
+                                {isReadOnly ? "View" : "Manage"}
                             </Button>
                         </TableCell>
                         <TableCell className="text-center">
@@ -134,7 +134,7 @@ export function WorkItemsTable({
                             onClick={() => handleManageClick(test.id)}
                         >
                             <FileText className="h-4 w-4" />
-                            Manage
+                            {isReadOnly ? "View" : "Manage"}
                         </Button>
                     </TableCell>
                     <TableCell className="text-center">
@@ -152,6 +152,7 @@ export function WorkItemsTable({
                     onClose={closeModal}
                     testId={selectedTestId}
                     testType="work-item"
+                    isReadOnly={isReadOnly}
                 />
             )}
         </Fragment>
