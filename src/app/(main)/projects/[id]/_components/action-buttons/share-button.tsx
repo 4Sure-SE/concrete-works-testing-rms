@@ -123,7 +123,7 @@ export function ShareButton() {
                     <Button
                         onClick={handleCopy}
                         disabled={isLoading || !shareableLink}
-                        className={`mt-2 w-full ${
+                        className={`mt-2 w-full cursor-pointer${
                             copied ? "bg-green-600 hover:bg-green-700" : ""
                         }`}
                         size="sm"
