@@ -25,11 +25,11 @@ export function ClearFiltersButton() {
     return (
         <Button
             onClick={handleClearFilters}
-            className="cursor-pointer bg-red-600 text-white hover:bg-red-500 hover:text-white"
+            variant="outline"
+            className="cursor-pointer"
             disabled={isPending}
         >
-            <X className="h-4 w-2" />
-            <span>Clear</span>
+            <X className="mr-2 h-4 w-4" /> <span>Clear Filters</span>
         </Button>
     );
 }
