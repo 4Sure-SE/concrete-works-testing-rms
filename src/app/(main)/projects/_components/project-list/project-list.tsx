@@ -9,8 +9,10 @@ import type {
 import type { Callbacks } from "@/lib/types/actions.types";
 import { withCallbacks } from "@/lib/utils";
 import { deleteProject } from "@/server/actions/projects/delete-project";
-import { startTransition, useOptimistic, useState } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { Pagination } from "@/components/custom/pagination";
+import { ProjectCount } from "@/components/custom/project-count";
 import { ProjectItem } from "./project-item";
 import { ProjectListHeader } from "./project-list-header";
 
@@ -27,10 +29,7 @@ export function ProjectList({ data }: ProjectListProps) {
             toast.success("Project deleted successfully.");
         },
         onError: (error) => {
-            startTransition(() => {
-                setDeletingId(null);
-                toast.error(error.general?.[0] ?? "Failed to delete project.");
-            });
+            toast.error(error.general?.[0] ?? "Failed to delete project.");
         },
     };
 
@@ -49,44 +48,71 @@ export function ProjectList({ data }: ProjectListProps) {
         },
     );
 
+    const [, startTransition] = useTransition();
     const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6; // Show 6 projects per page
+    const totalPages = Math.ceil(projects.length / itemsPerPage);
+
+    // Get current page projects
+    const indexOfLastProject = currentPage * itemsPerPage;
+    const indexOfFirstProject = indexOfLastProject - itemsPerPage;
+    const currentProjects = projects.slice(
+        indexOfFirstProject,
+        indexOfLastProject,
+    );
+
+    // Change page
+    const handlePageChange = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
+    };
 
     const deleteAction = async (id: string) => {
         setDeletingId(id);
+        const deleteProjectAction = withCallbacks(
+            deleteProject.bind(null, id),
+            callbacks,
+        );
+        const res = await deleteProjectAction();
 
-        // start a transition to delete the project
         startTransition(async () => {
-            const deleteProjectAction = withCallbacks(
-                deleteProject.bind(null, id),
-                callbacks,
-            );
+            if (res.success && res.data) {
+                setProjects({ type: "DELETE", payload: { id: res.data.id } });
+                setDeletingId(null);
 
-            await deleteProjectAction();
-
-            // make the transition wait for the state update to finish
-            startTransition(() => {
-                setProjects({
-                    type: "DELETE",
-                    payload: { id: id },
-                });
-            });
+                // If deleting the last item on a page, go to previous page
+                if (currentProjects.length === 1 && currentPage > 1) {
+                    setCurrentPage(currentPage - 1);
+                }
+            }
         });
     };
 
     return (
         <>
             <ProjectListHeader title="Projects" />
+            <div className="mb-4 flex justify-end">
+                <ProjectCount
+                    currentCount={currentProjects.length}
+                    totalCount={projects.length}
+                />
+            </div>
+
             {projects.length > 0 ? (
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    {projects.map((project) => (
-                        <ProjectItem
-                            key={project.id}
-                            data={project}
-                            onDeleteAction={deleteAction}
-                            disabled={deletingId === project.id}
-                        />
-                    ))}
-                </div>
+                <>
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        {currentProjects.map((project) => (
+                            <ProjectItem
+                                key={project.id}
+                                data={project}
+                                onDeleteAction={deleteAction}
+                                disabled={deletingId === project.id}
+                            />
+                        ))}
+                    </div>
+                </>
             ) : (
                 <div className="flex flex-col items-center justify-center py-24">
                     <p className="text-lg text-muted-foreground">
@@ -94,6 +120,13 @@ export function ProjectList({ data }: ProjectListProps) {
                     </p>
                 </div>
             )}
+
+            {/* Show pagination regardless of page count */}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
         </>
     );
 }
