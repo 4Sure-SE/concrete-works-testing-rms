@@ -88,14 +88,15 @@ export function ProjectWorkItemsTable({
             await action();
         });
     };
-
     return (
         <>
-            <ProjectDetailsActionButtons
-                project={projectData}
-                disabled={isPending}
-                isReadOnly={isReadOnly}
-            />
+            {!isReadOnly && (
+                <ProjectDetailsActionButtons
+                    project={projectData}
+                    disabled={isPending}
+                    isReadOnly={isReadOnly}
+                />
+            )}
             <div className="overflow-y-auto p-8">
                 {projectData.projectWorkItem?.length === 0 ? (
                     <div>

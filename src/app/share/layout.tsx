@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
 
 export default function ShareLayout({
@@ -9,6 +10,7 @@ export default function ShareLayout({
         <html lang="en">
             <body>
                 <div className="min-h-screen bg-gray-50">{children}</div>
+                <Toaster richColors />
             </body>
         </html>
     );
