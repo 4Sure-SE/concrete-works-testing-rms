@@ -10,7 +10,7 @@ interface FilesListProps {
     isReadOnly?: boolean;
     onRemoveFile?: (fileName: string) => void;
     onDeleteFile?: (recordId: string, fileName: string) => Promise<void>;
-    isDeletingRecord?: boolean;
+    isDeletingRecord?: (recordId: string) => boolean;
 }
 
 const formatFileSize = (bytes: number): string => {
@@ -30,7 +30,7 @@ export function FilesList({
     isReadOnly = false,
     onRemoveFile,
     onDeleteFile,
-    isDeletingRecord = false,
+    isDeletingRecord = () => false,
 }: FilesListProps) {
     const hasUploadedFiles = uploadedFiles.length > 0;
     const hasPendingFiles = pendingFiles.length > 0;
@@ -151,10 +151,12 @@ export function FilesList({
                                                     )
                                                 }
                                                 className="flex items-center rounded-md bg-red-50 px-2 py-1 text-xs text-red-600 hover:bg-red-100"
-                                                disabled={isDeletingRecord}
+                                                disabled={isDeletingRecord(
+                                                    file.id,
+                                                )}
                                                 aria-label={`Delete ${file.fileName}`}
                                             >
-                                                {isDeletingRecord ? (
+                                                {isDeletingRecord(file.id) ? (
                                                     <Loader2 className="mr-1 h-3 w-3 animate-spin" />
                                                 ) : (
                                                     <Trash2 className="mr-1 h-3 w-3" />

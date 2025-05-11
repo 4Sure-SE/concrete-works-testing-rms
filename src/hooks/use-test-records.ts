@@ -8,7 +8,7 @@ export function useTestRecords(testId: string, isOpen: boolean) {
     const [testRecords, setTestRecords] = useState<WorkItemTestRecord[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [isDeletingRecord, setIsDeletingRecord] = useState(false);
+    const [deletingRecordIds, setDeletingRecordIds] = useState<string[]>([]);
 
     const TestRecords = useCallback(async () => {
         if (!testId) return;
@@ -42,7 +42,7 @@ export function useTestRecords(testId: string, isOpen: boolean) {
     const deleteRecord = useCallback(
         async (recordId: string, fileName: string) => {
             if (!testId || !recordId || !fileName) return;
-            setIsDeletingRecord(true);
+            setDeletingRecordIds((prev) => [...prev, recordId]);
             setError(null);
             try {
                 const result = await deleteTestRecord(
@@ -67,10 +67,19 @@ export function useTestRecords(testId: string, isOpen: boolean) {
                 setError(e instanceof Error ? e.message : "Unknown error");
                 toast.error("Failed to delete test record");
             } finally {
-                setIsDeletingRecord(false);
+                setDeletingRecordIds((prev) =>
+                    prev.filter((id) => id !== recordId),
+                );
             }
         },
         [testId],
+    );
+
+    const isDeletingRecord = useCallback(
+        (recordId: string) => {
+            return deletingRecordIds.includes(recordId);
+        },
+        [deletingRecordIds],
     );
 
     return {
