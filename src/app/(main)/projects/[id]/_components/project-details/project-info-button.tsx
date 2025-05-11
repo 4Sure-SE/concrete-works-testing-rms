@@ -42,7 +42,7 @@ export function ProjectInfoButton({ project }: { project: Projects }) {
                     hideCloseButton={true}
                     className="h-140"
                 >
-                    <DialogClose className="absolute top-4 right-4 rounded-md p-1 text-muted-foreground hover:bg-gray-50 hover:text-foreground">
+                    <DialogClose className="absolute top-4 right-4 cursor-pointer rounded-md p-1 text-muted-foreground hover:bg-gray-100 hover:text-foreground">
                         <X className="h-6 w-6 text-black" />
                         <span className="sr-only">Close</span>
                     </DialogClose>
