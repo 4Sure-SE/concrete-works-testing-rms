@@ -47,7 +47,9 @@ export async function updateProjectWorkItem(
         };
     }
 
-    revalidatePath("/projects");
+    revalidatePath(`/projects`);
+    revalidatePath(`/projects/[id]`);
+    revalidatePath(`/projects/[id]/work-items`);
 
     return {
         success: true,

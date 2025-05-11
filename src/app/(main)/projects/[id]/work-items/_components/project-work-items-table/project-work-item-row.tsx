@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { toast } from "sonner";
+import { startTransition, useEffect, useRef } from "react";
 
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useFormAction } from "@/hooks/use-form-action";
@@ -12,6 +11,7 @@ import type {
     ProjectWorkItemDTO,
 } from "@/lib/types/project-work-item/project-work-item.types";
 import { withCallbacks } from "@/lib/utils";
+import { toast } from "sonner";
 import {
     UpdateProjectWorkItemActions,
     UpdateProjectWorkItemForm,
@@ -23,7 +23,6 @@ interface ProjectWorkItemRowProps {
     item: ProjectWorkItemDTO;
     isEditing: boolean;
     isDeleting: boolean;
-    isOverallPending: boolean;
     onEdit: (id: string) => void;
     onCancel: () => void;
     onDelete: (id: string) => void;
@@ -38,7 +37,6 @@ export function ProjectWorkItemRow({
     item,
     isEditing,
     isDeleting,
-    isOverallPending,
     onEdit,
     onCancel,
     onDelete,
@@ -50,46 +48,47 @@ export function ProjectWorkItemRow({
     > = {
         onSuccess: (_data) => {
             toast.success("Quantity updated successfully.");
-            onCancel();
+            startTransition(() => {
+                form.reset();
+                onCancel();
+            });
         },
         onError: (error) => {
-            toast.error(
-                error.quantity?.[0] ??
-                    error.general?.[0] ??
-                    "Failed to update quantity.",
-            );
+            if (error.general)
+                form.setError("root", { message: error.general[0] });
+            if (error.quantity)
+                form.setError("quantity", { message: error.quantity[0] });
         },
     };
 
     const {
         form,
-        actionState,
         isPending: isSubmittingEdit,
-        startAction,
-        submitAction,
+        submitAction: submitUpdateAction,
     } = useFormAction({
         action: withCallbacks(updateAction.bind(null, item.id), callbacks),
         schema: updateProjectWorkItemSchema,
         defaultValues: { quantity: item.quantity },
     });
 
+    // when the quantity changes reset the form with the new quantity
+    useEffect(() => {
+        if (isEditing) {
+            form.reset({ quantity: item.quantity });
+        }
+    }, [item.quantity, isEditing, form]);
+
     const formRef = useRef<HTMLFormElement>(null);
 
     const handleFormSubmit = form.handleSubmit(() => {
-        startAction(() => {
+        startTransition(() => {
             if (formRef.current) {
                 const formData = new FormData(formRef.current);
-                submitAction(formData);
-            } else {
-                console.error("Form reference not found during submission.");
-                toast.error(
-                    "An unexpected error occurred submitting the form.",
-                );
+                submitUpdateAction(formData);
             }
         });
     });
-
-    const isDisabled = isOverallPending || isSubmittingEdit || isDeleting;
+    const isDisabled = isSubmittingEdit || isDeleting;
 
     return (
         <TableRow
@@ -102,20 +101,21 @@ export function ProjectWorkItemRow({
 
             <TableCell>
                 {isEditing ? (
+                    // form to update the quantity of the work item
                     <UpdateProjectWorkItemForm
                         form={form}
                         formRef={formRef}
-                        actionState={actionState}
                         fieldDetails={{
                             name: "quantity",
                             default: item.quantity,
                             type: "number",
                         }}
                         handleFormSubmit={handleFormSubmit}
-                        submitAction={submitAction}
+                        submitAction={submitUpdateAction}
                         isDisabled={isDisabled}
                     />
                 ) : (
+                    // how many of this work item is in the project
                     item.quantity
                 )}
             </TableCell>
@@ -125,6 +125,7 @@ export function ProjectWorkItemRow({
             <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-1">
                     {isEditing ? (
+                        // save edit and cancel edit buttons
                         <UpdateProjectWorkItemActions
                             isSubmittingEdit={isSubmittingEdit}
                             onCancel={onCancel}
@@ -132,6 +133,7 @@ export function ProjectWorkItemRow({
                             isDisabled={isDisabled}
                         />
                     ) : (
+                        // edit and delete buttons
                         <ProjectWorkItemsTableActions
                             item={item}
                             onDelete={onDelete}

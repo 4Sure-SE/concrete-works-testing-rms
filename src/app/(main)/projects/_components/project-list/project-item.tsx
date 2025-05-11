@@ -35,16 +35,17 @@ export function ProjectItem({
                 href={`/projects/${data.id}`}
                 className={disabled ? "pointer-events-none" : ""}
                 aria-disabled={disabled}
+                tabIndex={disabled ? -1 : undefined}
             >
                 <Card
-                    className={`transition-shadow hover:shadow-md ${disabled ? "opacity-50" : ""}`}
+                    className={`group-hover: h-72 transition-all duration-150 ease-in-out group-hover:bg-muted/35 ${disabled ? "cursor-not-allowed opacity-50" : "group-hover:shadow-lg hover:shadow-md"}`}
                 >
                     <CardHeader className="pb-2">
-                        <div>
-                            <h3 className="text-lg font-bold">
+                        <div className="min-h-[72px] w-auto max-w-[485px] space-y-2 overflow-hidden">
+                            <h3 className="truncate overflow-hidden text-lg font-bold whitespace-nowrap">
                                 {data.contractId}
                             </h3>
-                            <p className="text-sm font-semibold">
+                            <p className="text-sm leading-tight font-semibold break-words">
                                 {data.contractName}
                             </p>
                             <p className="mt-1 text-xs text-muted-foreground">
@@ -52,6 +53,7 @@ export function ProjectItem({
                             </p>
                         </div>
                     </CardHeader>
+
                     <CardContent>
                         <div className="space-y-3">
                             <div className="flex justify-between text-sm">
@@ -70,14 +72,16 @@ export function ProjectItem({
                     </CardContent>
                 </Card>
             </Link>
-            <div className="absolute top-2 right-2 z-10">
-                <DeleteDialog
-                    entityId={data.id}
-                    entityName={"project"}
-                    entityAlias={data.contractId}
-                    onDeleteAction={onDeleteAction}
-                />
-            </div>
+            {!disabled && (
+                <div className="absolute top-2 right-2 z-10 opacity-0 transition-opacity duration-150 ease-in-out group-hover:opacity-100">
+                    <DeleteDialog
+                        entityId={data.id}
+                        entityName={"project"}
+                        entityAlias={data.contractId}
+                        onDeleteAction={onDeleteAction}
+                    />
+                </div>
+            )}
         </div>
     );
 }

@@ -278,53 +278,66 @@ const MyDoc = ({ project }: { project: Projects }) => (
                     {/* Data Rows */}
                     {project.projectWorkItem?.map((pjwi, rowIndex) => (
                         <React.Fragment key={rowIndex}>
-                            {pjwi.itemTest.map((cell, cellIndex) => (
-                                <TR key={`test-${rowIndex}-${cellIndex}`}>
-                                    <TD
-                                        style={styles.tdItemNo}
-                                        weighting={0.1}
-                                    >
-                                        {cellIndex === 0 ? pjwi.itemNo : ""}
-                                    </TD>
-                                    <TD
-                                        style={styles.tdDescription}
-                                        weighting={0.4}
-                                    >
-                                        {cellIndex === 0
-                                            ? pjwi.description
-                                            : ""}
-                                    </TD>
-                                    <TD
-                                        style={styles.tdUnit}
-                                        weighting={0.1}
-                                    >
-                                        {cellIndex === 0
-                                            ? abbreviateUnit(pjwi.unit)
-                                            : ""}
-                                    </TD>
-                                    <TD
-                                        style={styles.tdQuantity}
-                                        weighting={0.1}
-                                    >
-                                        {cellIndex === 0 ? pjwi.quantity : ""}
-                                    </TD>
-                                    <TD
-                                        style={styles.tdTestQuantity}
-                                        weighting={0.3}
-                                    >
-                                        {cell.testQuantity} -{" "}
-                                        {cell.testRequired}
-                                    </TD>
-                                </TR>
-                            ))}
+                            {pjwi.itemTest
+                                .sort((a, b) =>
+                                    a.testRequired.localeCompare(
+                                        b.testRequired,
+                                    ),
+                                )
+                                .map((cell, cellIndex) => (
+                                    <TR key={`test-${rowIndex}-${cellIndex}`}>
+                                        <TD
+                                            style={styles.tdItemNo}
+                                            weighting={0.1}
+                                        >
+                                            {cellIndex === 0 ? pjwi.itemNo : ""}
+                                        </TD>
+                                        <TD
+                                            style={styles.tdDescription}
+                                            weighting={0.4}
+                                        >
+                                            {cellIndex === 0
+                                                ? pjwi.description
+                                                : ""}
+                                        </TD>
+                                        <TD
+                                            style={styles.tdUnit}
+                                            weighting={0.1}
+                                        >
+                                            {cellIndex === 0
+                                                ? abbreviateUnit(pjwi.unit)
+                                                : ""}
+                                        </TD>
+                                        <TD
+                                            style={styles.tdQuantity}
+                                            weighting={0.1}
+                                        >
+                                            {cellIndex === 0
+                                                ? pjwi.quantity
+                                                : ""}
+                                        </TD>
+                                        <TD
+                                            style={styles.tdTestQuantity}
+                                            weighting={0.3}
+                                        >
+                                            {cell.testQuantity} -{" "}
+                                            {cell.testRequired}
+                                        </TD>
+                                    </TR>
+                                ))}
 
                             {/* Materials */}
                             {pjwi.materials?.map((material, matIndex) => (
                                 <React.Fragment
                                     key={`mat-${rowIndex}-${matIndex}`}
                                 >
-                                    {material.materialTest.map(
-                                        (matTest, mtIndex) => (
+                                    {material.materialTest
+                                        .sort((a, b) =>
+                                            a.testRequired.localeCompare(
+                                                b.testRequired,
+                                            ),
+                                        )
+                                        .map((matTest, mtIndex) => (
                                             <TR
                                                 key={`mat-test-${rowIndex}-${matIndex}-${mtIndex}`}
                                             >
@@ -378,8 +391,7 @@ const MyDoc = ({ project }: { project: Projects }) => (
                                                     - {matTest.testRequired}
                                                 </TD>
                                             </TR>
-                                        ),
-                                    )}
+                                        ))}
                                 </React.Fragment>
                             ))}
                         </React.Fragment>

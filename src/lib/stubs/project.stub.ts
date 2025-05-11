@@ -1,13 +1,14 @@
 import type { ProjectDTO } from "@/lib/types/project";
 import type { Project } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
+import { v4 as uuidv4 } from "uuid";
 
 export const fakeProject: Project = {
-    id: "fake-project-id",
+    id: uuidv4(),
     contractId: "fake-contract-id",
     contractName: "Fake Contract Name",
-    dateStarted: new Date(),
-    updatedAt: new Date(),
+    dateStarted: new Date("2025-01-01"),
+    updatedAt: new Date("2025-12-01"),
     contractCost: Decimal(1000),
     contractor: "Fake Contractor",
     materialsEngineer: "Fake Engineer",

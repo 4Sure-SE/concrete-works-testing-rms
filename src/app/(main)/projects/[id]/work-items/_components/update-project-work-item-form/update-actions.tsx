@@ -32,14 +32,14 @@ export function UpdateProjectWorkItemActions({
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 cursor-pointer text-green-600 hover:bg-green-100 hover:text-green-700"
-                            disabled={isDisabled || isSubmittingEdit} // Disable when submitting
+                            className="h-8 w-8 cursor-pointer"
+                            disabled={isDisabled || isSubmittingEdit}
                             aria-label="Save quantity"
                         >
                             {isSubmittingEdit ? (
-                                <Loader className="h-4 w-4 animate-spin" />
+                                <Loader className="text-muted-600 h-4 w-4 animate-spin" />
                             ) : (
-                                <Save className="h-4 w-4" />
+                                <Save className="h-4 w-4 text-green-600 hover:bg-green-100 hover:text-green-700" />
                             )}
                         </Button>
                     </TooltipTrigger>
@@ -56,7 +56,7 @@ export function UpdateProjectWorkItemActions({
                             size="icon"
                             className="h-8 w-8 cursor-pointer text-muted-foreground hover:bg-gray-100 hover:text-gray-700"
                             onClick={onCancel}
-                            disabled={isSubmittingEdit} // Also disable cancel during submission
+                            disabled={isSubmittingEdit}
                             aria-label="Cancel edit"
                         >
                             <X className="h-4 w-4" />
