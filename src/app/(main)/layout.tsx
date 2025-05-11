@@ -36,7 +36,7 @@ export default function MainLayout({
                             </main>
                         </SidebarInset>
                     </SidebarProvider>
-                    <Toaster />
+                    <Toaster richColors />
                 </AuthProvider>
             </body>
         </html>

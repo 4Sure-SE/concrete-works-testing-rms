@@ -8,9 +8,14 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import type { Callbacks } from "@/lib/types/actions.types";
 import type { Projects } from "@/lib/types/project";
-import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
-import { tryCatch } from "@/lib/utils";
+import type {
+    ProjectMaterialTest,
+    ProjectWorkItemTest,
+    TestUpdateType,
+} from "@/lib/types/project-test/project-test.types";
+import { withCallbacks } from "@/lib/utils";
 import { updateProjectTestOnFile } from "@/server/actions/projects/update-test-on-file";
 import { ArchiveX } from "lucide-react";
 import { Fragment, useState, useTransition } from "react";
@@ -40,30 +45,47 @@ export function ProjectWorkItemsTable({
     ) => {
         if (isReadOnly) return;
 
+        const callbacks: Callbacks<
+            ProjectWorkItemTest | ProjectMaterialTest | null,
+            string
+        > = {
+            onSuccess: () => {
+                toast.success("Test count updated successfully");
+                startTransition(() => {
+                    setProjectData((prevData) =>
+                        updateProjectTest(
+                            prevData,
+                            testId,
+                            changeAmount,
+                            testType,
+                        ),
+                    );
+                });
+            },
+            onError: (error) => {
+                toast.error(error);
+                startTransition(() => {
+                    setProjectData((prevData) =>
+                        updateProjectTest(
+                            prevData,
+                            testId,
+                            -changeAmount,
+                            testType,
+                        ),
+                    );
+                });
+            },
+        };
+
         startTransition(async () => {
-            setProjectData((prevData) =>
-                updateProjectTest(prevData, testId, changeAmount, testType),
+            const boundAction = updateProjectTestOnFile.bind(
+                null,
+                testId,
+                changeAmount,
+                testType,
             );
-
-            const result = await tryCatch(
-                updateProjectTestOnFile(testId, changeAmount, testType),
-            );
-
-            if (result.error) {
-                toast.error("An error occurred while updating the test count");
-                // revert state on error
-                setProjectData((prevData) =>
-                    updateProjectTest(
-                        prevData,
-                        testId,
-                        -changeAmount,
-                        testType,
-                    ),
-                );
-                throw result.error;
-            } else if (result.data) {
-                toast.success(`Test count updated successfully`);
-            }
+            const action = withCallbacks(boundAction, callbacks);
+            await action();
         });
     };
 

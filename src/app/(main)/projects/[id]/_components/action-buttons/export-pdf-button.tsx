@@ -5,14 +5,17 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+
 import type { Projects } from "@/lib/types/project";
+import { tryCatch } from "@/lib/utils";
 import { ClipboardCheck, FileText, ListCheck } from "lucide-react";
 
 interface ExportPdfButtonProps {
     project: Projects;
     disabled?: boolean;
-    downloadQCP: (project: Projects) => void;
-    downloadSOT: (project: Projects) => void;
+    downloadQCP: (project: Projects) => Promise<void>;
+    downloadSOT: (project: Projects) => Promise<void>;
 }
 
 export function ExportPdfButton({
@@ -21,6 +24,28 @@ export function ExportPdfButton({
     downloadQCP,
     downloadSOT,
 }: ExportPdfButtonProps) {
+    const handleDownloadQCP = async () => {
+        if (disabled) return;
+        const { error } = await tryCatch(downloadQCP(project));
+
+        if (error) {
+            toast.error("Failed to download QCP Report.");
+        } else {
+            toast.success("Successfully downloaded QCP Report.");
+        }
+    };
+
+    const handleDownloadSOT = async () => {
+        if (disabled) return;
+        const { error } = await tryCatch(downloadSOT(project));
+
+        if (error) {
+            toast.error("Failed to download SOT Report.");
+        } else {
+            toast.success("Successfully downloaded SOT Report.");
+        }
+    };
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -37,14 +62,14 @@ export function ExportPdfButton({
 
             <DropdownMenuContent className="min-w-[180px] rounded-md border border-gray-200 bg-white p-1 shadow-lg">
                 <DropdownMenuItem
-                    onClick={() => downloadQCP(project)}
+                    onClick={() => handleDownloadQCP()}
                     className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                 >
                     <ClipboardCheck className="mr-2 h-4 w-4 text-orange-500" />
                     Quality Control Program
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    onClick={() => downloadSOT(project)}
+                    onClick={() => handleDownloadSOT()}
                     className="flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                 >
                     <ListCheck className="mr-2 h-4 w-4 text-blue-500" />

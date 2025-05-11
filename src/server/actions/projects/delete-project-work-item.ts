@@ -22,7 +22,10 @@ export async function deleteProjectWorkItem(
         return { success: false, error: { general: [errorMsg] } };
     }
 
-    revalidatePath("/projects");
+    // refetch project work items data on the /projects/[id]/work-items route
+    revalidatePath(`/projects`);
+    revalidatePath(`/projects/[id]`);
+    revalidatePath(`/projects/[id]/work-items`);
 
     return {
         success: true,

@@ -38,6 +38,10 @@ export function WorkItemsTable({
         setIsModalOpen(false);
     };
 
+    const sortedWorkItemTests = [...workItem.itemTest].sort((a, b) =>
+        a.testRequired.localeCompare(b.testRequired),
+    );
+
     return (
         <Fragment>
             <TableRow className="bg-[#FCFCFD]">
@@ -58,19 +62,19 @@ export function WorkItemsTable({
                             {workItem.unit ?? "N/A"}
                         </TableCell>
                         <TableCell className="text-center">
-                            {workItem.itemTest?.[0]?.testRequired ?? "N/A"}
+                            {sortedWorkItemTests?.[0]?.testRequired ?? "N/A"}
                         </TableCell>
                         <TableCell className="text-center">
                             <TestCounter
-                                id={workItem.itemTest[0]?.id}
-                                value={workItem.itemTest[0]?.testsOnFile ?? 0}
+                                id={sortedWorkItemTests[0]?.id}
+                                value={sortedWorkItemTests[0]?.testsOnFile ?? 0}
                                 type="workItem"
                                 updateTestAction={onTestCountUpdate}
                                 isReadOnly={isReadOnly}
                             ></TestCounter>
                         </TableCell>
                         <TableCell className="text-center">
-                            {workItem.itemTest?.[0]?.balance ?? "N/A"}
+                            {sortedWorkItemTests?.[0]?.balance ?? "N/A"}
                         </TableCell>
                         <TableCell className="px-6 text-center">
                             <Button
@@ -92,9 +96,9 @@ export function WorkItemsTable({
                         <TableCell className="text-center">
                             <TestStatus
                                 testsOnFile={
-                                    workItem.itemTest?.[0]?.testsOnFile ?? 0
+                                    sortedWorkItemTests?.[0]?.testsOnFile ?? 0
                                 }
-                                balance={workItem.itemTest?.[0]?.balance ?? 0}
+                                balance={sortedWorkItemTests?.[0]?.balance ?? 0}
                             ></TestStatus>
                         </TableCell>
                     </>
@@ -105,7 +109,7 @@ export function WorkItemsTable({
             </TableRow>
 
             {/* Additional item tests (if any) */}
-            {workItem.itemTest.slice(1).map((test) => (
+            {sortedWorkItemTests.slice(1).map((test) => (
                 <TableRow key={test.id}>
                     <TableCell></TableCell>
                     <TableCell></TableCell>

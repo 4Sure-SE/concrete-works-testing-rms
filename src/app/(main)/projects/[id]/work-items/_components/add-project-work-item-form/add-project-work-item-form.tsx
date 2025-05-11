@@ -22,6 +22,8 @@ import type {
 } from "@/lib/types/work-item/";
 import { withCallbacks } from "@/lib/utils";
 
+import { startTransition } from "react";
+import { toast } from "sonner";
 import { createProjectWorkItemSchema } from "./add-project-work-item-form.schema";
 import { WorkItemSelect } from "./work-item-select";
 
@@ -42,18 +44,17 @@ export function AddProjectWorkItemForm({
 }: AddProjectWorkItemFormProps) {
     const defaultValues = { workItemId: "", quantity: 0 };
 
-    // const router = useRouter();
-
     // server action callbacks on success or error
     const callbacks: Callbacks<
         WorkItemDefinitionDTO | null,
         ProjectWorkItemActionErrors
     > = {
         // on server action success
-        onSuccess: (data) => {
-            form.reset();
-            // router.push(`/projects/${projectId}`);
-            console.log("success", data);
+        onSuccess: (_data) => {
+            toast.success("Work item added to project successfully");
+            startTransition(() => {
+                form.reset();
+            });
         },
         // on server action error
         onError: (error) => {
@@ -64,7 +65,7 @@ export function AddProjectWorkItemForm({
         },
     };
 
-    const { form, isPending, startAction, submitAction } = useFormAction({
+    const { form, isPending, submitAction } = useFormAction({
         action: withCallbacks(action.bind(null, projectId), callbacks), // bind projectId to the action
         schema: createProjectWorkItemSchema,
         defaultValues,
@@ -72,12 +73,11 @@ export function AddProjectWorkItemForm({
 
     // handle form submission and call the server action with the form data
     const handleSubmit = form.handleSubmit((_, e) => {
-        startAction(() => {
+        startTransition(() => {
             const formData = new FormData(e?.target as HTMLFormElement);
             submitAction(formData);
         });
     });
-
     // work item unit
     const selectedWorkItemId = form.watch("workItemId");
     const selectedWorkItem = workItemDefinitions.find(

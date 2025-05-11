@@ -36,9 +36,12 @@ export function MaterialsTable({
         setIsModalOpen(false);
     };
 
+    const sortedMaterialTests = [...material.materialTest].sort((a, b) =>
+        a.testRequired.localeCompare(b.testRequired),
+    );
     return (
         <>
-            {material.materialTest.map((test, testIndex) => (
+            {sortedMaterialTests.map((test, testIndex) => (
                 <TableRow key={test.id}>
                     <TableCell></TableCell>
                     {testIndex === 0 ? (
