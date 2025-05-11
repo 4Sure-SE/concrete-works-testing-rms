@@ -1,6 +1,5 @@
 import { ProjectContractDetails } from "@/app/(main)/projects/[id]/_components/project-details/contract-details";
 import { ProjectDetailsSkeleton } from "@/app/(main)/projects/[id]/_components/project-details/project-details-skeleton";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { tryCatch } from "@/lib/utils";
 import { ProjectService } from "@/server/services";
 import { FolderOpen, InfoIcon } from "lucide-react";
@@ -30,14 +29,13 @@ async function SharedProjectContent({ token }: { token: string }) {
     return (
         <div>
             <div className="flex justify-center p-4">
-                <Alert className="mb-4 w-fit rounded-lg border border-white/10 bg-white/20 p-4 text-gray-900 shadow-lg backdrop-blur-md dark:bg-gray-800/20 dark:text-gray-100">
-                    <InfoIcon className="h-4 w-4" />
-                    <AlertTitle>Shared View</AlertTitle>
-                    <AlertDescription>
+                <div className="mb-4 flex w-fit items-center gap-2 rounded-md bg-blue-50 px-4 py-3 text-sm text-blue-700 dark:bg-blue-900/20 dark:text-blue-200">
+                    <InfoIcon className="h-4 w-4 text-blue-500 dark:text-blue-300" />
+                    <span>
                         You are viewing a read-only shared version of this
                         project.
-                    </AlertDescription>
-                </Alert>
+                    </span>
+                </div>
             </div>
             <ProjectContractDetails
                 id={sharedProject.id}
