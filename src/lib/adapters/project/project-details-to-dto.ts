@@ -11,8 +11,9 @@ function calculateBalance(testQuantity: number, testsOnFile: number): number {
 }
 
 export function projectDetailsToDTO(
-    rawProject: ProjectDetailsPayload,
-): Projects {
+    rawProject: ProjectDetailsPayload | null,
+): Projects | null {
+    if (!rawProject) return null;
     return {
         id: rawProject.id,
         contractId: rawProject.contractId,
