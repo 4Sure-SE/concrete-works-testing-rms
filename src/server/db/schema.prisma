@@ -10,12 +10,13 @@ datasource db {
 }
 
 model Unit {
-  id           String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name         String     @unique
-  abbreviation String     @unique
-  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
-  material     Material[]
-  workItem     WorkItem[]
+  id            String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name          String     @unique
+  abbreviation  String     @unique
+  createdAt     DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  isWholeNumber Boolean    @default(false) @map("is_whole_number")
+  material      Material[]
+  workItem      WorkItem[]
 
   @@map("unit")
 }
@@ -63,8 +64,9 @@ model WorkItemMaterial {
   id                   String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   workItemId           String                 @map("work_item_id") @db.Uuid
   materialId           String                 @map("material_id") @db.Uuid
-  quantityPerUnit      Decimal                @map("quantity_per_unit") @db.Decimal(10, 6)
+  quantityPerUnit      Decimal?               @map("quantity_per_unit") @db.Decimal(10, 6)
   createdAt            DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  staticQuantity       Decimal?               @map("static_quantity") @db.Decimal(10, 2)
   material             Material               @relation(fields: [materialId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   workItem             WorkItem               @relation(fields: [workItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   workItemMaterialTest WorkItemMaterialTest[]
@@ -107,9 +109,10 @@ model Project {
   limits            String?
   location          String?
   dateStarted       DateTime          @map("date_started") @db.Date
-  updatedAt         DateTime          @default(now()) @map("updated_at") @db.Timestamptz(6)
   materialsEngineer String            @map("materials_engineer")
   contractCost      Decimal           @map("contract_cost") @db.Decimal(18, 2)
+  updatedAt         DateTime          @default(now()) @map("updated_at") @db.Timestamptz(6)
+  token             String?           @unique
   projectWorkItem   ProjectWorkItem[]
 
   @@map("project")

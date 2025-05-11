@@ -28,20 +28,7 @@
         "paths": {
             "@/*": ["./src/*"]
         },
-        "typeRoots": ["./node_modules/@types"],
-        "types": [
-            "node",
-            "react",
-            "react-dom",
-            "aria-query",
-            "cookie",
-            "doctrine",
-            "json-schema",
-            "mdx",
-            "parse-json",
-            "statuses",
-            "tough-cookie"
-        ]
+        "types": ["vitest/globals"]
     },
     "include": [
         ".eslintrc.cjs",

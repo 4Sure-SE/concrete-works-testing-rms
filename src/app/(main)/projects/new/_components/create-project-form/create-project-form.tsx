@@ -21,6 +21,8 @@ import {
     ProjectFormField,
 } from "@/app/(main)/projects/_components/project-form";
 import { Plus } from "lucide-react";
+import { startTransition } from "react";
+import { toast } from "sonner";
 import { createProjectFormConfig } from "./create-project-form.config";
 import { createProjectSchema } from "./create-project-form.schema";
 
@@ -32,7 +34,7 @@ interface CreateProjectFormProps {
     defaultValues: CreateProjectDTO;
 }
 
-export default function CreateProjectForm({
+export function CreateProjectForm({
     action,
     defaultValues,
 }: CreateProjectFormProps) {
@@ -42,8 +44,11 @@ export default function CreateProjectForm({
     const callbacks: Callbacks<ProjectDTO | null, ProjectActionErrors> = {
         // on server action success
         onSuccess: (data) => {
-            router.push(`/projects/${data?.id}/work-items`);
-            form.reset();
+            toast.success("Project created successfully");
+            startTransition(() => {
+                router.push(`/projects/${data?.id}/work-items`);
+                form.reset();
+            });
         },
         // on server action error
         onError: (error) => {
@@ -54,7 +59,7 @@ export default function CreateProjectForm({
         },
     };
 
-    const { form, isPending, startAction, submitAction } = useFormAction({
+    const { form, isPending, submitAction } = useFormAction({
         action: withCallbacks(action, callbacks),
         schema: createProjectSchema,
         defaultValues,
@@ -62,7 +67,7 @@ export default function CreateProjectForm({
 
     // handle form submission and call the server action with the form data
     const handleSubmit = form.handleSubmit((_, e) => {
-        startAction(() => {
+        startTransition(() => {
             const formData = new FormData(e?.target as HTMLFormElement);
             submitAction(formData);
         });

@@ -5,7 +5,7 @@ export const createProjectWorkItemSchema = z.object({
     quantity: z.coerce
         .number({
             required_error: "Quantity is required",
-            invalid_type_error: "Quantity must be a number",
         })
-        .positive("Quantity must be a positive number"),
+        .positive("Quantity must be a positive number")
+        .max(30_000_000, "Quantity cannot exceed 30 million"),
 });

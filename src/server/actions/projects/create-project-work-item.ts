@@ -1,6 +1,6 @@
 "use server";
 
-import { createProjectWorkItemSchema } from "@/app/(main)/projects/[id]/work-items/_components/add-work-item-form.schema";
+import { createProjectWorkItemSchema } from "@/app/(main)/projects/[id]/work-items/_components/";
 import type { ProjectWorkItemActionState } from "@/lib/types/work-item";
 import { tryCatch } from "@/lib/utils";
 import { errorHandler } from "@/lib/utils/error-handler";
@@ -43,7 +43,10 @@ export async function createProjectWorkItem(
         return { success: false, error: { general: [errorMsg] } };
     }
 
-    revalidatePath("/projects");
+    // refetch project work items data on the /projects/[id]/work-items route
+    revalidatePath(`/projects`);
+    revalidatePath(`/projects/[id]`);
+    revalidatePath(`/projects/[id]/work-items`);
 
     return {
         success: true,

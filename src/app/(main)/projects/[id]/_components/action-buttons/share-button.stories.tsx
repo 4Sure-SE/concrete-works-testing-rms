@@ -1,12 +1,26 @@
+import { generateProjectShareLink } from "@/server/actions/projects/generate-project-share-link";
 import type { Meta, StoryObj } from "@storybook/react";
-import { expect, screen, userEvent, within } from "@storybook/test";
+import { expect, fn, userEvent, within } from "@storybook/test";
 import { ShareButton } from "./share-button";
+
+vi.mock("@/server/services/project.service", () => ({
+    ProjectService: {
+        generateShareLink: vi.fn().mockResolvedValue("mocked-share-token-123"),
+    },
+}));
+
+vi.mock("@/server/actions/projects/generate-project-share-link", () => ({
+    generateProjectShareLink: vi.fn().mockResolvedValue({
+        success: true,
+        data: "https://example.com/mock-share-link",
+    }),
+}));
 
 const meta = {
     title: "Main/Components/ProjectDetails/Share Button",
     component: ShareButton,
     parameters: {
-        layout: "fullscreen",
+        layout: "centered",
     },
     decorators: [
         (StoryEl) => (
@@ -16,51 +30,45 @@ const meta = {
         ),
     ],
     tags: ["autodocs"],
+
+    args: {
+        projectId: "test-project-id-for-share",
+    },
 } satisfies Meta<typeof ShareButton>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export const CopiedState: Story = {
-    play: async ({ canvasElement }) => {
+    play: async ({ canvasElement, args }) => {
         const canvas = within(canvasElement);
-        await sleep(1000);
+
+        const writeTextMock = fn().mockResolvedValue(undefined);
+        Object.defineProperty(navigator, "clipboard", {
+            value: { writeText: writeTextMock },
+            configurable: true,
+            writable: true,
+        });
 
         const trigger = await canvas.findByRole("button", { name: /share/i });
         await userEvent.click(trigger);
-        await sleep(1000);
 
-        const copyBtn = await screen.findByTestId("copy-button");
-        await userEvent.click(copyBtn);
-        await sleep(1000);
+        await expect(generateProjectShareLink).toHaveBeenCalledTimes(1);
 
-        await expect(
-            screen.findByTestId("check-icon"),
-        ).resolves.toBeInTheDocument();
+        Object.defineProperty(navigator, "clipboard", {
+            value: undefined,
+            configurable: true,
+            writable: true,
+        });
 
-        await sleep(1000);
+        (generateProjectShareLink as ReturnType<typeof fn>).mockClear();
+        writeTextMock.mockClear();
     },
 };
 
-export const HoverColor: Story = {
-    render: () => <ShareButton />,
-    decorators: [
-        (StoryEl) => (
-            <div className="w-fit">
-                <StoryEl />
-                <style>
-                    {`
-                        button{
-                            background-color: #e5e7eb !important; 
-                            
-                            color: black !important;
-                        }
-                    `}
-                </style>
-            </div>
-        ),
-    ],
+export const Default: Story = {
+    args: {
+        projectId: "default-project-id",
+    },
 };

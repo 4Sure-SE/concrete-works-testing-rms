@@ -30,7 +30,7 @@ export default function AuthLayout({
                     <div className="flex h-[calc(100vh-4rem)] flex-col items-center justify-center overflow-auto">
                         <main className="w-full max-w-md p-4">{children}</main>
                     </div>
-                    <Toaster />
+                    <Toaster richColors />
                 </AuthProvider>
             </body>
         </html>

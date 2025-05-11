@@ -1,29 +1,32 @@
 "use client";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { ProjectWorkItem } from "@/lib/types/project";
+import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
 import { Fragment } from "react";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
+interface WorkItemsTableProps {
+    workItem: ProjectWorkItem;
+    isReadOnly?: boolean;
+    onTestCountUpdate: (
+        id: string,
+        amount: number,
+        type: TestUpdateType,
+    ) => Promise<void>;
+}
+
 export function WorkItemsTable({
     workItem,
-    handleTestUpdate,
-    onServerUpdate,
-    hasItemTests,
-}: {
-    workItem: ProjectWorkItem;
-    handleTestUpdate: (
-        id: string | undefined,
-        amount: number,
-        type: "material" | "workItem",
-    ) => void;
-    onServerUpdate: (
-        id: string | undefined,
-        amount: number,
-        type: "material" | "workItem",
-    ) => Promise<number>;
-    hasItemTests: boolean;
-}) {
+    isReadOnly = false,
+    onTestCountUpdate,
+}: WorkItemsTableProps) {
+    const hasItemTests = workItem.itemTest.length > 0;
+
+    const sortedWorkItemTests = [...workItem.itemTest].sort((a, b) =>
+        a.testRequired.localeCompare(b.testRequired),
+    );
+
     return (
         <Fragment>
             <TableRow className="bg-[#FCFCFD]">
@@ -44,26 +47,26 @@ export function WorkItemsTable({
                             {workItem.unit ?? "N/A"}
                         </TableCell>
                         <TableCell className="text-center">
-                            {workItem.itemTest?.[0]?.testRequired ?? "N/A"}
+                            {sortedWorkItemTests?.[0]?.testRequired ?? "N/A"}
                         </TableCell>
                         <TableCell className="text-center">
                             <TestCounter
-                                id={workItem.itemTest?.[0]?.id}
-                                value={workItem.itemTest?.[0]?.testsOnFile ?? 0}
-                                onUpdate={handleTestUpdate}
+                                id={sortedWorkItemTests[0]?.id}
+                                value={sortedWorkItemTests[0]?.testsOnFile ?? 0}
                                 type="workItem"
-                                onServerUpdate={onServerUpdate}
+                                updateTestAction={onTestCountUpdate}
+                                isReadOnly={isReadOnly}
                             ></TestCounter>
                         </TableCell>
                         <TableCell className="text-center">
-                            {workItem.itemTest?.[0]?.balance ?? "N/A"}
+                            {sortedWorkItemTests?.[0]?.balance ?? "N/A"}
                         </TableCell>
                         <TableCell className="text-center">
                             <TestStatus
                                 testsOnFile={
-                                    workItem.itemTest?.[0]?.testsOnFile ?? 0
+                                    sortedWorkItemTests?.[0]?.testsOnFile ?? 0
                                 }
-                                balance={workItem.itemTest?.[0]?.balance ?? 0}
+                                balance={sortedWorkItemTests?.[0]?.balance ?? 0}
                             ></TestStatus>
                         </TableCell>
                     </>
@@ -74,7 +77,7 @@ export function WorkItemsTable({
             </TableRow>
 
             {/* Additional item tests (if any) */}
-            {workItem.itemTest.slice(1).map((test) => (
+            {sortedWorkItemTests.slice(1).map((test) => (
                 <TableRow key={test.id}>
                     <TableCell></TableCell>
                     <TableCell></TableCell>
@@ -88,14 +91,13 @@ export function WorkItemsTable({
                             id={test.id}
                             value={test.testsOnFile}
                             type="workItem"
-                            onUpdate={handleTestUpdate}
-                            onServerUpdate={onServerUpdate}
+                            updateTestAction={onTestCountUpdate}
+                            isReadOnly={isReadOnly}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">
                         {test.balance}
                     </TableCell>
-
                     <TableCell className="text-center">
                         <TestStatus
                             testsOnFile={test.testsOnFile}

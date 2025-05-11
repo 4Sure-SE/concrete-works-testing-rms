@@ -1,4 +1,5 @@
 "use client";
+
 import {
     Table,
     TableBody,
@@ -7,159 +8,187 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import type { Callbacks } from "@/lib/types/actions.types";
 import type { Projects } from "@/lib/types/project";
-import { UpdateProjectTest } from "@/lib/utils";
+import type {
+    ProjectMaterialTest,
+    ProjectWorkItemTest,
+    TestUpdateType,
+} from "@/lib/types/project-test/project-test.types";
+import { withCallbacks } from "@/lib/utils";
+import { updateProjectTestOnFile } from "@/server/actions/projects/update-test-on-file";
 import { ArchiveX } from "lucide-react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useTransition } from "react";
+import { toast } from "sonner";
+import { ProjectDetailsActionButtons } from "../action-buttons/action-buttons";
+import { updateProjectTest } from "../test-columns/update-project-test";
 import { MaterialsTable } from "./materials-table";
 import { WorkItemsTable } from "./work-items-table";
 
+interface ProjectWorkItemsTableProps {
+    initialProjectData: Projects;
+    isReadOnly?: boolean;
+}
+
 export function ProjectWorkItemsTable({
-    project,
-    onServerUpdate,
-}: {
-    project: Projects;
-    onServerUpdate: (
-        id: string | undefined,
-        amount: number,
-        type: "material" | "workItem",
-    ) => Promise<number>;
-}) {
-    const [updatedProject, setUpdatedProject] = useState(project);
-    const handleTestUpdate = (
-        id: string | undefined,
-        amount: number,
-        type: "material" | "workItem",
+    initialProjectData,
+    isReadOnly = false,
+    // updateProjectTestAction,
+}: ProjectWorkItemsTableProps) {
+    const [isPending, startTransition] = useTransition();
+    const [projectData, setProjectData] = useState(initialProjectData);
+
+    const handleTestCountUpdate = async (
+        testId: string,
+        changeAmount: number,
+        testType: TestUpdateType,
     ) => {
-        setUpdatedProject((prevProject) =>
-            UpdateProjectTest(prevProject, id, amount, type),
-        );
+        if (isReadOnly) return;
+
+        const callbacks: Callbacks<
+            ProjectWorkItemTest | ProjectMaterialTest | null,
+            string
+        > = {
+            onSuccess: () => {
+                toast.success("Test count updated successfully");
+                startTransition(() => {
+                    setProjectData((prevData) =>
+                        updateProjectTest(
+                            prevData,
+                            testId,
+                            changeAmount,
+                            testType,
+                        ),
+                    );
+                });
+            },
+            onError: (error) => {
+                toast.error(error);
+                startTransition(() => {
+                    setProjectData((prevData) =>
+                        updateProjectTest(
+                            prevData,
+                            testId,
+                            -changeAmount,
+                            testType,
+                        ),
+                    );
+                });
+            },
+        };
+
+        startTransition(async () => {
+            const boundAction = updateProjectTestOnFile.bind(
+                null,
+                testId,
+                changeAmount,
+                testType,
+            );
+            const action = withCallbacks(boundAction, callbacks);
+            await action();
+        });
     };
+
     return (
-        <div className="overflow-y-auto p-8">
-            {updatedProject.projectWorkItem?.length === 0 ? (
-                <div>
-                    {/* <div className="h-px w-full bg-gray-200"></div> */}
-                    <div className="flex flex-col items-center justify-center p-30 text-base">
-                        <ArchiveX className="mb-2 h-10 w-10"></ArchiveX>
-                        No items of work found
+        <>
+            <ProjectDetailsActionButtons
+                project={projectData}
+                disabled={isPending}
+                isReadOnly={isReadOnly}
+            />
+            <div className="overflow-y-auto p-8">
+                {projectData.projectWorkItem?.length === 0 ? (
+                    <div>
+                        <div className="flex flex-col items-center justify-center p-30 text-base">
+                            <ArchiveX className="mb-2 h-10 w-10"></ArchiveX>
+                            No items of work found
+                        </div>
                     </div>
-                </div>
-            ) : (
-                <div
-                    key={updatedProject.id}
-                    className="rounded-md border"
-                >
-                    {/* Project Table */}
-                    <Table className="w-full border-separate border-spacing-0 overflow-hidden rounded-[7px]">
-                        <TableHeader>
-                            <TableRow className="bg-gray-100">
-                                <TableHead className="text-center text-gray-700">
-                                    Item No
-                                </TableHead>
-                                <TableHead className="text-center text-gray-700">
-                                    Description/Material
-                                </TableHead>
-                                <TableHead className="text-center text-gray-700">
-                                    Quantity
-                                </TableHead>
-                                <TableHead className="text-center text-gray-700">
-                                    Unit
-                                </TableHead>
-                                <TableHead className="text-center text-gray-700">
-                                    Test Required
-                                </TableHead>
-                                <TableHead className="text-center text-gray-700">
-                                    No. of Tests on File
-                                </TableHead>
-                                <TableHead className="text-center text-gray-700">
-                                    Balance
-                                </TableHead>
-                                <TableHead className="text-center text-gray-700">
-                                    Status
-                                </TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {updatedProject.projectWorkItem?.map((workItem) => {
-                                // Determine if we have item tests to display
-                                const hasItemTests =
-                                    workItem.itemTest.length > 0;
-
-                                return (
-                                    <Fragment key={`${workItem.id}`}>
-                                        {/* Main item row with first item test if available */}
-                                        <WorkItemsTable
-                                            workItem={workItem}
-                                            onServerUpdate={onServerUpdate}
-                                            handleTestUpdate={handleTestUpdate}
-                                            hasItemTests={hasItemTests}
-                                        ></WorkItemsTable>
-
-                                        {/* Materials and their tests */}
-                                        {workItem.materials.map((material) => {
-                                            // If material has no tests, just show the material row
-                                            if (
-                                                material.materialTest.length ===
-                                                0
-                                            ) {
-                                                return (
-                                                    <TableRow key={material.id}>
-                                                        <TableCell></TableCell>
-                                                        <TableCell className="pl-4 text-center">
-                                                            {material.name}
-                                                        </TableCell>
-                                                        <TableCell className="text-center">
-                                                            {material.quantity.toString()}
-                                                        </TableCell>
+                ) : (
+                    <div
+                        key={projectData.id}
+                        className="rounded-md border"
+                    >
+                        <Table className="w-full border-separate border-spacing-0 overflow-hidden rounded-[7px]">
+                            <TableHeader>
+                                <TableRow className="bg-gray-100">
+                                    <TableHead className="text-center text-gray-700">
+                                        Item No
+                                    </TableHead>
+                                    <TableHead className="text-center text-gray-700">
+                                        Description/Material
+                                    </TableHead>
+                                    <TableHead className="text-center text-gray-700">
+                                        Quantity
+                                    </TableHead>
+                                    <TableHead className="text-center text-gray-700">
+                                        Unit
+                                    </TableHead>
+                                    <TableHead className="text-center text-gray-700">
+                                        Test Required
+                                    </TableHead>
+                                    <TableHead className="text-center text-gray-700">
+                                        No. of Tests on File
+                                    </TableHead>
+                                    <TableHead className="text-center text-gray-700">
+                                        Balance
+                                    </TableHead>
+                                    <TableHead className="text-center text-gray-700">
+                                        Status
+                                    </TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {projectData.projectWorkItem?.map(
+                                    (workItem) => (
+                                        <Fragment
+                                            key={`workItem-fragment-${workItem.id}`}
+                                        >
+                                            <WorkItemsTable
+                                                workItem={workItem}
+                                                onTestCountUpdate={
+                                                    handleTestCountUpdate
+                                                }
+                                                isReadOnly={isReadOnly}
+                                                // updatingTests={updatingTests}
+                                            />
+                                            {workItem.materials.map(
+                                                (material) => (
+                                                    <MaterialsTable
+                                                        key={`material-fragment-${material.id}`}
+                                                        material={material}
+                                                        onTestCountUpdate={
+                                                            handleTestCountUpdate
+                                                        }
+                                                        isReadOnly={isReadOnly}
+                                                        // updatingTests={
+                                                        //     updatingTests
+                                                        // }
+                                                    />
+                                                ),
+                                            )}
+                                            {workItem.materials.length === 0 &&
+                                                workItem.itemTest.length ===
+                                                    0 && (
+                                                    <TableRow>
                                                         <TableCell
-                                                            colSpan={4}
+                                                            colSpan={8}
                                                             className="text-center text-muted-foreground"
                                                         >
-                                                            No tests available
+                                                            No tests or
+                                                            materials for this
+                                                            item.
                                                         </TableCell>
                                                     </TableRow>
-                                                );
-                                            }
-
-                                            // If material has tests, show first test on same row as material
-                                            return (
-                                                <Fragment key={material.id}>
-                                                    <MaterialsTable
-                                                        material={material}
-                                                        onServerUpdate={
-                                                            onServerUpdate
-                                                        }
-                                                        handleTestUpdate={
-                                                            handleTestUpdate
-                                                        }
-                                                    />
-                                                </Fragment>
-                                            );
-                                        })}
-
-                                        {/* If no tests or materials, show a message */}
-                                        {workItem.materials.length === 0 &&
-                                            workItem.itemTest.length === 0 && (
-                                                <TableRow>
-                                                    <TableCell></TableCell>
-                                                    <TableCell></TableCell>
-                                                    <TableCell></TableCell>
-                                                    <TableCell
-                                                        colSpan={4}
-                                                        className="text-center text-muted-foreground"
-                                                    >
-                                                        No tests available
-                                                    </TableCell>
-                                                </TableRow>
-                                            )}
-                                    </Fragment>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </div>
-            )}
-        </div>
+                                                )}
+                                        </Fragment>
+                                    ),
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+                )}
+            </div>
+        </>
     );
 }

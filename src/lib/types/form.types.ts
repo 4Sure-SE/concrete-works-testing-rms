@@ -5,9 +5,9 @@ export type FormField<T> = keyof T;
 
 export type FieldConfig<T> = {
     name: Path<T>;
-    label: string;
-    placeholder: string;
-    default: T[keyof T];
+    label?: string;
+    placeholder?: string;
+    default?: T[keyof T];
     type?: HTMLInputTypeAttribute;
     isOptional?: boolean;
 };

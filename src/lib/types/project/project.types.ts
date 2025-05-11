@@ -19,6 +19,7 @@ export type ProjectDTO = Omit<
     contractCost: number;
     limits: string | null;
     location: string | null;
+    token: string | null;
 };
 
 export type ProjectSummaryStats = {
@@ -34,6 +35,12 @@ export type ProjectSummaryDTO = {
     contractName: string;
     dateStarted: Date;
     stats: ProjectSummaryStats;
+};
+
+export type ProjectListFilters = {
+    query?: string;
+    dateFrom?: string;
+    dateTo?: string;
 };
 
 // client to server dto for creating project

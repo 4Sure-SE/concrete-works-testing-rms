@@ -14,7 +14,6 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { TooltipProvider } from "@/components/ui/tooltip";
 
 interface DeleteDialogProps {
     entityId: string;
@@ -32,50 +31,48 @@ export function DeleteDialog({
     disabled = false,
 }: DeleteDialogProps) {
     return (
-        <TooltipProvider>
-            <AlertDialog>
-                <AlertDialogTrigger
-                    asChild
-                    className=""
+        <AlertDialog>
+            <AlertDialogTrigger
+                asChild
+                className=""
+            >
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 cursor-pointer text-destructive hover:bg-destructive/10"
+                    aria-label={`Delete ${entityName} ${entityAlias ?? entityId}`}
+                    disabled={disabled}
                 >
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="size-8 cursor-pointer text-destructive hover:bg-destructive/10 hover:text-destructive"
-                        aria-label={`Delete ${entityName} ${entityAlias ?? entityId}`}
-                        disabled={disabled}
+                    <Trash2 className="size-4" />
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>
+                        Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the {entityName}
+                        {` `}
+                        <span className="font-mono">
+                            {entityAlias ?? entityId}
+                        </span>
+                        {` `} and all associated data.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel className="cursor-pointer">
+                        Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={() => onDeleteAction(entityId)}
+                        className="cursor-pointer bg-destructive text-white hover:bg-destructive/90"
                     >
-                        <Trash2 className="size-4" />
-                    </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>
-                            Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete the {entityName}
-                            {` `}
-                            <span className="font-mono">
-                                {entityAlias ?? entityId}
-                            </span>
-                            {` `} and all associated data.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel className="cursor-pointer">
-                            Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                            onClick={() => onDeleteAction(entityId)}
-                            className="cursor-pointer bg-destructive text-white hover:bg-destructive/90"
-                        >
-                            Delete
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
-        </TooltipProvider>
+                        Delete
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     );
 }

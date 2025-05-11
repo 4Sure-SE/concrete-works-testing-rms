@@ -1,66 +1,89 @@
 "use client";
 
-import { useState } from "react";
+import type {
+    ProjectActionErrors,
+    ProjectDTO,
+    ProjectSummaryDTO,
+} from "@/lib/types/project";
 
-import { ProjectSummaryDTO } from "@/lib/types/project";
-
+import type { Callbacks } from "@/lib/types/actions.types";
+import { withCallbacks } from "@/lib/utils";
+import { deleteProject } from "@/server/actions/projects/delete-project";
+import { startTransition, useOptimistic, useState } from "react";
+import { toast } from "sonner";
 import { ProjectItem } from "./project-item";
 import { ProjectListHeader } from "./project-list-header";
 
 interface ProjectListProps {
-    projects: ProjectSummaryDTO[];
+    data: ProjectSummaryDTO[];
 }
 
-export function ProjectList({ projects }: ProjectListProps) {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+type OptimisticAction = { type: "DELETE"; payload: { id: string } };
 
-    const filteredProjects = projects.filter((project) => {
-        const matchesSearch =
-            project.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            project.contractId
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()) ||
-            project.contractName
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase());
+export function ProjectList({ data }: ProjectListProps) {
+    // delete callbacks
+    const callbacks: Callbacks<ProjectDTO | null, ProjectActionErrors> = {
+        onSuccess: () => {
+            toast.success("Project deleted successfully.");
+        },
+        onError: (error) => {
+            startTransition(() => {
+                setDeletingId(null);
+                toast.error(error.general?.[0] ?? "Failed to delete project.");
+            });
+        },
+    };
 
-        let matchesDate = true;
-        if (startDate) {
-            matchesDate =
-                matchesDate &&
-                new Date(project.dateStarted) >= new Date(startDate);
-        }
-        if (endDate) {
-            matchesDate =
-                matchesDate &&
-                new Date(project.dateStarted) <= new Date(endDate);
-        }
+    // optimistic update for project list
+    const [projects, setProjects] = useOptimistic(
+        data,
+        (currentState, action: OptimisticAction) => {
+            switch (action.type) {
+                case "DELETE":
+                    return currentState.filter(
+                        (project) => project.id !== action.payload.id,
+                    );
+                default:
+                    return currentState;
+            }
+        },
+    );
 
-        return matchesSearch && matchesDate;
-    });
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    const deleteAction = async (id: string) => {
+        setDeletingId(id);
+
+        // start a transition to delete the project
+        startTransition(async () => {
+            const deleteProjectAction = withCallbacks(
+                deleteProject.bind(null, id),
+                callbacks,
+            );
+
+            await deleteProjectAction();
+
+            // make the transition wait for the state update to finish
+            startTransition(() => {
+                setProjects({
+                    type: "DELETE",
+                    payload: { id: id },
+                });
+            });
+        });
+    };
 
     return (
         <>
-            <ProjectListHeader
-                title="Projects"
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                startDate={startDate}
-                endDate={endDate}
-                onStartDateChange={setStartDate}
-                onEndDateChange={setEndDate}
-            />
-            {filteredProjects.length > 0 ? (
+            <ProjectListHeader title="Projects" />
+            {projects.length > 0 ? (
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     {projects.map((project) => (
                         <ProjectItem
-                            contractId={project.contractId}
                             key={project.id}
-                            id={project.id}
-                            contractName={project.contractName}
-                            stats={project.stats}
+                            data={project}
+                            onDeleteAction={deleteAction}
+                            disabled={deletingId === project.id}
                         />
                     ))}
                 </div>

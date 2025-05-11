@@ -1,3 +1,3 @@
-export * from "./add-work-item-form";
-export * from "./add-work-item-form.schema";
-export * from "./work-item-select";
+export * from "./add-project-work-item-form";
+export * from "./project-work-items-table/project-work-items-table";
+export * from "./update-project-work-item-form";
