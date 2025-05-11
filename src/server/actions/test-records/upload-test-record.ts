@@ -82,56 +82,6 @@ export async function getTestRecords(testId: string) {
 
             return { success: true, data: formattedRecords };
         }
-
-        const supabase = await createClient();
-        const listResult = await supabase.storage
-            .from("test-records")
-            .list(testId);
-
-        if (listResult.error) {
-            return { success: false, error: listResult.error.message };
-        }
-
-        const recordIds: string[] = [];
-
-        for (const item of listResult.data) {
-            const recordIdentifier = `${testId}-${Date.now()}-${item.name}`;
-
-            const dbRecord = await db.workItemTestRecord.create({
-                data: {
-                    id: uuidv4(),
-                    projectWorkItemTestId: testId,
-                    recordIdentifier,
-                    fileName: item.name,
-                    fileSize:
-                        typeof item.metadata?.size === "number"
-                            ? item.metadata.size
-                            : 0,
-                    fileType: null,
-                },
-            });
-
-            recordIds.push(dbRecord.id);
-        }
-
-        if (recordIds.length > 0) {
-            const newDbRecords = await db.workItemTestRecord.findMany({
-                where: { id: { in: recordIds } },
-                orderBy: { createdAt: "desc" },
-            });
-
-            const formattedRecords = await Promise.all(
-                newDbRecords.map((record) => formatTestRecord(record, testId)),
-            );
-
-            await db.projectWorkItemTest.update({
-                where: { id: testId },
-                data: { onFile: formattedRecords.length },
-            });
-
-            return { success: true, data: formattedRecords };
-        }
-
         return { success: true, data: [] };
     } catch (error) {
         return await handleError(error, "Failed to fetch test records");
