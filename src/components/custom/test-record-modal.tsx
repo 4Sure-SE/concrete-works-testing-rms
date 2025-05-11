@@ -63,6 +63,8 @@ export function TestRecordModal({
         }
     }, [files.length, uploadFiles, fileError, onClose]);
 
+    const totalFilesCount = files.length + (testRecords?.length || 0);
+
     return (
         <Dialog
             open={isOpen}
@@ -95,6 +97,7 @@ export function TestRecordModal({
                         error={fileError}
                         disabled={isReadOnly}
                         setError={setError}
+                        filesCount={totalFilesCount}
                     />
                     <FilesList
                         pendingFiles={files}

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { MAX_FILES_LIMIT } from "@/hooks/use-file-upload";
 import { Upload } from "lucide-react";
 import { useCallback } from "react";
 import { useDropzone, type FileRejection } from "react-dropzone";
@@ -14,6 +15,7 @@ interface FileUploadAreaProps {
     error: string | null;
     disabled?: boolean;
     setError?: (error: string | null) => void;
+    filesCount?: number;
 }
 
 export function FileUploadArea({
@@ -22,6 +24,7 @@ export function FileUploadArea({
     error,
     disabled = false,
     setError,
+    filesCount = 0,
 }: FileUploadAreaProps) {
     const handleFileRejection = useCallback(
         (fileRejections: FileRejection[]) => {
@@ -59,10 +62,27 @@ export function FileUploadArea({
         onDropRejected: handleFileRejection,
         accept: ACCEPTED_FILE_TYPES,
         maxSize: MAX_FILE_SIZE,
-        disabled,
+        disabled: disabled || filesCount >= MAX_FILES_LIMIT,
     });
 
     if (disabled) return null;
+
+    if (filesCount >= MAX_FILES_LIMIT) {
+        return (
+            <div className="rounded-md border-2 border-dashed border-gray-200 bg-gray-50 p-6 text-center">
+                <Upload
+                    className="mx-auto mb-3 h-9 w-9 text-gray-300"
+                    aria-hidden="true"
+                />
+                <p className="text-sm text-gray-500">
+                    Maximum file limit reached ({MAX_FILES_LIMIT} files)
+                </p>
+                <p className="mt-1 text-xs text-gray-400">
+                    Please remove some files before uploading more
+                </p>
+            </div>
+        );
+    }
 
     return (
         <div
@@ -91,7 +111,8 @@ export function FileUploadArea({
                         : "Drag and drop files here or click to browse"}
                 </p>
                 <p className="mt-1 text-xs text-gray-500">
-                    Accepted formats: PDF (Max 10MB)
+                    Accepted formats: PDF (Max 10MB) • Maximum {MAX_FILES_LIMIT}{" "}
+                    files
                 </p>
                 {error && (
                     <p

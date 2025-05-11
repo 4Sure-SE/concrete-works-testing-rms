@@ -3,6 +3,8 @@ import { uploadTestRecord } from "@/server/actions/test-records/upload-test-reco
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
+export const MAX_FILES_LIMIT = 5;
+
 export interface FileUploadFile {
     name: string;
     size: number;
@@ -18,15 +20,33 @@ export function useFileUpload(
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleFileDrop = useCallback((acceptedFiles: File[]) => {
-        const newFiles = acceptedFiles.map((file) => ({
-            name: file.name,
-            size: file.size,
-            file,
-        }));
-        setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-        setError(null);
-    }, []);
+    const handleFileDrop = useCallback(
+        (acceptedFiles: File[]) => {
+            const newFiles = acceptedFiles.map((file) => ({
+                name: file.name,
+                size: file.size,
+                file,
+            }));
+
+            if (files.length + newFiles.length > MAX_FILES_LIMIT) {
+                setError(
+                    `You can only upload a maximum of ${MAX_FILES_LIMIT} files.`,
+                );
+                const availableSlots = MAX_FILES_LIMIT - files.length;
+                if (availableSlots > 0) {
+                    setFiles((prevFiles) => [
+                        ...prevFiles,
+                        ...newFiles.slice(0, availableSlots),
+                    ]);
+                }
+                return;
+            }
+
+            setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+            setError(null);
+        },
+        [files.length],
+    );
 
     const uploadFiles = useCallback(async () => {
         if (files.length === 0) return;
