@@ -1,8 +1,9 @@
+import Link from "next/link";
+
 import { DeleteDialog } from "@/components/custom/delete-dialog";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { ProjectSummaryDTO } from "@/lib/types/project";
 import { formatDate } from "@/lib/utils";
-import Link from "next/link";
 import { ProgressBar } from "./progress-bar";
 import { ProjectStats } from "./project-stats";
 

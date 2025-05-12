@@ -1,8 +1,11 @@
 "use client";
 
-import { startTransition, useOptimistic, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useOptimistic, useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import Pagination from "@/components/custom/custom-pagination";
 import { type Callbacks } from "@/lib/types/actions.types";
 import type {
     ProjectActionErrors,
@@ -15,32 +18,37 @@ import { ProjectItem } from "./project-item";
 import { ProjectListHeader } from "./project-list-header";
 
 interface ProjectListProps {
-    data: ProjectSummaryDTO[];
+    data: { projects: ProjectSummaryDTO[]; count: number };
+    currentPage: number;
+    itemsPerPage: number;
 }
 
 type OptimisticAction = { type: "DELETE_PENDING"; payload: { id: string } };
 
-export function ProjectList({ data }: ProjectListProps) {
-    // delete callbacks
-    const callbacks: Callbacks<ProjectDTO | null, ProjectActionErrors> = {
-        onSuccess: () => {
-            startTransition(() => {
-                setDeletingId(null);
-                toast.success("Project deleted successfully.");
-            });
-        },
-        onError: (error) => {
-            startTransition(() => {
-                setDeletingId(null);
-                toast.error(error.general?.[0] ?? "Failed to delete project.");
-            });
-        },
-    };
+export function ProjectList({
+    data,
+    currentPage,
+    itemsPerPage,
+}: ProjectListProps) {
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
+    // to disable the specific project while deleting
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    // loading state for pagination and filtering
+    const [isPaginatingOrFiltering, startUrlUpdateTransition] = useTransition();
+
+    // loading state for deleting a project
+    const [isDeleting, startDeleteTransition] = useTransition();
+
+    // optimistic state for deleting a project
+    // this will remove the project from the list without waiting for the server response
     const [optimisticProjects, setOptimisticProjects] = useOptimistic<
         ProjectSummaryDTO[],
         OptimisticAction
-    >(data, (currentState, action) => {
+    >(data.projects, (currentState, action) => {
         switch (action.type) {
             case "DELETE_PENDING":
                 return currentState.filter(
@@ -51,12 +59,27 @@ export function ProjectList({ data }: ProjectListProps) {
         }
     });
 
-    const [deletingId, setDeletingId] = useState<string | null>(null);
+    // callbacks on deleting a project
+    const callbacks: Callbacks<ProjectDTO | null, ProjectActionErrors> = {
+        onSuccess: () => {
+            // wait for the state to update before showing the toast
+            startDeleteTransition(() => {
+                setDeletingId(null);
+                toast.success("Project deleted successfully.");
+            });
+        },
+        onError: (error) => {
+            startDeleteTransition(() => {
+                setDeletingId(null);
+                toast.error(error.general?.[0] ?? "Failed to delete project.");
+            });
+        },
+    };
 
-    const deleteAction = async (id: string) => {
+    const handleDelete = async (id: string) => {
         setDeletingId(id);
 
-        startTransition(() => {
+        startDeleteTransition(() => {
             setOptimisticProjects({
                 type: "DELETE_PENDING",
                 payload: { id: id },
@@ -68,27 +91,99 @@ export function ProjectList({ data }: ProjectListProps) {
         await deleteAction(id);
     };
 
+    const handleFilter = (
+        newFilterParams: Record<string, string | undefined>,
+    ) => {
+        const params = new URLSearchParams(searchParams);
+
+        // set the new filter params from args
+        Object.entries(newFilterParams).forEach(([key, value]) => {
+            if (value) {
+                params.set(key, value);
+            } else {
+                params.delete(key);
+            }
+        });
+
+        // reset page to 1 after filtering
+        params.set("page", "1");
+
+        startUrlUpdateTransition(() => {
+            router.replace(`${pathname}?${params.toString()}`);
+        });
+    };
+
+    const handlePageChange = (pageNumber: number | string) => {
+        const params = new URLSearchParams(searchParams);
+        params.set("page", pageNumber.toString());
+        startUrlUpdateTransition(() => {
+            router.replace(`${pathname}?${params.toString()}`);
+        });
+    };
+
+    const totalPages = Math.ceil(data.count / itemsPerPage);
+
+    const isLoading = isPaginatingOrFiltering || isDeleting;
+
     return (
-        <>
-            <ProjectListHeader title="Projects" />
-            {optimisticProjects.length > 0 ? (
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    {optimisticProjects.map((project) => (
-                        <ProjectItem
-                            key={project.id}
-                            data={project}
-                            onDeleteAction={deleteAction}
-                            disabled={deletingId === project.id}
+        <div className="flex min-h-full flex-col">
+            <ProjectListHeader
+                title="Projects"
+                isFiltering={isPaginatingOrFiltering}
+                onFilterChange={handleFilter}
+            />
+
+            <div className="grow">
+                {optimisticProjects.length > 0 ? (
+                    <div className={`grid grid-cols-1 gap-6 md:grid-cols-2`}>
+                        {optimisticProjects.map((project) => (
+                            <ProjectItem
+                                key={project.id}
+                                data={project}
+                                onDeleteAction={handleDelete}
+                                disabled={
+                                    deletingId === project.id ||
+                                    isPaginatingOrFiltering
+                                }
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex h-full flex-col items-center justify-center py-24">
+                        <p className="text-lg text-muted-foreground">
+                            No projects found.
+                        </p>
+                    </div>
+                )}
+            </div>
+
+            {totalPages > 1 && (
+                <div className="mt-auto pt-4">
+                    <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:justify-between">
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            paginate={handlePageChange}
+                            isDisabled={isLoading}
                         />
-                    ))}
-                </div>
-            ) : (
-                <div className="flex flex-col items-center justify-center py-24">
-                    <p className="text-lg text-muted-foreground">
-                        No projects found.
-                    </p>
+                        <div className="text-center text-sm whitespace-nowrap text-muted-foreground sm:text-right">
+                            {isPaginatingOrFiltering && !isDeleting ? (
+                                <span className="inline-flex items-center">
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Loading projects...
+                                </span>
+                            ) : (
+                                <span>
+                                    {`Showing ${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
+                                        currentPage * itemsPerPage,
+                                        data.count,
+                                    )} of ${data.count} projects`}
+                                </span>
+                            )}
+                        </div>
+                    </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }

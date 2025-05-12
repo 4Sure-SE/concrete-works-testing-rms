@@ -64,6 +64,7 @@ import {
 import {
     generateProjectShareLink,
     getProjectDetailsByToken,
+    getProjectsCount,
 } from "../data-access/project/project";
 import type { WorkItemMaterialDefinitionPayload } from "../data-access/work-item-material/work-item-material.payloads";
 import type { WorkItemTestDefinitionPayload } from "../data-access/work-item-test/work-item-test.payloads";
@@ -264,7 +265,13 @@ export const ProjectService = {
 
         return dto;
     },
+    async getProjectsCount(filters: ProjectListFilters): Promise<number> {
+        console.log(`[Service] Getting projects count`);
 
+        const count = await getProjectsCount(filters);
+
+        return count;
+    },
     // get project summary list
     async getProjectSummaryList(
         filters: ProjectListFilters,
@@ -287,13 +294,15 @@ export const ProjectService = {
     // used in the sidebar
     async getLastFiveProjectSummaryList(): Promise<ProjectSummaryDTO[]> {
         console.log(`[Service] Getting last 5 project summaries`);
-        const allProjectsPayload = await getProjectSummaryList({});
+        const lastFiveSummariesPayload = await getProjectSummaryList({
+            currentPage: 1,
+            itemsPerPage: 5,
+        });
 
         // transform to dto used by the ui
-        const allSummaries = allProjectsPayload
+        const lastFiveSummaries = lastFiveSummariesPayload
             .map(projectSummaryToDTO)
             .filter((vm): vm is ProjectSummaryDTO => vm !== null);
-        const lastFiveSummaries = allSummaries.slice(0, 5);
 
         console.log(
             `[Service] Retrieved ${lastFiveSummaries.length} project summaries (last 5)`,
