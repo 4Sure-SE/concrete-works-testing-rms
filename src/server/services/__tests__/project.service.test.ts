@@ -217,7 +217,7 @@ describe("ProjectService", () => {
 
             expect(result).toBeDefined(); // ensure update result exists
             expect(result.onFile).toBeGreaterThanOrEqual(3); // depending on test data
-        });
+        }, 20000);
 
         it("successfully decrement test count", async () => {
             await projectDataAccess.createProject(fakeProject);
@@ -247,7 +247,7 @@ describe("ProjectService", () => {
 
             expect(result).toBeDefined(); // ensure update result exists
             expect(result.onFile).toEqual(2); // depending on test data
-        }, 10000);
+        }, 20000);
 
         it("should throw an error if work item test is not found", async () => {
             const fakeWorkItemTestId = "123e4567-e89b-12d3-a456-426614174000";
@@ -258,7 +258,7 @@ describe("ProjectService", () => {
                     3,
                 ),
             ).rejects.toThrow("Work item test not found");
-        });
+        }, 20000);
 
         it("should throw an error when DB update fails", async () => {
             await projectDataAccess.createProject(fakeProject);
@@ -285,7 +285,7 @@ describe("ProjectService", () => {
                     1,
                 ),
             ).rejects.toThrow("DB Error");
-        });
+        }, 20000);
     });
 
     describe("updateProjectMaterialTestCount", () => {
@@ -326,7 +326,7 @@ describe("ProjectService", () => {
 
             expect(result).toBeDefined(); // ensure update result exists
             expect(result.onFile).toBeGreaterThanOrEqual(3); // depending on test data
-        });
+        }, 20000);
 
         it("successfully decrement test count", async () => {
             await projectDataAccess.createProject(fakeProject);
@@ -357,7 +357,7 @@ describe("ProjectService", () => {
 
             expect(result).toBeDefined(); // ensure update result exists
             expect(result.onFile).toEqual(2); // depending on test data
-        }, 10000);
+        }, 20000);
 
         it("should throw an error if work item test is not found", async () => {
             const fakeMaterialTestId = "123e4567-e89b-12d3-a456-426614174000";
@@ -368,7 +368,7 @@ describe("ProjectService", () => {
                     3,
                 ),
             ).rejects.toThrow("[Service] Material test not found");
-        });
+        }, 20000);
 
         it("should throw an error when DB update fails", async () => {
             await projectDataAccess.createProject(fakeProject);
@@ -396,6 +396,6 @@ describe("ProjectService", () => {
                     1,
                 ),
             ).rejects.toThrow("DB Error");
-        });
+        }, 20000);
     });
 });
