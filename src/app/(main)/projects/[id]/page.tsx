@@ -1,8 +1,9 @@
-import { tryCatch } from "@/lib/utils";
-import { ProjectService } from "@/server/services/project.service";
 import { FolderOpen } from "lucide-react";
 import { Suspense } from "react";
 import { validate as uuidValidate } from "uuid";
+
+import { tryCatch } from "@/lib/utils";
+import { ProjectService } from "@/server/services/project.service";
 import { ProjectContractDetails } from "./_components/project-details/contract-details";
 import { ProjectDetailsSkeleton } from "./_components/project-details/project-details-skeleton";
 import { ProjectWorkItemsTable } from "./_components/table/table";
@@ -40,7 +41,7 @@ async function ProjectDetailsContent({ id }: { id: string }) {
                 id={id}
                 project={project}
             />
-            <ProjectWorkItemsTable initialProjectData={project} />
+            <ProjectWorkItemsTable data={project} />
         </div>
     );
 }
