@@ -1,9 +1,10 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useDebouncedCallback } from "use-debounce";
+
+import { Input } from "@/components/ui/input";
 
 interface SearchBarProps {
     placeholder: string;
@@ -26,8 +27,9 @@ export function SearchBar({
         }
     }, [value]);
 
+    // trigger the search on every change detected after 500ms
     const debouncedSearch = useDebouncedCallback((term: string) => {
-        onSearchChange(term || undefined);
+        onSearchChange(term.trim() || undefined);
     }, 500);
 
     return (

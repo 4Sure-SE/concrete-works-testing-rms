@@ -14,14 +14,20 @@ interface CustomPaginationProps {
     currentPage: number;
     totalPages: number;
     paginate: (pageNumber: number) => void;
+    isDisabled?: boolean;
 }
 
-export default function CustomPagination(props: CustomPaginationProps) {
+export default function CustomPagination({
+    currentPage,
+    paginate,
+    totalPages,
+    isDisabled = false,
+}: CustomPaginationProps) {
     const maxVisiblePages = 5;
     const halfVisible = Math.floor(maxVisiblePages / 2);
 
-    let startPage = Math.max(props.currentPage - halfVisible, 1);
-    const endPage = Math.min(startPage + maxVisiblePages - 1, props.totalPages);
+    let startPage = Math.max(currentPage - halfVisible, 1);
+    const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
 
     if (endPage - startPage + 1 < maxVisiblePages) {
         startPage = Math.max(endPage - maxVisiblePages + 1, 1);
@@ -33,12 +39,11 @@ export default function CustomPagination(props: CustomPaginationProps) {
     );
 
     const handlePrevious = () => {
-        if (props.currentPage !== 1) props.paginate(props.currentPage - 1);
+        if (currentPage !== 1) paginate(currentPage - 1);
     };
 
     const handleNext = () => {
-        if (props.currentPage !== props.totalPages)
-            props.paginate(props.currentPage + 1);
+        if (currentPage !== totalPages) paginate(currentPage + 1);
     };
 
     return (
@@ -47,9 +52,9 @@ export default function CustomPagination(props: CustomPaginationProps) {
                 <PaginationItem>
                     <PaginationPrevious
                         onClick={handlePrevious}
-                        isActive={props.currentPage !== 1}
+                        isActive={currentPage !== 1}
                         className={
-                            props.currentPage === 1
+                            currentPage === 1 || isDisabled
                                 ? "pointer-events-none opacity-50"
                                 : "cursor-pointer"
                         }
@@ -58,7 +63,14 @@ export default function CustomPagination(props: CustomPaginationProps) {
                 {startPage > 1 && (
                     <>
                         <PaginationItem className="cursor-pointer">
-                            <PaginationLink onClick={() => props.paginate(1)}>
+                            <PaginationLink
+                                onClick={() => paginate(1)}
+                                className={
+                                    isDisabled
+                                        ? "pointer-events-none opacity-50"
+                                        : "cursor-pointer"
+                                }
+                            >
                                 1
                             </PaginationLink>
                         </PaginationItem>
@@ -71,23 +83,31 @@ export default function CustomPagination(props: CustomPaginationProps) {
                         className="cursor-pointer"
                     >
                         <PaginationLink
-                            onClick={() => props.paginate(number)}
-                            isActive={props.currentPage === number}
+                            onClick={() => paginate(number)}
+                            isActive={currentPage === number}
+                            className={
+                                currentPage != number || isDisabled
+                                    ? "pointer-events-none opacity-50"
+                                    : "cursor-pointer"
+                            }
                         >
                             {number}
                         </PaginationLink>
                     </PaginationItem>
                 ))}
-                {endPage < props.totalPages && (
+                {endPage < totalPages && (
                     <>
-                        {endPage < props.totalPages - 1 && (
-                            <PaginationEllipsis />
-                        )}
+                        {endPage < totalPages - 1 && <PaginationEllipsis />}
                         <PaginationItem className="cursor-pointer">
                             <PaginationLink
-                                onClick={() => props.paginate(props.totalPages)}
+                                onClick={() => paginate(totalPages)}
+                                className={
+                                    isDisabled
+                                        ? "pointer-events-none opacity-50"
+                                        : "cursor-pointer"
+                                }
                             >
-                                {props.totalPages}
+                                {totalPages}
                             </PaginationLink>
                         </PaginationItem>
                     </>
@@ -95,9 +115,9 @@ export default function CustomPagination(props: CustomPaginationProps) {
                 <PaginationItem>
                     <PaginationNext
                         onClick={handleNext}
-                        isActive={props.currentPage !== props.totalPages}
+                        isActive={currentPage !== totalPages || !isDisabled}
                         className={
-                            props.currentPage === props.totalPages
+                            currentPage === totalPages || isDisabled
                                 ? "pointer-events-none opacity-50"
                                 : "cursor-pointer"
                         }

@@ -1,35 +1,38 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 
-export function ClearFiltersButton() {
-    const pathname = usePathname();
+import { Button } from "@/components/ui/button";
+
+interface ClearFiltersButtonProps {
+    onClear: () => void;
+    isPending?: boolean;
+}
+
+export function ClearFiltersButton({
+    onClear,
+    isPending = false,
+}: ClearFiltersButtonProps) {
     const searchParams = useSearchParams();
-    const router = useRouter();
-    const [isPending, startTransition] = useTransition();
 
-    const hasFilters = searchParams.size > 0;
+    // only show the button if there are filters applied
+    const hasFilters =
+        searchParams.has("query") ||
+        searchParams.has("from") ||
+        searchParams.has("to");
 
     if (!hasFilters) return null;
 
-    const handleClearFilters = () => {
-        const params = new URLSearchParams();
-        startTransition(() => {
-            router.replace(`${pathname}?${params.toString()}`);
-        });
-    };
-
     return (
         <Button
-            onClick={handleClearFilters}
+            onClick={onClear}
             variant="outline"
             className="cursor-pointer"
             disabled={isPending}
         >
-            <X className="mr-2 h-4 w-4" /> <span>Clear Filters</span>
+            <X className="mr-2 h-4 w-4" />
+            <span>Clear Filters</span>
         </Button>
     );
 }

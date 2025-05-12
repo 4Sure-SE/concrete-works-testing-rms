@@ -1,6 +1,7 @@
+import { Suspense } from "react";
+
 import { tryCatch } from "@/lib/utils";
 import { ProjectService } from "@/server/services";
-import { Suspense } from "react";
 import { ProjectList, ProjectListSkeleton } from "./_components";
 
 const ITEMS_PER_PAGE = 4;
