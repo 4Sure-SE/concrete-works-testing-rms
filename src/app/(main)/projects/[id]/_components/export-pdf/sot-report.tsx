@@ -1,7 +1,8 @@
-import type { Projects } from "@/lib/types/project";
 import { Table, TD, TH, TR } from "@ag-media/react-pdf-table";
 import { Document, Page, pdf, Text, View } from "@react-pdf/renderer";
 import React from "react";
+
+import type { Projects } from "@/lib/types/project";
 import { styles } from "./sot-pdf-styles";
 
 const abbreviateUnit = (unit: string) => {

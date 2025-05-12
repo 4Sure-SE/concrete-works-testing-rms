@@ -426,7 +426,7 @@ export const ProjectService = {
         const test = await getProjectMaterialTestById(id);
 
         if (!test) {
-            throw new Error("Work item test not found");
+            throw new Error("Material test not found");
         }
 
         const newValue = Math.max(0, (test.onFile ?? 0) + amount);

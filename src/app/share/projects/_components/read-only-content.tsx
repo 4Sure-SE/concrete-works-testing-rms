@@ -8,7 +8,8 @@ import { ProjectWorkItemsTable } from "@/app/(main)/projects/[id]/_components/ta
 import { Button } from "@/components/ui/button";
 import type { Projects } from "@/lib/types/project";
 import { RefreshCw } from "lucide-react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 function ActionButtons({
     project,
@@ -30,7 +31,7 @@ function ActionButtons({
                     size="default"
                     onClick={onRefresh}
                     disabled={isRefreshing}
-                    className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 sm:gap-2 sm:text-sm md:text-sm"
+                    className="flex cursor-pointer items-center gap-1 px-2 py-1 text-xs text-gray-700 sm:gap-2 sm:text-sm md:text-sm"
                 >
                     <RefreshCw
                         className={`h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ${isRefreshing ? "animate-spin" : ""}`}
@@ -49,13 +50,13 @@ function ActionButtons({
 }
 
 export function ReadOnlyProjectContent({ project }: { project: Projects }) {
-    const [isRefreshing, setIsRefreshing] = useState(false);
+    const router = useRouter();
+    const [isRefreshing, startRefreshing] = useTransition();
 
     const handleRefresh = () => {
-        if (isRefreshing) return;
-
-        setIsRefreshing(true);
-        window.location.reload();
+        startRefreshing(() => {
+            router.refresh();
+        });
     };
 
     return (
@@ -66,7 +67,7 @@ export function ReadOnlyProjectContent({ project }: { project: Projects }) {
                 onRefresh={handleRefresh}
             />
             <ProjectWorkItemsTable
-                initialProjectData={project}
+                data={project}
                 isReadOnly={true}
             />
         </>
