@@ -23,16 +23,20 @@ export default function CustomPagination({
     totalPages,
     isDisabled = false,
 }: CustomPaginationProps) {
-    const maxVisiblePages = 5;
+    const maxVisiblePages = 4;
     const halfVisible = Math.floor(maxVisiblePages / 2);
 
+    // first page number to show based on the current page
     let startPage = Math.max(currentPage - halfVisible, 1);
+
+    // last page number to show
     const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
 
     if (endPage - startPage + 1 < maxVisiblePages) {
         startPage = Math.max(endPage - maxVisiblePages + 1, 1);
     }
 
+    // all page numbers to show
     const pageNumbers = Array.from(
         { length: endPage - startPage + 1 },
         (_, i) => startPage + i,
@@ -78,15 +82,12 @@ export default function CustomPagination({
                     </>
                 )}
                 {pageNumbers.map((number) => (
-                    <PaginationItem
-                        key={number}
-                        className="cursor-pointer"
-                    >
+                    <PaginationItem key={number}>
                         <PaginationLink
                             onClick={() => paginate(number)}
-                            isActive={currentPage === number}
+                            isActive={currentPage !== number}
                             className={
-                                currentPage != number || isDisabled
+                                currentPage === number || isDisabled
                                     ? "pointer-events-none opacity-50"
                                     : "cursor-pointer"
                             }
