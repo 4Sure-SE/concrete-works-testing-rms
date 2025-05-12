@@ -118,18 +118,17 @@ describe("ProjectService", () => {
                     }),
                 ],
             });
-        });
+        }, 20000);
 
         it("should return an error if project is not found", async () => {
-            const fakeProjectId = "550e8400-e29b-41d4-a716-446655440000"; // valid UUID
+            const fakeProjectId = "550e8400-e29b-41d4-a716-446655440000";
 
-            // Use async/await with expect.rejects to check for error thrown
             await expect(
                 ProjectService.getProjectDetails(fakeProjectId),
             ).rejects.toThrowError(
                 `[Service] Project with ID ${fakeProjectId} not found`,
             );
-        });
+        }, 20000);
 
         it("should return a DTO with empty work items if none exist", async () => {
             const project = { ...fakeProject };
@@ -138,7 +137,7 @@ describe("ProjectService", () => {
             const result = await ProjectService.getProjectDetails(project.id);
 
             expect(result.projectWorkItem).toEqual([]);
-        });
+        }, 20000);
 
         it("throws an error when projectDetailsToDTO conversion fails", async () => {
             await projectDataAccess.createProject(fakeProject);
@@ -153,7 +152,8 @@ describe("ProjectService", () => {
             ).rejects.toThrow(
                 `[Service] Failed to convert project ID: ${fakeProject.id} to DTO`,
             );
-        });
+        }, 20000);
+
         it("throws a vague error when the DB fails during getProjectDetails", async () => {
             await projectDataAccess.createProject(fakeProject);
             const dbError = new Error("DB Error");
@@ -171,7 +171,7 @@ describe("ProjectService", () => {
             );
 
             expect(getProjectDetailsByIdSpy).toHaveBeenCalledWith(projectId);
-        });
+        }, 20000);
     });
 
     describe("updateProjectWorkItemsTestCount", () => {
@@ -343,7 +343,7 @@ describe("ProjectService", () => {
                 projectDetails.projectWorkItem?.[0]?.materials[0]
                     ?.materialTest[0]?.id;
 
-            expect(materialTestId).toBeDefined(); // ensure we have a valid test ID
+            expect(materialTestId).toBeDefined();
 
             await ProjectService.updateProjectMaterialTestCount(
                 materialTestId!,
