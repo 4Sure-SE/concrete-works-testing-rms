@@ -41,6 +41,8 @@ export type ProjectListFilters = {
     query?: string;
     dateFrom?: string;
     dateTo?: string;
+    currentPage: number;
+    itemsPerPage: number;
 };
 
 // client to server dto for creating project
