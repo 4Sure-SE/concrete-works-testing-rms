@@ -1,5 +1,9 @@
 "use client";
 
+import { ArchiveX } from "lucide-react";
+import { Fragment, useOptimistic, useTransition } from "react";
+import { toast } from "sonner";
+
 import {
     Table,
     TableBody,
@@ -17,26 +21,42 @@ import type {
 } from "@/lib/types/project-test/project-test.types";
 import { withCallbacks } from "@/lib/utils";
 import { updateProjectTestOnFile } from "@/server/actions/projects/update-test-on-file";
-import { ArchiveX } from "lucide-react";
-import { Fragment, useState, useTransition } from "react";
-import { toast } from "sonner";
 import { ProjectDetailsActionButtons } from "../action-buttons/action-buttons";
 import { updateProjectTest } from "../test-columns/update-project-test";
 import { MaterialsTable } from "./materials-table";
 import { WorkItemsTable } from "./work-items-table";
 
 interface ProjectWorkItemsTableProps {
-    initialProjectData: Projects;
+    data: Projects;
     isReadOnly?: boolean;
 }
 
+type OptimisticAction = {
+    type: "UPDATE_PENDING";
+    payload: { testId: string; changeAmount: number; testType: TestUpdateType };
+};
+
 export function ProjectWorkItemsTable({
-    initialProjectData,
+    data,
     isReadOnly = false,
-    // updateProjectTestAction,
 }: ProjectWorkItemsTableProps) {
     const [isPending, startTransition] = useTransition();
-    const [projectData, setProjectData] = useState(initialProjectData);
+    const [optimisticProjectData, setOptimisticProjectData] = useOptimistic<
+        Projects,
+        OptimisticAction
+    >(data, (currentState, action) => {
+        switch (action.type) {
+            case "UPDATE_PENDING":
+                return updateProjectTest(
+                    currentState,
+                    action.payload.testId,
+                    action.payload.changeAmount,
+                    action.payload.testType,
+                );
+            default:
+                return currentState;
+        }
+    });
 
     const handleTestCountUpdate = async (
         testId: string,
@@ -50,54 +70,44 @@ export function ProjectWorkItemsTable({
             string
         > = {
             onSuccess: () => {
-                toast.success("Test count updated successfully");
                 startTransition(() => {
-                    setProjectData((prevData) =>
-                        updateProjectTest(
-                            prevData,
-                            testId,
-                            changeAmount,
-                            testType,
-                        ),
-                    );
+                    toast.success("Test count updated successfully");
                 });
             },
             onError: (error) => {
-                toast.error(error);
                 startTransition(() => {
-                    setProjectData((prevData) =>
-                        updateProjectTest(
-                            prevData,
-                            testId,
-                            -changeAmount,
-                            testType,
-                        ),
-                    );
+                    toast.error(error);
                 });
             },
         };
 
-        startTransition(async () => {
-            const boundAction = updateProjectTestOnFile.bind(
-                null,
-                testId,
-                changeAmount,
-                testType,
-            );
-            const action = withCallbacks(boundAction, callbacks);
-            await action();
+        startTransition(() => {
+            setOptimisticProjectData({
+                type: "UPDATE_PENDING",
+                payload: { testId, changeAmount, testType },
+            });
         });
-    };
 
+        const boundAction = updateProjectTestOnFile.bind(
+            null,
+            testId,
+            changeAmount,
+            testType,
+        );
+        const action = withCallbacks(boundAction, callbacks);
+        await action();
+    };
     return (
         <>
-            <ProjectDetailsActionButtons
-                project={projectData}
-                disabled={isPending}
-                isReadOnly={isReadOnly}
-            />
+            {!isReadOnly && (
+                <ProjectDetailsActionButtons
+                    project={optimisticProjectData}
+                    disabled={isPending}
+                    isReadOnly={isReadOnly}
+                />
+            )}
             <div className="overflow-y-auto p-8">
-                {projectData.projectWorkItem?.length === 0 ? (
+                {optimisticProjectData.projectWorkItem?.length === 0 ? (
                     <div>
                         <div className="flex flex-col items-center justify-center p-30 text-base">
                             <ArchiveX className="mb-2 h-10 w-10"></ArchiveX>
@@ -106,7 +116,7 @@ export function ProjectWorkItemsTable({
                     </div>
                 ) : (
                     <div
-                        key={projectData.id}
+                        key={optimisticProjectData.id}
                         className="rounded-md border"
                     >
                         <Table className="w-full border-separate border-spacing-0 overflow-hidden rounded-[7px]">
@@ -122,19 +132,19 @@ export function ProjectWorkItemsTable({
                                         Quantity
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
-                                        Unit{" "}
+                                        Unit
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
                                         Test Required
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
-                                        No. of Tests on File{" "}
+                                        No. of Tests on File
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
                                         Balance
                                     </TableHead>
                                     <TableHead className="px-6 text-center text-gray-700">
-                                        Test Record
+                                        Test Records
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
                                         Status
@@ -142,7 +152,7 @@ export function ProjectWorkItemsTable({
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {projectData.projectWorkItem?.map(
+                                {optimisticProjectData.projectWorkItem?.map(
                                     (workItem) => (
                                         <Fragment
                                             key={`workItem-fragment-${workItem.id}`}
@@ -153,7 +163,6 @@ export function ProjectWorkItemsTable({
                                                     handleTestCountUpdate
                                                 }
                                                 isReadOnly={isReadOnly}
-                                                // updatingTests={updatingTests}
                                             />
                                             {workItem.materials.map(
                                                 (material) => (
@@ -164,9 +173,6 @@ export function ProjectWorkItemsTable({
                                                             handleTestCountUpdate
                                                         }
                                                         isReadOnly={isReadOnly}
-                                                        // updatingTests={
-                                                        //     updatingTests
-                                                        // }
                                                     />
                                                 ),
                                             )}

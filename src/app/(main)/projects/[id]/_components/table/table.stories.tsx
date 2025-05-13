@@ -65,7 +65,7 @@ type Story = StoryObj<typeof meta>;
 export const DefaultWithData: Story = {
     name: "Default View (With Data)",
     args: {
-        initialProjectData: fakeProjectsData,
+        data: fakeProjectsData,
         isReadOnly: false,
     },
 };
@@ -73,7 +73,7 @@ export const DefaultWithData: Story = {
 export const ReadOnlyWithData: Story = {
     name: "Read-Only View (With Data)",
     args: {
-        initialProjectData: fakeProjectsData,
+        data: fakeProjectsData,
         isReadOnly: true,
     },
 };
@@ -81,7 +81,7 @@ export const ReadOnlyWithData: Story = {
 export const EmptyStateNoWorkItems: Story = {
     name: "Empty State (No Work Items)",
     args: {
-        initialProjectData: fakeEmptyProjectDetails,
+        data: fakeEmptyProjectDetails,
         isReadOnly: false,
     },
 };
@@ -89,7 +89,7 @@ export const EmptyStateNoWorkItems: Story = {
 export const ReadOnlyEmptyState: Story = {
     name: "Read-Only View (Empty State)",
     args: {
-        initialProjectData: fakeEmptyProjectDetails as Projects,
+        data: fakeEmptyProjectDetails as Projects,
         isReadOnly: true,
     },
 };

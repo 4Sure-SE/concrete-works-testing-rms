@@ -1,10 +1,12 @@
 "use client";
+
+import { FileText } from "lucide-react";
+import { useState } from "react";
+
 import { TestRecordModal } from "@/components/custom/test-record-modal";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { Material } from "@/lib/types/project";
-import { FileText } from "lucide-react";
-import { useState } from "react";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
@@ -84,7 +86,7 @@ export function MaterialsTable({
                         <Button
                             size="sm"
                             variant="outline"
-                            className="bg-primary-50 hover:bg-primary-100 flex min-w-[100px] items-center gap-1 text-xs font-medium"
+                            className="bg-primary-50 hover:bg-primary-100 flex min-w-[100px] cursor-pointer items-center gap-1 text-xs font-medium"
                             onClick={() => handleManageClick(test.id)}
                         >
                             <FileText className="h-4 w-4" />
