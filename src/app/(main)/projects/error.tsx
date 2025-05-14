@@ -2,6 +2,7 @@
 
 import { SupportLink } from "@/components/custom/support-link";
 import { Button } from "@/components/ui/button";
+import { env } from "@/env";
 import { AlertTriangle, RefreshCcw } from "lucide-react";
 import { useEffect } from "react";
 
@@ -36,7 +37,7 @@ export default function ProjectsError({
                         Error Code: {error.digest}
                     </p>
                 )}
-                {process.env.NODE_ENV === "development" && error?.message && (
+                {env.NODE_ENV === "development" && error?.message && (
                     <details className="mt-2 text-left text-xs text-muted-foreground">
                         <summary className="cursor-pointer font-medium">
                             Error Details (Dev Only)

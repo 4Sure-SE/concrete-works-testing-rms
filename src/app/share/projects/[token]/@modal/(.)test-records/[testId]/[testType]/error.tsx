@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { env } from "@/env";
 import { AlertTriangleIcon, RefreshCcwIcon, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -37,17 +38,16 @@ export default function TestRecordsModalError({
                             Error Code: {error.digest}
                         </p>
                     )}
-                    {process.env.NODE_ENV === "development" &&
-                        error?.message && (
-                            <details className="mt-2 text-left text-xs text-muted-foreground">
-                                <summary className="cursor-pointer font-medium">
-                                    Details (Dev Only)
-                                </summary>
-                                <pre className="mt-1 rounded-md bg-muted/50 p-2 text-left whitespace-pre-wrap">
-                                    {error.stack ?? error.message}
-                                </pre>
-                            </details>
-                        )}
+                    {env.NODE_ENV === "development" && error?.message && (
+                        <details className="mt-2 text-left text-xs text-muted-foreground">
+                            <summary className="cursor-pointer font-medium">
+                                Details (Dev Only)
+                            </summary>
+                            <pre className="mt-1 rounded-md bg-muted/50 p-2 text-left whitespace-pre-wrap">
+                                {error.stack ?? error.message}
+                            </pre>
+                        </details>
+                    )}
                 </div>
                 <div className="flex justify-center gap-3">
                     <Button

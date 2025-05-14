@@ -162,6 +162,7 @@ export function ProjectWorkItemsTable({
                                                 onTestCountUpdate={
                                                     handleTestCountUpdate
                                                 }
+                                                isUpdating={isPending}
                                                 isReadOnly={isReadOnly}
                                             />
                                             {workItem.materials.map(
@@ -172,6 +173,7 @@ export function ProjectWorkItemsTable({
                                                         onTestCountUpdate={
                                                             handleTestCountUpdate
                                                         }
+                                                        isUpdating={isPending}
                                                         isReadOnly={isReadOnly}
                                                     />
                                                 ),

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { env } from "@/env";
 import { AlertCircleIcon, RefreshCcwIcon } from "lucide-react";
 import { useEffect } from "react";
 
@@ -35,7 +36,7 @@ export default function SharedProjectError({
                         Error Code: {error.digest}
                     </p>
                 )}
-                {process.env.NODE_ENV === "development" && error?.message && (
+                {env.NODE_ENV === "development" && error?.message && (
                     <details className="mt-2 text-left text-xs text-red-600 dark:text-red-300/80">
                         <summary className="cursor-pointer font-medium">
                             Details (Dev Only)

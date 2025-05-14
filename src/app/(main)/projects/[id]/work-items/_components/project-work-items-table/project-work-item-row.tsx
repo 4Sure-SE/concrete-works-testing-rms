@@ -11,6 +11,7 @@ import type {
     ProjectWorkItemDTO,
 } from "@/lib/types/project-work-item/project-work-item.types";
 import { withCallbacks } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
     UpdateProjectWorkItemActions,
@@ -20,6 +21,7 @@ import {
 import ProjectWorkItemsTableActions from "./project-work-items-table-actions";
 
 interface ProjectWorkItemRowProps {
+    projectId: string;
     item: ProjectWorkItemDTO;
     isEditing: boolean;
     isDeleting: boolean;
@@ -34,6 +36,7 @@ interface ProjectWorkItemRowProps {
 }
 
 export function ProjectWorkItemRow({
+    projectId,
     item,
     isEditing,
     isDeleting,
@@ -42,15 +45,20 @@ export function ProjectWorkItemRow({
     onDelete,
     updateAction,
 }: ProjectWorkItemRowProps) {
+    const router = useRouter();
+
     const callbacks: Callbacks<
         ProjectWorkItemDTO | null,
         ProjectWorkItemActionErrors
     > = {
         onSuccess: (_data) => {
-            toast.success("Quantity updated successfully.");
             startTransition(() => {
-                form.reset();
-                onCancel();
+                router.push(`/projects/${projectId}`, { scroll: false });
+                startTransition(() => {
+                    onCancel();
+                    form.reset();
+                    toast.success("Quantity updated successfully.");
+                });
             });
         },
         onError: (error) => {

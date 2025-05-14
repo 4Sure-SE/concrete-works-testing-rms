@@ -1,6 +1,6 @@
 "use client";
 
-import { useOptimistic, useState, useTransition } from "react";
+import { startTransition, useOptimistic, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import EmptyMessage from "@/components/custom/empty-message";
@@ -16,9 +16,11 @@ import type {
     ProjectWorkItemDTO,
 } from "@/lib/types/project-work-item/project-work-item.types";
 import { updateProjectWorkItem } from "@/server/actions/projects/update-project-work-item";
+import { useRouter } from "next/navigation";
 import { ProjectWorkItemRow } from "./project-work-item-row";
 
 interface ProjectWorkItemsTableProps {
+    projectId: string;
     data: ProjectWorkItemDTO[];
     onDeleteAction: (id: string) => Promise<ProjectWorkItemActionState>;
 }
@@ -26,9 +28,11 @@ interface ProjectWorkItemsTableProps {
 type OptimisticAction = { type: "DELETE"; payload: { id: string } };
 
 export function ProjectWorkItemsTable({
+    projectId,
     data,
     onDeleteAction,
 }: ProjectWorkItemsTableProps) {
+    const router = useRouter();
     // allow simultaneous edits
     const [editingItemIds, setEditingItemIds] = useState<string[]>([]);
 
@@ -66,7 +70,10 @@ export function ProjectWorkItemsTable({
                     result.error?.general?.[0] ?? "Failed to delete work item.";
                 toast.error(errorMsg);
             } else {
-                toast.success(`Work ${result.data?.itemNo ?? ""} deleted.`);
+                startTransition(() => {
+                    toast.success(`Work ${result.data?.itemNo ?? ""} deleted.`);
+                    router.push(`/projects/${projectId}`, { scroll: false });
+                });
             }
         });
     };
@@ -109,6 +116,7 @@ export function ProjectWorkItemsTable({
 
                     return (
                         <ProjectWorkItemRow
+                            projectId={projectId}
                             key={item.id}
                             item={item}
                             isEditing={isEditingThisRow}
