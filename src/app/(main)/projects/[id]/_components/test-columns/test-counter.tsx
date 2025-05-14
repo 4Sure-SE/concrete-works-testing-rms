@@ -3,16 +3,16 @@
 import { Loader2, Minus, Plus } from "lucide-react";
 import { useState } from "react";
 
-import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
+import type { TestType } from "@/lib/types/project-test/project-test.types";
 
 interface TestCounterProps {
     id: string | undefined;
     value: number;
-    type: TestUpdateType;
+    type: TestType;
     updateTestAction: (
         id: string,
         amount: number,
-        type: TestUpdateType,
+        type: TestType,
     ) => Promise<void>;
     isReadOnly?: boolean;
 }

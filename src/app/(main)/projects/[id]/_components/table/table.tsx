@@ -17,7 +17,7 @@ import type { Projects } from "@/lib/types/project";
 import type {
     ProjectMaterialTest,
     ProjectWorkItemTest,
-    TestUpdateType,
+    TestType,
 } from "@/lib/types/project-test/project-test.types";
 import { withCallbacks } from "@/lib/utils";
 import { updateProjectTestOnFile } from "@/server/actions/projects/update-test-on-file";
@@ -33,7 +33,7 @@ interface ProjectWorkItemsTableProps {
 
 type OptimisticAction = {
     type: "UPDATE_PENDING";
-    payload: { testId: string; changeAmount: number; testType: TestUpdateType };
+    payload: { testId: string; changeAmount: number; testType: TestType };
 };
 
 export function ProjectWorkItemsTable({
@@ -61,7 +61,7 @@ export function ProjectWorkItemsTable({
     const handleTestCountUpdate = async (
         testId: string,
         changeAmount: number,
-        testType: TestUpdateType,
+        testType: TestType,
     ) => {
         if (isReadOnly) return;
 
@@ -142,6 +142,9 @@ export function ProjectWorkItemsTable({
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
                                         Balance
+                                    </TableHead>
+                                    <TableHead className="px-2 text-center text-gray-700">
+                                        Test Records
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
                                         Status

@@ -1,6 +1,6 @@
 import { type ActionState } from "../actions.types";
 
-export type TestUpdateType = "material" | "workItem";
+export type TestType = "material" | "work-item";
 
 export type ProjectWorkItemTest = {
     id: string;

@@ -27,7 +27,7 @@ async function SharedProjectContent({ token }: { token: string }) {
     }
 
     return (
-        <div>
+        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
             <div className="flex justify-center p-4">
                 <div
                     role="status"
