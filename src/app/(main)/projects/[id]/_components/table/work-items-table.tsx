@@ -76,22 +76,24 @@ export function WorkItemsTable({
                         <TableCell className="text-center">
                             {sortedWorkItemTests?.[0]?.balance ?? "N/A"}
                         </TableCell>
-                        <TableCell className="px-6 text-center">
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                className="bg-primary-50 hover:bg-primary-100 flex min-w-[100px] cursor-pointer items-center gap-1 text-xs font-medium"
-                                onClick={() =>
-                                    workItem.itemTest[0]?.id
-                                        ? handleManageClick(
-                                              workItem.itemTest[0].id,
-                                          )
-                                        : undefined
-                                }
-                            >
-                                <FileText className="h-4 w-4" />
-                                {isReadOnly ? "View" : "Manage"}
-                            </Button>
+                        <TableCell className="px-2 py-1">
+                            <div className="flex items-center justify-center">
+                                <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="flex cursor-pointer items-center gap-1 text-xs font-medium"
+                                    onClick={() =>
+                                        workItem.itemTest[0]?.id
+                                            ? handleManageClick(
+                                                  workItem.itemTest[0].id,
+                                              )
+                                            : undefined
+                                    }
+                                >
+                                    <FileText className="h-4 w-4" />
+                                    {isReadOnly ? "View" : "Manage"}
+                                </Button>
+                            </div>
                         </TableCell>
                         <TableCell className="text-center">
                             <TestStatus
@@ -130,16 +132,18 @@ export function WorkItemsTable({
                     <TableCell className="text-center">
                         {test.balance}
                     </TableCell>
-                    <TableCell className="px-6 text-center">
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            className="bg-primary-50 hover:bg-primary-100 flex min-w-[100px] cursor-pointer items-center gap-1 text-xs font-medium"
-                            onClick={() => handleManageClick(test.id)}
-                        >
-                            <FileText className="h-4 w-4" />
-                            {isReadOnly ? "View" : "Manage"}
-                        </Button>
+                    <TableCell className="px-2 py-1">
+                        <div className="flex items-center justify-center">
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                className="flex cursor-pointer items-center gap-1 text-xs font-medium"
+                                onClick={() => handleManageClick(test.id)}
+                            >
+                                <FileText className="h-4 w-4" />
+                                {isReadOnly ? "View" : "Manage"}
+                            </Button>
+                        </div>
                     </TableCell>
                     <TableCell className="text-center">
                         <TestStatus

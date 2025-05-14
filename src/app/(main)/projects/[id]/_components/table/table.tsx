@@ -143,7 +143,7 @@ export function ProjectWorkItemsTable({
                                     <TableHead className="text-center text-gray-700">
                                         Balance
                                     </TableHead>
-                                    <TableHead className="px-6 text-center text-gray-700">
+                                    <TableHead className="px-2 text-center text-gray-700">
                                         Test Records
                                     </TableHead>
                                     <TableHead className="text-center text-gray-700">
