@@ -11,7 +11,7 @@ const mockActionEmailError = async (): Promise<{
     field?: string;
 }> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    return { error: "No account found with this email.", field: "email" };
+    return { error: "Invalid credentials. Please try again.", field: "email" };
 };
 
 const meta = {
