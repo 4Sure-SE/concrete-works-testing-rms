@@ -6,6 +6,7 @@ import { deleteProjectWorkItem } from "@/server/actions/projects/delete-project-
 import { ProjectService } from "@/server/services/project.service";
 import { WorkItemService } from "@/server/services/work-item.service";
 import { AddProjectWorkItemForm, ProjectWorkItemsTable } from "./_components";
+import { FinishSetupButton } from "./_components/finish-setup-button";
 
 export default async function ManageWorkItemsPage({
     params,
@@ -13,6 +14,7 @@ export default async function ManageWorkItemsPage({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
+
     const { data: project, error: getProjectError } = await tryCatch(
         ProjectService.getProjectById(id),
     );
@@ -47,10 +49,14 @@ export default async function ManageWorkItemsPage({
                 projectId={id}
                 workItemDefinitions={workItemDefinitions}
             />
+
             <ProjectWorkItemsTable
                 data={projectWorkItems}
                 onDeleteAction={deleteProjectWorkItem}
             />
+            <div className="mt-6 flex justify-end">
+                <FinishSetupButton projectId={id} />
+            </div>
         </div>
     );
 }
