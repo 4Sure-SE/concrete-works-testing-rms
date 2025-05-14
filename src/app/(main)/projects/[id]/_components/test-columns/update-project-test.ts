@@ -27,12 +27,7 @@ export function updateProjectTest(
                                     : material.quantity / unitsPerTest;
                             const rawBalance =
                                 estimatedRequiredTests - newTestsOnFile;
-                            const balance = Math.max(
-                                rawBalance < 1
-                                    ? Math.ceil(rawBalance)
-                                    : Math.round(rawBalance),
-                                0,
-                            );
+                            const balance = Math.max(Math.round(rawBalance), 0);
 
                             return {
                                 ...materialTest,

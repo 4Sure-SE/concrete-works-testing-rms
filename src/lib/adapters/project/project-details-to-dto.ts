@@ -75,15 +75,15 @@ export function projectDetailsToDTO(
                                     const unitsPerTest =
                                         matchingTest?.unitsPerTest?.toNumber() ??
                                         0;
+
                                     const testsOnFile = pmt.onFile ?? 0;
-                                    const estimatedRequiredTests =
-                                        unitsPerTest === 0
-                                            ? 0
-                                            : pm.quantity.toNumber() /
-                                              unitsPerTest;
+                                    const testsRequired = pm.quantity
+                                        .dividedBy(unitsPerTest)
+                                        .round()
+                                        .toNumber();
 
                                     const balance = calculateBalance(
-                                        estimatedRequiredTests,
+                                        testsRequired,
                                         testsOnFile,
                                     );
 
