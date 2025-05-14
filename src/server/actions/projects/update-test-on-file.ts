@@ -50,7 +50,7 @@ export const updateProjectTestOnFile = async (
         }
 
         revalidatePath("/projects");
-        revalidatePath(`/projects/[id]`);
+        revalidatePath(`/projects/[id]`, "page");
 
         return { success: true, data: updatedMaterialTest };
     }

@@ -8,6 +8,7 @@ export function projectSummaryToDTO(
 
     let totalRequired = 0;
     let totalOnFile = 0;
+    let totalBalance = 0;
 
     // for each project work item
     for (const pwi of project.projectWorkItem) {
@@ -32,15 +33,17 @@ export function projectSummaryToDTO(
                 // calculate how many tests are required for the project material
                 const materialQty = pm.quantity;
                 const unitsPerTest = test.unitsPerTest;
-                const testsRequired = Math.ceil(
-                    materialQty.dividedBy(unitsPerTest).toNumber(),
-                );
+                const testsRequired = materialQty
+                    .dividedBy(unitsPerTest)
+                    .round()
+                    .toNumber();
 
                 const onFile = pmt.onFile;
 
                 if (testsRequired > 0) {
                     totalRequired += testsRequired;
                     totalOnFile += onFile;
+                    totalBalance += Math.max(testsRequired - onFile, 0);
                 }
             }
         }
@@ -59,11 +62,10 @@ export function projectSummaryToDTO(
             if (testsRequired > 0) {
                 totalRequired += testsRequired;
                 totalOnFile += onFile;
+                totalBalance += Math.max(testsRequired - onFile, 0);
             }
         }
     }
-    // calculate the total balance of tests required
-    const totalBalance = Math.max(0, totalRequired - totalOnFile);
 
     return {
         id: project.id,

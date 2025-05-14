@@ -24,8 +24,8 @@ export async function deleteProjectWorkItem(
 
     // refetch project work items data on the /projects/[id]/work-items route
     revalidatePath(`/projects`);
-    revalidatePath(`/projects/[id]`);
-    revalidatePath(`/projects/[id]/work-items`);
+    revalidatePath(`/projects/[id]`, "page");
+    revalidatePath(`/projects/[id]/work-items`, "page");
 
     return {
         success: true,
