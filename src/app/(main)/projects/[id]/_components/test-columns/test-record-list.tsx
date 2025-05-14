@@ -33,7 +33,7 @@ export function TestRecordList({
 }: TestRecordListProps) {
     return (
         <div>
-            <h4 className="text-md mb-2 font-semibold">
+            <h4 className="text-md mt-6 mb-2 font-semibold">
                 {records.length > 0 || (isLoading && !isReadOnly)
                     ? "Uploaded Records"
                     : isReadOnly && records.length === 0

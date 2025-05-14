@@ -3,6 +3,7 @@ import { TestRecordModalSkeleton } from "@/app/(main)/projects/[id]/_components/
 import type { TestType } from "@/lib/types/project-test/project-test.types";
 import { tryCatch } from "@/lib/utils";
 import { TestRecordService } from "@/server/services/test-records.service";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 // maybe change the naming as well since this is technically not a page
@@ -51,6 +52,10 @@ async function ResolvedModalContent({
             throw res.error;
         }
         data = res.data;
+    }
+
+    if (!data) {
+        notFound();
     }
 
     return (
