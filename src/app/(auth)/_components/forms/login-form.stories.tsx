@@ -81,7 +81,7 @@ export const WithEmailError: Story = {
         await basePlayFunction({ canvasElement, args });
         const canvas = within(canvasElement);
         await expect(
-            canvas.getByText("No account found with this email."),
+            canvas.getByText("Invalid credentials. Please try again."),
         ).toBeInTheDocument();
     },
 };
