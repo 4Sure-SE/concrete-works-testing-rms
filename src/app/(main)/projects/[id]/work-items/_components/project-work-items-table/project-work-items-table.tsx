@@ -62,7 +62,6 @@ export function ProjectWorkItemsTable({
         setDeletingId(id);
         startDeleteTransition(async () => {
             setOptimisticItems({ type: "DELETE", payload: { id } });
-
             const result = await onDeleteAction(id);
             setDeletingId(null);
 
