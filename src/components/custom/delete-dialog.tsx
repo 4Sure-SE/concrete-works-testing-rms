@@ -39,7 +39,7 @@ export function DeleteDialog({
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="size-8 cursor-pointer text-destructive hover:bg-destructive/10"
+                    className="size-8 cursor-pointer text-destructive hover:bg-destructive/10 hover:text-destructive"
                     aria-label={`Delete ${entityName} ${entityAlias ?? entityId}`}
                     disabled={disabled}
                 >

@@ -10,8 +10,10 @@ import {
     SidebarHeader,
     SidebarMenu,
     SidebarMenuItem,
+    SidebarSeparator,
 } from "@/components/ui/sidebar";
 
+import { NavAllProjects } from "./nav-all-projects";
 import { NavNewProject } from "./nav-new-project";
 import { NavProjectList } from "./nav-project-list";
 import { NavProjectListSkeleton } from "./nav-project-list-skeleton";
@@ -31,22 +33,26 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel className="flex items-center">
-                        Projects
+                        Manage Projects
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
+                        <NavAllProjects />
                         <NavNewProject />
+                    </SidebarGroupContent>
+                </SidebarGroup>
+                <SidebarSeparator />
+                <SidebarGroup>
+                    <SidebarGroupLabel className="flex items-center">
+                        Recent Projects
+                    </SidebarGroupLabel>
+                    <SidebarGroupContent>
                         <Suspense fallback={<NavProjectListSkeleton />}>
                             <NavProjectList />
                         </Suspense>
-                    </SidebarGroupContent>
-                    <SidebarGroupContent>
-                        <Suspense fallback={<NavProjectListSkeleton />}>
-                            <SignOut />
-                        </Suspense>
+                        <SignOut />
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>

@@ -265,6 +265,7 @@ export function TestRecordModal({
                     {!isReadOnly && (
                         <Button
                             type="button"
+                            className="cursor-pointer"
                             onClick={handleUploadAndSaveToDb}
                             disabled={
                                 dropzoneProps.loading ||

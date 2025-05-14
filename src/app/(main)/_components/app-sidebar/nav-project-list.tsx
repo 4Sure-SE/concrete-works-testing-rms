@@ -17,7 +17,7 @@ export async function NavProjectList() {
     }
 
     return (
-        <SidebarMenu>
+        <SidebarMenu className="mt-2">
             {projects && projects.length > 0 ? (
                 projects.map((project) => (
                     <NavProjectItem

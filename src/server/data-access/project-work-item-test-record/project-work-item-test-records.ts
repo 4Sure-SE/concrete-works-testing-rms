@@ -17,6 +17,22 @@ export const createManyProjectWorkItemTestRecords = async (
 ): Promise<WorkItemTestRecord[]> => {
     const record = await db.workItemTestRecord.createManyAndReturn({
         data,
+        include: {
+            projectWorkItemTest: {
+                include: {
+                    projectWorkItem: {
+                        include: { project: { select: { id: true } } },
+                    },
+                },
+            },
+        },
+    });
+
+    await db.project.update({
+        where: {
+            id: record[0]!.projectWorkItemTest.projectWorkItem.project.id,
+        },
+        data: { updatedAt: new Date() },
     });
 
     return record;
@@ -27,6 +43,20 @@ export const deleteProjectWorkItemTestRecord = async (
 ): Promise<WorkItemTestRecord> => {
     const record = await db.workItemTestRecord.delete({
         where: { id },
+        include: {
+            projectWorkItemTest: {
+                include: {
+                    projectWorkItem: {
+                        include: { project: { select: { id: true } } },
+                    },
+                },
+            },
+        },
+    });
+
+    await db.project.update({
+        where: { id: record.projectWorkItemTest.projectWorkItem.project.id },
+        data: { updatedAt: new Date() },
     });
 
     return record;

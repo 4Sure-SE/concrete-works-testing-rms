@@ -1,22 +1,21 @@
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
 import { BackButton } from "@/app/(main)/_components";
 import SectionHeader from "@/components/custom/section-header";
 import { tryCatch } from "@/lib/utils";
 import { updateProject } from "@/server/actions/projects/update-project";
 import { ProjectService } from "@/server/services/project.service";
+import { FormPageSkeleton } from "../../_components/project-form/project-form-skeleton";
 import { UpdateProjectForm } from "./_components/";
 
-export default async function ProjectEditPage({
-    params,
-}: {
-    params: Promise<{ id: string }>;
-}) {
-    const { id } = await params;
+async function EditProjectContent({ projectId }: { projectId: string }) {
     const { data: project, error: getProjectError } = await tryCatch(
-        ProjectService.getProjectById(id),
+        ProjectService.getProjectById(projectId),
     );
 
     if (getProjectError) {
-        throw getProjectError;
+        notFound();
     }
 
     return (
@@ -27,10 +26,31 @@ export default async function ProjectEditPage({
                 leftControl={<BackButton />}
             />
             <UpdateProjectForm
-                projectId={id}
+                projectId={projectId}
                 action={updateProject}
                 defaultValues={project}
             />
         </div>
+    );
+}
+
+export default async function ProjectEditPage({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) {
+    const { id } = await params;
+
+    return (
+        <Suspense
+            fallback={
+                <FormPageSkeleton
+                    numberOfFields={8}
+                    hasLeftControl={true}
+                />
+            }
+        >
+            <EditProjectContent projectId={id} />
+        </Suspense>
     );
 }

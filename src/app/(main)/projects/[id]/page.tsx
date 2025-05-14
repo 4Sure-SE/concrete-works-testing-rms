@@ -1,6 +1,5 @@
-import { FolderOpen } from "lucide-react";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { validate as uuidValidate } from "uuid";
 
 import { tryCatch } from "@/lib/utils";
 import { ProjectService } from "@/server/services/project.service";
@@ -9,30 +8,12 @@ import { ProjectDetailsSkeleton } from "./_components/project-details/project-de
 import { ProjectWorkItemsTable } from "./_components/table/table";
 
 async function ProjectDetailsContent({ id }: { id: string }) {
-    if (!uuidValidate(id)) {
-        return (
-            <div className="flex h-full w-full flex-col items-center justify-center">
-                <FolderOpen className="h-15 w-15" />
-                <div className="p-4 text-lg font-medium">
-                    Project Details not Found
-                </div>
-            </div>
-        );
-    }
-
     const { data: project, error } = await tryCatch(
         ProjectService.getProjectDetails(id),
     );
 
-    if (error || !project) {
-        return (
-            <div className="flex h-full w-full flex-col items-center justify-center">
-                <FolderOpen className="h-15 w-15" />
-                <div className="p-4 text-lg font-medium">
-                    Project Details not Found
-                </div>
-            </div>
-        );
+    if (error) {
+        notFound();
     }
 
     return (
@@ -54,8 +35,10 @@ export default async function ProjectDetailsPage({
     const { id } = await params;
 
     return (
-        <Suspense fallback={<ProjectDetailsSkeleton />}>
-            <ProjectDetailsContent id={id} />
-        </Suspense>
+        <>
+            <Suspense fallback={<ProjectDetailsSkeleton />}>
+                <ProjectDetailsContent id={id} />
+            </Suspense>
+        </>
     );
 }
