@@ -4,7 +4,7 @@ export function TestRecordModalSkeleton() {
     const numberOfRecordSkeletons = 3;
 
     return (
-        <div className="animate-in fade-in-0 fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+        <div className="animate-in fade-in-0 fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
             <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-xl bg-card p-0 shadow-2xl sm:max-w-xl md:max-w-2xl">
                 <div className="flex flex-shrink-0 flex-row items-center justify-between border-b px-6 pt-5 pb-4">
                     <Skeleton className="h-7 w-1/2 rounded-md sm:w-1/3" />{" "}
