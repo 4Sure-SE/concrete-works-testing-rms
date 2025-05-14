@@ -1,13 +1,7 @@
-import AppSidebar from "./app-sidebar";
-import NavNewProject from "./nav-new-project";
-import NavProjects from "./nav-projects";
-import NavProjectsSkeleton from "./nav-projects-skeleton";
-import SidebarHeaderButton from "./sidebar-header-button";
-
-export {
-    AppSidebar,
-    NavNewProject,
-    NavProjects,
-    NavProjectsSkeleton,
-    SidebarHeaderButton,
-};
+export * from "./app-sidebar";
+export * from "./empty-project-list-message";
+export * from "./nav-new-project";
+export * from "./nav-project-item";
+export * from "./nav-project-list";
+export * from "./nav-project-list-skeleton";
+export * from "./sidebar-header-button";

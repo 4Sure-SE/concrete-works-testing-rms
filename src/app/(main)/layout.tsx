@@ -1,9 +1,13 @@
 import "@/styles/globals.css";
 
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
-import { AppHeader, AppSidebar } from "./_components/";
+
+import AuthProvider from "@/app/(auth)/_contexts/auth-provider";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
+
+import { AppHeader, AppSidebar } from "./_components";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -22,15 +26,18 @@ export default function MainLayout({
             className={`${inter.className} ${inter.variable}`}
         >
             <body>
-                <SidebarProvider>
-                    <AppSidebar />
-                    <SidebarInset>
-                        <AppHeader />
-                        <main className="flex-1 overflow-auto p-4">
-                            {children}
-                        </main>
-                    </SidebarInset>
-                </SidebarProvider>
+                <AuthProvider>
+                    <SidebarProvider>
+                        <AppSidebar />
+                        <SidebarInset>
+                            <AppHeader />
+                            <main className="flex-1 overflow-auto p-4">
+                                {children}
+                            </main>
+                        </SidebarInset>
+                    </SidebarProvider>
+                    <Toaster richColors />
+                </AuthProvider>
             </body>
         </html>
     );

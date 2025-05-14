@@ -1,3 +1,6 @@
+import { Suspense } from "react";
+
+import { SignOut } from "@/app/(auth)/_components";
 import {
     Sidebar,
     SidebarContent,
@@ -7,14 +10,14 @@ import {
     SidebarHeader,
     SidebarMenu,
     SidebarMenuItem,
+    SidebarSeparator,
 } from "@/components/ui/sidebar";
-import { Suspense } from "react";
-import {
-    NavNewProject,
-    NavProjects,
-    NavProjectsSkeleton,
-    SidebarHeaderButton,
-} from ".";
+
+import { NavAllProjects } from "./nav-all-projects";
+import { NavNewProject } from "./nav-new-project";
+import { NavProjectList } from "./nav-project-list";
+import { NavProjectListSkeleton } from "./nav-project-list-skeleton";
+import { SidebarHeaderButton } from "./sidebar-header-button";
 
 export function AppSidebar() {
     return (
@@ -30,22 +33,29 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel className="flex items-center">
-                        Projects
+                        Manage Projects
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
+                        <NavAllProjects />
                         <NavNewProject />
-                        <Suspense fallback={<NavProjectsSkeleton />}>
-                            <NavProjects />
+                    </SidebarGroupContent>
+                </SidebarGroup>
+                <SidebarSeparator />
+                <SidebarGroup>
+                    <SidebarGroupLabel className="flex items-center">
+                        Recent Projects
+                    </SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <Suspense fallback={<NavProjectListSkeleton />}>
+                            <NavProjectList />
                         </Suspense>
+                        <SignOut />
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
         </Sidebar>
     );
 }
-
-export default AppSidebar;

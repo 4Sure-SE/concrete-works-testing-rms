@@ -1,10 +1,51 @@
 ## Contributing Guidelines
 
+- [Folder Structure](#folder-structure)
 - [Commit Message](#commit-message)
 - [Branch Naming](#branch-naming)
 - [Pull Requests](#pull-requests)
 - [File Naming](#file-naming)
+- [Testing](#testing)
 - [Additional Guidelines](#additional-guidelines)
+
+## Folder Structure
+
+```bash
+
+|-- app                    # Next.js App Router: UI Pages, Layouts, Routes. Presentation Layer.
+|   |-- (auth)             # Route Group: Auth pages layout & routes
+|   |   |-- _components    # Non-routable: UI components specific to Auth pages.
+|   |   `-- _hooks         # Non-routable: Client-side hooks specific to Auth pages.
+|   `-- (main)             # Route Group: Main authenticated app layout & routes.
+|       |-- _components    # Non-routable: Shared UI components for Main layout (Header, Sidebar).
+|       |-- _hooks         # Non-routable: Shared client-side hooks for Main features.
+|       |-- layout.tsx     # Layout for the (main) authenticated section.
+|       `-- projects         # Feature Routes: All pages related to Projects.
+|           `-- ... (pages like /projects, /projects/new, /projects/[id])
+|-- components             # Global: Shared Components.
+|   |-- custom             # Global: App-specific components.
+|   `-- ui                 # Global: Base UI components (e.g., shadcn).
+|-- hooks                  # Global: Shared custom hooks
+|-- lib                    # Global: Shared non-UI code, utilities, adapters, types.
+|   |-- adapters           # Global: Data transformation functions (Raw to DTO). Organized by feature (`project/`).
+|   |   `-- project/       # Adapters for the Project entity.
+|   |-- types              # Global: Type definitions organized by feature (`project/`).
+|   |   |-- project/       # All types related to the Project feature
+|   |   `-- ... (folders for auth, work-item, etc.)
+|   `-- utils              # Global: Helper functions
+|-- server                 # Server-Side Logic (Backend).
+|   |-- actions            # Server Layer 1: Server Actions (Controllers), calls services
+|   |   `-- project/       # Actions specific to projects.
+|   |-- data-access        # Server Layer 3: Database Interaction Layer. Returns raw data/payloads. Exports raw payload types.
+|   |   `-- project/       # Data access for Project entity.
+|   |-- db                 # Server: Prisma Setup (Client, Schema, Migrations, Seed).
+|   |   |-- migrations/    # Prisma-generated migration files.
+|   |   `-- seed-data/     # Data files used by the seed script.
+|   `-- services           # Server Layer 2: Use Cases. Handles main logic, validation. Calls data-access & adapters. Organized by feature (`project/`).
+|       `-- project/       # Service logic for the Project entity/feature.
+|-- styles                 # Global: CSS styles / Theming.
+|-- middleware.ts          # Global: Next.js Middleware.
+```
 
 ## Commit Message
 
@@ -109,6 +150,37 @@ To submit a pull request (PR), follow these steps:
 To maintain consistency across the project, follow this file naming convention:
 
 - `kebab-case` - **Use lowercase** for file and directory names, with hyphens (`-`) to separate words (e.g., `add-work-item`).
+
+---
+
+## Testing
+
+Before submitting a pull request, ensure all tests pass.
+
+### Setup
+
+1. Copy the `.env.example` file:
+
+    ```bash
+    cp .env.example .env.test
+    ```
+
+2. Update the `.env.test` file with the provided values
+
+### Running Tests
+
+- **Run all tests:**
+    ```bash
+    npm run test
+    ```
+- **Run only Unit tests:**
+    ```bash
+    npm run test:unit
+    ```
+- **Run only UI/Storybook tests:**
+    ```bash
+    npm run test:sb
+    ```
 
 ---
 

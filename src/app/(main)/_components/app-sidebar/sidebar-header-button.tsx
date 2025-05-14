@@ -1,17 +1,18 @@
 "use client";
 
-import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 import { TrafficCone } from "lucide-react";
 import Link from "next/link";
 
-function SidebarHeaderButton() {
+import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
+
+export function SidebarHeaderButton() {
     const { open: sidebarOpen } = useSidebar();
 
     return (
         <SidebarMenuButton
             size="lg"
             asChild
-            tooltip="Concrete Works"
+            tooltip="Concrete Works Testing RMS"
         >
             <Link
                 href="/projects"
@@ -38,5 +39,3 @@ function SidebarHeaderButton() {
         </SidebarMenuButton>
     );
 }
-
-export default SidebarHeaderButton;

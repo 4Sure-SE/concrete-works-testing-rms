@@ -1,20 +1,21 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
     SidebarMenuButton,
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar";
-import type { Projects } from "@prisma/client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import type { ProjectSummaryDTO } from "@/lib/types/project";
 
 type NavProjectItemProps = {
-    data: Projects;
+    data: ProjectSummaryDTO;
 };
 
-function NavProjectItem({ data: project }: NavProjectItemProps) {
+export function NavProjectItem({ data: project }: NavProjectItemProps) {
     const pathname = usePathname();
     const { open: sidebarOpen } = useSidebar();
 
@@ -27,7 +28,7 @@ function NavProjectItem({ data: project }: NavProjectItemProps) {
                 asChild
                 isActive={isActive}
                 tooltip={project.contractId}
-                className={`bg-primary/10 text-primary transition-colors hover:bg-primary/20 hover:text-primary active:bg-primary/10 active:text-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground data-[active=true]:hover:cursor-default data-[active=true]:hover:bg-primary/75`}
+                className={`bg-primary/10 text-primary transition-colors hover:bg-primary/20 hover:text-primary active:bg-primary/10 active:text-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground data-[active=true]:hover:cursor-pointer data-[active=true]:hover:bg-primary/75`}
             >
                 {/* navigate to the details page of the project when clicked */}
                 <Link
@@ -47,5 +48,3 @@ function NavProjectItem({ data: project }: NavProjectItemProps) {
         </SidebarMenuItem>
     );
 }
-
-export default NavProjectItem;

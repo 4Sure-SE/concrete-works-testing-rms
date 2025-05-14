@@ -1,0 +1,48 @@
+[
+    {
+        "id": "3391f2ef-e732-4ca5-ab9e-cb84c81229f1",
+        "name": "square meter",
+        "abbreviation": "sq.m."
+    },
+    {
+        "id": "8d836ac5-5b7b-415e-8e90-31dab33da3d7",
+        "name": "cubic meter",
+        "abbreviation": "cu.m."
+    },
+    {
+        "id": "2353cedd-c338-47e4-a745-1cdd0492f513",
+        "name": "bag",
+        "abbreviation": "bag",
+        "isWholeNumber": true
+    },
+    {
+        "id": "d6f72112-23a3-4ade-b813-7eeef9cfd871",
+        "name": "source",
+        "abbreviation": "source"
+    },
+    {
+        "id": "7267eaee-f6c1-45fa-97a7-a0ffc706bdd0",
+        "name": "shipment",
+        "abbreviation": "shipment"
+    },
+    {
+        "id": "4da2d2ac-4248-4eb7-ae1e-302f189056ef",
+        "name": "kilogram",
+        "abbreviation": "kg"
+    },
+    {
+        "id": "2ef7f6f8-7035-4951-948e-f92c1d726e35",
+        "name": "core",
+        "abbreviation": "core"
+    },
+    {
+        "id": "22892baf-45a6-48a5-803c-082aa60e7a40",
+        "name": "lot",
+        "abbreviation": "lot"
+    },
+    {
+        "id": "f0f43f9f-09e8-4b95-b7d1-b390565a6b4f",
+        "name": "cylinder set",
+        "abbreviation": "cylinder set"
+    }
+]
