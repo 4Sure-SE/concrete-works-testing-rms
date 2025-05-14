@@ -2,13 +2,12 @@
 
 import { Fragment } from "react";
 
-import { TestRecordModal } from "@/components/custom/test-record-modal";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { ProjectWorkItem } from "@/lib/types/project";
-import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
+import type { TestType } from "@/lib/types/project-test/project-test.types";
 import { FileText } from "lucide-react";
-import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
@@ -18,7 +17,7 @@ interface WorkItemsTableProps {
     onTestCountUpdate: (
         id: string,
         amount: number,
-        type: TestUpdateType,
+        type: TestType,
     ) => Promise<void>;
 }
 
@@ -28,17 +27,15 @@ export function WorkItemsTable({
     onTestCountUpdate,
 }: WorkItemsTableProps) {
     const hasItemTests = workItem.itemTest.length > 0;
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+    const router = useRouter();
+    const { id: projectId, token } = useParams<{ id: string; token: string }>();
 
     const handleManageClick = (testId: string) => {
-        setSelectedTestId(testId);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setSelectedTestId(null);
-        setIsModalOpen(false);
+        let modalUrl;
+        if (isReadOnly) modalUrl = `${token}/test-records/${testId}/work-item`;
+        else
+            modalUrl = `/projects/${projectId}/test-records/${testId}/work-item`;
+        router.push(modalUrl, { scroll: false });
     };
 
     const sortedWorkItemTests = [...workItem.itemTest].sort((a, b) =>
@@ -71,7 +68,7 @@ export function WorkItemsTable({
                             <TestCounter
                                 id={sortedWorkItemTests[0]?.id}
                                 value={sortedWorkItemTests[0]?.testsOnFile ?? 0}
-                                type="workItem"
+                                type="work-item"
                                 updateTestAction={onTestCountUpdate}
                                 isReadOnly={isReadOnly}
                             ></TestCounter>
@@ -125,7 +122,7 @@ export function WorkItemsTable({
                         <TestCounter
                             id={test.id}
                             value={test.testsOnFile}
-                            type="workItem"
+                            type="work-item"
                             updateTestAction={onTestCountUpdate}
                             isReadOnly={isReadOnly}
                         ></TestCounter>
@@ -152,16 +149,6 @@ export function WorkItemsTable({
                     </TableCell>
                 </TableRow>
             ))}
-
-            {isModalOpen && selectedTestId && (
-                <TestRecordModal
-                    isOpen={isModalOpen}
-                    onClose={closeModal}
-                    testId={selectedTestId}
-                    testType="work-item"
-                    isReadOnly={isReadOnly}
-                />
-            )}
         </Fragment>
     );
 }

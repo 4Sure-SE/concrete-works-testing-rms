@@ -2,7 +2,7 @@
 
 import type {
     ProjectTestActionState,
-    TestUpdateType,
+    TestType,
 } from "@/lib/types/project-test/project-test.types";
 import { tryCatch } from "@/lib/utils/try-catch";
 import { ProjectService } from "@/server/services/project.service";
@@ -11,13 +11,13 @@ import { revalidatePath } from "next/cache";
 export const updateProjectTestOnFile = async (
     id: string,
     amount: number,
-    type: TestUpdateType,
+    type: TestType,
 ): Promise<ProjectTestActionState> => {
     if (typeof amount !== "number") {
         return { success: false, error: "Invalid Input" };
     }
 
-    if (type === "workItem") {
+    if (type === "work-item") {
         const { data: updatedWorkItemTest, error: updateError } =
             await tryCatch(
                 ProjectService.updateProjectWorkItemsTestCount(id, amount),

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { MAX_FILES_LIMIT } from "@/hooks/use-file-upload";
 import { Upload } from "lucide-react";
 import { useCallback } from "react";
 import { useDropzone, type FileRejection } from "react-dropzone";

@@ -1,12 +1,12 @@
 "use client";
 
 import { FileText } from "lucide-react";
-import { useState } from "react";
 
-import { TestRecordModal } from "@/components/custom/test-record-modal";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { Material } from "@/lib/types/project";
+import type { TestType } from "@/lib/types/project-test/project-test.types";
+import { useParams, useRouter } from "next/navigation";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
@@ -16,7 +16,7 @@ interface MaterialsTableProps {
     onTestCountUpdate: (
         id: string,
         amount: number,
-        type: "material" | "workItem",
+        type: TestType,
     ) => Promise<void>;
 }
 
@@ -25,17 +25,15 @@ export function MaterialsTable({
     onTestCountUpdate,
     isReadOnly = false,
 }: MaterialsTableProps) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+    const router = useRouter();
+    const { id: projectId, token } = useParams<{ id: string; token: string }>();
 
     const handleManageClick = (testId: string) => {
-        setSelectedTestId(testId);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setSelectedTestId(null);
-        setIsModalOpen(false);
+        let modalUrl;
+        if (isReadOnly) modalUrl = `${token}/test-records/${testId}/material`;
+        else
+            modalUrl = `/projects/${projectId}/test-records/${testId}/material`;
+        router.push(modalUrl, { scroll: false });
     };
 
     const sortedMaterialTests = [...material.materialTest].sort((a, b) =>
@@ -101,15 +99,6 @@ export function MaterialsTable({
                     </TableCell>
                 </TableRow>
             ))}
-            {isModalOpen && selectedTestId && (
-                <TestRecordModal
-                    isOpen={isModalOpen}
-                    onClose={closeModal}
-                    testId={selectedTestId}
-                    testType="work-item"
-                    isReadOnly={isReadOnly}
-                />
-            )}
         </>
     );
 }

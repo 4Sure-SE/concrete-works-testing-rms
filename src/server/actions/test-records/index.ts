@@ -1,3 +1,4 @@
+export { getTestRecords, uploadTestRecord } from "./create-many-test-records";
 export { deleteTestRecord } from "./delete-test-record";
 export {
     createStoragePath,
@@ -6,4 +7,3 @@ export {
     getFileUrl,
     handleError,
 } from "./test-record-utils";
-export { getTestRecords, uploadTestRecord } from "./upload-test-record";

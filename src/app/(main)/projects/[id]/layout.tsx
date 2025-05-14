@@ -1,4 +1,4 @@
-export default function SharedProjectLayout({
+export default function ProjectDetailLayout({
     children,
     modal,
 }: {
@@ -6,9 +6,9 @@ export default function SharedProjectLayout({
     modal: React.ReactNode;
 }) {
     return (
-        <main className="bg-gray-50 px-8 py-4">
+        <>
             {children}
             {modal}
-        </main>
+        </>
     );
 }

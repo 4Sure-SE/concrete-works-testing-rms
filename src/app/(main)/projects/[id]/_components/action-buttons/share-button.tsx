@@ -30,7 +30,6 @@ export function ShareButton() {
         const result = await generateProjectShareLink(projectId);
 
         if (!result.success) {
-            console.error("Failed to fetch share link:", result.error);
             setError("Failed to generate share link.");
             setShareableLink(null);
         }
