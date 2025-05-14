@@ -81,6 +81,7 @@ export const projectDetails = Prisma.validator<Prisma.ProjectInclude>()({
                 },
             },
         },
+        orderBy: { createdAt: "desc" },
     },
 });
 

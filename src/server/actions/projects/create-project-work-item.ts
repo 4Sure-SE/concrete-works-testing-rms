@@ -45,8 +45,8 @@ export async function createProjectWorkItem(
 
     // refetch project work items data on the /projects/[id]/work-items route
     revalidatePath(`/projects`);
-    revalidatePath(`/projects/[id]`, "page");
-    revalidatePath(`/projects/[id]/work-items`, "page");
+    revalidatePath(`/projects/${projectId}`);
+    revalidatePath(`/projects/${projectId}/work-items`);
 
     return {
         success: true,

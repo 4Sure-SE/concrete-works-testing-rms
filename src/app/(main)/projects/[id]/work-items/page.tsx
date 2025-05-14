@@ -10,7 +10,6 @@ import { ProjectService } from "@/server/services/project.service";
 import { WorkItemService } from "@/server/services/work-item.service";
 
 import { AddProjectWorkItemForm, ProjectWorkItemsTable } from "./_components";
-import { FinishSetupButton } from "./_components/finish-setup-button";
 import ManageWorkItemsPageSkeleton from "./loading";
 
 async function WorkItemsContent({ projectId }: { projectId: string }) {
@@ -58,13 +57,10 @@ async function WorkItemsContent({ projectId }: { projectId: string }) {
                 workItemDefinitions={workItemDefinitions}
             />
             <ProjectWorkItemsTable
+                projectId={projectId}
                 data={projectWorkItems}
                 onDeleteAction={deleteProjectWorkItem}
             />
-
-            <div className="mt-6 flex justify-end">
-                <FinishSetupButton projectId={projectId} />
-            </div>
         </div>
     );
 }

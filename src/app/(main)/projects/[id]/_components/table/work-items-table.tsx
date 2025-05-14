@@ -19,12 +19,14 @@ interface WorkItemsTableProps {
         amount: number,
         type: TestType,
     ) => Promise<void>;
+    isUpdating?: boolean;
 }
 
 export function WorkItemsTable({
     workItem,
     isReadOnly = false,
     onTestCountUpdate,
+    isUpdating = false,
 }: WorkItemsTableProps) {
     const hasItemTests = workItem.itemTest.length > 0;
     const router = useRouter();
@@ -82,6 +84,7 @@ export function WorkItemsTable({
                                     size="sm"
                                     variant="outline"
                                     className="flex cursor-pointer items-center gap-1 text-xs font-medium"
+                                    disabled={isUpdating}
                                     onClick={() =>
                                         workItem.itemTest[0]?.id
                                             ? handleManageClick(
@@ -139,6 +142,7 @@ export function WorkItemsTable({
                                 variant="outline"
                                 className="flex cursor-pointer items-center gap-1 text-xs font-medium"
                                 onClick={() => handleManageClick(test.id)}
+                                disabled={isUpdating}
                             >
                                 <FileText className="h-4 w-4" />
                                 {isReadOnly ? "View" : "Manage"}

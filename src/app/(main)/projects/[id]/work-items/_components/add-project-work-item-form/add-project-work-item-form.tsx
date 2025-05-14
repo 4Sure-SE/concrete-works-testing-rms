@@ -22,6 +22,7 @@ import type {
 } from "@/lib/types/work-item/";
 import { withCallbacks } from "@/lib/utils";
 
+import { useRouter } from "next/navigation";
 import { startTransition } from "react";
 import { toast } from "sonner";
 import { createProjectWorkItemSchema } from "./add-project-work-item-form.schema";
@@ -43,6 +44,7 @@ export function AddProjectWorkItemForm({
     workItemDefinitions,
 }: AddProjectWorkItemFormProps) {
     const defaultValues = { workItemId: "", quantity: 0 };
+    const router = useRouter();
 
     // server action callbacks on success or error
     const callbacks: Callbacks<
@@ -51,9 +53,12 @@ export function AddProjectWorkItemForm({
     > = {
         // on server action success
         onSuccess: (_data) => {
-            toast.success("Work item added to project successfully");
             startTransition(() => {
-                form.reset();
+                router.push(`/projects/${projectId}`, { scroll: false });
+                startTransition(() => {
+                    form.reset();
+                    toast.success("Work item added to project successfully");
+                });
             });
         },
         // on server action error

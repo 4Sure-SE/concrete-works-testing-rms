@@ -18,12 +18,14 @@ interface MaterialsTableProps {
         amount: number,
         type: TestType,
     ) => Promise<void>;
+    isUpdating?: boolean;
 }
 
 export function MaterialsTable({
     material,
     onTestCountUpdate,
     isReadOnly = false,
+    isUpdating = false,
 }: MaterialsTableProps) {
     const router = useRouter();
     const { id: projectId, token } = useParams<{ id: string; token: string }>();
@@ -87,6 +89,7 @@ export function MaterialsTable({
                                 variant="outline"
                                 className="flex cursor-pointer items-center gap-1 text-xs font-medium"
                                 onClick={() => handleManageClick(test.id)}
+                                disabled={isUpdating}
                             >
                                 <FileText className="h-4 w-4" />
                                 {isReadOnly ? "View" : "Manage"}
