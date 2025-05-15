@@ -3,6 +3,7 @@
 import { startTransition, useOptimistic, useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import { useRefreshContext } from "@/app/(main)/_contexts/refresh-context";
 import EmptyMessage from "@/components/custom/empty-message";
 import {
     Table,
@@ -11,12 +12,14 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import type { Callbacks } from "@/lib/types/actions.types";
 import type {
+    ProjectWorkItemActionErrors,
     ProjectWorkItemActionState,
     ProjectWorkItemDTO,
 } from "@/lib/types/project-work-item/project-work-item.types";
+import { withCallbacks } from "@/lib/utils";
 import { updateProjectWorkItem } from "@/server/actions/projects/update-project-work-item";
-import { useRouter } from "next/navigation";
 import { ProjectWorkItemRow } from "./project-work-item-row";
 
 interface ProjectWorkItemsTableProps {
@@ -32,10 +35,10 @@ export function ProjectWorkItemsTable({
     data,
     onDeleteAction,
 }: ProjectWorkItemsTableProps) {
-    const router = useRouter();
+    const { triggerRefresh } = useRefreshContext();
+
     // allow simultaneous edits
     const [editingItemIds, setEditingItemIds] = useState<string[]>([]);
-
     const [optimisticItems, setOptimisticItems] = useOptimistic(
         data,
         (currentState, action: OptimisticAction): ProjectWorkItemDTO[] => {
@@ -52,29 +55,44 @@ export function ProjectWorkItemsTable({
     );
 
     const [isDeletePending, startDeleteTransition] = useTransition();
-
     const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    const deleteCallbacks: Callbacks<
+        ProjectWorkItemDTO | null,
+        ProjectWorkItemActionErrors
+    > = {
+        onSuccess: (data) => {
+            startTransition(() => {
+                toast.success(
+                    `Work ${data?.itemNo ?? ""} deleted successfully`,
+                );
+                startTransition(() => {
+                    triggerRefresh(`/projects/${projectId}`);
+                });
+            });
+        },
+        onError: (error) => {
+            const errorMsg = error.general ?? "Failed to delete work item.";
+            toast.error(errorMsg);
+        },
+    };
 
     const handleDelete = (id: string) => {
         if (editingItemIds.includes(id)) {
             handleCancel(id);
         }
         setDeletingId(id);
-        startDeleteTransition(async () => {
+        startDeleteTransition(() => {
             setOptimisticItems({ type: "DELETE", payload: { id } });
-            const result = await onDeleteAction(id);
-            setDeletingId(null);
 
-            if (!result.success) {
-                const errorMsg =
-                    result.error?.general?.[0] ?? "Failed to delete work item.";
-                toast.error(errorMsg);
-            } else {
-                startTransition(() => {
-                    toast.success(`Work ${result.data?.itemNo ?? ""} deleted.`);
-                    router.push(`/projects/${projectId}`, { scroll: false });
-                });
-            }
+            startTransition(async () => {
+                const deleteAction = withCallbacks(
+                    onDeleteAction.bind(null, id),
+                    deleteCallbacks,
+                );
+                await deleteAction();
+                setDeletingId(null);
+            });
         });
     };
 
