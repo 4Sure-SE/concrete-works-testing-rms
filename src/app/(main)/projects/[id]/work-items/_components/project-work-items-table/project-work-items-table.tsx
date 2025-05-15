@@ -12,7 +12,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Callbacks } from "@/lib/types/actions.types";
+import type { Callbacks } from "@/lib/types/actions.types";
 import type {
     ProjectWorkItemActionErrors,
     ProjectWorkItemActionState,
