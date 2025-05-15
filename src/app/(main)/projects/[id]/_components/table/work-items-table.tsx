@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -31,13 +31,17 @@ export function WorkItemsTable({
     const hasItemTests = workItem.itemTest.length > 0;
     const router = useRouter();
     const { id: projectId, token } = useParams<{ id: string; token: string }>();
+    const [isNavigating, startNavigation] = useTransition();
 
     const handleManageClick = (testId: string) => {
-        let modalUrl;
-        if (isReadOnly) modalUrl = `${token}/test-records/${testId}/work-item`;
-        else
-            modalUrl = `/projects/${projectId}/test-records/${testId}/work-item`;
-        router.push(modalUrl, { scroll: false });
+        startNavigation(() => {
+            let modalUrl;
+            if (isReadOnly)
+                modalUrl = `${token}/test-records/${testId}/work-item`;
+            else
+                modalUrl = `/projects/${projectId}/test-records/${testId}/work-item`;
+            router.push(modalUrl, { scroll: false });
+        });
     };
 
     const sortedWorkItemTests = [...workItem.itemTest].sort((a, b) =>
@@ -73,6 +77,7 @@ export function WorkItemsTable({
                                 type="work-item"
                                 updateTestAction={onTestCountUpdate}
                                 isReadOnly={isReadOnly}
+                                isDisabled={isNavigating}
                             ></TestCounter>
                         </TableCell>
                         <TableCell className="text-center">
@@ -130,6 +135,7 @@ export function WorkItemsTable({
                             type="work-item"
                             updateTestAction={onTestCountUpdate}
                             isReadOnly={isReadOnly}
+                            isDisabled={isNavigating}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">
