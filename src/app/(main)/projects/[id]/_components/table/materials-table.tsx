@@ -7,6 +7,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import type { Material } from "@/lib/types/project";
 import type { TestType } from "@/lib/types/project-test/project-test.types";
 import { useParams, useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
@@ -29,13 +30,17 @@ export function MaterialsTable({
 }: MaterialsTableProps) {
     const router = useRouter();
     const { id: projectId, token } = useParams<{ id: string; token: string }>();
+    const [isNavigating, startNavigation] = useTransition();
 
     const handleManageClick = (testId: string) => {
-        let modalUrl;
-        if (isReadOnly) modalUrl = `${token}/test-records/${testId}/material`;
-        else
-            modalUrl = `/projects/${projectId}/test-records/${testId}/material`;
-        router.push(modalUrl, { scroll: false });
+        startNavigation(() => {
+            let modalUrl;
+            if (isReadOnly)
+                modalUrl = `${token}/test-records/${testId}/material`;
+            else
+                modalUrl = `/projects/${projectId}/test-records/${testId}/material`;
+            router.push(modalUrl, { scroll: false });
+        });
     };
 
     const sortedMaterialTests = [...material.materialTest].sort((a, b) =>
@@ -77,6 +82,7 @@ export function MaterialsTable({
                             type="material"
                             updateTestAction={onTestCountUpdate}
                             isReadOnly={isReadOnly}
+                            isDisabled={isNavigating}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">
