@@ -2,7 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useOptimistic, useState, useTransition } from "react";
+import { useEffect, useOptimistic, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import Pagination from "@/components/custom/custom-pagination";
@@ -43,6 +43,21 @@ export function ProjectList({
 
     // loading state for deleting a project
     const [isDeleting, startDeleteTransition] = useTransition();
+
+    // to prevent the user from going to an out of bounds page
+    useEffect(() => {
+        if (searchParams.has("page")) {
+            const totalPages = Math.ceil(data.count / itemsPerPage);
+            const params = new URLSearchParams(searchParams);
+
+            if (currentPage > totalPages) {
+                const newPage = totalPages;
+                params.set("page", newPage.toString());
+                // go to prev page
+                router.replace(`${pathname}?${params.toString()}`);
+            }
+        }
+    }, [currentPage, data.count, itemsPerPage, pathname, router, searchParams]);
 
     // optimistic state for deleting a project
     // this will remove the project from the list without waiting for the server response
