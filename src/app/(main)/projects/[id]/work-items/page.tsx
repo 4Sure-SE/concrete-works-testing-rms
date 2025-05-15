@@ -10,6 +10,7 @@ import { ProjectService } from "@/server/services/project.service";
 import { WorkItemService } from "@/server/services/work-item.service";
 
 import { AddProjectWorkItemForm, ProjectWorkItemsTable } from "./_components";
+import { DoneButton } from "./_components/done-button";
 import ManageWorkItemsPageSkeleton from "./loading";
 
 async function WorkItemsContent({ projectId }: { projectId: string }) {
@@ -61,6 +62,9 @@ async function WorkItemsContent({ projectId }: { projectId: string }) {
                 data={projectWorkItems}
                 onDeleteAction={deleteProjectWorkItem}
             />
+            <div className="mt-6 flex justify-end">
+                <DoneButton projectId={projectId} />
+            </div>
         </div>
     );
 }
