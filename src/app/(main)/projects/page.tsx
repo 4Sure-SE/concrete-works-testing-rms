@@ -36,16 +36,6 @@ async function ProjectsLoader({
     const dateTo = searchParams?.to;
     const currentPage = Number(searchParams?.page) || 1;
 
-    const { data: projects, error: listError } = await tryCatch(
-        ProjectService.getProjectSummaryList({
-            query,
-            dateFrom,
-            dateTo,
-            currentPage,
-            itemsPerPage: ITEMS_PER_PAGE,
-        }),
-    );
-
     const { data: count, error: countError } = await tryCatch(
         ProjectService.getProjectsCount({
             query,
@@ -56,12 +46,22 @@ async function ProjectsLoader({
         }),
     );
 
-    if (listError) {
-        throw listError;
-    }
+    const { data: projects, error: listError } = await tryCatch(
+        ProjectService.getProjectSummaryList({
+            query,
+            dateFrom,
+            dateTo,
+            currentPage,
+            itemsPerPage: ITEMS_PER_PAGE,
+        }),
+    );
 
     if (countError) {
         throw countError;
+    }
+
+    if (listError) {
+        throw listError;
     }
 
     return (
