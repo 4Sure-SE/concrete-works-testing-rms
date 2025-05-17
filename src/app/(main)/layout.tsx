@@ -8,6 +8,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
 import { AppHeader, AppSidebar } from "./_components";
+import { RefreshProvider } from "./_contexts/refresh-context";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -27,16 +28,18 @@ export default function MainLayout({
         >
             <body>
                 <AuthProvider>
-                    <SidebarProvider>
-                        <AppSidebar />
-                        <SidebarInset>
-                            <AppHeader />
-                            <main className="flex-1 overflow-auto p-4">
-                                {children}
-                            </main>
-                        </SidebarInset>
-                    </SidebarProvider>
-                    <Toaster richColors />
+                    <RefreshProvider>
+                        <SidebarProvider>
+                            <AppSidebar />
+                            <SidebarInset>
+                                <AppHeader />
+                                <main className="flex-1 overflow-auto p-4">
+                                    {children}
+                                </main>
+                            </SidebarInset>
+                        </SidebarProvider>
+                        <Toaster richColors />
+                    </RefreshProvider>
                 </AuthProvider>
             </body>
         </html>

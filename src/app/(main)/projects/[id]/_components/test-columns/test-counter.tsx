@@ -15,6 +15,7 @@ interface TestCounterProps {
         type: TestType,
     ) => Promise<void>;
     isReadOnly?: boolean;
+    isDisabled?: boolean;
 }
 
 export const TestCounter = ({
@@ -23,6 +24,7 @@ export const TestCounter = ({
     type,
     updateTestAction,
     isReadOnly = false,
+    isDisabled = false,
 }: TestCounterProps) => {
     const [loadingDirection, setLoadingDirection] = useState<
         "inc" | "dec" | null
@@ -50,7 +52,7 @@ export const TestCounter = ({
             ) : (
                 <button
                     onClick={() => handleUpdate(-1)}
-                    disabled={isPending || value <= 0}
+                    disabled={isPending || value <= 0 || isDisabled}
                     aria-label="decrease"
                     className={`cursor-pointer rounded-sm px-0.5 py-0.5 text-white ${
                         isPending
@@ -75,7 +77,7 @@ export const TestCounter = ({
             ) : (
                 <button
                     onClick={() => handleUpdate(1)}
-                    disabled={isPending}
+                    disabled={isPending || isDisabled}
                     aria-label="increase"
                     className={`cursor-pointer rounded-sm px-0.5 py-0.5 text-white ${
                         isPending

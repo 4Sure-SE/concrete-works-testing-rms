@@ -22,7 +22,7 @@ import type {
 } from "@/lib/types/work-item/";
 import { withCallbacks } from "@/lib/utils";
 
-import { useRouter } from "next/navigation";
+import { useRefreshContext } from "@/app/(main)/_contexts/refresh-context";
 import { startTransition } from "react";
 import { toast } from "sonner";
 import { createProjectWorkItemSchema } from "./add-project-work-item-form.schema";
@@ -44,7 +44,7 @@ export function AddProjectWorkItemForm({
     workItemDefinitions,
 }: AddProjectWorkItemFormProps) {
     const defaultValues = { workItemId: "", quantity: 0 };
-    const router = useRouter();
+    const { triggerRefresh } = useRefreshContext();
 
     // server action callbacks on success or error
     const callbacks: Callbacks<
@@ -52,12 +52,16 @@ export function AddProjectWorkItemForm({
         ProjectWorkItemActionErrors
     > = {
         // on server action success
-        onSuccess: (_data) => {
+        onSuccess: (data) => {
             startTransition(() => {
-                router.push(`/projects/${projectId}`, { scroll: false });
+                form.reset();
                 startTransition(() => {
-                    form.reset();
-                    toast.success("Work item added to project successfully");
+                    toast.success(
+                        `Work ${
+                            data?.itemNo ?? "item"
+                        } added to project successfully`,
+                    );
+                    triggerRefresh(`/projects/${projectId}`);
                 });
             });
         },
