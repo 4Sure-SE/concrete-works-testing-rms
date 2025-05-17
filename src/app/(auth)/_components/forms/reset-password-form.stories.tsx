@@ -1,16 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
+import { useState } from "react";
+import type { AuthState } from "../types";
 import { ResetPasswordForm } from "./reset-password-form";
 
 const mockSubmitSuccess = async (): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-};
-
-const mockSubmitError = async (): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-};
-
-const mockSubmitSamePasswordError = async (): Promise<void> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
 };
 
@@ -102,16 +96,57 @@ export const ValidToken: Story = {
 export const ValidTokenWithError: Story = {
     args: {
         isTokenValid: true,
-        state: { error: "An unexpected error occurred. Please try again." },
-        onSubmit: mockSubmitError,
+        state: {},
+        onSubmit: mockSubmitSuccess,
     },
-    play: async ({ canvasElement, args }) => {
-        await basePlayFunction({ canvasElement, args });
+    render: () => <ResetPasswordWithError />,
+    play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        await expect(canvas.getByRole("alert")).toBeInTheDocument();
+        const newPasswordInput = canvas.getByLabelText(/new password/i);
+        const confirmPasswordInput = canvas.getByLabelText(/confirm password/i);
+        const submitButton = canvas.getByRole("button", {
+            name: /reset password/i,
+        });
+
+        await expect(canvas.queryByRole("alert")).not.toBeInTheDocument();
+
+        await userEvent.type(newPasswordInput, "Password123", { delay: 50 });
+        await delay(200);
+        await userEvent.type(confirmPasswordInput, "Password123", {
+            delay: 50,
+        });
+        await delay(300);
+
         await expect(
-            canvas.getByText("An unexpected error occurred. Please try again."),
-        ).toBeInTheDocument();
+            canvas.queryByText(/passwords do not match/i),
+        ).not.toBeInTheDocument();
+        await waitFor(
+            () => {
+                void expect(
+                    canvas.getByText("\u2022 At least 8 characters"),
+                ).toHaveClass("text-green-600");
+                void expect(
+                    canvas.getByText("\u2022 At least one uppercase letter"),
+                ).toHaveClass("text-green-600");
+            },
+            { timeout: 1000 },
+        );
+
+        await waitFor(() => expect(submitButton).toBeEnabled(), {
+            timeout: 2000,
+        });
+        await userEvent.click(submitButton);
+
+        await waitFor(
+            () =>
+                expect(
+                    canvas.getByText(
+                        "An unexpected error occurred. Please try again.",
+                    ),
+                ).toBeInTheDocument(),
+            { timeout: 2000 },
+        );
+        await expect(canvas.getByRole("alert")).toBeInTheDocument();
     },
 };
 
@@ -134,11 +169,10 @@ export const InvalidToken: Story = {
 export const SameAsOldPasswordError: Story = {
     args: {
         isTokenValid: true,
-        state: {
-            error: "New password cannot be the same as your old password.",
-        },
-        onSubmit: mockSubmitSamePasswordError,
+        state: {},
+        onSubmit: mockSubmitSuccess,
     },
+    render: () => <ResetPasswordWithSamePasswordError />,
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
         const newPasswordInput = canvas.getByLabelText(/new password/i);
@@ -146,12 +180,16 @@ export const SameAsOldPasswordError: Story = {
         const submitButton = canvas.getByRole("button", {
             name: /reset password/i,
         });
+
+        await expect(canvas.queryByRole("alert")).not.toBeInTheDocument();
+
         await userEvent.type(newPasswordInput, "OldPassword123", { delay: 50 });
         await delay(200);
         await userEvent.type(confirmPasswordInput, "OldPassword123", {
             delay: 50,
         });
         await delay(300);
+
         await waitFor(
             () => {
                 void expect(
@@ -163,17 +201,57 @@ export const SameAsOldPasswordError: Story = {
             },
             { timeout: 1000 },
         );
+
         await waitFor(() => expect(submitButton).toBeEnabled(), {
             timeout: 2000,
         });
         await userEvent.click(submitButton);
-        await delay(100);
-        await delay(600);
+
+        await waitFor(
+            () =>
+                expect(
+                    canvas.getByText(
+                        "New password cannot be the same as your old password.",
+                    ),
+                ).toBeInTheDocument(),
+            { timeout: 2000 },
+        );
         await expect(canvas.getByRole("alert")).toBeInTheDocument();
-        await expect(
-            canvas.getByText(
-                "New password cannot be the same as your old password.",
-            ),
-        ).toBeInTheDocument();
     },
+};
+
+const ResetPasswordWithError = () => {
+    const [state, setState] = useState<AuthState>({});
+
+    const handleSubmit = async (_formData: FormData) => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setState({ error: "An unexpected error occurred. Please try again." });
+    };
+
+    return (
+        <ResetPasswordForm
+            isTokenValid={true}
+            state={state}
+            onSubmit={handleSubmit}
+        />
+    );
+};
+
+const ResetPasswordWithSamePasswordError = () => {
+    const [state, setState] = useState<AuthState>({});
+
+    const handleSubmit = async (_formData: FormData) => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setState({
+            error: "New password cannot be the same as your old password.",
+        });
+    };
+
+    return (
+        <ResetPasswordForm
+            isTokenValid={true}
+            state={state}
+            onSubmit={handleSubmit}
+        />
+    );
 };
