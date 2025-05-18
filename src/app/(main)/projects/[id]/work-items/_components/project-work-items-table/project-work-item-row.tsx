@@ -2,6 +2,7 @@
 
 import { startTransition, useEffect, useRef } from "react";
 
+import { useRefreshContext } from "@/app/(main)/_contexts/refresh-context";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useFormAction } from "@/hooks/use-form-action";
 import type { Callbacks } from "@/lib/types/actions.types";
@@ -20,6 +21,7 @@ import {
 import ProjectWorkItemsTableActions from "./project-work-items-table-actions";
 
 interface ProjectWorkItemRowProps {
+    projectId: string;
     item: ProjectWorkItemDTO;
     isEditing: boolean;
     isDeleting: boolean;
@@ -34,6 +36,7 @@ interface ProjectWorkItemRowProps {
 }
 
 export function ProjectWorkItemRow({
+    projectId,
     item,
     isEditing,
     isDeleting,
@@ -42,15 +45,22 @@ export function ProjectWorkItemRow({
     onDelete,
     updateAction,
 }: ProjectWorkItemRowProps) {
+    const { triggerRefresh } = useRefreshContext();
+
     const callbacks: Callbacks<
         ProjectWorkItemDTO | null,
         ProjectWorkItemActionErrors
     > = {
-        onSuccess: (_data) => {
-            toast.success("Quantity updated successfully.");
+        onSuccess: (data) => {
             startTransition(() => {
                 form.reset();
                 onCancel();
+                startTransition(() => {
+                    triggerRefresh(`/projects/${projectId}`);
+                    toast.success(
+                        `Work ${data?.itemNo ?? "item"} updated successfully`,
+                    );
+                });
             });
         },
         onError: (error) => {

@@ -1,11 +1,11 @@
-import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
+import type { TestType } from "@/lib/types/project-test/project-test.types";
 import type { Projects } from "@/lib/types/project/project-details.types";
 
 export function updateProjectTest(
     prevProject: Projects,
     id: string,
     amount: number,
-    type: TestUpdateType,
+    type: TestType,
 ): Projects {
     return {
         ...prevProject,
@@ -27,12 +27,7 @@ export function updateProjectTest(
                                     : material.quantity / unitsPerTest;
                             const rawBalance =
                                 estimatedRequiredTests - newTestsOnFile;
-                            const balance = Math.max(
-                                rawBalance < 1
-                                    ? Math.ceil(rawBalance)
-                                    : Math.round(rawBalance),
-                                0,
-                            );
+                            const balance = Math.max(Math.round(rawBalance), 0);
 
                             return {
                                 ...materialTest,
@@ -45,7 +40,7 @@ export function updateProjectTest(
                 }));
             }
 
-            if (type === "workItem") {
+            if (type === "work-item") {
                 updatedItemTest = workItem.itemTest?.map((pjwit) => {
                     if (pjwit.id === id) {
                         const newTestsOnFile = pjwit.testsOnFile + amount;

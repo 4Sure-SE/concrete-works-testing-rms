@@ -1,10 +1,10 @@
-import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
+import type { TestType } from "@/lib/types/project-test/project-test.types";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, within } from "@storybook/test";
 import { TestCounter } from "./test-counter";
 
 const mockUpdateTestAction = fn().mockImplementation(
-    async (id: string, amount: number, type: TestUpdateType) => {
+    async (id: string, amount: number, type: TestType) => {
         console.log("onUpdate:", { id, amount, type });
 
         await sleep(1000);

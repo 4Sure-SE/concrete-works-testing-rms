@@ -46,7 +46,7 @@ describe("ProjectService", () => {
             await expect(
                 ProjectService.deleteProject(projectIdToDelete),
             ).rejects.toThrow(
-                `[Service] Failed to delete project ID: ${projectIdToDelete}`,
+                `Failed to delete project ID: ${projectIdToDelete}`,
             );
 
             expect(deleteProjectSpy).toHaveBeenCalledWith(projectIdToDelete);
@@ -57,9 +57,7 @@ describe("ProjectService", () => {
             // and check if the error is thrown
             await expect(
                 ProjectService.deleteProject(projectIdToDelete),
-            ).rejects.toThrow(
-                `[Service] Project with ID ${projectIdToDelete} not found`,
-            );
+            ).rejects.toThrow(`Project with ID ${projectIdToDelete} not found`);
         });
         it("throws an error when project DTO conversion fails", async () => {
             await projectDataAccess.createProject(fakeProject);
@@ -70,7 +68,7 @@ describe("ProjectService", () => {
             await expect(
                 ProjectService.deleteProject(projectIdToDelete),
             ).rejects.toThrow(
-                `[Service] Failed to convert deleted project ID: ${projectIdToDelete}`,
+                `Failed to convert deleted project ID: ${projectIdToDelete}`,
             );
         });
     });

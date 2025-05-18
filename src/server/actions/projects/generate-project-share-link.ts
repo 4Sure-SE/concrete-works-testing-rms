@@ -1,5 +1,6 @@
 "use server";
 
+import { env } from "@/env";
 import type { ActionState } from "@/lib/types/actions.types";
 import { errorHandler } from "@/lib/utils/error-handler";
 import { tryCatch } from "@/lib/utils/try-catch";
@@ -21,7 +22,7 @@ export async function generateProjectShareLink(
         return { success: false, error: handledError.message };
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const baseUrl = env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
     const shareableUrl = `${baseUrl}/share/projects/${token}`;
 
     return {

@@ -1,13 +1,14 @@
 export default function SharedProjectLayout({
     children,
+    modal,
 }: {
     children: React.ReactNode;
+    modal: React.ReactNode;
 }) {
     return (
-        <main className="container mx-auto max-w-7xl p-4">
-            <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-                {children}
-            </div>
+        <main className="bg-gray-50 px-8 py-4">
+            {children}
+            {modal}
         </main>
     );
 }

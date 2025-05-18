@@ -12,7 +12,7 @@ export function SidebarHeaderButton() {
         <SidebarMenuButton
             size="lg"
             asChild
-            tooltip="Concrete Works"
+            tooltip="Concrete Works Testing RMS"
         >
             <Link
                 href="/projects"

@@ -1,3 +1,6 @@
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
 import { BackButton } from "@/app/(main)/_components";
 import SectionHeader from "@/components/custom/section-header";
 import { tryCatch } from "@/lib/utils";
@@ -5,7 +8,66 @@ import { createProjectWorkItem } from "@/server/actions/projects/create-project-
 import { deleteProjectWorkItem } from "@/server/actions/projects/delete-project-work-item";
 import { ProjectService } from "@/server/services/project.service";
 import { WorkItemService } from "@/server/services/work-item.service";
+
 import { AddProjectWorkItemForm, ProjectWorkItemsTable } from "./_components";
+import { DoneButton } from "./_components/done-button";
+import ManageWorkItemsPageSkeleton from "./loading";
+
+async function WorkItemsContent({ projectId }: { projectId: string }) {
+    const projectPromise = tryCatch(ProjectService.getProjectById(projectId));
+    const definitionsPromise = tryCatch(
+        WorkItemService.getWorkItemDefinitionList(),
+    );
+    const projectWorkItemsPromise = tryCatch(
+        ProjectService.getProjectWorkItemList(projectId),
+    );
+
+    const [projectResult, definitionsResult, projectWorkItemsResult] =
+        await Promise.all([
+            projectPromise,
+            definitionsPromise,
+            projectWorkItemsPromise,
+        ]);
+
+    if (projectResult.error) {
+        notFound();
+    }
+
+    const project = projectResult.data;
+
+    if (definitionsResult.error) {
+        throw definitionsResult.error;
+    }
+    const workItemDefinitions = definitionsResult.data || [];
+
+    if (projectWorkItemsResult.error) {
+        throw projectWorkItemsResult.error;
+    }
+    const projectWorkItems = projectWorkItemsResult.data || [];
+
+    return (
+        <div className="mx-auto max-w-7xl space-y-5 py-2 md:py-4">
+            <SectionHeader
+                title={"Manage Work Items"}
+                description={`For project ${project.contractId}`}
+                leftControl={<BackButton />}
+            />
+            <AddProjectWorkItemForm
+                action={createProjectWorkItem}
+                projectId={projectId}
+                workItemDefinitions={workItemDefinitions}
+            />
+            <ProjectWorkItemsTable
+                projectId={projectId}
+                data={projectWorkItems}
+                onDeleteAction={deleteProjectWorkItem}
+            />
+            <div className="mt-6 flex justify-end">
+                <DoneButton projectId={projectId} />
+            </div>
+        </div>
+    );
+}
 
 export default async function ManageWorkItemsPage({
     params,
@@ -13,44 +75,10 @@ export default async function ManageWorkItemsPage({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    const { data: project, error: getProjectError } = await tryCatch(
-        ProjectService.getProjectById(id),
-    );
-
-    const { data: workItemDefinitions, error: getWorkItemDefinitionsError } =
-        await tryCatch(WorkItemService.getWorkItemDefinitionList());
-
-    const { data: projectWorkItems, error: getProjectWorkItemsError } =
-        await tryCatch(ProjectService.getProjectWorkItemList(id));
-
-    if (getProjectError) {
-        throw getProjectError;
-    }
-
-    if (getWorkItemDefinitionsError) {
-        throw getWorkItemDefinitionsError;
-    }
-
-    if (getProjectWorkItemsError) {
-        throw getProjectWorkItemsError;
-    }
 
     return (
-        <div className="mx-auto max-w-7xl space-y-5 py-2 md:py-4">
-            <SectionHeader
-                title="Work Items"
-                description={`Manage work items of project ${project?.contractId} `}
-                leftControl={<BackButton />}
-            />
-            <AddProjectWorkItemForm
-                action={createProjectWorkItem}
-                projectId={id}
-                workItemDefinitions={workItemDefinitions}
-            />
-            <ProjectWorkItemsTable
-                data={projectWorkItems}
-                onDeleteAction={deleteProjectWorkItem}
-            />
-        </div>
+        <Suspense fallback={<ManageWorkItemsPageSkeleton />}>
+            <WorkItemsContent projectId={id} />
+        </Suspense>
     );
 }

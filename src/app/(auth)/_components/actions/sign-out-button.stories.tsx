@@ -1,3 +1,8 @@
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarProvider,
+} from "@/components/ui/sidebar";
 import { action } from "@storybook/addon-actions";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, within } from "@storybook/test";
@@ -10,7 +15,13 @@ const meta = {
     decorators: [
         (Story) => (
             <AuthProvider>
-                <Story />
+                <SidebarProvider>
+                    <Sidebar>
+                        <SidebarContent>
+                            <Story />{" "}
+                        </SidebarContent>
+                    </Sidebar>
+                </SidebarProvider>
             </AuthProvider>
         ),
     ],

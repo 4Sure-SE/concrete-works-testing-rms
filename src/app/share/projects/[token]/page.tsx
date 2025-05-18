@@ -2,7 +2,8 @@ import { ProjectContractDetails } from "@/app/(main)/projects/[id]/_components/p
 import { ProjectDetailsSkeleton } from "@/app/(main)/projects/[id]/_components/project-details/project-details-skeleton";
 import { tryCatch } from "@/lib/utils";
 import { ProjectService } from "@/server/services";
-import { FolderOpen, InfoIcon } from "lucide-react";
+import { InfoIcon } from "lucide-react";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ReadOnlyProjectContent } from "../_components/read-only-content";
 
@@ -12,22 +13,11 @@ async function SharedProjectContent({ token }: { token: string }) {
     );
 
     if (error) {
-        return (
-            <div className="flex h-full w-full flex-col items-center justify-center">
-                <FolderOpen className="h-15 w-15" />
-                <div className="p-4 text-lg font-medium">
-                    Project Details Not Found
-                </div>
-                <div className="text-sm text-gray-500">
-                    The project associated with this shared link could not be
-                    found.
-                </div>
-            </div>
-        );
+        notFound();
     }
 
     return (
-        <div>
+        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
             <div className="flex justify-center p-4">
                 <div
                     role="status"

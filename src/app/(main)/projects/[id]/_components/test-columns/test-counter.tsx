@@ -1,19 +1,21 @@
 "use client";
 
-import type { TestUpdateType } from "@/lib/types/project-test/project-test.types";
 import { Loader2, Minus, Plus } from "lucide-react";
-import { useOptimistic, useState, useTransition } from "react";
+import { useState } from "react";
+
+import type { TestType } from "@/lib/types/project-test/project-test.types";
 
 interface TestCounterProps {
     id: string | undefined;
     value: number;
-    type: TestUpdateType;
+    type: TestType;
     updateTestAction: (
         id: string,
         amount: number,
-        type: TestUpdateType,
+        type: TestType,
     ) => Promise<void>;
     isReadOnly?: boolean;
+    isDisabled?: boolean;
 }
 
 export const TestCounter = ({
@@ -22,30 +24,24 @@ export const TestCounter = ({
     type,
     updateTestAction,
     isReadOnly = false,
+    isDisabled = false,
 }: TestCounterProps) => {
-    const [optimisticValue, addOptimisticValue] = useOptimistic(
-        value,
-        (state, amount: number) => state + amount,
-    );
-    const [isPending, startTransition] = useTransition();
     const [loadingDirection, setLoadingDirection] = useState<
         "inc" | "dec" | null
     >(null);
-    const isDisabled = isPending;
 
     const handleUpdate = async (amount: number) => {
-        if (isReadOnly || !id || isDisabled) return;
+        if (isReadOnly || !id || isPending) return;
 
-        startTransition(async () => {
-            // optimistically update the value
-            addOptimisticValue(amount);
-            await updateTestAction(id, amount, type);
+        const direction = amount > 0 ? "inc" : "dec";
+        setLoadingDirection(direction);
 
-            const direction = amount > 0 ? "inc" : "dec";
-            setLoadingDirection(direction);
-        });
+        await updateTestAction(id, amount, type);
+
+        setLoadingDirection(null);
     };
 
+    const isPending = loadingDirection !== null;
     const isIncLoading = isPending && loadingDirection === "inc";
     const isDecLoading = isPending && loadingDirection === "dec";
 
@@ -56,10 +52,10 @@ export const TestCounter = ({
             ) : (
                 <button
                     onClick={() => handleUpdate(-1)}
-                    disabled={isDisabled || optimisticValue <= 0}
+                    disabled={isPending || value <= 0 || isDisabled}
                     aria-label="decrease"
                     className={`cursor-pointer rounded-sm px-0.5 py-0.5 text-white ${
-                        isDisabled
+                        isPending
                             ? "bg-red-400 hover:bg-red-400"
                             : "bg-red-500 hover:bg-red-600"
                     }`}
@@ -73,7 +69,7 @@ export const TestCounter = ({
             )}
 
             <div className="flex h-8.5 w-11 items-center justify-center rounded-sm border border-gray-200 bg-white">
-                {optimisticValue}
+                {value}
             </div>
 
             {isReadOnly ? (
@@ -81,10 +77,10 @@ export const TestCounter = ({
             ) : (
                 <button
                     onClick={() => handleUpdate(1)}
-                    disabled={isDisabled}
+                    disabled={isPending || isDisabled}
                     aria-label="increase"
                     className={`cursor-pointer rounded-sm px-0.5 py-0.5 text-white ${
-                        isDisabled
+                        isPending
                             ? "bg-green-400 hover:bg-green-400"
                             : "bg-green-500 hover:bg-green-600"
                     }`}

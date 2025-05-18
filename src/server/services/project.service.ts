@@ -204,7 +204,7 @@ export const ProjectService = {
         const existingProject = await getProjectById(projectId);
 
         if (!existingProject) {
-            throw new Error(`[Service] Project with ID ${projectId} not found`);
+            throw new Error(`Project with ID ${projectId} not found`);
         }
 
         const existingToken = existingProject.token;
@@ -236,7 +236,7 @@ export const ProjectService = {
         const rawProject = await getProjectDetailsByToken(token);
 
         if (!rawProject) {
-            throw new Error(`[Service] Invalid token: no project found`);
+            throw new Error(`Invalid token: no project found`);
         }
 
         const dto = projectDetailsToDTO(rawProject);
@@ -338,7 +338,7 @@ export const ProjectService = {
         const existingProject = await getProjectById(projectId);
 
         if (!existingProject) {
-            throw new Error(`[Service] Project with ID ${projectId} not found`);
+            throw new Error(`Project with ID ${projectId} not found`);
         }
 
         // check if there are any changes to the project
@@ -353,14 +353,14 @@ export const ProjectService = {
             existingProject.limits === data.limits &&
             existingProject.location === data.location
         ) {
-            throw new Error(`[Service] No changes made`);
+            throw new Error(`No changes made`);
         }
 
         const updatedProjectRecord = await updateProject(projectId, data);
         const outputDto = projectToDTO(updatedProjectRecord);
 
         if (!outputDto) {
-            throw new Error("[Service] Failed to convert updated project.");
+            throw new Error("Failed to convert updated project.");
         }
 
         return outputDto;
@@ -374,7 +374,7 @@ export const ProjectService = {
         const existingProject = await getProjectById(projectId);
 
         if (!existingProject) {
-            throw new Error(`[Service] Project with ID ${projectId} not found`);
+            throw new Error(`Project with ID ${projectId} not found`);
         }
 
         const { data, error } = await tryCatch(deleteProject(projectId));
@@ -464,7 +464,7 @@ export const ProjectService = {
         data: CreateProjectWorkItemDTO,
     ): Promise<ProjectWorkItemDTO> {
         if (!projectId)
-            throw new Error(`[Service] Project with ID ${projectId} not found`);
+            throw new Error(`Project with ID ${projectId} not found`);
 
         // check if the project work item already exists
         const existingProjectWorkItem =
@@ -547,7 +547,7 @@ export const ProjectService = {
             await client.$disconnect();
 
             if (error) {
-                throw new Error(`[Service] Failed to create project work item`);
+                throw new Error(`Failed to create project work item`);
             }
 
             if (projectWorkItem === null) {
@@ -577,7 +577,7 @@ export const ProjectService = {
         }
 
         if (projectWorkItem.quantity.toNumber() === data.quantity) {
-            throw new Error(`[Service] No changes made`);
+            throw new Error(`No changes made`);
         }
 
         // all the definitions of the work item - material, test conversions

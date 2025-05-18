@@ -48,8 +48,8 @@ export async function updateProjectWorkItem(
     }
 
     revalidatePath(`/projects`);
-    revalidatePath(`/projects/[id]`);
-    revalidatePath(`/projects/[id]/work-items`);
+    revalidatePath(`/projects/[id]`, "page");
+    revalidatePath(`/projects/[id]/work-items`, "page");
 
     return {
         success: true,

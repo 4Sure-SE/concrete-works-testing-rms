@@ -22,6 +22,7 @@ import type {
 } from "@/lib/types/work-item/";
 import { withCallbacks } from "@/lib/utils";
 
+import { useRefreshContext } from "@/app/(main)/_contexts/refresh-context";
 import { startTransition } from "react";
 import { toast } from "sonner";
 import { createProjectWorkItemSchema } from "./add-project-work-item-form.schema";
@@ -43,6 +44,7 @@ export function AddProjectWorkItemForm({
     workItemDefinitions,
 }: AddProjectWorkItemFormProps) {
     const defaultValues = { workItemId: "", quantity: 0 };
+    const { triggerRefresh } = useRefreshContext();
 
     // server action callbacks on success or error
     const callbacks: Callbacks<
@@ -50,10 +52,17 @@ export function AddProjectWorkItemForm({
         ProjectWorkItemActionErrors
     > = {
         // on server action success
-        onSuccess: (_data) => {
-            toast.success("Work item added to project successfully");
+        onSuccess: (data) => {
             startTransition(() => {
                 form.reset();
+                startTransition(() => {
+                    toast.success(
+                        `Work ${
+                            data?.itemNo ?? "item"
+                        } added to project successfully`,
+                    );
+                    triggerRefresh(`/projects/${projectId}`);
+                });
             });
         },
         // on server action error

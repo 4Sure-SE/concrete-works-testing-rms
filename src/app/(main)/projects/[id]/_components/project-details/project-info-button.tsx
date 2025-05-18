@@ -1,13 +1,5 @@
 "use client";
-import { DialogContent } from "@/components/custom/hidden-close-button-dialog";
-import { Button } from "@/components/ui/button";
-import {
-    Dialog,
-    DialogClose,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import type { Projects } from "@/lib/types/project";
+
 import {
     Building2,
     Factory,
@@ -20,6 +12,16 @@ import {
     X,
 } from "lucide-react";
 import { useState } from "react";
+
+import { DialogContent } from "@/components/custom/hidden-close-button-dialog";
+import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogClose,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import type { Projects } from "@/lib/types/project";
 
 export function ProjectInfoButton({ project }: { project: Projects }) {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);

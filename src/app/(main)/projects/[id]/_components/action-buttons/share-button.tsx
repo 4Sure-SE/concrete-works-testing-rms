@@ -1,4 +1,9 @@
 "use client";
+
+import { Check, ChevronDown, Copy, Loader2, Share2 } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -7,9 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { generateProjectShareLink } from "@/server/actions/projects/generate-project-share-link";
-import { Check, ChevronDown, Copy, Loader2, Share2 } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useState } from "react";
 
 export function ShareButton() {
     const params = useParams();
@@ -28,7 +30,6 @@ export function ShareButton() {
         const result = await generateProjectShareLink(projectId);
 
         if (!result.success) {
-            console.error("Failed to fetch share link:", result.error);
             setError("Failed to generate share link.");
             setShareableLink(null);
         }

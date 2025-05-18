@@ -45,10 +45,12 @@ export function UpdateProjectForm({
     const callbacks: Callbacks<ProjectDTO | null, ProjectActionErrors> = {
         // on server action success
         onSuccess: (_data) => {
-            toast.success("Project updated successfully.");
             startTransition(() => {
                 router.push(`/projects/${projectId}`);
-                form.reset();
+                startTransition(() => {
+                    form.reset();
+                    toast.success("Project updated successfully.");
+                });
             });
         },
         // on server action error
