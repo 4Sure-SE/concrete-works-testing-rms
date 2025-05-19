@@ -69,9 +69,7 @@ describe("resetPassword function", () => {
     test("handles thrown exceptions", async () => {
         formData.append("password", "ThrowError");
 
-        const createClientMock =
-            supabaseServer.createClient as unknown as ReturnType<typeof vi.fn>;
-        createClientMock.mockImplementationOnce(() => {
+        vi.mocked(supabaseServer).createClient.mockImplementationOnce(() => {
             throw new Error("Unexpected error");
         });
 
