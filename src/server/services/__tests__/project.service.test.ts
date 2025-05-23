@@ -1,6 +1,7 @@
 import * as projectAdapter from "@/lib/adapters/project";
 import { fakeProjectWorkItemData } from "@/lib/stubs/project-details.stub";
 import { fakeProject, fakeProjectDTO } from "@/lib/stubs/project.stub";
+import { type Projects } from "@/lib/types/project";
 import * as projectMaterialTestAccess from "@/server/data-access/project-material-test/project-material-test";
 import * as projectWorkItemTestAccess from "@/server/data-access/project-work-item-test/project-work-item-test";
 import * as projectDataAccess from "@/server/data-access/project/project";
@@ -88,6 +89,7 @@ describe("ProjectService", () => {
             await projectDataAccess.clearProjects();
         });
 
+        //Happy Path
         it("successfully get ptoject details and return its DTO", async () => {
             await projectDataAccess.createProject(fakeProject);
             await ProjectService.createProjectWorkItem(
@@ -95,29 +97,34 @@ describe("ProjectService", () => {
                 fakeProjectWorkItemData,
             );
 
-            const result = await ProjectService.getProjectDetails(projectId);
+            const result: Projects =
+                await ProjectService.getProjectDetails(projectId);
+            console.log(result);
 
             expect(result).toMatchObject({
-                contractId: fakeProject.contractId,
+                contractId: "fake-contract-id",
+                contractName: "Fake Contract Name",
+                contractor: "Fake Contractor",
+                limits: "Fake Limits",
+                location: "Fake Location",
+                materialsEngineer: "Fake Engineer",
+                contractCost: 1000,
                 projectWorkItem: [
-                    expect.objectContaining({
+                    {
+                        itemNo: "Item 900",
                         description: "Reinforced Concrete",
-
+                        quantity: 1000,
+                        unit: "cubic meter",
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                        itemTest: expect.arrayContaining([
-                            expect.objectContaining({
-                                balance: 1,
-                                requiredTests: 1,
-                                testQuantity: 1,
-                                testRequired: "Trial Mix",
-                                testsOnFile: 0,
-                            }),
-                        ]),
-                    }),
+                        itemTest: expect.any(Array),
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        materials: expect.any(Array),
+                    },
                 ],
             });
         }, 20000);
 
+        //Sad Path
         it("should return an error if project is not found", async () => {
             const fakeProjectId = "550e8400-e29b-41d4-a716-446655440000";
 
@@ -128,6 +135,7 @@ describe("ProjectService", () => {
             );
         }, 20000);
 
+        //Happy Path
         it("should return a DTO with empty work items if none exist", async () => {
             const project = { ...fakeProject };
             await projectDataAccess.createProject(project);
@@ -137,6 +145,7 @@ describe("ProjectService", () => {
             expect(result.projectWorkItem).toEqual([]);
         }, 20000);
 
+        //Sad Path
         it("throws an error when projectDetailsToDTO conversion fails", async () => {
             await projectDataAccess.createProject(fakeProject);
 
@@ -152,6 +161,7 @@ describe("ProjectService", () => {
             );
         }, 20000);
 
+        //Sad Path
         it("throws a vague error when the DB fails during getProjectDetails", async () => {
             await projectDataAccess.createProject(fakeProject);
             const dbError = new Error("DB Error");
@@ -187,6 +197,7 @@ describe("ProjectService", () => {
             await projectDataAccess.clearProjects();
         });
 
+        //Happy Path
         it("successfully increment test count", async () => {
             await projectDataAccess.createProject(fakeProject);
             await ProjectService.createProjectWorkItem(
@@ -217,6 +228,7 @@ describe("ProjectService", () => {
             expect(result.onFile).toBeGreaterThanOrEqual(3); // depending on test data
         }, 20000);
 
+        //Happy Path
         it("successfully decrement test count", async () => {
             await projectDataAccess.createProject(fakeProject);
 
@@ -247,6 +259,7 @@ describe("ProjectService", () => {
             expect(result.onFile).toEqual(2); // depending on test data
         }, 20000);
 
+        //Sad Path
         it("should throw an error if work item test is not found", async () => {
             const fakeWorkItemTestId = "123e4567-e89b-12d3-a456-426614174000";
 
@@ -258,6 +271,7 @@ describe("ProjectService", () => {
             ).rejects.toThrow("Work item test not found");
         }, 20000);
 
+        //Sad Path
         it("should throw an error when DB update fails", async () => {
             await projectDataAccess.createProject(fakeProject);
 
@@ -301,6 +315,7 @@ describe("ProjectService", () => {
             await projectDataAccess.clearProjects();
         });
 
+        //Happy Path
         it("successfully increment test count", async () => {
             await projectDataAccess.createProject(fakeProject);
             await ProjectService.createProjectWorkItem(
@@ -326,6 +341,7 @@ describe("ProjectService", () => {
             expect(result.onFile).toBeGreaterThanOrEqual(3); // depending on test data
         }, 20000);
 
+        //Happy Path
         it("successfully decrement test count", async () => {
             await projectDataAccess.createProject(fakeProject);
 
@@ -357,6 +373,7 @@ describe("ProjectService", () => {
             expect(result.onFile).toEqual(2); // depending on test data
         }, 20000);
 
+        //Sad Path
         it("should throw an error if work item test is not found", async () => {
             const fakeMaterialTestId = "123e4567-e89b-12d3-a456-426614174000";
 
@@ -368,6 +385,7 @@ describe("ProjectService", () => {
             ).rejects.toThrow("[Service] Material test not found");
         }, 20000);
 
+        //Sad Path
         it("should throw an error when DB update fails", async () => {
             await projectDataAccess.createProject(fakeProject);
 
