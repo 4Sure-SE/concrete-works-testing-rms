@@ -1,6 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
+import { useState } from "react";
 import { ForgotPasswordForm } from "./forgot-password-form";
+
+const ForgotPasswordWithError = () => {
+    const [state, setState] = useState<{ error?: string }>({});
+
+    const handleAction = async (_formData: FormData) => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setState({ error: "Invalid email address provided." });
+    };
+
+    return (
+        <ForgotPasswordForm
+            action={handleAction}
+            state={state}
+        />
+    );
+};
 
 const mockAction = async (): Promise<void> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -60,13 +77,33 @@ export const Default: Story = {
 export const WithError: Story = {
     args: {
         action: mockAction,
-        state: { error: "Invalid email address provided." },
+        state: {},
     },
-    play: async ({ canvasElement, args }) => {
+    render: () => <ForgotPasswordWithError />,
+    play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        await basePlayFunction({ canvasElement, args });
+        const emailInput = canvas.getByLabelText(/email/i);
+        const submitButton = canvas.getByRole("button", {
+            name: /send reset link/i,
+        });
+
         await expect(
-            canvas.getByText("Invalid email address provided."),
-        ).toBeInTheDocument();
+            canvas.queryByText("Invalid email address provided."),
+        ).not.toBeInTheDocument();
+
+        await expect(submitButton).toBeDisabled();
+        await userEvent.type(emailInput, "robbaban12@gmail.com", { delay: 50 });
+        await delay(200);
+        await expect(submitButton).toBeEnabled();
+
+        await userEvent.click(submitButton);
+
+        await waitFor(
+            () =>
+                expect(
+                    canvas.getByText("Invalid email address provided."),
+                ).toBeInTheDocument(),
+            { timeout: 2000 },
+        );
     },
 };
