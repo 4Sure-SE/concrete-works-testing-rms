@@ -80,7 +80,8 @@ export function TestRecordModal({
     });
 
     const handleCloseModal = () => {
-        router.back();
+        // go back to project details page
+        router.replace(`/projects/${projectId}`);
     };
 
     const handleUploadAndSaveToDb = async () => {
