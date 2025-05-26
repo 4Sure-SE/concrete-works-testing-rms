@@ -1,13 +1,14 @@
 "use client";
 
-import { Fragment, useTransition } from "react";
+import { Fragment } from "react";
 
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { ProjectWorkItem } from "@/lib/types/project";
 import type { TestType } from "@/lib/types/project-test/project-test.types";
 import { FileText } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
@@ -29,19 +30,12 @@ export function WorkItemsTable({
     isUpdating = false,
 }: WorkItemsTableProps) {
     const hasItemTests = workItem.itemTest.length > 0;
-    const router = useRouter();
     const { id: projectId, token } = useParams<{ id: string; token: string }>();
-    const [isNavigating, startNavigation] = useTransition();
 
-    const handleManageClick = (testId: string) => {
-        startNavigation(() => {
-            let modalUrl;
-            if (isReadOnly)
-                modalUrl = `${token}/test-records/${testId}/work-item`;
-            else
-                modalUrl = `/projects/${projectId}/test-records/${testId}/work-item`;
-            router.push(modalUrl, { scroll: false });
-        });
+    const getTestRecordUrl = (testId: string) => {
+        return isReadOnly
+            ? `${token}/test-records/${testId}/work-item`
+            : `/projects/${projectId}/test-records/${testId}/work-item`;
     };
 
     const sortedWorkItemTests = [...workItem.itemTest].sort((a, b) =>
@@ -77,7 +71,6 @@ export function WorkItemsTable({
                                 type="work-item"
                                 updateTestAction={onTestCountUpdate}
                                 isReadOnly={isReadOnly}
-                                isDisabled={isNavigating}
                             ></TestCounter>
                         </TableCell>
                         <TableCell className="text-center">
@@ -90,16 +83,16 @@ export function WorkItemsTable({
                                     variant="outline"
                                     className="flex cursor-pointer items-center gap-1 text-xs font-medium"
                                     disabled={isUpdating}
-                                    onClick={() =>
-                                        sortedWorkItemTests[0]?.id
-                                            ? handleManageClick(
-                                                  sortedWorkItemTests[0].id,
-                                              )
-                                            : undefined
-                                    }
+                                    asChild
                                 >
-                                    <FileText className="h-4 w-4" />
-                                    {isReadOnly ? "View" : "Manage"}
+                                    <Link
+                                        href={getTestRecordUrl(
+                                            sortedWorkItemTests[0]?.id ?? "",
+                                        )}
+                                    >
+                                        <FileText className="h-4 w-4" />
+                                        {isReadOnly ? "View" : "Manage"}
+                                    </Link>
                                 </Button>
                             </div>
                         </TableCell>
@@ -135,7 +128,6 @@ export function WorkItemsTable({
                             type="work-item"
                             updateTestAction={onTestCountUpdate}
                             isReadOnly={isReadOnly}
-                            isDisabled={isNavigating}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">
@@ -147,11 +139,13 @@ export function WorkItemsTable({
                                 size="sm"
                                 variant="outline"
                                 className="flex cursor-pointer items-center gap-1 text-xs font-medium"
-                                onClick={() => handleManageClick(test.id)}
                                 disabled={isUpdating}
+                                asChild
                             >
-                                <FileText className="h-4 w-4" />
-                                {isReadOnly ? "View" : "Manage"}
+                                <Link href={getTestRecordUrl(test.id)}>
+                                    <FileText className="h-4 w-4" />
+                                    {isReadOnly ? "View" : "Manage"}
+                                </Link>
                             </Button>
                         </div>
                     </TableCell>
