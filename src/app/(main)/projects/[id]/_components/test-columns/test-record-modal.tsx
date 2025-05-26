@@ -2,7 +2,7 @@
 
 import { Loader2, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useOptimistic, useTransition } from "react";
+import { useOptimistic, useTransition } from "react";
 import { toast } from "sonner";
 
 import {
@@ -79,9 +79,9 @@ export function TestRecordModal({
         maxFileSize: MAX_FILE_SIZE,
     });
 
-    const handleCloseModal = useCallback(() => {
+    const handleCloseModal = () => {
         router.back();
-    }, [router]);
+    };
 
     const handleUploadAndSaveToDb = async () => {
         if (isReadOnly) return;
