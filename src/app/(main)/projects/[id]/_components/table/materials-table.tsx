@@ -32,8 +32,8 @@ export function MaterialsTable({
 
     const getTestRecordUrl = (testId: string) => {
         return isReadOnly
-            ? `${token}/test-records/${testId}/work-item`
-            : `/projects/${projectId}/test-records/${testId}/work-item`;
+            ? `${token}/test-records/${testId}/material`
+            : `/projects/${projectId}/test-records/${testId}/material`;
     };
 
     const sortedMaterialTests = [...material.materialTest].sort((a, b) =>
