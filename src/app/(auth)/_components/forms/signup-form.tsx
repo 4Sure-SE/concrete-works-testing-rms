@@ -23,6 +23,7 @@ export function SignupForm({ action, initialError = null }: SignupFormProps) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isPasswordValid, setPasswordValid] = useState(false);
 
     const {
         email,
@@ -103,7 +104,10 @@ export function SignupForm({ action, initialError = null }: SignupFormProps) {
                     Icon={Lock}
                 />
                 {password.length > 0 && (
-                    <PasswordRequirements password={password} />
+                    <PasswordRequirements
+                        password={password}
+                        validation={setPasswordValid}
+                    />
                 )}
             </div>
 
@@ -130,6 +134,7 @@ export function SignupForm({ action, initialError = null }: SignupFormProps) {
                 isDisabled={
                     isSubmitting ||
                     !passwordsMatch ||
+                    !isPasswordValid ||
                     !!emailError ||
                     isValidating
                 }
