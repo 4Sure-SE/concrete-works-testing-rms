@@ -30,7 +30,7 @@ export function SearchBar({
     // trigger the search on every change detected after 500ms
     const debouncedSearch = useDebouncedCallback((term: string) => {
         onSearchChange(term.trim() || undefined);
-    }, 500);
+    }, 1200);
 
     return (
         <div className="relative flex-grow">
