@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { Material } from "@/lib/types/project";
 import type { TestType } from "@/lib/types/project-test/project-test.types";
-import { useParams, useRouter } from "next/navigation";
-import { useTransition } from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { TestCounter } from "../test-columns/test-counter";
 import { TestStatus } from "../test-columns/test-status";
 
@@ -28,27 +28,17 @@ export function MaterialsTable({
     isReadOnly = false,
     isUpdating = false,
 }: MaterialsTableProps) {
-    const router = useRouter();
     const { id: projectId, token } = useParams<{ id: string; token: string }>();
-    const [isNavigating, startNavigation] = useTransition();
 
-    const handleManageClick = (testId: string) => {
-        startNavigation(() => {
-            let modalUrl;
-            if (isReadOnly)
-                modalUrl = `${token}/test-records/${testId}/material`;
-            else
-                modalUrl = `/projects/${projectId}/test-records/${testId}/material`;
-            router.push(modalUrl, { scroll: false });
-        });
+    const getTestRecordUrl = (testId: string) => {
+        return isReadOnly
+            ? `${token}/test-records/${testId}/material`
+            : `/projects/${projectId}/test-records/${testId}/material`;
     };
 
-    const sortedMaterialTests = [...material.materialTest].sort((a, b) =>
-        a.testRequired.localeCompare(b.testRequired),
-    );
     return (
         <>
-            {sortedMaterialTests.map((test, testIndex) => (
+            {material.materialTest.map((test, testIndex) => (
                 <TableRow key={test.id}>
                     <TableCell></TableCell>
                     {testIndex === 0 ? (
@@ -82,7 +72,6 @@ export function MaterialsTable({
                             type="material"
                             updateTestAction={onTestCountUpdate}
                             isReadOnly={isReadOnly}
-                            isDisabled={isNavigating}
                         ></TestCounter>
                     </TableCell>
                     <TableCell className="text-center">
@@ -94,11 +83,16 @@ export function MaterialsTable({
                                 size="sm"
                                 variant="outline"
                                 className="flex cursor-pointer items-center gap-1 text-xs font-medium"
-                                onClick={() => handleManageClick(test.id)}
                                 disabled={isUpdating}
+                                asChild
                             >
-                                <FileText className="h-4 w-4" />
-                                {isReadOnly ? "View" : "Manage"}
+                                <Link
+                                    href={getTestRecordUrl(test.id)}
+                                    scroll={false}
+                                >
+                                    <FileText className="h-4 w-4" />
+                                    {isReadOnly ? "View" : "Manage"}
+                                </Link>
                             </Button>
                         </div>
                     </TableCell>

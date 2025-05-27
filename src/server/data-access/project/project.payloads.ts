@@ -74,14 +74,16 @@ export const projectDetails = Prisma.validator<Prisma.ProjectInclude>()({
                         include: { test: true },
                     },
                 },
+                orderBy: { material: { name: "asc" } },
             },
             projectWorkItemTest: {
                 include: {
                     test: true,
                 },
+                orderBy: { test: { name: "asc" } },
             },
         },
-        orderBy: { createdAt: "desc" },
+        orderBy: { workItem: { itemNo: "asc" } },
     },
 });
 
