@@ -36,12 +36,9 @@ export function MaterialsTable({
             : `/projects/${projectId}/test-records/${testId}/material`;
     };
 
-    const sortedMaterialTests = [...material.materialTest].sort((a, b) =>
-        a.testRequired.localeCompare(b.testRequired),
-    );
     return (
         <>
-            {sortedMaterialTests.map((test, testIndex) => (
+            {material.materialTest.map((test, testIndex) => (
                 <TableRow key={test.id}>
                     <TableCell></TableCell>
                     {testIndex === 0 ? (
@@ -89,7 +86,10 @@ export function MaterialsTable({
                                 disabled={isUpdating}
                                 asChild
                             >
-                                <Link href={getTestRecordUrl(test.id)}>
+                                <Link
+                                    href={getTestRecordUrl(test.id)}
+                                    scroll={false}
+                                >
                                     <FileText className="h-4 w-4" />
                                     {isReadOnly ? "View" : "Manage"}
                                 </Link>

@@ -18,6 +18,7 @@ export async function getProjectWorkItemListByProjectId(
     const projectWorkItems = await db.projectWorkItem.findMany({
         where: { projectId },
         include: projectWorkItemInclude,
+        orderBy: { workItem: { itemNo: "asc" } },
     });
 
     return projectWorkItems;

@@ -38,10 +38,6 @@ export function WorkItemsTable({
             : `/projects/${projectId}/test-records/${testId}/work-item`;
     };
 
-    const sortedWorkItemTests = [...workItem.itemTest].sort((a, b) =>
-        a.testRequired.localeCompare(b.testRequired),
-    );
-
     return (
         <Fragment>
             <TableRow className="bg-[#FCFCFD]">
@@ -62,19 +58,19 @@ export function WorkItemsTable({
                             {workItem.unit ?? "N/A"}
                         </TableCell>
                         <TableCell className="text-center">
-                            {sortedWorkItemTests?.[0]?.testRequired ?? "N/A"}
+                            {workItem.itemTest?.[0]?.testRequired ?? "N/A"}
                         </TableCell>
                         <TableCell className="text-center">
                             <TestCounter
-                                id={sortedWorkItemTests[0]?.id}
-                                value={sortedWorkItemTests[0]?.testsOnFile ?? 0}
+                                id={workItem.itemTest[0]?.id}
+                                value={workItem.itemTest[0]?.testsOnFile ?? 0}
                                 type="work-item"
                                 updateTestAction={onTestCountUpdate}
                                 isReadOnly={isReadOnly}
                             ></TestCounter>
                         </TableCell>
                         <TableCell className="text-center">
-                            {sortedWorkItemTests?.[0]?.balance ?? "N/A"}
+                            {workItem.itemTest?.[0]?.balance ?? "N/A"}
                         </TableCell>
                         <TableCell className="px-2 py-1">
                             <div className="flex items-center justify-center">
@@ -87,8 +83,9 @@ export function WorkItemsTable({
                                 >
                                     <Link
                                         href={getTestRecordUrl(
-                                            sortedWorkItemTests[0]?.id ?? "",
+                                            workItem.itemTest[0]?.id ?? "",
                                         )}
+                                        scroll={false}
                                     >
                                         <FileText className="h-4 w-4" />
                                         {isReadOnly ? "View" : "Manage"}
@@ -99,9 +96,9 @@ export function WorkItemsTable({
                         <TableCell className="text-center">
                             <TestStatus
                                 testsOnFile={
-                                    sortedWorkItemTests?.[0]?.testsOnFile ?? 0
+                                    workItem.itemTest?.[0]?.testsOnFile ?? 0
                                 }
-                                balance={sortedWorkItemTests?.[0]?.balance ?? 0}
+                                balance={workItem.itemTest?.[0]?.balance ?? 0}
                             ></TestStatus>
                         </TableCell>
                     </>
@@ -112,7 +109,7 @@ export function WorkItemsTable({
             </TableRow>
 
             {/* Additional item tests (if any) */}
-            {sortedWorkItemTests.slice(1).map((test) => (
+            {workItem.itemTest.slice(1).map((test) => (
                 <TableRow key={test.id}>
                     <TableCell></TableCell>
                     <TableCell></TableCell>
@@ -142,7 +139,10 @@ export function WorkItemsTable({
                                 disabled={isUpdating}
                                 asChild
                             >
-                                <Link href={getTestRecordUrl(test.id)}>
+                                <Link
+                                    href={getTestRecordUrl(test.id)}
+                                    scroll={false}
+                                >
                                     <FileText className="h-4 w-4" />
                                     {isReadOnly ? "View" : "Manage"}
                                 </Link>
