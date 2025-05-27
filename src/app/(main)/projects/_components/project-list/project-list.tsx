@@ -141,6 +141,16 @@ export function ProjectList({
 
     const isLoading = isPaginatingOrFiltering || isDeleting;
 
+    const getEmptyMessage = () => {
+        if (searchParams.has("query")) {
+            return `No projects found for "${searchParams.get("query")}". Try a different search term.`;
+        }
+        if (searchParams.has("from") || searchParams.has("to")) {
+            return "No projects found for the selected date range.";
+        }
+        return "You can create a new project by clicking the 'New Project' button.";
+    };
+
     return (
         <div className="flex min-h-full flex-col">
             <ProjectListHeader
@@ -167,7 +177,7 @@ export function ProjectList({
                 ) : (
                     <EmptyMessage
                         title="No projects found"
-                        description={`${searchParams.has("query") ? "There are no projects matching your search." : "You have not created any projects yet."}`}
+                        description={getEmptyMessage()}
                     />
                 )}
             </div>

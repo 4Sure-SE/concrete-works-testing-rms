@@ -11,7 +11,7 @@ import {
 
 export async function getWorkItemList(): Promise<WorkItemPayload[]> {
     const workItems = await db.workItem.findMany({
-        orderBy: { createdAt: "desc" },
+        orderBy: { itemNo: "asc" },
         include: workItemInclude,
     });
     return workItems;

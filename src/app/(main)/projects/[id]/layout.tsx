@@ -7,8 +7,8 @@ export default function ProjectDetailLayout({
 }) {
     return (
         <>
-            {children}
             {modal}
+            {children}
         </>
     );
 }

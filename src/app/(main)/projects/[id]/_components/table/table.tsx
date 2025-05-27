@@ -1,9 +1,9 @@
 "use client";
 
-import { ArchiveX } from "lucide-react";
 import { Fragment, useOptimistic, useTransition } from "react";
 import { toast } from "sonner";
 
+import EmptyMessage from "@/components/custom/empty-message";
 import {
     Table,
     TableBody,
@@ -108,12 +108,10 @@ export function ProjectWorkItemsTable({
             )}
             <div className="overflow-y-auto p-8">
                 {optimisticProjectData.projectWorkItem?.length === 0 ? (
-                    <div>
-                        <div className="flex flex-col items-center justify-center p-30 text-base">
-                            <ArchiveX className="mb-2 h-10 w-10"></ArchiveX>
-                            No items of work found
-                        </div>
-                    </div>
+                    <EmptyMessage
+                        title="No work items"
+                        description="You can add a work item to this project by clicking the 'Work Items' button."
+                    />
                 ) : (
                     <div
                         key={optimisticProjectData.id}
