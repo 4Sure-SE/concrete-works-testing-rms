@@ -22,6 +22,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Empty: Story = {
     args: {
+        validation: (value: boolean) => {
+            return value;
+        },
         password: "",
     },
     play: async ({ canvasElement }) => {
@@ -37,6 +40,9 @@ export const Empty: Story = {
 
 export const MeetsLengthOnly: Story = {
     args: {
+        validation: (value: boolean) => {
+            return value;
+        },
         password: "password123",
     },
     play: async ({ canvasElement }) => {
@@ -52,6 +58,9 @@ export const MeetsLengthOnly: Story = {
 
 export const MeetsUppercaseOnly: Story = {
     args: {
+        validation: (value: boolean) => {
+            return value;
+        },
         password: "Pass",
     },
     play: async ({ canvasElement }) => {
@@ -67,6 +76,9 @@ export const MeetsUppercaseOnly: Story = {
 
 export const AllRequirementsMet: Story = {
     args: {
+        validation: (value: boolean) => {
+            return value;
+        },
         password: "Password123",
     },
     play: async ({ canvasElement }) => {
