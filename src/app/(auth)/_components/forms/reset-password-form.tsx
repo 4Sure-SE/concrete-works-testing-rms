@@ -24,6 +24,7 @@ export function ResetPasswordForm({
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isPasswordValid, setPasswordValid] = useState(false);
 
     const passwordsMatch = password === confirmPassword;
 
@@ -54,7 +55,10 @@ export function ResetPasswordForm({
                             Icon={Lock}
                         />
                         {password.length > 0 && (
-                            <PasswordRequirements password={password} />
+                            <PasswordRequirements
+                                password={password}
+                                validation={setPasswordValid}
+                            />
                         )}
                     </div>
 

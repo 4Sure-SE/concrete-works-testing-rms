@@ -33,7 +33,7 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent>
+            <SidebarContent className="overflow-x-hidden">
                 <SidebarGroup>
                     <SidebarGroupLabel className="flex items-center">
                         Manage Projects

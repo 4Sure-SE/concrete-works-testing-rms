@@ -16,6 +16,7 @@ export async function getWorkItemMaterialDefinition(
     const material = await client.workItemMaterial.findFirst({
         where: { workItemId, materialId },
         include: workItemMaterialInclude,
+        orderBy: { createdAt: "desc" },
     });
 
     return material;
@@ -29,6 +30,7 @@ export async function getWorkItemMaterialDefinitionList(
     const materials = await client.workItemMaterial.findMany({
         where: { workItemId },
         include: workItemMaterialInclude,
+        orderBy: { createdAt: "desc" },
     });
 
     return materials;
