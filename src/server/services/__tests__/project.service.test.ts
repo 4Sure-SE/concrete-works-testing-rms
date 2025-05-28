@@ -78,8 +78,6 @@ describe("ProjectService", () => {
         const projectId = fakeProject.id;
 
         beforeEach(async () => {
-            // before each test
-            // clear all mocks and clear the projects and all associated dat
             vi.clearAllMocks();
             await projectDataAccess.clearProjects();
         });
@@ -149,7 +147,6 @@ describe("ProjectService", () => {
         it("throws an error when projectDetailsToDTO conversion fails", async () => {
             await projectDataAccess.createProject(fakeProject);
 
-            // Spy on and mock the DTO conversion to return null
             vi.spyOn(projectAdapter, "projectDetailsToDTO").mockReturnValue(
                 null,
             );
@@ -166,12 +163,10 @@ describe("ProjectService", () => {
             await projectDataAccess.createProject(fakeProject);
             const dbError = new Error("DB Error");
 
-            // simulate a DB failure when calling getProjectDetailsById
             const getProjectDetailsByIdSpy = vi
                 .spyOn(projectDataAccess, "getProjectDetailsById")
                 .mockRejectedValue(dbError);
 
-            // check that the service throws the appropriate error
             await expect(
                 ProjectService.getProjectDetails(projectId),
             ).rejects.toThrow(
@@ -186,8 +181,6 @@ describe("ProjectService", () => {
         const projectId = fakeProject.id;
 
         beforeEach(async () => {
-            // before each test
-            // clear all mocks and clear the projects and all associated dat
             vi.clearAllMocks();
             await projectDataAccess.clearProjects();
         });
@@ -217,15 +210,15 @@ describe("ProjectService", () => {
             console.log("Test Id", workItemTestId);
             console.log("Test On File", workItemTestOnFile);
 
-            expect(workItemTestId).toBeDefined(); // ensure we have a valid test ID
+            expect(workItemTestId).toBeDefined();
 
             const result = await ProjectService.updateProjectWorkItemsTestCount(
                 workItemTestId!,
                 3,
             );
 
-            expect(result).toBeDefined(); // ensure update result exists
-            expect(result.onFile).toBeGreaterThanOrEqual(3); // depending on test data
+            expect(result).toBeDefined();
+            expect(result.onFile).toBeGreaterThanOrEqual(3);
         }, 20000);
 
         //Happy Path
@@ -243,7 +236,7 @@ describe("ProjectService", () => {
             const workItemTestId =
                 projectDetails.projectWorkItem?.[0]?.itemTest?.[0]?.id;
 
-            expect(workItemTestId).toBeDefined(); // ensure we have a valid test ID
+            expect(workItemTestId).toBeDefined();
 
             await ProjectService.updateProjectWorkItemsTestCount(
                 workItemTestId!,
@@ -255,8 +248,8 @@ describe("ProjectService", () => {
                 -1,
             );
 
-            expect(result).toBeDefined(); // ensure update result exists
-            expect(result.onFile).toEqual(2); // depending on test data
+            expect(result).toBeDefined();
+            expect(result.onFile).toEqual(2);
         }, 20000);
 
         //Sad Path
@@ -304,8 +297,6 @@ describe("ProjectService", () => {
         const projectId = fakeProject.id;
 
         beforeEach(async () => {
-            // before each test
-            // clear all mocks and clear the projects and all associated dat
             vi.clearAllMocks();
             await projectDataAccess.clearProjects();
         });
@@ -330,15 +321,15 @@ describe("ProjectService", () => {
                 projectDetails.projectWorkItem?.[0]?.materials[0]
                     ?.materialTest[0]?.id;
 
-            expect(materialTestId).toBeDefined(); // ensure we have a valid test ID
+            expect(materialTestId).toBeDefined();
 
             const result = await ProjectService.updateProjectMaterialTestCount(
                 materialTestId!,
                 3,
             );
 
-            expect(result).toBeDefined(); // ensure update result exists
-            expect(result.onFile).toBeGreaterThanOrEqual(3); // depending on test data
+            expect(result).toBeDefined();
+            expect(result.onFile).toBeGreaterThanOrEqual(3);
         }, 20000);
 
         //Happy Path
@@ -369,8 +360,8 @@ describe("ProjectService", () => {
                 -1,
             );
 
-            expect(result).toBeDefined(); // ensure update result exists
-            expect(result.onFile).toEqual(2); // depending on test data
+            expect(result).toBeDefined();
+            expect(result.onFile).toEqual(2);
         }, 20000);
 
         //Sad Path
