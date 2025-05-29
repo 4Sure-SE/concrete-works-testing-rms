@@ -113,7 +113,7 @@
         "husky": "^9.1.7",
         "jsdom": "^26.0.0",
         "lint-staged": "^15.5.0",
-        "playwright": "^1.51.1",
+        "playwright": "^1.52",
         "postcss": "^8.4.39",
         "prettier": "^3.3.2",
         "prettier-plugin-tailwindcss": "^0.6.11",
