@@ -402,19 +402,26 @@ export const ProjectService = {
             `[Service] Getting full project details for ID: ${projectId}`,
         );
 
-        const rawProject = await getProjectDetailsById(projectId);
+        const { data, error } = await tryCatch(
+            getProjectDetailsById(projectId),
+        );
 
-        if (!rawProject)
-            throw new Error(`Project with ID ${projectId} not found`);
+        if (error || !data)
+            throw new Error(`[Service] Project with ID ${projectId} not found`);
 
-        return projectDetailsToDTO(rawProject);
+        const dto = projectDetailsToDTO(data);
+        if (!dto)
+            throw new Error(
+                `[Service] Failed to convert project ID: ${projectId} to DTO`,
+            );
+        return dto;
     },
 
     async updateProjectWorkItemsTestCount(id: string, amount: number) {
         const test = await getProjectWorkItemTestById(id);
 
         if (!test) {
-            throw new Error("Work item test not found");
+            throw new Error("[Service] Work item test not found");
         }
 
         const newValue = Math.max(0, (test.onFile ?? 0) + amount);
@@ -426,7 +433,7 @@ export const ProjectService = {
         const test = await getProjectMaterialTestById(id);
 
         if (!test) {
-            throw new Error("Material test not found");
+            throw new Error("[Service] Material test not found");
         }
 
         const newValue = Math.max(0, (test.onFile ?? 0) + amount);
