@@ -30,8 +30,11 @@
         "sb:build": "storybook build",
         "test": "dotenv -e .env.test -o -- vitest",
         "test:sb": "vitest --project=storybook",
-        "test:sb-headless": "vitest --project=storybook --browser.headless=false",
-        "test:unit": "dotenv -e .env.test -o -- vitest --project=unit"
+        "test:sb-headed": "vitest --project=storybook --browser.headless=false",
+        "test:unit": "dotenv -e .env.test -o -- vitest --project=unit",
+        "test:e2e": "playwright test",
+        "test:e2e-headed": "playwright test --headed",
+        "test:e2e-ui": "playwright test --ui"
     },
     "dependencies": {
         "@ag-media/react-pdf-table": "^2.0.2",
@@ -76,6 +79,7 @@
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.6",
+        "@playwright/test": "^1.52.0",
         "@storybook/addon-essentials": "^8.6.12",
         "@storybook/addon-onboarding": "^8.6.12",
         "@storybook/blocks": "^8.6.12",
