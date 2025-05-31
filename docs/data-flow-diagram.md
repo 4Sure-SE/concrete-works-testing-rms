@@ -71,8 +71,8 @@ flowchart LR
 %% MANAGE PROJECT TEST RECORDS FLOW
     QA -- "Upload Test Record File" --> 6
     QA -- "Delete Record Request" --> 6
-    QA -- "View / Download Request" --> 6
-    Contractor -- "View / Download Request" --> 6
+    QA -- "View Request" --> 6
+    Contractor -- "View Request" --> 6
     6 -- "File Data" --> D2
     6 -- "Test Record Data" --> D1
     D2 -- "File Data" --> 6
