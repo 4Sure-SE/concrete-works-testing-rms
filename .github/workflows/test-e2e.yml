@@ -16,6 +16,8 @@ jobs:
             NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
             NEXT_PUBLIC_SITE_URL: ${{ secrets.STAGING_URL }}
             SKIP_ENV_VALIDATION: true
+            TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+            TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
 
         steps:
             - uses: actions/checkout@v4
