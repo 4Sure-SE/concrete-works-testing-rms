@@ -14,7 +14,7 @@ dotenv.config({ path: `.env.test` });
 export default defineConfig({
     testDir: "./e2e",
     /* Run tests in files in parallel */
-    fullyParallel: true,
+    fullyParallel: false,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
     /* Retry on CI only */
@@ -37,7 +37,7 @@ export default defineConfig({
     projects: [
         {
             name: "setup",
-            testMatch: /.*\.setup\.ts/,
+            testMatch: /.*setup\.spec\.ts/,
             use: {
                 baseURL:
                     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
@@ -51,7 +51,7 @@ export default defineConfig({
             },
             dependencies: ["setup"],
         },
-
+        /*
         {
             name: "firefox",
             use: {
@@ -69,12 +69,13 @@ export default defineConfig({
             },
             dependencies: ["setup"],
         },
+        */
     ],
 
     /* Run your local dev server before starting the tests */
     // webServer: {
-    //   command: 'npm run start',
-    //   url: 'http://localhost:3000',
-    //   reuseExistingServer: !process.env.CI,
+    //     command: "npm run dev",
+    //     url: "http://localhost:3000",
+    //     reuseExistingServer: !process.env.CI,
     // },
 });
