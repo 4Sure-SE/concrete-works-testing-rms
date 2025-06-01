@@ -1,6 +1,7 @@
 import type { Projects } from "@/lib/types/project";
 import type { CreateProjectWorkItemDTO } from "../types/work-item";
-import { fakeProject } from "./project.stub";
+import { fakeProjectDTO } from "./project.stub";
+
 export const fakeProjectsData: Projects = {
     id: "P-001",
     contractId: "C-2023-001",
@@ -86,14 +87,14 @@ export const fakeProjectWorkItemData: CreateProjectWorkItemDTO = {
 };
 
 export const fakeProjectDetailsDTO = {
-    contractCost: fakeProject.contractCost.toNumber(),
-    contractId: fakeProject.contractId,
-    contractName: fakeProject.contractName,
-    contractor: fakeProject.contractor,
-    id: fakeProject.id,
-    limits: fakeProject.limits,
-    location: fakeProject.location,
-    materialsEngineer: fakeProject.materialsEngineer,
+    contractCost: fakeProjectDTO.contractCost,
+    contractId: fakeProjectDTO.contractId,
+    contractName: fakeProjectDTO.contractName,
+    contractor: fakeProjectDTO.contractor,
+    id: fakeProjectDTO.id,
+    limits: fakeProjectDTO.limits,
+    location: fakeProjectDTO.location,
+    materialsEngineer: fakeProjectDTO.materialsEngineer,
     projectWorkItem: [
         {
             description: "Reinforced Concrete",

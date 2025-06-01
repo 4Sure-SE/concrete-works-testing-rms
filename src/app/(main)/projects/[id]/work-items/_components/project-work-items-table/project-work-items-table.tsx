@@ -19,13 +19,17 @@ import type {
     ProjectWorkItemDTO,
 } from "@/lib/types/project-work-item/project-work-item.types";
 import { withCallbacks } from "@/lib/utils";
-import { updateProjectWorkItem } from "@/server/actions/projects/update-project-work-item";
 import { ProjectWorkItemRow } from "./project-work-item-row";
 
 interface ProjectWorkItemsTableProps {
     projectId: string;
     data: ProjectWorkItemDTO[];
     onDeleteAction: (id: string) => Promise<ProjectWorkItemActionState>;
+    onEditAction: (
+        id: string,
+        prevState: ProjectWorkItemActionState,
+        formData: FormData,
+    ) => Promise<ProjectWorkItemActionState>;
 }
 
 type OptimisticAction = { type: "DELETE"; payload: { id: string } };
@@ -34,6 +38,7 @@ export function ProjectWorkItemsTable({
     projectId,
     data,
     onDeleteAction,
+    onEditAction,
 }: ProjectWorkItemsTableProps) {
     const { triggerRefresh } = useRefreshContext();
 
@@ -142,7 +147,7 @@ export function ProjectWorkItemsTable({
                             onEdit={handleEdit}
                             onCancel={() => handleCancel(item.id)}
                             onDelete={handleDelete}
-                            updateAction={updateProjectWorkItem}
+                            updateAction={onEditAction}
                         />
                     );
                 })}
