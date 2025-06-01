@@ -4,6 +4,7 @@ import type {
     ProjectActionState,
     ProjectDTO,
     ProjectSummaryDTO,
+    UpdateProjectDTO,
 } from "./project.types";
 
 import type {
@@ -24,4 +25,5 @@ export type {
     Projects,
     ProjectSummaryDTO,
     ProjectWorkItem,
+    UpdateProjectDTO,
 };
