@@ -6,9 +6,9 @@ import SectionHeader from "@/components/custom/section-header";
 import { tryCatch } from "@/lib/utils";
 import { createProjectWorkItem } from "@/server/actions/projects/create-project-work-item";
 import { deleteProjectWorkItem } from "@/server/actions/projects/delete-project-work-item";
+import { updateProjectWorkItem } from "@/server/actions/projects/update-project-work-item";
 import { ProjectService } from "@/server/services/project.service";
 import { WorkItemService } from "@/server/services/work-item.service";
-
 import { AddProjectWorkItemForm, ProjectWorkItemsTable } from "./_components";
 import { DoneButton } from "./_components/done-button";
 import ManageWorkItemsPageSkeleton from "./loading";
@@ -61,6 +61,7 @@ async function WorkItemsContent({ projectId }: { projectId: string }) {
                 projectId={projectId}
                 data={projectWorkItems}
                 onDeleteAction={deleteProjectWorkItem}
+                onEditAction={updateProjectWorkItem}
             />
             <div className="mt-6 flex justify-end">
                 <DoneButton projectId={projectId} />

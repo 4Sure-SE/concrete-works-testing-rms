@@ -26,7 +26,7 @@ export function WorkItemSelect({
             onValueChange={onValueChange}
             value={defaultValue}
         >
-            <SelectTrigger className="cursor-pointer">
+            <SelectTrigger className="pointer-events-auto cursor-pointer">
                 <SelectValue placeholder="Select a work item" />
             </SelectTrigger>
             <SelectContent>
@@ -34,7 +34,7 @@ export function WorkItemSelect({
                     <SelectLabel>Work Items</SelectLabel>
                     {definitions.map((def) => (
                         <SelectItem
-                            className="cursor-pointer"
+                            className="pointer-events-auto cursor-pointer"
                             key={def.id}
                             value={def.id}
                         >

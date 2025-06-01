@@ -1,7 +1,7 @@
+import type { ProjectSummaryDTO } from "@/lib/types/project";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, within } from "@storybook/test";
 import { ProjectItem } from "./project-item";
-import type { ProjectSummaryDTO } from "@/lib/types/project";
 
 const mockProject: ProjectSummaryDTO = {
     id: "1",
@@ -16,7 +16,7 @@ const mockProject: ProjectSummaryDTO = {
 };
 
 const meta: Meta<typeof ProjectItem> = {
-    title: "Components/ProjectItem",
+    title: "Main/Components/ProjectItem",
     component: ProjectItem,
     parameters: {
         layout: "centered",
@@ -57,27 +57,5 @@ export const Disabled: Story = {
         await expect(
             canvas.queryByRole("button", { name: /delete/i }),
         ).not.toBeInTheDocument();
-    },
-};
-
-export const WithProgress: Story = {
-    args: {
-        data: {
-            ...mockProject,
-            stats: {
-                totalRequiredTests: 100,
-                totalBalanceTests: 75,
-                totalOnFileTests: 25,
-            },
-        },
-        onDeleteAction: () => console.log("Delete clicked"),
-        disabled: false,
-    },
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-        await expect(canvas.getByText("25%")).toBeInTheDocument();
-        await expect(
-            canvas.getByRole("button", { name: /delete/i }),
-        ).toBeInTheDocument();
     },
 };

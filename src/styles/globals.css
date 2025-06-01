@@ -2,6 +2,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+    pointer-events: auto !important;
+}
+
 :root {
     --radius: 0.625rem;
     --background: hsl(0 0% 100%);

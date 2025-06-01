@@ -3,7 +3,7 @@ import { expect, userEvent, within } from "@storybook/test";
 import { ClearFiltersButton } from "./clear-filter";
 
 const meta: Meta<typeof ClearFiltersButton> = {
-    title: "Components/ClearFiltersButton",
+    title: "Main/Components/ClearFiltersButton",
     component: ClearFiltersButton,
     parameters: {
         nextjs: {
