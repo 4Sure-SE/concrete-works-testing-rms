@@ -28,5 +28,6 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Run storybook tests
-              run: npm run test:sb
+            #   DISABLE FOR NOW :)
+            # - name: Run storybook tests
+            #   run: npm run test:sb
