@@ -13,7 +13,7 @@ export const fakeWorkItemDefinitions: WorkItemDefinitionDTO[] = [
         id: "aa5f1e7a-b0c7-4d0d-8fad-8d0ca6180b19",
         itemNo: "Item 311",
         description: "Portland Cement Concrete Pavement",
-        unitAbbreviation: "cu.m",
+        unitAbbreviation: "sq.m.",
     },
     {
         id: "c703b5c9-8988-4913-a2f7-16b9b612ba34",

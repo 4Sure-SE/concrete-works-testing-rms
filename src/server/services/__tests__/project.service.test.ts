@@ -1,14 +1,111 @@
 import * as projectAdapter from "@/lib/adapters/project";
 import { fakeProjectWorkItemData } from "@/lib/stubs/project-details.stub";
 import { fakeProjectDTO } from "@/lib/stubs/project.stub";
+import {
+    fakeCreateProjectWorkItemData,
+    fakeUpdateProjectWorkItemData,
+} from "@/lib/stubs/work-item.stub";
 import { type Projects } from "@/lib/types/project";
 import { type ProjectListFilters } from "@/lib/types/project/project.types";
 import * as projectMaterialTestAccess from "@/server/data-access/project-material-test/project-material-test";
 import * as projectWorkItemTestAccess from "@/server/data-access/project-work-item-test/project-work-item-test";
+import * as projectWorkItemDataAccess from "@/server/data-access/project-work-item/project-work-item";
 import * as projectDataAccess from "@/server/data-access/project/project";
 import { ProjectService } from "@/server/services/project.service";
 
 describe("ProjectService", () => {
+    // CREATE NEW PROJECT
+    describe("createNewProject", () => {
+        beforeEach(async () => {
+            vi.clearAllMocks();
+            await projectDataAccess.clearProjects();
+        });
+
+        afterEach(() => {
+            vi.restoreAllMocks();
+        });
+
+        // happy path
+        it("should create a project and return its DTO", async () => {
+            const result =
+                await ProjectService.createNewProject(fakeProjectDTO);
+
+            expect(result).toBeDefined();
+            expect(result).toMatchObject(fakeProjectDTO);
+        });
+
+        // sad path
+        it("throws an error when project DTO conversion fails", async () => {
+            vi.spyOn(projectAdapter, "projectToDTO").mockReturnValue(null);
+
+            await expect(
+                ProjectService.createNewProject(fakeProjectDTO),
+            ).rejects.toThrow("Failed to convert newly created project.");
+        });
+    });
+
+    // UPDATE PROJECT
+    describe("updateProject", () => {
+        const projectIdToUpdate = fakeProjectDTO.id;
+
+        beforeEach(async () => {
+            vi.clearAllMocks();
+            await projectDataAccess.clearProjects();
+        });
+
+        afterEach(() => {
+            vi.restoreAllMocks();
+        });
+
+        // happy path
+        it("should update a project and return its DTO with the updated values", async () => {
+            await ProjectService.createNewProject(fakeProjectDTO);
+
+            const result = await ProjectService.updateProject(
+                projectIdToUpdate,
+                { contractName: "new" },
+            );
+
+            expect(result).toBeDefined();
+            console.log(result);
+            expect(result).toMatchObject({
+                ...fakeProjectDTO,
+                contractName: "new",
+            });
+        });
+
+        it("does not update the project if no changes are provided", async () => {
+            await ProjectService.createNewProject(fakeProjectDTO);
+
+            await expect(
+                ProjectService.updateProject(projectIdToUpdate, fakeProjectDTO),
+            ).rejects.toThrow("No changes made");
+        });
+
+        // sad path
+        it("throws a not found error when project doesn't exist", async () => {
+            await expect(
+                ProjectService.updateProject(projectIdToUpdate, {
+                    contractName: "new",
+                }),
+            ).rejects.toThrow(`Project with ID ${projectIdToUpdate} not found`);
+        });
+
+        // sad path
+        it("throws an error when project DTO conversion fails", async () => {
+            await ProjectService.createNewProject(fakeProjectDTO);
+
+            vi.spyOn(projectAdapter, "projectToDTO").mockReturnValue(null);
+
+            await expect(
+                ProjectService.updateProject(projectIdToUpdate, {
+                    contractName: "new",
+                }),
+            ).rejects.toThrow("Failed to convert updated project.");
+        });
+    });
+
+    // DELETE PROJECT
     describe("deleteProject", () => {
         const projectIdToDelete = fakeProjectDTO.id;
 
@@ -48,7 +145,7 @@ describe("ProjectService", () => {
             await expect(
                 ProjectService.deleteProject(projectIdToDelete),
             ).rejects.toThrow(
-                `Failed to delete project ID: ${projectIdToDelete}`,
+                `[Service] Failed to delete project ID: ${projectIdToDelete}`,
             );
 
             expect(deleteProjectSpy).toHaveBeenCalledWith(projectIdToDelete);
@@ -61,6 +158,7 @@ describe("ProjectService", () => {
                 ProjectService.deleteProject(projectIdToDelete),
             ).rejects.toThrow(`Project with ID ${projectIdToDelete} not found`);
         });
+
         it("throws an error when project DTO conversion fails", async () => {
             await projectDataAccess.createProject(fakeProjectDTO);
 
@@ -75,6 +173,7 @@ describe("ProjectService", () => {
         });
     });
 
+    // GET PROJECT DETAILS
     describe("getProjectDetails", () => {
         const projectId = fakeProjectDTO.id;
 
@@ -178,6 +277,7 @@ describe("ProjectService", () => {
         }, 20000);
     });
 
+    // UPDATE PROJECT WORK ITEM TEST COUNT
     describe("updateProjectWorkItemsTestCount", () => {
         const projectId = fakeProjectDTO.id;
 
@@ -294,6 +394,7 @@ describe("ProjectService", () => {
         }, 20000);
     });
 
+    // UPDATE PROJECT MATERIAL TEST COUNT
     describe("updateProjectMaterialTestCount", () => {
         const projectId = fakeProjectDTO.id;
 
@@ -397,7 +498,6 @@ describe("ProjectService", () => {
                 projectMaterialTestAccess,
                 "updateMaterialTestCount",
             ).mockRejectedValueOnce(new Error("DB Error"));
-
             await expect(
                 ProjectService.updateProjectMaterialTestCount(
                     materialTestId!,
@@ -532,5 +632,197 @@ describe("ProjectService", () => {
             expect(result.length).toBe(1);
             expect(result[0]!.id).toBe(project1Id);
         }, 20000);
+    });
+
+    // CREATE PROJECT WORK ITEM
+    describe("createProjectWorkItem", () => {
+        const projectId = fakeProjectDTO.id;
+
+        beforeEach(async () => {
+            vi.clearAllMocks();
+            await projectDataAccess.clearProjects();
+            await ProjectService.createNewProject(fakeProjectDTO);
+        });
+
+        afterEach(async () => {
+            vi.restoreAllMocks();
+        });
+
+        // happy path - new work item
+        it("should create a new project work item and return its DTO", async () => {
+            const result = await ProjectService.createProjectWorkItem(
+                projectId,
+                fakeCreateProjectWorkItemData,
+            );
+
+            expect(result).toBeDefined();
+            expect(result.itemNo).toBe("Item 311");
+            expect(result.description).toBe(
+                "Portland Cement Concrete Pavement",
+            );
+            expect(result.quantity).toBe(100);
+            expect(result.unitAbbreviation).toBe("sq.m.");
+        });
+
+        // happy path - existing work item update
+        it(
+            "should update existing project work item quantity when work item already exists",
+            async () => {
+                // First create a work item
+                await ProjectService.createProjectWorkItem(
+                    projectId,
+                    fakeCreateProjectWorkItemData,
+                );
+
+                // Try to create the same work item again
+                const result = await ProjectService.createProjectWorkItem(
+                    projectId,
+                    { ...fakeCreateProjectWorkItemData, quantity: 50 },
+                );
+
+                expect(result).toBeDefined();
+                expect(result.quantity).toBe(150); // 100 + 50
+            },
+            { timeout: 20000 },
+        );
+
+        // sad path - invalid project ID
+        it("throws an error when project ID is invalid", async () => {
+            await expect(
+                ProjectService.createProjectWorkItem(
+                    "",
+                    fakeCreateProjectWorkItemData,
+                ),
+            ).rejects.toThrow("Project with ID  not found");
+        });
+    });
+
+    // UPDATE PROJECT WORK ITEM
+    describe("updateProjectWorkItem", () => {
+        const projectId = fakeProjectDTO.id;
+        let workItemId: string;
+
+        beforeEach(async () => {
+            vi.clearAllMocks();
+            await projectDataAccess.clearProjects();
+            await ProjectService.createNewProject(fakeProjectDTO);
+
+            // Create a work item to update
+            const workItem = await ProjectService.createProjectWorkItem(
+                projectId,
+                fakeCreateProjectWorkItemData,
+            );
+            workItemId = workItem.id;
+        });
+
+        afterEach(async () => {
+            vi.restoreAllMocks();
+        });
+
+        // happy path
+        it("should update project work item and return its DTO", async () => {
+            const result = await ProjectService.updateProjectWorkItem(
+                workItemId,
+                fakeUpdateProjectWorkItemData,
+            );
+
+            expect(result).toBeDefined();
+            expect(result.id).toBe(workItemId);
+            expect(result.quantity).toBe(125.5);
+        });
+
+        // happy path - no changes scenario
+        it("does not update the project work item if no changes are provided", async () => {
+            await expect(
+                ProjectService.updateProjectWorkItem(workItemId, {
+                    quantity: 100,
+                }),
+            ).rejects.toThrow("No changes made");
+        }); // sad path - work item not found
+        it("throws an error when work item is not found", async () => {
+            await expect(
+                ProjectService.updateProjectWorkItem(
+                    "12345678-1234-1234-1234-123456789012",
+                    fakeUpdateProjectWorkItemData,
+                ),
+            ).rejects.toThrow(
+                "Project work item with ID 12345678-1234-1234-1234-123456789012 not found",
+            );
+        }); // sad path - DTO conversion fails
+
+        // edge case - quantity conversion with Decimal
+        it("should handle decimal quantity updates correctly", async () => {
+            const result = await ProjectService.updateProjectWorkItem(
+                workItemId,
+                { quantity: 99.99 },
+            );
+
+            expect(result).toBeDefined();
+            expect(result.quantity).toBe(99.99);
+        });
+    });
+
+    // DELETE PROJECT WORK ITEM
+    describe("deleteProjectWorkItem", () => {
+        const projectId = fakeProjectDTO.id;
+        let workItemId: string;
+
+        beforeEach(async () => {
+            vi.clearAllMocks();
+            await projectDataAccess.clearProjects();
+            await ProjectService.createNewProject(fakeProjectDTO);
+
+            // Create a work item to delete
+            const workItem = await ProjectService.createProjectWorkItem(
+                projectId,
+                fakeCreateProjectWorkItemData,
+            );
+            workItemId = workItem.id;
+        });
+
+        afterEach(async () => {
+            vi.restoreAllMocks();
+        });
+
+        // happy path
+        it("should delete project work item and return its DTO", async () => {
+            const result =
+                await ProjectService.deleteProjectWorkItem(workItemId);
+
+            expect(result).toBeDefined();
+            expect(result.id).toBe(workItemId);
+            expect(result.itemNo).toBe("Item 311");
+        }); // sad path - work item not found
+        it("throws an error when work item is not found", async () => {
+            await expect(
+                ProjectService.deleteProjectWorkItem(
+                    "12345678-1234-1234-1234-123456789012",
+                ),
+            ).rejects.toThrow(
+                "Failed to delete project work item with ID: 12345678-1234-1234-1234-123456789012",
+            );
+        });
+
+        // sad path - database error during deletion
+        it("throws an error when database deletion fails", async () => {
+            vi.spyOn(
+                projectWorkItemDataAccess,
+                "deleteProjectWorkItem",
+            ).mockRejectedValueOnce(new Error("DB Delete Error"));
+            await expect(
+                ProjectService.deleteProjectWorkItem(workItemId),
+            ).rejects.toThrow("Failed to delete project work item with ID:");
+        });
+
+        // sad path - deletion returns null
+        it("throws an error when deletion returns null", async () => {
+            vi.spyOn(
+                projectWorkItemDataAccess,
+                "deleteProjectWorkItem",
+            ).mockResolvedValueOnce(null);
+            await expect(
+                ProjectService.deleteProjectWorkItem(workItemId),
+            ).rejects.toThrow("Failed to delete project work item with ID:");
+        });
     });
 });
