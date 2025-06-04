@@ -7,7 +7,6 @@ import * as projectMaterialTestAccess from "@/server/data-access/project-materia
 import * as projectWorkItemTestAccess from "@/server/data-access/project-work-item-test/project-work-item-test";
 import * as projectDataAccess from "@/server/data-access/project/project";
 import { ProjectService } from "@/server/services/project.service";
-import { Decimal } from "@prisma/client/runtime/library";
 
 describe("ProjectService", () => {
     describe("deleteProject", () => {
@@ -414,8 +413,9 @@ describe("ProjectService", () => {
             itemsPerPage: 10,
         };
 
-        beforeEach(() => {
+        beforeEach(async () => {
             vi.clearAllMocks();
+            await projectDataAccess.clearProjects();
         });
 
         afterEach(() => {
@@ -423,47 +423,28 @@ describe("ProjectService", () => {
         });
 
         // Happy Path
-        it("should successfully returns project summary DTOs", async () => {
-            const mockProject = {
-                ...fakeProject,
-                contractCost: new Decimal(fakeProject.contractCost),
-                projectWorkItem: [], // Add other required properties as needed for the type
-            };
+        it("should successfully return project summary DTOs", async () => {
+            await projectDataAccess.createProject(fakeProjectDTO);
 
-            const expectedDTO = {
-                ...fakeProjectDTO,
+            const result =
+                await ProjectService.getProjectSummaryList(mockFilters);
+
+            expect(result).toHaveLength(1);
+            expect(result[0]).toMatchObject({
+                id: fakeProjectDTO.id,
+                contractId: fakeProjectDTO.contractId,
+                contractName: fakeProjectDTO.contractName,
+                dateStarted: fakeProjectDTO.dateStarted,
                 stats: {
                     totalBalanceTests: 0,
                     totalOnFileTests: 0,
                     totalRequiredTests: 0,
                 },
-            };
-
-            vi.spyOn(
-                projectDataAccess,
-                "getProjectSummaryList",
-            ).mockResolvedValue([mockProject]);
-
-            vi.spyOn(projectAdapter, "projectSummaryToDTO").mockReturnValue(
-                expectedDTO,
-            );
-
-            const result =
-                await ProjectService.getProjectSummaryList(mockFilters);
-
-            expect(result).toEqual([expectedDTO]);
-            expect(
-                projectDataAccess.getProjectSummaryList,
-            ).toHaveBeenCalledWith(mockFilters);
+            });
         }, 20000);
 
         // Happy Path
-        it("should returns empty array when no projects found", async () => {
-            vi.spyOn(
-                projectDataAccess,
-                "getProjectSummaryList",
-            ).mockResolvedValue([]);
-
+        it("should return empty array when no projects found", async () => {
             const result =
                 await ProjectService.getProjectSummaryList(mockFilters);
 
@@ -472,36 +453,18 @@ describe("ProjectService", () => {
         }, 20000);
 
         // Happy Path
-        it("should respects pagination parameters", async () => {
-            const mockProjects = Array(15).fill({
-                ...fakeProject,
-                contractCost: new Decimal(fakeProject.contractCost),
-                projectWorkItem: [],
-            });
-
-            const expectedDTO = {
-                ...fakeProjectDTO,
-                stats: {
-                    totalBalanceTests: 0,
-                    totalOnFileTests: 0,
-                    totalRequiredTests: 0,
-                },
-            };
-
-            vi.spyOn(
-                projectDataAccess,
-                "getProjectSummaryList",
-            ).mockImplementation(async (filters) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                return mockProjects.slice(
-                    (filters.currentPage - 1) * filters.itemsPerPage,
-                    filters.currentPage * filters.itemsPerPage,
-                );
-            });
-
-            vi.spyOn(projectAdapter, "projectSummaryToDTO").mockReturnValue(
-                expectedDTO,
-            );
+        it("should respect pagination parameters", async () => {
+            // Create 15 projects to test pagination
+            const projectIds: string[] = [];
+            for (let i = 0; i < 15; i++) {
+                const projectId = `550e8400-e29b-41d4-a716-${String(i).padStart(12, "0")}`;
+                projectIds.push(projectId);
+                await projectDataAccess.createProject({
+                    ...fakeProjectDTO,
+                    id: projectId,
+                    contractId: `contract-${i}`,
+                });
+            }
 
             const page1Filters = { currentPage: 1, itemsPerPage: 10 };
             const page1Result =
@@ -515,7 +478,7 @@ describe("ProjectService", () => {
         }, 20000);
 
         // Sad Path
-        it(" should throws error when data access fails", async () => {
+        it("should throw error when data access fails", async () => {
             const dbError = new Error("DB Error");
             vi.spyOn(
                 projectDataAccess,
@@ -528,48 +491,46 @@ describe("ProjectService", () => {
         }, 20000);
 
         // Sad Path
-        it("should filters out null DTO conversions", async () => {
-            const mockProject1 = {
-                ...fakeProject,
-                id: "project-1",
-                contractCost: new Decimal(fakeProject.contractCost),
-                projectWorkItem: [],
-            };
+        it("should filter out null DTO conversions", async () => {
+            const project1Id = "550e8400-e29b-41d4-a716-446655440001";
+            const project2Id = "550e8400-e29b-41d4-a716-446655440002";
 
-            const mockProject2 = {
-                ...fakeProject,
-                id: "project-2",
-                contractCost: new Decimal(fakeProject.contractCost),
-                projectWorkItem: [],
-            };
-
-            const expectedDTO = {
+            await projectDataAccess.createProject({
                 ...fakeProjectDTO,
-                stats: {
-                    totalBalanceTests: 0,
-                    totalOnFileTests: 0,
-                    totalRequiredTests: 0,
-                },
-            };
-
-            vi.spyOn(
-                projectDataAccess,
-                "getProjectSummaryList",
-            ).mockResolvedValue([mockProject1, mockProject2]);
+                id: project1Id,
+                contractId: "contract-1",
+            });
+            await projectDataAccess.createProject({
+                ...fakeProjectDTO,
+                id: project2Id,
+                contractId: "contract-2",
+            });
 
             vi.spyOn(projectAdapter, "projectSummaryToDTO").mockImplementation(
                 (project) => {
                     // Return null for the second project to simulate conversion failure
                     if (!project) return null;
-                    return project.id === "project-1" ? expectedDTO : null;
+                    return project.id === project1Id
+                        ? {
+                              id: project1Id,
+                              contractId: "contract-1",
+                              contractName: fakeProjectDTO.contractName,
+                              dateStarted: fakeProjectDTO.dateStarted,
+                              stats: {
+                                  totalBalanceTests: 0,
+                                  totalOnFileTests: 0,
+                                  totalRequiredTests: 0,
+                              },
+                          }
+                        : null;
                 },
             );
 
             const result =
                 await ProjectService.getProjectSummaryList(mockFilters);
 
-            expect(result).toEqual([expectedDTO]);
             expect(result.length).toBe(1);
+            expect(result[0]!.id).toBe(project1Id);
         }, 20000);
     });
 });
