@@ -1,6 +1,6 @@
 import * as projectAdapter from "@/lib/adapters/project";
 import { fakeProjectWorkItemData } from "@/lib/stubs/project-details.stub";
-import { fakeProject, fakeProjectDTO } from "@/lib/stubs/project.stub";
+import { fakeProjectDTO } from "@/lib/stubs/project.stub";
 import { type Projects } from "@/lib/types/project";
 import { type ProjectListFilters } from "@/lib/types/project/project.types";
 import * as projectMaterialTestAccess from "@/server/data-access/project-material-test/project-material-test";
@@ -11,7 +11,7 @@ import { Decimal } from "@prisma/client/runtime/library";
 
 describe("ProjectService", () => {
     describe("deleteProject", () => {
-        const projectIdToDelete = fakeProject.id;
+        const projectIdToDelete = fakeProjectDTO.id;
 
         beforeEach(async () => {
             // before each test
@@ -26,7 +26,7 @@ describe("ProjectService", () => {
 
         it("successfully deletes an existing project and returns its DTO", async () => {
             // create a project in the db
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             const result =
                 await ProjectService.deleteProject(projectIdToDelete);
@@ -36,7 +36,7 @@ describe("ProjectService", () => {
         });
 
         it("throws a vague error when the db fails", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             const dbError = new Error("DB Error");
 
@@ -63,7 +63,7 @@ describe("ProjectService", () => {
             ).rejects.toThrow(`Project with ID ${projectIdToDelete} not found`);
         });
         it("throws an error when project DTO conversion fails", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             // mock the projectToDTO function to return null (failed conversion)
             vi.spyOn(projectAdapter, "projectToDTO").mockReturnValue(null);
@@ -77,7 +77,7 @@ describe("ProjectService", () => {
     });
 
     describe("getProjectDetails", () => {
-        const projectId = fakeProject.id;
+        const projectId = fakeProjectDTO.id;
 
         beforeEach(async () => {
             vi.clearAllMocks();
@@ -91,7 +91,7 @@ describe("ProjectService", () => {
 
         //Happy Path
         it("successfully get ptoject details and return its DTO", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
             await ProjectService.createProjectWorkItem(
                 projectId,
                 fakeProjectWorkItemData,
@@ -137,7 +137,7 @@ describe("ProjectService", () => {
 
         //Happy Path
         it("should return a DTO with empty work items if none exist", async () => {
-            const project = { ...fakeProject };
+            const project = { ...fakeProjectDTO };
             await projectDataAccess.createProject(project);
 
             const result = await ProjectService.getProjectDetails(project.id);
@@ -147,22 +147,22 @@ describe("ProjectService", () => {
 
         //Sad Path
         it("throws an error when projectDetailsToDTO conversion fails", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             vi.spyOn(projectAdapter, "projectDetailsToDTO").mockReturnValue(
                 null,
             );
 
             await expect(
-                ProjectService.getProjectDetails(fakeProject.id),
+                ProjectService.getProjectDetails(fakeProjectDTO.id),
             ).rejects.toThrow(
-                `[Service] Failed to convert project ID: ${fakeProject.id} to DTO`,
+                `[Service] Failed to convert project ID: ${fakeProjectDTO.id} to DTO`,
             );
         }, 20000);
 
         //Sad Path
         it("throws a vague error when the DB fails during getProjectDetails", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
             const dbError = new Error("DB Error");
 
             const getProjectDetailsByIdSpy = vi
@@ -180,7 +180,7 @@ describe("ProjectService", () => {
     });
 
     describe("updateProjectWorkItemsTestCount", () => {
-        const projectId = fakeProject.id;
+        const projectId = fakeProjectDTO.id;
 
         beforeEach(async () => {
             vi.clearAllMocks();
@@ -194,7 +194,7 @@ describe("ProjectService", () => {
 
         //Happy Path
         it("successfully increment test count", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
             await ProjectService.createProjectWorkItem(
                 projectId,
                 fakeProjectWorkItemData,
@@ -225,7 +225,7 @@ describe("ProjectService", () => {
 
         //Happy Path
         it("successfully decrement test count", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             await ProjectService.createProjectWorkItem(
                 projectId,
@@ -268,7 +268,7 @@ describe("ProjectService", () => {
 
         //Sad Path
         it("should throw an error when DB update fails", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             await ProjectService.createProjectWorkItem(
                 projectId,
@@ -296,7 +296,7 @@ describe("ProjectService", () => {
     });
 
     describe("updateProjectMaterialTestCount", () => {
-        const projectId = fakeProject.id;
+        const projectId = fakeProjectDTO.id;
 
         beforeEach(async () => {
             vi.clearAllMocks();
@@ -310,7 +310,7 @@ describe("ProjectService", () => {
 
         //Happy Path
         it("successfully increment test count", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
             await ProjectService.createProjectWorkItem(
                 projectId,
                 fakeProjectWorkItemData,
@@ -336,7 +336,7 @@ describe("ProjectService", () => {
 
         //Happy Path
         it("successfully decrement test count", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             await ProjectService.createProjectWorkItem(
                 projectId,
@@ -380,7 +380,7 @@ describe("ProjectService", () => {
 
         //Sad Path
         it("should throw an error when DB update fails", async () => {
-            await projectDataAccess.createProject(fakeProject);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             await ProjectService.createProjectWorkItem(
                 projectId,
@@ -425,9 +425,10 @@ describe("ProjectService", () => {
         // Happy Path
         it("should successfully returns project summary DTOs", async () => {
             const mockProject = {
-                ...fakeProject,
-                contractCost: new Decimal(fakeProject.contractCost),
-                projectWorkItem: [], // Add other required properties as needed for the type
+                ...fakeProjectDTO,
+                contractCost: new Decimal(fakeProjectDTO.contractCost),
+                projectWorkItem: [],
+                updatedAt: new Date(),
             };
 
             const expectedDTO = {
@@ -474,8 +475,8 @@ describe("ProjectService", () => {
         // Happy Path
         it("should respects pagination parameters", async () => {
             const mockProjects = Array(15).fill({
-                ...fakeProject,
-                contractCost: new Decimal(fakeProject.contractCost),
+                ...fakeProjectDTO,
+                contractCost: new Decimal(fakeProjectDTO.contractCost),
                 projectWorkItem: [],
             });
 
@@ -530,17 +531,19 @@ describe("ProjectService", () => {
         // Sad Path
         it("should filters out null DTO conversions", async () => {
             const mockProject1 = {
-                ...fakeProject,
+                ...fakeProjectDTO,
                 id: "project-1",
-                contractCost: new Decimal(fakeProject.contractCost),
+                contractCost: new Decimal(fakeProjectDTO.contractCost),
                 projectWorkItem: [],
+                updatedAt: new Date(),
             };
 
             const mockProject2 = {
-                ...fakeProject,
+                ...fakeProjectDTO,
                 id: "project-2",
-                contractCost: new Decimal(fakeProject.contractCost),
+                contractCost: new Decimal(fakeProjectDTO.contractCost),
                 projectWorkItem: [],
+                updatedAt: new Date(),
             };
 
             const expectedDTO = {

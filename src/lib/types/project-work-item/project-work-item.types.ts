@@ -3,7 +3,6 @@ import type { z } from "zod";
 import type { ActionErrors, ActionState } from "../actions.types";
 import type { WorkItemDefinitionDTO } from "../work-item";
 
-// project work items type used in the app
 export type ProjectWorkItemDTO = WorkItemDefinitionDTO & {
     quantity: number;
 };

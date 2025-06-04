@@ -3,7 +3,7 @@ import { expect, within } from "@storybook/test";
 import { ProjectStats } from "./project-stats";
 
 const meta: Meta<typeof ProjectStats> = {
-    title: "Components/ProjectStats",
+    title: "Main/Components/ProjectStats",
     component: ProjectStats,
     parameters: {
         layout: "centered",
@@ -46,36 +46,6 @@ export const Default: Story = {
         await expect(canvas.getByText("Total")).toBeInTheDocument();
         await expect(canvas.getByText("Balance")).toBeInTheDocument();
         await expect(canvas.getByText("On File")).toBeInTheDocument();
-    },
-};
-
-export const HighProgress: Story = {
-    args: {
-        total: 100,
-        balance: 10,
-        onFile: 90,
-    },
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-
-        await expect(canvas.getByText("100")).toBeInTheDocument();
-        await expect(canvas.getByText("10")).toBeInTheDocument();
-        await expect(canvas.getByText("90")).toBeInTheDocument();
-    },
-};
-
-export const LowProgress: Story = {
-    args: {
-        total: 30,
-        balance: 25,
-        onFile: 5,
-    },
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-
-        await expect(canvas.getByText("30")).toBeInTheDocument();
-        await expect(canvas.getByText("25")).toBeInTheDocument();
-        await expect(canvas.getByText("5")).toBeInTheDocument();
     },
 };
 

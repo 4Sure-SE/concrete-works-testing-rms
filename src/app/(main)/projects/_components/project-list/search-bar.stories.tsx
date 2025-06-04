@@ -3,7 +3,7 @@ import { expect, userEvent, within } from "@storybook/test";
 import { SearchBar } from "./search-bar";
 
 const meta: Meta<typeof SearchBar> = {
-    title: "Components/SearchBar",
+    title: "Main/Components/SearchBar",
     component: SearchBar,
 };
 

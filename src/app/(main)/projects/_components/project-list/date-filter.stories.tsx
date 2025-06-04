@@ -4,7 +4,7 @@ import { fn } from "@storybook/test";
 import { DateRangeFilter } from "./date-filter";
 
 const meta: Meta<typeof DateRangeFilter> = {
-    title: "Components/DateRangeFilter",
+    title: "Main/Components/DateRangeFilter",
     component: DateRangeFilter,
     parameters: {
         layout: "centered",

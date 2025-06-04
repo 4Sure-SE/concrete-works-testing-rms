@@ -3,7 +3,7 @@ import { expect, within } from "@storybook/test";
 import { ProjectListHeader } from "./project-list-header";
 
 const meta: Meta<typeof ProjectListHeader> = {
-    title: "Components/ProjectListHeader",
+    title: "Main/Components/ProjectListHeader",
     component: ProjectListHeader,
     parameters: {
         layout: "fullscreen",
