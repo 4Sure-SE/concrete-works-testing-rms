@@ -61,7 +61,10 @@ export const TestCounter = ({
                     }`}
                 >
                     {isDecLoading ? (
-                        <Loader2 className="animate-spin" />
+                        <Loader2
+                            className="animate-spin"
+                            data-testid="loading-icon"
+                        />
                     ) : (
                         <Minus />
                     )}
@@ -86,7 +89,10 @@ export const TestCounter = ({
                     }`}
                 >
                     {isIncLoading ? (
-                        <Loader2 className="animate-spin" />
+                        <Loader2
+                            className="animate-spin"
+                            data-testid="loading-icon"
+                        />
                     ) : (
                         <Plus />
                     )}
