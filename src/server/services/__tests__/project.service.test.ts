@@ -641,7 +641,7 @@ describe("ProjectService", () => {
         beforeEach(async () => {
             vi.clearAllMocks();
             await projectDataAccess.clearProjects();
-            await ProjectService.createNewProject(fakeProjectDTO);
+            await projectDataAccess.createProject(fakeProjectDTO);
         });
 
         afterEach(async () => {
@@ -665,26 +665,22 @@ describe("ProjectService", () => {
         });
 
         // happy path - existing work item update
-        it(
-            "should update existing project work item quantity when work item already exists",
-            async () => {
-                // First create a work item
-                await ProjectService.createProjectWorkItem(
-                    projectId,
-                    fakeCreateProjectWorkItemData,
-                );
+        it("should update existing project work item quantity when work item already exists", async () => {
+            // First create a work item
+            await ProjectService.createProjectWorkItem(
+                projectId,
+                fakeCreateProjectWorkItemData,
+            );
 
-                // Try to create the same work item again
-                const result = await ProjectService.createProjectWorkItem(
-                    projectId,
-                    { ...fakeCreateProjectWorkItemData, quantity: 50 },
-                );
+            // Try to create the same work item again
+            const result = await ProjectService.createProjectWorkItem(
+                projectId,
+                { ...fakeCreateProjectWorkItemData, quantity: 50 },
+            );
 
-                expect(result).toBeDefined();
-                expect(result.quantity).toBe(150); // 100 + 50
-            },
-            { timeout: 20000 },
-        );
+            expect(result).toBeDefined();
+            expect(result.quantity).toBe(150); // 100 + 50
+        });
 
         // sad path - invalid project ID
         it("throws an error when project ID is invalid", async () => {
@@ -705,13 +701,14 @@ describe("ProjectService", () => {
         beforeEach(async () => {
             vi.clearAllMocks();
             await projectDataAccess.clearProjects();
-            await ProjectService.createNewProject(fakeProjectDTO);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             // Create a work item to update
-            const workItem = await ProjectService.createProjectWorkItem(
-                projectId,
-                fakeCreateProjectWorkItemData,
-            );
+            const workItem =
+                await projectWorkItemDataAccess.createProjectWorkItem(
+                    projectId,
+                    fakeCreateProjectWorkItemData,
+                );
             workItemId = workItem.id;
         });
 
@@ -770,13 +767,14 @@ describe("ProjectService", () => {
         beforeEach(async () => {
             vi.clearAllMocks();
             await projectDataAccess.clearProjects();
-            await ProjectService.createNewProject(fakeProjectDTO);
+            await projectDataAccess.createProject(fakeProjectDTO);
 
             // Create a work item to delete
-            const workItem = await ProjectService.createProjectWorkItem(
-                projectId,
-                fakeCreateProjectWorkItemData,
-            );
+            const workItem =
+                await projectWorkItemDataAccess.createProjectWorkItem(
+                    projectId,
+                    fakeCreateProjectWorkItemData,
+                );
             workItemId = workItem.id;
         });
 
@@ -792,7 +790,8 @@ describe("ProjectService", () => {
             expect(result).toBeDefined();
             expect(result.id).toBe(workItemId);
             expect(result.itemNo).toBe("Item 311");
-        }); // sad path - work item not found
+        });
+        // sad path - work item not found
         it("throws an error when work item is not found", async () => {
             await expect(
                 ProjectService.deleteProjectWorkItem(
