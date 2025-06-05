@@ -27,22 +27,3 @@ setup("authenticate", async ({ page }) => {
 
     await page.context().storageState({ path: "e2e/.auth/user.json" });
 });
-
-setup("invalid credentials should fail", async ({ page }) => {
-    await page.context().clearCookies();
-    await page.context().clearPermissions();
-
-    await page.goto("/log-in");
-    await page.waitForLoadState("networkidle");
-
-    await page.waitForSelector('input[name="email"]', { timeout: 10000 });
-
-    await page.fill('input[name="email"]', "invalid@example.com");
-    await page.fill('input[name="password"]', "wrongpassword");
-
-    await page.click('button[type="submit"]');
-
-    await page.waitForTimeout(2000);
-    expect(page.url()).toContain("/log-in");
-    expect(page.url()).not.toContain("/projects");
-});

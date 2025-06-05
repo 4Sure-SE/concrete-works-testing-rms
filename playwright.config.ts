@@ -23,6 +23,7 @@ export default defineConfig({
     workers: process.env.CI ? 1 : undefined,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: "html",
+    globalTeardown: "./e2e/teardown.ts",
 
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
@@ -37,11 +38,15 @@ export default defineConfig({
     projects: [
         {
             name: "setup",
-            testMatch: /.*setup\.spec\.ts/,
+            testMatch: /.*setup\.ts/,
             use: {
                 baseURL:
                     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
             },
+        },
+        {
+            name: "cleanup db",
+            testMatch: /.*teardown\.ts/,
         },
         {
             name: "chromium",

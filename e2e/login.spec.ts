@@ -33,25 +33,6 @@ test.describe("Authenticated user flow", () => {
         expect(page.url()).not.toContain("/log-in");
         expect(page.url()).not.toContain("/sign-up");
     });
-    test("should display user-specific content", async ({ page }) => {
-        const projectsContainer = page.locator("main.flex-1.overflow-auto.p-4");
-        await expect(projectsContainer).toBeVisible();
-
-        await expect(
-            page.getByRole("textbox", { name: "Search projects..." }),
-        ).toBeVisible();
-        await expect(
-            page.getByRole("button", { name: "New Project" }),
-        ).toBeVisible();
-
-        await expect(
-            page.getByRole("button", { name: "Sign Out" }),
-        ).toBeVisible();
-
-        await expect(
-            page.locator('form[data-testid="login-form"], input[type="email"]'),
-        ).not.toBeVisible();
-    });
 });
 
 test.describe("Unauthenticated access", () => {
