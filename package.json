@@ -32,9 +32,9 @@
         "test:sb": "vitest --project=storybook",
         "test:sb-headed": "vitest --project=storybook --browser.headless=false",
         "test:unit": "dotenv -e .env.test -o -- vitest --project=unit",
-        "test:e2e": "playwright test",
-        "test:e2e-headed": "playwright test --headed",
-        "test:e2e-ui": "playwright test --ui"
+        "test:e2e": "dotenv -e .env.test -o -- playwright test",
+        "test:e2e-headed": "dotenv -e .env.test -o -- playwright test --headed",
+        "test:e2e-ui": "dotenv -e .env.test -o -- playwright test --ui"
     },
     "dependencies": {
         "@ag-media/react-pdf-table": "^2.0.2",
