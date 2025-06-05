@@ -11,6 +11,16 @@ const mockUpdateTestAction = fn().mockImplementation(
     },
 );
 
+const neverResolvingUpdateAction = async (
+    id: string,
+    amount: number,
+    type: TestType,
+): Promise<void> => {
+    console.log(id, amount, type);
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    return new Promise(() => {});
+};
+
 const meta = {
     title: "Main/Components/ProjectDetails/Test-Counter",
     component: TestCounter,
@@ -88,15 +98,16 @@ export const LoadingWhileIncrementing: Story = {
         id: "test-id",
         value: 0,
         type: "material",
-        updateTestAction: mockUpdateTestAction,
+        updateTestAction: neverResolvingUpdateAction,
     },
     play: async ({ canvasElement }) => {
-        const button = canvasElement.querySelector(
-            'button[aria-label="increase"]',
-        );
-        if (button) {
-            (button as HTMLButtonElement).click();
-        }
+        const canvas = within(canvasElement);
+
+        const plusButton = await canvas.findByRole("button", {
+            name: /increase/i,
+        });
+
+        await userEvent.click(plusButton);
     },
 };
 
@@ -105,14 +116,15 @@ export const LoadingWhileDecrementing: Story = {
         id: "test-id",
         value: 1,
         type: "material",
-        updateTestAction: mockUpdateTestAction,
+        updateTestAction: neverResolvingUpdateAction,
     },
     play: async ({ canvasElement }) => {
-        const button = canvasElement.querySelector(
-            'button[aria-label="decrease"]',
-        );
-        if (button) {
-            (button as HTMLButtonElement).click();
-        }
+        const canvas = within(canvasElement);
+
+        const plusButton = await canvas.findByRole("button", {
+            name: /decrease/i,
+        });
+
+        await userEvent.click(plusButton);
     },
 };
