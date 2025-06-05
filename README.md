@@ -55,3 +55,4 @@
 - [Entity Relationship Diagram](docs/erd.md)
 - [Context Diagram](docs/context-diagram.md)
 - [Data Flow Diagram](docs/data-flow-diagram.md)
+- [Conceptual Framework](docs/conceptual-framework.md)

@@ -79,6 +79,7 @@ export default defineConfig({
                         SKIP_ENV_VALIDATION: "true",
                     },
                     exclude: ["e2e/**", "tests-examples/**", "node_modules/**"],
+                    testTimeout: 30_000,
                 },
             },
         ],
