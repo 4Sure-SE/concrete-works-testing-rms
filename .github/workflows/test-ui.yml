@@ -1,6 +1,8 @@
 name: UI Tests
 
-on: [push, pull_request]
+on:
+    pull_request:
+        branches: [main, develop]
 
 jobs:
     test:
@@ -16,7 +18,7 @@ jobs:
             NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
             SKIP_ENV_VALIDATION: true
         container:
-            image: mcr.microsoft.com/playwright:v1.51.1-noble
+            image: mcr.microsoft.com/playwright:v1.52.0-noble
         steps:
             - uses: actions/checkout@v4
 

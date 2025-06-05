@@ -30,8 +30,11 @@
         "sb:build": "storybook build",
         "test": "dotenv -e .env.test -o -- vitest",
         "test:sb": "vitest --project=storybook",
-        "test:sb-headless": "vitest --project=storybook --browser.headless=false",
-        "test:unit": "dotenv -e .env.test -o -- vitest --project=unit"
+        "test:sb-headed": "vitest --project=storybook --browser.headless=false",
+        "test:unit": "dotenv -e .env.test -o -- vitest --project=unit",
+        "test:e2e": "dotenv -e .env.test -o -- playwright test",
+        "test:e2e-headed": "dotenv -e .env.test -o -- playwright test --headed",
+        "test:e2e-ui": "dotenv -e .env.test -o -- playwright test --ui"
     },
     "dependencies": {
         "@ag-media/react-pdf-table": "^2.0.2",
@@ -76,6 +79,7 @@
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.6",
+        "@playwright/test": "^1.52.0",
         "@storybook/addon-essentials": "^8.6.12",
         "@storybook/addon-onboarding": "^8.6.12",
         "@storybook/blocks": "^8.6.12",
@@ -109,7 +113,7 @@
         "husky": "^9.1.7",
         "jsdom": "^26.0.0",
         "lint-staged": "^15.5.0",
-        "playwright": "^1.51.1",
+        "playwright": "^1.52",
         "postcss": "^8.4.39",
         "prettier": "^3.3.2",
         "prettier-plugin-tailwindcss": "^0.6.11",

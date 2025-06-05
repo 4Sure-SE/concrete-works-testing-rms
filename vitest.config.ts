@@ -31,6 +31,7 @@ export default defineConfig({
                         provider: "playwright",
                     },
                     setupFiles: [".storybook/vitest.setup.ts"],
+                    exclude: ["e2e/**", "tests-examples/**", "node_modules/**"],
                 },
                 optimizeDeps: {
                     exclude: ["node_modules/.cache/storybook"],
@@ -77,6 +78,7 @@ export default defineConfig({
                         NODE_ENV: "test",
                         SKIP_ENV_VALIDATION: "true",
                     },
+                    exclude: ["e2e/**", "tests-examples/**", "node_modules/**"],
                     testTimeout: 30_000,
                 },
             },
