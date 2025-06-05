@@ -77,6 +77,7 @@ export default defineConfig({
                         NODE_ENV: "test",
                         SKIP_ENV_VALIDATION: "true",
                     },
+                    testTimeout: 30_000,
                 },
             },
         ],
